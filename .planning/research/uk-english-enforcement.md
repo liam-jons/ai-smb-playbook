@@ -18,7 +18,7 @@ There is no single switch that enforces UK English across all Claude surfaces. H
 | 2. **CLAUDE.md rule** | Claude Code | 30 seconds | High -- loaded at session start, part of system prompt |
 | 3. **Project instructions** (claude.ai) | claude.ai Projects | 30 seconds per project | High -- applied to all conversations within that project |
 
-For teams wanting a belt-and-braces approach, a lightweight **UK English skill** can serve as a portable, shareable reinforcement that works across all surfaces. The full **brand-review command** is overkill for language enforcement alone but remains valuable for comprehensive content auditing.
+For teams wanting a belt-and-braces approach, a lightweight **UK English skill** (already provided at `starter-kit/skills/uk-english/SKILL.md`) can serve as a portable, shareable reinforcement that works across all surfaces. The **brand-review skill** also catches UK English issues during content reviews — the starter kit command file has been updated to include UK English in its Style Guide Compliance checks.
 
 ---
 
@@ -221,8 +221,11 @@ Use British English spellings throughout:
 
 **How to deploy:**
 - **Claude Code:** Save as a `.md` file in the project's skills directory or in `~/.claude/skills/` for global availability
-- **claude.ai / Desktop:** Paste the content into Project instructions, or reference it in a conversation when writing UK-audience content
+- **claude.ai:** Upload the skill file via Projects, or have an admin provision it organisation-wide via the Teams admin console
+- **Claude Desktop:** Upload via Settings > Capabilities (ZIP format), or have an admin provision it organisation-wide
 - **Shareable:** Can be committed to a shared repo, so all team members have access
+
+**Note:** This skill file already exists at `starter-kit/skills/uk-english/SKILL.md`. The playbook should walk users through uploading the skill file — no need for a copyable block, as the file is provided.
 
 **Pros:**
 - Portable across all Claude surfaces (with slight adaptation per surface)
@@ -309,19 +312,19 @@ However, it does **not** specifically check for UK vs US English spelling varian
 - Valuable for marketing content, client-facing documents, and formal communications
 
 **Cons:**
-- Massive overhead for simple UK English enforcement
 - Requires a configured brand style guide to enforce specific conventions
-- Designed as a review tool, not a preventive control -- it checks content after creation, not during
-- Not a "set and forget" solution -- requires active invocation
+- Designed as a review tool, not a preventive control — it checks content after creation, not during
 - Only meaningful for content review, not day-to-day coding or conversation
 
-**Verdict:** Not suitable as the primary UK English enforcement mechanism. It is, however, the right tool for comprehensive content auditing when Phew! needs to review marketing materials, client communications, or published content. Recommend as a complementary tool for Section 1.6, not as the language enforcement solution.
+**Verdict:** Not intended as the primary UK English enforcement mechanism — it's simply another place where UK English issues get caught during content reviews. The brand-review command file in the starter kit has been updated to include UK English explicitly in its Style Guide Compliance checks. When a brand voice document is created via the brand-voice skill, it should also specify that all Phew! content uses UK conventions — ensuring brand-review catches any lapses during comprehensive content audits.
+
+**Note:** A skill version of brand-review has also been created at `starter-kit/skills/brand-review/SKILL.md` so it works in claude.ai and Claude Desktop (where slash commands are not available).
 
 ---
 
 ## Recommended Implementation
 
-### For All Phew! Staff (claude.ai and Claude Desktop)
+### For claude.ai and Claude Desktop Users (Options 1, 3, 6, 8)
 
 **Step 1: Set profile preferences** (each team member, once)
 
@@ -331,17 +334,30 @@ Go to claude.ai > Settings > Profile, and add:
 Always use UK English spelling and grammar (e.g., colour, organise, behaviour, centre, analyse). Use UK date format (DD/MM/YYYY) and GBP (£) for currency.
 ```
 
-**Step 2: Set project instructions** (project owner, once per project)
+**Step 2: Add one-line project instruction** (project owner, once per project)
 
 For any shared claude.ai Project, add to Custom Instructions:
 
 ```
-Always use UK English spelling and grammar in all responses. Use colour (not color), organise (not organize), behaviour (not behavior), centre (not center), analyse (not analyze). Dates in DD/MM/YYYY format. Currency in GBP (£).
+Always use UK English spelling and grammar in all responses.
 ```
 
-### For Developers (Claude Code)
+**Step 3: Upload the UK English skill** (admin-provisioned or per-user)
 
-**Step 3: CLAUDE.md rule** (already implemented in this project)
+Upload `starter-kit/skills/uk-english/SKILL.md` via:
+- **Teams admin console** (recommended — provisions to all users automatically), or
+- **claude.ai:** Upload to a Project, or
+- **Claude Desktop:** Upload via Settings > Capabilities
+
+The playbook should walk users through this upload process.
+
+**Step 4: Brand-review catches remaining issues** during content reviews
+
+The brand-review skill (at `starter-kit/skills/brand-review/SKILL.md`) includes UK English in its Style Guide Compliance checks. When a brand voice document is created, it should specify UK conventions — ensuring brand-review catches any lapses when reviewing marketing materials, client communications, or published content.
+
+### For Claude Code Users (Options 2, 7)
+
+**Step 1: CLAUDE.md rule** (already implemented in this project)
 
 Ensure every project's CLAUDE.md includes:
 
@@ -349,38 +365,34 @@ Ensure every project's CLAUDE.md includes:
 - **UK English throughout.** All output must use UK English spelling and grammar (e.g., colour, organise, behaviour, centre, analyse). Use UK date format (DD/MM/YYYY) and GBP (£) for currency.
 ```
 
-### For Everyone (Portable Reference)
+**Step 2 (advanced, if issues persist): Britfix hook**
 
-**Step 4: UK English skill file** (optional but recommended)
-
-Save the skill file from Option 6 above as `uk-english.md` in the starter kit. This serves as:
-- A reference document for all UK English conventions
-- A skill that can be loaded in Claude Code projects
-- Content that can be pasted into claude.ai project instructions for comprehensive coverage
-
-### Optional Extras
-
-- **Britfix hook** (Option 7): For teams that want guaranteed UK English in Claude Code file output. Mention in the playbook as an advanced option.
-- **Brand-review command** (Option 8): For comprehensive content auditing. Cover in Section 1.6 as the tool for reviewing marketing materials and client-facing content.
+If the CLAUDE.md rule alone proves insufficient for specific projects, the Britfix post-processing hook (Option 7) can be installed to automatically convert US spellings in file output. Mention in the playbook as the advanced fallback.
 
 ---
 
 ## What to Include in the Playbook (Section 1.6)
 
-1. **Primary recommendation:** Profile preferences + CLAUDE.md rule (simple, covers all surfaces)
-2. **Portable reference:** The UK English skill file, presented as a copyable block
-3. **Project-level enforcement:** How to set project instructions for shared teams
-4. **Advanced option:** Britfix for post-processing in Claude Code
-5. **Comprehensive option:** Brand-review for full content auditing (separate from language enforcement)
-6. **Key message:** "This takes two minutes to set up and you'll never have to think about it again"
+**For claude.ai/Desktop users:**
+1. Walk through setting profile preferences (one-line, one-time)
+2. Walk through adding the one-line project instruction
+3. Walk through uploading the UK English skill file (provided in starter kit — no copyable block needed, walk through the upload process)
+4. Explain that brand-review also catches UK English issues during content reviews
+
+**For Claude Code users:**
+1. CLAUDE.md rule (provide copyable snippet)
+2. Britfix hook as advanced fallback if issues persist
+
+**Key message:** "This takes two minutes to set up and you'll never have to think about it again"
 
 ---
 
 ## What to Include in the Starter Kit (Section 1.16)
 
-1. `starter-kit/skills/uk-english.md` -- the skill file from Option 6
-2. A note in the starter kit README pointing users to the profile preferences setup
-3. A copyable CLAUDE.md snippet for developers
+1. `starter-kit/skills/uk-english/SKILL.md` — already provided
+2. `starter-kit/skills/brand-review/SKILL.md` — skill version of brand-review (already created)
+3. `starter-kit/commands/brand-review.md` — command version for Claude Code (already updated with UK English line)
+4. A copyable CLAUDE.md snippet for developers
 
 ---
 

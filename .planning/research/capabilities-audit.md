@@ -8,9 +8,16 @@
 
 ## Executive Summary
 
-The source document is a **verbatim copy** of the current official Claude Code "Extend Claude Code" page (`features-overview.md`). After line-by-line comparison with the live documentation at `code.claude.com`, the content is **identical** -- every table, comparison tab, context cost section, and learn-more card matches exactly. The source document is current and accurate as of this date.
+The source document is the current official Claude Code "Extend Claude Code" overview page. It is an **overview page by design** — it summarises each extension mechanism and links out to dedicated pages with substantially more detail. For the playbook decision tree, the overview content alone is insufficient — significant capabilities documented on the individual feature pages are not surfaced in the overview. This audit catalogues everything found on those deeper pages that the overview omits or understates.
 
-However, the source document is an **overview page by design**. It summarises each extension mechanism and links out to dedicated pages with substantially more detail. For a playbook/decision-tree, the overview content alone is insufficient -- significant capabilities documented on the individual feature pages are not surfaced in the overview. This audit catalogues everything found on those deeper pages that the overview omits or understates.
+### Key Consideration for the Playbook Decision Tree
+
+The playbook serves **two distinct user groups** with different tool access:
+
+- **Non-technical users** (claude.ai and Claude Desktop, with CoWork coming soon): Need guidance on skills, projects, and admin-provisioned features. Will not use Claude Code, subagents, hooks, or direct MCP configuration.
+- **Technical users** (Claude Code + claude.ai/Claude Desktop): Need the full decision tree including CLAUDE.md, skills, commands, subagents, agent teams, hooks, MCP, and plugins.
+
+The decision tree must clearly distinguish which features are available on which platforms, and route users to the right guidance based on their toolset. Not all extension mechanisms are relevant to non-technical users.
 
 ---
 

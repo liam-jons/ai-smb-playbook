@@ -18,7 +18,7 @@ The workflow is: **define your brand voice using the skill's framework** --> **s
 
 ## What the Brand Voice Skill Actually Is
 
-The brand-voice skill (`starter-kit/skills/brand-voice/SKILL.md`) is **not** a step-by-step wizard. It is a structured reference framework — a SKILL.md file that Claude loads into context to guide conversations about brand voice. When a user asks Claude to help document their brand voice, Claude uses this framework to ensure completeness.
+The brand-voice skill (`starter-kit/skills/brand-voice/SKILL.md`) is a structured reference framework — a SKILL.md file that Claude loads into context to guide conversations about brand voice. When a user asks Claude to help document their brand voice, Claude uses this framework to ensure completeness. The playbook should walk users through what to expect when invoking this skill, what inputs to have ready, and where to save the resulting document.
 
 The skill covers seven areas, each of which represents a section the user should define:
 
@@ -101,6 +101,8 @@ The user saves the brand voice document where Claude can access it in future ses
 
 ### Strongly Recommended
 
+Phew! is a well-established company and will have content for all of these:
+
 - **2-3 examples of on-brand content** — existing website copy, marketing materials, emails, or social posts that represent how the brand wants to sound
 - **A basic understanding of the target audience** — who the brand speaks to and what they care about
 - **Known terminology preferences** — product names, industry terms, any existing "say this, not that" rules
@@ -110,6 +112,18 @@ The user saves the brand voice document where Claude can access it in future ses
 - An existing brand style guide or tone of voice document (the skill can assess and expand it)
 - Examples of off-brand content (helps define boundaries)
 - Competitor examples (to clarify differentiation)
+
+### Existing Content from Phew! Website Scrape
+
+The Phase 0.1 site scrape (`phew-site-content.md`) captured brand-relevant content that could seed or accelerate the brand voice setup:
+
+- **Company values (IMPACT):** Innovate, Mindful, Proactivity, Accountable, Collaborate, Transparency
+- **Brand descriptors:** "thinkers, makers and explorers"
+- **Vision:** "saving lives through products", being "an extension of the client's team"
+- **Tone observations:** Professional yet approachable, purpose-led, data-driven claims, deep sector fluency. Copy leads with sector problems, follows with solutions, supports with quantified impact.
+- **Target sectors:** Safeguarding, public sector, education, healthcare, sports
+
+This existing website copy could be pre-loaded into the brand voice conversation to make the setup more seamless — the user wouldn't need to gather examples separately, as the scrape provides representative on-brand content.
 
 ---
 
@@ -227,17 +241,30 @@ Here's what I can share to start:
 Please work through each section one at a time, asking me questions and presenting options before moving to the next. When we're done, compile everything into a single brand voice document I can save and reuse.
 ```
 
-If the user has no existing materials, a simpler version:
+---
 
-```
-I'd like to create a brand voice document for our company from scratch. We don't have existing brand guidelines yet.
+## When and How to Use Brand Review
 
-**Company:** [Company name]
-**What we do:** [Brief description]
-**Who we serve:** [Primary audience]
+Brand-review is now available as both a command (`starter-kit/commands/brand-review.md` for Claude Code) and a skill (`starter-kit/skills/brand-review/SKILL.md` for claude.ai/Claude Desktop). The playbook should guide users on when and how to invoke it.
 
-Please guide me through defining our brand voice step by step. Start with brand personality and work through voice attributes, audience, messaging pillars, tone, style rules, and terminology. Ask me questions and present options at each stage.
-```
+### Invocation Examples
+
+In **Claude Code:** `/brand-review` (slash command)
+
+In **claude.ai / Claude Desktop** (natural language):
+- "Please review this content against our brand guidelines"
+- "Check this blog post against our brand voice document"
+- "Audit this email for brand consistency"
+
+### Session Management Considerations
+
+Context and session management are central to using brand-review effectively:
+
+- **If the user has spent most of their tokens creating content** in the current session, it's better to create a session handoff/continuation prompt, move to a new session, then run the brand review there — this gives brand-review a fresh context window to work with
+- **If the content is short** (e.g., a social post, email), the user can review in the same session
+- **For batch reviews** of multiple pieces, always start a new session with the brand voice document loaded
+
+The playbook should explain this clearly — not everyone will intuitively understand why a fresh session produces better results. Frame it practically: "Claude gives you better feedback when it has room to think. If you've had a long conversation, start fresh for the review."
 
 ---
 
@@ -245,11 +272,11 @@ Please guide me through defining our brand voice step by step. Start with brand 
 
 ### Where Brand Voice Can Be Used
 
-| Platform | Brand Voice Skill | Brand Review Command | Notes |
-|----------|------------------|---------------------|-------|
-| **Claude Desktop** | Yes — as a project knowledge file | Yes — as a project knowledge file (invoked by natural language, not slash command) | Best option for non-developers. Add both SKILL.md and brand-review.md to a project's knowledge base. |
-| **claude.ai** | Yes — as a project knowledge file | Yes — as a project knowledge file | Same as Claude Desktop. |
-| **Claude Code** | Yes — as a skill file | Yes — as a slash command (`/brand-review`) | Full functionality. Slash command invocation works natively. |
+| Platform | Brand Voice Skill | Brand Review | Notes |
+|----------|------------------|-------------|-------|
+| **Claude Desktop** | Yes — upload as skill or add to project knowledge | Yes — upload skill version (`starter-kit/skills/brand-review/SKILL.md`), invoke via natural language | Best option for non-developers. Upload both skills via Settings > Capabilities, or add to a project. |
+| **claude.ai** | Yes — add to project knowledge or upload as skill | Yes — upload skill version, invoke via natural language | Same as Claude Desktop. Admin can provision both skills organisation-wide via Teams admin console. |
+| **Claude Code** | Yes — as a skill file | Yes — as slash command (`/brand-review`) or skill | Full functionality. Slash command invocation works natively. Skill version also available. |
 
 ### Key Limitations
 

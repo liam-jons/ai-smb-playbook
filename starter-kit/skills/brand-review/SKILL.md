@@ -1,24 +1,27 @@
+---
+name: brand-review
+description: >
+  Review content against brand voice, style guidelines, and messaging standards.
+  WHEN the user asks to review, check, or audit content against brand guidelines,
+  or wants feedback on whether content matches their brand voice.
+  WHEN NOT the user is creating new content (use brand-voice skill instead).
+---
+
 # Brand Review
 
-> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../CONNECTORS.md).
-
 Review marketing content against brand voice, style guidelines, and messaging standards. Flag deviations and provide specific improvement suggestions.
-
-## Trigger
-
-User runs `/brand-review` or asks to review, check, or audit content against brand guidelines.
 
 ## Inputs
 
 1. **Content to review** — accept content in any of these forms:
    - Pasted directly into the conversation
-   - A file path or ~~knowledge base reference (e.g. Notion page, shared doc)
+   - A file path or document reference
    - A URL to a published page
    - Multiple pieces for batch review
 
 2. **Brand guidelines source** (determined automatically):
-   - If a brand style guide is configured in local settings, use it automatically
-   - If not configured, ask: "Do you have a brand style guide or voice guidelines I should review against? You can paste them, share a file, or describe your brand voice. Otherwise, I'll do a general review for clarity, consistency, and professionalism."
+   - If a brand style guide or brand voice document is available in the project/conversation, use it automatically
+   - If not available, ask: "Do you have a brand style guide or voice guidelines I should review against? You can paste them, share a file, or describe your brand voice. Otherwise, I'll do a general review for clarity, consistency, and professionalism."
 
 ## Review Process
 
@@ -36,7 +39,7 @@ Evaluate the content against each of these dimensions:
 - Are preferred brand terms used correctly?
 - Are any "avoid" terms or phrases present?
 - Is jargon level appropriate for the target audience?
-- Are product names, feature names, and branded terms used correctly (capitalization, formatting)?
+- Are product names, feature names, and branded terms used correctly (capitalisation, formatting)?
 
 #### Messaging Pillars
 - Does the content align with defined messaging pillars or value propositions?
@@ -63,7 +66,7 @@ Evaluate the content for:
 #### Consistency
 - Is the tone consistent throughout?
 - Are terms used consistently (no switching between synonyms for the same concept)?
-- Is formatting consistent (headers, lists, capitalization)?
+- Is formatting consistent (headers, lists, capitalisation)?
 
 #### Professionalism
 - Is the content free of typos, grammatical errors, and awkward phrasing?
