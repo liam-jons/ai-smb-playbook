@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import {
   Users,
@@ -33,6 +33,7 @@ import { Separator } from '@/components/ui/separator';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
+import { useTrack } from '@/hooks/useTrack';
 
 /* ------------------------------------------------------------------ */
 /*  Static data — hoisted outside component to avoid re-creation      */
@@ -54,44 +55,48 @@ const DEV_HIGHLIGHTS = [
   { icon: Plug, label: 'MCP and plugin recommendations' },
 ] as const;
 
-const QUICK_WINS = [
-  {
-    title: 'Set up UK English enforcement',
-    description:
-      'A one-line instruction that ensures all Claude output uses British spelling and grammar.',
-    link: { to: '/general/brand-voice', label: 'Go to Brand Voice' },
-  },
-  {
-    title: 'Review the governance policy',
-    description:
-      'A ready-made, parameterised AI governance template — fill in the blanks and share with your team.',
-    link: { to: '/general/governance', label: 'Go to Governance' },
-  },
-  {
-    title: 'Learn session handoff prompts',
-    description:
-      'Copy the one-line prompt that gets Claude to write its own handoff note, so you can pick up where you left off.',
-    link: { to: '/general/sessions', label: 'Go to Sessions' },
-  },
-  {
-    title: 'Explore the starter kit',
-    description:
-      'Drop-in skill files, commands, and templates — ready to paste into Claude Desktop or Claude Code.',
-    link: { to: '/general/skills-extensions', label: 'Go to Skills' },
-  },
-] as const;
+function getQuickWins(track: string) {
+  return [
+    {
+      title: 'Set up UK English enforcement',
+      description:
+        'A one-line instruction that ensures all Claude output uses British spelling and grammar.',
+      link: { to: `/${track}/brand-voice`, label: 'Go to Brand Voice' },
+    },
+    {
+      title: 'Review the governance policy',
+      description:
+        'A ready-made, customisable AI governance template \u2014 fill in the blanks and share with your team.',
+      link: { to: `/${track}/governance`, label: 'Go to Governance' },
+    },
+    {
+      title: 'Learn session handoff prompts',
+      description:
+        'Copy the one-line prompt that gets Claude to write its own handoff note, so you can pick up where you left off.',
+      link: { to: `/${track}/sessions`, label: 'Go to Sessions' },
+    },
+    {
+      title: 'Explore the starter kit',
+      description:
+        'Drop-in skill files, commands, and templates \u2014 ready to paste into Claude Desktop or Claude Code.',
+      link: { to: `/${track}/skills-extensions`, label: 'Go to Skills' },
+    },
+  ];
+}
 
-const QUICK_REFERENCE_ITEMS = [
+const QUICK_REFERENCE_ITEMS_ALL = [
   {
     heading: 'Context Management',
+    track: 'both' as const,
     items: [
       'Start a fresh session when switching tasks or topics.',
       'Paste files as attachments to preserve context space.',
-      'When quality drops, it is usually a context problem — start fresh.',
+      'When quality drops, it is usually a context problem \u2014 start fresh.',
     ],
   },
   {
     heading: 'Session Handoff',
+    track: 'both' as const,
     items: [
       'Prompt: "Write a structured handoff note covering what we have done, decisions made, and next steps."',
       'Paste the handoff into your next session for continuity.',
@@ -99,28 +104,43 @@ const QUICK_REFERENCE_ITEMS = [
   },
   {
     heading: 'Skills',
+    track: 'both' as const,
     items: [
       'Skills are reusable instruction files that shape Claude\'s behaviour.',
       'Claude Desktop: Settings > Skills > Add from file.',
+    ],
+  },
+  {
+    heading: 'Skills (Developer)',
+    track: 'developer' as const,
+    items: [
       'Claude Code: Place .md files in .claude/skills/ in your project root.',
     ],
   },
   {
     heading: 'UK English',
+    track: 'both' as const,
     items: [
-      'Add to your project instructions or CLAUDE.md: "Always use UK English spelling and grammar."',
+      'Add to your project instructions: "Always use UK English spelling and grammar."',
       'Reinforced by the brand-voice skill in the starter kit.',
     ],
   },
   {
     heading: 'For Developers',
+    track: 'developer' as const,
     items: [
-      'CLAUDE.md: project context, tech stack, conventions — read by Claude Code on every session.',
+      'CLAUDE.md: project context, tech stack, conventions \u2014 read by Claude Code on every session.',
       'Break large tasks into atomic specs before asking Claude to build.',
       'Use /plugin install for: pr-review-toolkit, security-guidance, context7.',
     ],
   },
-] as const;
+];
+
+function getQuickReferenceItems(track: string) {
+  return QUICK_REFERENCE_ITEMS_ALL
+    .filter((section) => section.track === 'both' || section.track === track)
+    .map(({ heading, items }) => ({ heading, items }));
+}
 
 /* ------------------------------------------------------------------ */
 /*  Reduced motion helper                                              */
@@ -142,8 +162,9 @@ const fadeIn = {
 /*  Print helper — builds document via DOM manipulation                */
 /* ------------------------------------------------------------------ */
 
-function buildPrintDocument(): string {
-  const sections = QUICK_REFERENCE_ITEMS.map((section) => {
+function buildPrintDocument(track: string): string {
+  const referenceItems = getQuickReferenceItems(track);
+  const sections = referenceItems.map((section) => {
     const listItems = section.items
       .map((item) => `<li>${escapeHtml(item)}</li>`)
       .join('');
@@ -187,6 +208,11 @@ function escapeHtml(text: string): string {
 /* ------------------------------------------------------------------ */
 
 export function WelcomeSection() {
+  const { track } = useTrack();
+
+  const quickWins = useMemo(() => getQuickWins(track), [track]);
+  const quickReferenceItems = useMemo(() => getQuickReferenceItems(track), [track]);
+
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -195,7 +221,7 @@ export function WelcomeSection() {
   const motionFadeProps = prefersReducedMotion ? {} : fadeIn;
 
   const handlePrint = useCallback(() => {
-    const html = buildPrintDocument();
+    const html = buildPrintDocument(track);
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const printWindow = window.open(url, '_blank');
@@ -211,7 +237,7 @@ export function WelcomeSection() {
     } else {
       URL.revokeObjectURL(url);
     }
-  }, []);
+  }, [track]);
 
   return (
     <div className="space-y-12">
@@ -459,7 +485,7 @@ export function WelcomeSection() {
           Things you can do right now, in under five minutes.
         </p>
         <div className="space-y-4">
-          {QUICK_WINS.map((win) => (
+          {quickWins.map((win) => (
             <div
               key={win.title}
               className="flex flex-col gap-2 rounded-lg border border-border bg-card px-5 py-4"
@@ -511,7 +537,7 @@ export function WelcomeSection() {
 
         <div className="rounded-lg border border-border bg-card px-5 py-6">
           <div className="space-y-6">
-            {QUICK_REFERENCE_ITEMS.map((section) => (
+            {quickReferenceItems.map((section) => (
               <div key={section.heading}>
                 <h3 className="mb-2 text-sm font-semibold text-foreground">
                   {section.heading}

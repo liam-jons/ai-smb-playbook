@@ -269,8 +269,8 @@ export function RegressionTestingSection() {
               <li>When tests break after a redesign, ask Claude to regenerate from the original description</li>
             </ol>
             <CalloutCard variant="info">
-              <strong>Phew! starting point:</strong> Pick 3\u20135 existing Ghost Inspector tests and recreate
-              them as Playwright tests using Claude. Compare reliability and maintenance burden over 2\u20133 months.
+              <strong>Phew! starting point:</strong> Pick 3–5 existing Ghost Inspector tests and recreate
+              them as Playwright tests using Claude. Compare reliability and maintenance burden over 2–3 months.
             </CalloutCard>
           </TabsContent>
           <TabsContent value="progressive" className="mt-4 space-y-4">

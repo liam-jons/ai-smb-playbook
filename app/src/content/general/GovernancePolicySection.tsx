@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -699,7 +700,7 @@ export function GovernancePolicySection() {
         </p>
         <div className="mt-4 space-y-3">
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-            The policy below is parameterised — Phew! can use it as-is by filling in a few
+            The policy below is a fill-in-the-blanks template — Phew! can use it as-is by filling in a few
             details, and it can be adapted for other organisations by changing the highlighted
             variables. Each variable is shown as a{' '}
             <PlaceholderBadge
@@ -1120,17 +1121,23 @@ export function GovernancePolicySection() {
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
             For details on what each extension type is and when to use it, see{' '}
-            <strong>Section 1.4 — Skills, Extensions &amp; Decision Tree</strong>.
+            <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+              Section 1.4 — Skills, Extensions &amp; Decision Tree
+            </Link>.
           </p>
           {!isGeneral && (
             <>
               <p>
                 For safe MCP server configuration, see{' '}
-                <strong>Section 1.13 — Safe MCP Usage</strong>.
+                <Link to={`/${track}/mcp-usage`} className="font-semibold text-primary hover:underline">
+                  Section 1.13 — Safe MCP Usage
+                </Link>.
               </p>
               <p>
                 For plugin evaluation and recommendations, see{' '}
-                <strong>Section 1.14 — Plugin Recommendations</strong>.
+                <Link to={`/${track}/plugins`} className="font-semibold text-primary hover:underline">
+                  Section 1.14 — Plugin Recommendations
+                </Link>.
               </p>
             </>
           )}

@@ -357,10 +357,10 @@ Here are the items:
         />
 
         <div className="mt-4 flex flex-wrap gap-2">
-          <Badge variant="destructive" className="text-xs">P1 \u2014 Fix now</Badge>
-          <Badge className="bg-amber-500/80 text-xs hover:bg-amber-500/70">P2 \u2014 Fix this sprint</Badge>
-          <Badge variant="default" className="text-xs">P3 \u2014 Fix this quarter</Badge>
-          <Badge variant="secondary" className="text-xs">P4 \u2014 Fix when convenient</Badge>
+          <Badge variant="destructive" className="text-xs">P1 — Fix now</Badge>
+          <Badge className="bg-amber-500/80 text-xs hover:bg-amber-500/70">P2 — Fix this sprint</Badge>
+          <Badge variant="default" className="text-xs">P3 — Fix this quarter</Badge>
+          <Badge variant="secondary" className="text-xs">P4 — Fix when convenient</Badge>
         </div>
       </section>
 

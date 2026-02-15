@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -365,7 +366,7 @@ export function BrandVoiceSection() {
           </h2>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
             Claude defaults to US English because its training data is predominantly American.
-            There is no global switch \u2014 but it takes two minutes to fix, and you will never have
+            There is no global switch — but it takes two minutes to fix, and you will never have
             to think about it again.
           </p>
         </div>
@@ -490,7 +491,7 @@ export function BrandVoiceSection() {
 
               <CalloutCard variant="info" title="Code context rule">
                 In code contexts, UK English applies only to comments, documentation, and
-                user-facing strings \u2014 never to variable names, function names, CSS properties,
+                user-facing strings — never to variable names, function names, CSS properties,
                 or API parameters. Write{' '}
                 <code className="rounded bg-muted px-1 text-xs">
                   {'// Initialise the colour palette'}
@@ -546,7 +547,7 @@ export function BrandVoiceSection() {
             </Badge>
             <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-xs">
               <Clock className="mr-1 h-3 w-3" aria-hidden="true" />
-              30\u201360 minutes
+              30–60 minutes
             </Badge>
           </div>
           <h2
@@ -556,7 +557,7 @@ export function BrandVoiceSection() {
             Brand Voice Setup
           </h2>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
-            UK English is about language mechanics. Brand voice is about personality \u2014 how your
+            UK English is about language mechanics. Brand voice is about personality — how your
             organisation sounds, what it stands for, and how it adapts across different contexts.
             The brand-voice skill provides a structured framework for documenting your brand
             voice through a guided conversation with Claude.
@@ -583,7 +584,7 @@ export function BrandVoiceSection() {
                 Strongly recommended
               </span>
               <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
-                <li>2\u20133 examples of on-brand content (website copy, marketing emails, social posts)</li>
+                <li>2–3 examples of on-brand content (website copy, marketing emails, social posts)</li>
                 <li>A basic understanding of the target audience</li>
                 <li>Known terminology preferences (product names, industry terms)</li>
               </ul>
@@ -601,7 +602,7 @@ export function BrandVoiceSection() {
           </div>
 
           <CalloutCard variant="tip" title="Head start for Phew!" className="mt-4">
-            The website scrape has already captured brand-relevant content \u2014 IMPACT values, tone
+            The website scrape has already captured brand-relevant content — IMPACT values, tone
             observations, and sector terminology. Bring these to the setup conversation as a
             starting point.
           </CalloutCard>
@@ -673,7 +674,7 @@ export function BrandVoiceSection() {
           />
 
           <CalloutCard variant="tip" title="Team session recommended" className="mt-4">
-            This works best when a few people contribute \u2014 book 45 minutes with whoever knows
+            This works best when a few people contribute — book 45 minutes with whoever knows
             the brand best. You can run it as a group exercise in a single Claude conversation.
           </CalloutCard>
         </div>
@@ -686,7 +687,7 @@ export function BrandVoiceSection() {
           <p className="mb-4 max-w-prose text-sm text-muted-foreground">
             Once the conversation produces a brand voice document, save it where Claude can
             access it in future sessions. The brand voice document is a{' '}
-            <strong>living document</strong> \u2014 review it when the brand evolves, messaging
+            <strong>living document</strong> — review it when the brand evolves, messaging
             changes, or new products launch.
           </p>
 
@@ -746,7 +747,7 @@ export function BrandVoiceSection() {
                 <code className="rounded bg-muted px-1 text-xs">/brand-review</code>
               </p>
               <p>
-                <strong>In claude.ai / Claude Desktop:</strong> Ask naturally \u2014 &ldquo;Review
+                <strong>In claude.ai / Claude Desktop:</strong> Ask naturally — &ldquo;Review
                 this content against our brand guidelines&rdquo;
               </p>
             </div>
@@ -754,7 +755,7 @@ export function BrandVoiceSection() {
 
           <CalloutCard variant="info" title="Session management tip" className="mt-4">
             Claude gives you better feedback when it has room to think. If you have spent a long
-            conversation creating content, start a fresh session for the review \u2014 load your brand
+            conversation creating content, start a fresh session for the review — load your brand
             voice document, paste the content, and ask for a review.
           </CalloutCard>
 
@@ -795,14 +796,19 @@ export function BrandVoiceSection() {
             <CalloutCard variant="tip" title="Governance note">
               Both the brand-voice and brand-review skills are Tier 1 extensions (internal,
               read-only, no external data access). Log them in the AI Extension Register per{' '}
-              <strong>Section 1.5 \u2014 AI Governance Policy</strong>.
+              <Link to={`/${track}/governance`} className="font-semibold text-primary hover:underline">
+                Section 1.5 — AI Governance Policy
+              </Link>.
             </CalloutCard>
 
             <CalloutCard variant="info" title="Skill design reference">
-              The brand-voice SKILL.md file is an example of well-structured skill design \u2014 note
+              The brand-voice SKILL.md file is an example of well-structured skill design — note
               the WHEN/WHEN NOT description pattern, clear sections, and comprehensive coverage.
-              See <strong>Section 1.4 \u2014 Skills, Extensions &amp; Decision Tree</strong> for
-              more on skill design patterns.
+              See{' '}
+              <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+                Section 1.4 — Skills, Extensions &amp; Decision Tree
+              </Link>{' '}
+              for more on skill design patterns.
             </CalloutCard>
           </div>
         )}
@@ -869,7 +875,7 @@ export function BrandVoiceSection() {
               <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-xs">
                 Deeper exercise
               </Badge>
-              <span className="text-xs text-muted-foreground">30\u201360 minutes</span>
+              <span className="text-xs text-muted-foreground">30–60 minutes</span>
             </div>
             <h3 className="mb-2 text-sm font-semibold text-foreground">
               Brand Voice Documentation
@@ -908,11 +914,15 @@ export function BrandVoiceSection() {
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
             For more on how skills work and when to use them, see{' '}
-            <strong>Section 1.4 \u2014 Skills, Extensions &amp; Decision Tree</strong>.
+            <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+              Section 1.4 — Skills, Extensions &amp; Decision Tree
+            </Link>.
           </p>
           <p>
             To register these skills in your governance process, see{' '}
-            <strong>Section 1.5 \u2014 AI Governance Policy</strong>.
+            <Link to={`/${track}/governance`} className="font-semibold text-primary hover:underline">
+              Section 1.5 — AI Governance Policy
+            </Link>.
           </p>
         </div>
       </section>

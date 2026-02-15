@@ -54,6 +54,21 @@ export interface PlatformComparison {
 }
 
 // ─────────────────────────────────────────────
+// Track-conditional headings
+// ─────────────────────────────────────────────
+
+/**
+ * The "Atomic Task Principle" heading should use plain language for general
+ * users. SessionManagementSection.tsx (not owned by this data file) currently
+ * hardcodes the heading. Use this helper to get the track-appropriate title.
+ */
+export function getAtomicTaskTitle(track: 'general' | 'developer'): string {
+  return track === 'general'
+    ? 'Breaking Big Tasks into Smaller Pieces'
+    : 'The Atomic Task Principle';
+}
+
+// ─────────────────────────────────────────────
 // Part 1: Rules of Thumb
 // ─────────────────────────────────────────────
 

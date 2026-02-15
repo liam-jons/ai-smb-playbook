@@ -5,6 +5,8 @@
 export interface ContextSegmentData {
   id: string;
   label: string;
+  /** General-user-friendly label (used when isDev is false). Falls back to label if not set. */
+  generalLabel?: string;
   defaultTokens: number;
   colour: string;
   colourDark: string;
@@ -86,11 +88,12 @@ export const segments: ContextSegmentData[] = [
   {
     id: 'claude-md',
     label: 'CLAUDE.md',
+    generalLabel: 'Project Instructions',
     defaultTokens: 4_000,
     colour: 'bg-teal-500',
     colourDark: 'dark:bg-teal-400',
     description:
-      'Project conventions and rules. Size depends on content (~20 tokens per line).',
+      'Project custom instructions and conventions. Size depends on content (~20 tokens per line).',
     detailedDescription:
       'Project-level CLAUDE.md file(s) containing conventions, rules, and project context. Approximately 20 tokens per line. Multiple files (user, project, managed) are additive. Recommendation: keep under ~500 lines.',
     isFixed: false,
@@ -302,6 +305,32 @@ When compacting this conversation, always preserve:
 - Architecture decisions and their rationale
 - Testing patterns and conventions established
 - Any known issues or edge cases identified`;
+
+/**
+ * Track-conditional tip text for the context management tips section.
+ * Keys correspond to tip numbers in the "How to get the most from your context" list.
+ * Each entry provides a general-track and developer-track variant.
+ */
+export const contextTipVariants = {
+  /** Tip 3: Where to put critical instructions */
+  tip3: {
+    general: 'Put critical instructions in your project custom instructions, so they load at the start of every session and benefit from primacy bias (the model pays strong attention to what comes first).',
+    developer: 'Put critical instructions in CLAUDE.md. These load at the start of every session and benefit from primacy bias (the model pays strong attention to what comes first).',
+  },
+  /** Tip 5: Mid-conversation instruction fade */
+  tip5: {
+    general: 'Do not rely on mid-conversation instructions. If you told Claude \u2018always use UK English\u2019 ten messages ago, it may have faded. Put it in your project custom instructions instead.',
+    developer: 'Do not rely on mid-conversation instructions. If you said \u2018always use TypeScript\u2019 ten messages ago, it may have faded. Put it in CLAUDE.md instead.',
+  },
+} as const;
+
+/** Get the display label for a segment, using the general-friendly label when not in developer track */
+export function getSegmentLabel(segment: ContextSegmentData, isDev: boolean): string {
+  if (!isDev && segment.generalLabel) {
+    return segment.generalLabel;
+  }
+  return segment.label;
+}
 
 /** Calculate tokens for a given configuration */
 export function calculateTokens(config: {

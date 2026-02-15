@@ -114,7 +114,7 @@ export const QUICK_START_STEPS: QuickStartStep[] = [
     week: 'Week 3',
     title: 'Governance policy',
     description:
-      'Customise the parameterised governance template and share with the team for discussion.',
+      'Customise the fill-in-the-blanks governance template and share with the team for discussion.',
     effort: '30 minutes + team discussion',
     fileId: 'template-governance-policy',
   },
@@ -123,6 +123,7 @@ export const QUICK_START_STEPS: QuickStartStep[] = [
 /* ------------------------------------------------------------------ */
 /*  Install instruction templates                                      */
 /* ------------------------------------------------------------------ */
+
 
 const SKILL_INSTALL_CLAUDE_CODE =
   'Copy the skill folder to your project: cp -r starter-kit/skills/SKILL_NAME .claude/skills/SKILL_NAME\n\nOr install globally: cp -r starter-kit/skills/SKILL_NAME ~/.claude/skills/SKILL_NAME';

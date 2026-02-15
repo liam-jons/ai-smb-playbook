@@ -209,6 +209,89 @@ const MINIMAL_TEMPLATE = `# [Project Name]
 - [First non-obvious thing that trips people up]
 - [Second thing]`;
 
+const ASPNET_TEMPLATE = `# [Project Name]
+
+[One-line description of what this project does.]
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| \`dotnet build\` | Build the solution |
+| \`dotnet run --project src/[ProjectName]\` | Start the application |
+| \`dotnet test\` | Run all tests |
+| \`dotnet ef database update\` | Apply database migrations |
+
+## Architecture
+
+\`\`\`
+src/
+  [ProjectName]/
+    Controllers/        # API and MVC controllers
+    Services/           # Business logic and service layer
+    Models/             # Domain models and DTOs
+    Data/               # DbContext and data access
+    Views/              # Razor views (if MVC)
+    wwwroot/            # Static files (CSS, JS, images)
+tests/
+  [ProjectName].Tests/  # Unit and integration tests
+docs/                   # Project documentation
+\`\`\`
+
+## Key Files
+
+- \`src/[ProjectName]/Program.cs\` \u2014 Application entry point and service configuration
+- \`src/[ProjectName]/appsettings.json\` \u2014 Base configuration
+- \`src/[ProjectName]/appsettings.Development.json\` \u2014 Development overrides
+- \`src/[ProjectName]/[ProjectName].csproj\` \u2014 Project file and dependencies
+
+## Code Style
+
+- C# naming: PascalCase for public members, _camelCase for private fields
+- Nullable reference types enabled (\`<Nullable>enable</Nullable>\`)
+- Async/await throughout \u2014 all I/O operations are async
+- Dependency injection via constructor injection (no service locator)
+- Error handling: use Result pattern in services, try/catch at controller level only
+
+## Environment
+
+Required configuration (see \`appsettings.Development.json\`):
+
+| Setting | Purpose |
+|---------|---------|
+| \`ConnectionStrings:DefaultConnection\` | SQL Server connection string |
+| \`Authentication:JwtSecret\` | JWT signing key |
+
+Setup:
+1. Copy \`appsettings.Development.json.example\` to \`appsettings.Development.json\`
+2. Fill in connection string and secrets
+3. Run \`dotnet ef database update\` to create/update database
+4. Run \`dotnet run --project src/[ProjectName]\`
+
+**Note:** This is a development environment. There are no real users. Test data can be created and deleted freely.
+
+## Testing
+
+- \`dotnet test\` \u2014 Run all tests (xUnit)
+- \`dotnet test --filter "Category=Integration"\` \u2014 Integration tests only
+- Tests use \`IClassFixture<T>\` for shared test context (e.g., database setup)
+- Use \`Substitute.For<T>()\` (NSubstitute) for mocking
+
+## Gotchas
+
+- The auth middleware must be registered before \`MapControllers()\` \u2014 see \`Program.cs\`
+- Database migrations require manual approval in production
+- Hot reload does not pick up changes to \`appsettings.*.json\` \u2014 restart the application
+- The legacy \`/api/v1/\` endpoints are still active but deprecated \u2014 all new work uses \`/api/v2/\`
+
+## Documentation Pointers
+
+For deeper reference, see the \`/docs\` directory:
+- \`docs/architecture/\` \u2014 System architecture, domain model, data flow
+- \`docs/conventions/\` \u2014 Coding standards, naming patterns, PR conventions
+- \`docs/integrations/\` \u2014 Third-party service documentation
+- \`docs/schemas/\` \u2014 Database schemas, API request/response schemas`;
+
 const bestPractices = [
   { title: 'Tech stack specifications', description: 'Document your framework versions, key dependencies, and why they were chosen. Claude uses this to write compatible code.' },
   { title: 'Development commands', description: 'Every command a developer needs, documented in one place. Include flags and options that matter.' },
@@ -255,7 +338,7 @@ export function ClaudeMdSection() {
 
         <CalloutCard variant="tip" title="The impact" className="mt-6">
           A well-maintained CLAUDE.md is the single most impactful improvement you can make to
-          Claude Code&apos;s output quality. It is cheap to create (15\u201330 minutes for a first version)
+          Claude Code&apos;s output quality. It is cheap to create (15–30 minutes for a first version)
           and cheap to maintain (a few lines added per week). The difference: Claude stops asking
           &ldquo;how do I run this?&rdquo; and starts knowing.
         </CalloutCard>
@@ -554,12 +637,16 @@ export function ClaudeMdSection() {
           <TabsList>
             <TabsTrigger value="complete">Complete Template</TabsTrigger>
             <TabsTrigger value="minimal">Minimal (Quick Start)</TabsTrigger>
+            <TabsTrigger value="aspnet">ASP.NET / C# Template</TabsTrigger>
           </TabsList>
           <TabsContent value="complete" className="mt-4">
             <CodeBlock code={COMPLETE_TEMPLATE} language="markdown" title="Complete CLAUDE.md Template" />
           </TabsContent>
           <TabsContent value="minimal" className="mt-4">
             <CodeBlock code={MINIMAL_TEMPLATE} language="markdown" title="Minimal CLAUDE.md Template" />
+          </TabsContent>
+          <TabsContent value="aspnet" className="mt-4">
+            <CodeBlock code={ASPNET_TEMPLATE} language="markdown" title="ASP.NET / C# CLAUDE.md Template" />
           </TabsContent>
         </Tabs>
       </section>

@@ -277,13 +277,13 @@ export function PluginsSection() {
                 <td className="py-2 pr-4 font-medium">Install via marketplace</td>
                 <td className="py-2 pr-4 text-muted-foreground">Yes</td>
                 <td className="py-2 pr-4 text-muted-foreground">Yes (User or Project scope)</td>
-                <td className="py-2 text-muted-foreground">Minimal \u2014 one command</td>
+                <td className="py-2 text-muted-foreground">Minimal — one command</td>
               </tr>
               <tr className="border-b border-border/50">
                 <td className="py-2 pr-4 font-medium">Copy files into project</td>
                 <td className="py-2 pr-4 text-muted-foreground">No</td>
                 <td className="py-2 pr-4 text-muted-foreground">Yes (version control)</td>
-                <td className="py-2 text-muted-foreground">More work \u2014 manual maintenance</td>
+                <td className="py-2 text-muted-foreground">More work — manual maintenance</td>
               </tr>
             </tbody>
           </table>
@@ -303,21 +303,21 @@ export function PluginsSection() {
             <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
             <div>
               <p className="text-sm font-medium">Skill descriptions</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">Load at session start. Low cost \u2014 just names and short descriptions.</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">Load at session start. Low cost — just names and short descriptions.</p>
             </div>
           </div>
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
             <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
             <div>
               <p className="text-sm font-medium">Full skill content</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">Loads only when Claude uses the skill. Burst cost \u2014 can be significant for large skills.</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">Loads only when Claude uses the skill. Burst cost — can be significant for large skills.</p>
             </div>
           </div>
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
             <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
             <div>
               <p className="text-sm font-medium">MCP servers</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">Load tool definitions at session start. Ongoing cost \u2014 same as standalone MCP (see Section 1.13).</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">Load tool definitions at session start. Ongoing cost — same as standalone MCP (see Section 1.13).</p>
             </div>
           </div>
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
@@ -513,7 +513,7 @@ export function PluginsSection() {
         <CalloutCard variant="info" className="mt-4">
           Start with the official marketplace only. Before adding any third-party marketplace, follow
           the approval process in the governance policy (Section 1.5). Third-party plugins can contain
-          arbitrary code \u2014 review the source before installing.
+          arbitrary code — review the source before installing.
         </CalloutCard>
       </section>
 
@@ -532,7 +532,7 @@ export function PluginsSection() {
         </div>
 
         <div className="mt-4 space-y-2 text-sm text-muted-foreground">
-          <p>Review installed plugins periodically \u2014 uninstall plugins you are no longer using.</p>
+          <p>Review installed plugins periodically — uninstall plugins you are no longer using.</p>
           <p>Check for plugin errors in the /plugin Errors tab.</p>
           <p>Plugin skills are namespaced, so multiple plugins can coexist without conflicts.</p>
         </div>

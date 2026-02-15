@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -14,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import {
   Globe2,
@@ -93,7 +95,7 @@ const automationPatterns: AutomationPattern[] = [
     audience: 'Everyone',
     audienceColour: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
     description:
-      'CoWork (Anthropic\'s browser agent environment) can interact with web interfaces, fill forms, extract data, and navigate multi-step processes.',
+      'CoWork is Anthropic\'s browser automation environment — it lets Claude control a web browser to complete tasks on websites. CoWork can interact with web interfaces, fill forms, extract data, and navigate multi-step processes.',
     howItWorks: [
       'CoWork operates a browser session that Claude controls \u2014 when the browser is under AI control, the border displays an orange hue',
       'Instruct Claude to visit a website, navigate to specific pages, extract data, and compile results',
@@ -320,6 +322,7 @@ Let's start with the first question \u2014 what recurring tasks does your team h
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function RecurringTasksSection() {
+  const { track } = useTrack();
   const [whatsComingOpen, setWhatsComingOpen] = useState(false);
 
   return (
@@ -420,7 +423,7 @@ export function RecurringTasksSection() {
           What Is Not Yet Possible
         </h2>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          Honest about the gaps. This builds trust \u2014 the playbook is not overselling.
+          It is important to be clear about what Claude cannot do yet, so you can plan accordingly.
         </p>
 
         <CalloutCard variant="info" title="Current limitations">
@@ -603,11 +606,15 @@ export function RecurringTasksSection() {
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
             For understanding how to build skills referenced in these patterns, see{' '}
-            <strong>Section 1.4 \u2014 Skills, Extensions &amp; Decision Tree</strong>.
+            <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+              Section 1.4 — Skills, Extensions &amp; Decision Tree
+            </Link>.
           </p>
           <p>
             For understanding why sessions are not persistent, see{' '}
-            <strong>Section 1.3 \u2014 Session Management</strong>.
+            <Link to={`/${track}/sessions`} className="font-semibold text-primary hover:underline">
+              Section 1.3 — Session Management
+            </Link>.
           </p>
           <p>
             For implementation details on Pattern 4 (external triggers), see the{' '}

@@ -554,11 +554,13 @@ function InstallSnippets() {
 function InstallationGuides() {
   const { track } = useTrack();
 
+  const defaultTab = track === 'developer' ? 'code' : 'desktop';
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">How to Install</h3>
 
-      <Tabs defaultValue="desktop">
+      <Tabs defaultValue={defaultTab}>
         <TabsList className="w-full justify-start">
           <TabsTrigger value="desktop" className="gap-1.5">
             <Monitor className="h-3.5 w-3.5" />

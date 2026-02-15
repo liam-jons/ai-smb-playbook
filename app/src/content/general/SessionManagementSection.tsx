@@ -16,6 +16,7 @@ import { CalloutCard } from '@/components/content/CalloutCard';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { useTrack } from '@/hooks/useTrack';
+import { getAtomicTaskTitle } from '@/content/shared/session-management-data';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -365,7 +366,7 @@ export function SessionManagementSection() {
         </p>
 
         <h3 className="mb-3 text-lg font-medium">
-          The Atomic Task Principle
+          {getAtomicTaskTitle(track)}
         </h3>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
           Each task should be broken down to the smallest unit that can be

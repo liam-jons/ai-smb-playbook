@@ -63,8 +63,18 @@ export function SectionPage() {
       {CustomComponent ? (
         <Suspense
           fallback={
-            <div className="py-12 text-center">
-              <p className="text-sm text-muted-foreground">Loading section...</p>
+            <div className="animate-pulse space-y-6 py-8">
+              <div className="h-8 w-3/4 rounded bg-muted" />
+              <div className="h-4 w-1/2 rounded bg-muted" />
+              <div className="space-y-3 pt-4">
+                <div className="h-4 w-full rounded bg-muted" />
+                <div className="h-4 w-5/6 rounded bg-muted" />
+                <div className="h-4 w-4/5 rounded bg-muted" />
+              </div>
+              <div className="space-y-3 pt-4">
+                <div className="h-4 w-full rounded bg-muted" />
+                <div className="h-4 w-3/4 rounded bg-muted" />
+              </div>
             </div>
           }
         >

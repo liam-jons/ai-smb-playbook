@@ -8,6 +8,12 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import { Button } from '@/components/ui/button';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -21,6 +27,7 @@ import {
   Check,
   Minus,
   ArrowDown,
+  ChevronDown,
   Zap,
   BookOpen,
   Terminal,
@@ -761,6 +768,7 @@ export function SkillsExtensionsSection() {
   const isGeneral = track === 'general';
   const refCardsRef = useRef<HTMLDivElement>(null);
   const [openRefCard, setOpenRefCard] = useState<string>('');
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const filteredEntries = decisionTreeEntries.filter((e) =>
     e.tracks.includes(track)
@@ -768,6 +776,11 @@ export function SkillsExtensionsSection() {
   const filteredRefCards = referenceCards.filter((c) =>
     c.tracks.includes(track)
   );
+  const filteredAvailability = isGeneral
+    ? availabilityMatrix.filter((r) =>
+        !['Subagents', 'Agent Teams', 'Hooks', 'Plugins', 'LSP servers'].includes(r.feature)
+      )
+    : availabilityMatrix;
   const filteredCostTable = isGeneral
     ? contextCostTable.filter((r) =>
         !['Subagents', 'Hooks (command)', 'Hooks (prompt/agent)', 'Agent Teams'].includes(r.feature)
@@ -815,10 +828,27 @@ export function SkillsExtensionsSection() {
             availability matrix below show what works where. Phew! has Claude Teams licences
             for all staff and Claude Code access for developers.
           </p>
+          {isGeneral && (
+            <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
+              You may see references to <strong>CoWork</strong> below — this is Anthropic's
+              browser automation environment. It lets Claude control a web browser to complete
+              tasks on websites, such as filling forms, extracting data, or monitoring pages.
+            </p>
+          )}
         </div>
       </section>
 
       <Separator />
+
+      {/* Natural language callout for general users */}
+      {isGeneral && (
+        <CalloutCard variant="tip" title="You don't need to type a command">
+          On claude.ai and Claude Desktop, you trigger skills by describing what you
+          want in natural language. Simply say what you need — &ldquo;I need to hand this
+          session off to Sarah&rdquo; — and Claude automatically matches it to the right
+          skill. No slash commands or technical syntax required.
+        </CalloutCard>
+      )}
 
       {/* B. Decision Tree */}
       <section aria-labelledby="decision-tree-heading">
@@ -953,7 +983,7 @@ export function SkillsExtensionsSection() {
                 </tr>
               </thead>
               <tbody>
-                {availabilityMatrix.map((row, i) => (
+                {filteredAvailability.map((row, i) => (
                   <tr
                     key={row.feature}
                     className={cn(
@@ -993,6 +1023,74 @@ export function SkillsExtensionsSection() {
             available on the other.
           </p>
         </div>
+
+        {/* Advanced / Developer features — collapsed for general users */}
+        {isGeneral && (
+          <div className="mt-4">
+            <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex w-full items-center justify-between gap-2 px-4 py-3 text-sm font-medium hover:bg-muted/50"
+                >
+                  <span>Advanced / Developer features</span>
+                  <ChevronDown
+                    className={cn(
+                      'h-4 w-4 text-muted-foreground transition-transform duration-200',
+                      advancedOpen && 'rotate-180'
+                    )}
+                    aria-hidden="true"
+                  />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="mt-2 rounded-md border border-border bg-muted/20 px-4 py-4">
+                  <p className="mb-3 text-sm text-muted-foreground">
+                    These features are available only in Claude Code and are primarily relevant to
+                    developers. They are included here for completeness.
+                  </p>
+                  <ScrollArea className="w-full">
+                    <div className="min-w-[540px]">
+                      <table className="w-full text-sm" role="table">
+                        <thead>
+                          <tr className="border-b border-border bg-muted/40">
+                            <th scope="col" className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Feature</th>
+                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">claude.ai</th>
+                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Desktop</th>
+                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Code</th>
+                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">CoWork</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {availabilityMatrix
+                            .filter((r) =>
+                              ['Subagents', 'Agent Teams', 'Hooks', 'Plugins', 'LSP servers'].includes(r.feature)
+                            )
+                            .map((row, i) => (
+                              <tr
+                                key={row.feature}
+                                className={cn(
+                                  'border-b border-border last:border-b-0',
+                                  i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                                )}
+                              >
+                                <td className="px-3 py-2 text-left font-medium text-foreground">{row.feature}</td>
+                                <AvailabilityCell value={row.claudeAi} />
+                                <AvailabilityCell value={row.desktop} />
+                                <AvailabilityCell value={row.code} />
+                                <AvailabilityCell value={row.cowork} />
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+        )}
       </section>
 
       <Separator />
@@ -1240,9 +1338,11 @@ export function SkillsExtensionsSection() {
                   <th scope="col" className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     Cost
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Mitigation
-                  </th>
+                  {!isGeneral && (
+                    <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Mitigation
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -1260,7 +1360,9 @@ export function SkillsExtensionsSection() {
                     <td className="px-3 py-2.5 text-center">
                       <CostIndicator cost={row.cost} />
                     </td>
-                    <td className="px-3 py-2.5 text-muted-foreground">{row.mitigation}</td>
+                    {!isGeneral && (
+                      <td className="px-3 py-2.5 text-muted-foreground">{row.mitigation}</td>
+                    )}
                   </tr>
                 ))}
               </tbody>

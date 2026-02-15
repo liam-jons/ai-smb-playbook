@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
@@ -237,6 +238,61 @@ const CONVENTIONS_TEMPLATE = `# Code Style Conventions
 4. Relative imports (\`./helpers\`, \`../types\`)
 
 Blank line between each group.`;
+
+const ARCHITECTURE_TEMPLATE_ASPNET = `# Architecture Overview
+
+## System Type
+
+ASP.NET MVC application with a service layer pattern.
+
+## Request Lifecycle
+
+1. HTTP request \u2192 Kestrel \u2192 Middleware pipeline
+2. Routing \u2192 Controller action
+3. Controller \u2192 Service (business logic)
+4. Service \u2192 Repository/DbContext (data access)
+5. Response flows back through middleware (logging, error handling, CORS)
+
+## Key Patterns
+
+- Repository pattern for data access
+- Dependency injection via \`IServiceCollection\`
+- Options pattern for configuration (\`IOptions<T>\`)
+
+## Key Directories
+
+| Directory | Purpose |
+|-----------|---------|
+| \`Controllers/\` | API and MVC controllers |
+| \`Services/\` | Business logic layer |
+| \`Models/\` | Domain models and DTOs |
+| \`Data/\` | DbContext and data access |
+| \`Views/\` | Razor views (if MVC) |
+
+## See Also
+
+- \`docs/conventions/code-style.md\` \u2014 Coding standards
+- \`docs/schemas/database.md\` \u2014 Database schema`;
+
+const CONVENTIONS_TEMPLATE_ASPNET = `# Code Style Conventions
+
+## Naming
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Public members | PascalCase | \`GetUserById()\` |
+| Private fields | _camelCase | \`_userRepository\` |
+| Classes | PascalCase | \`UserProfile.cs\` |
+| Interfaces | IPascalCase | \`IUserService\` |
+| Constants | PascalCase | \`MaxRetryCount\` |
+| Database columns | PascalCase (EF default) | \`CreatedAt\`, \`UserId\` |
+
+## Key Rules
+
+- One class per file, file name matches class name
+- Controllers return \`IActionResult\` or \`ActionResult<T>\`
+- Services return \`Result<T>\` \u2014 never throw for expected failures
+- All database queries use parameterised queries via EF Core or Dapper`;
 
 const PROGRESSIVE_DISCLOSURE_FLOW = `Session starts
     \u2193
@@ -504,17 +560,37 @@ export function DocumentationSection() {
             title="CLAUDE.md Documentation Pointers section (paste into your CLAUDE.md)"
           />
 
-          <CodeBlock
-            code={ARCHITECTURE_TEMPLATE}
-            language="markdown"
-            title="Example: docs/architecture/overview.md"
-          />
+          <div>
+            <h3 className="mb-3 text-base font-medium">Architecture Overview Example</h3>
+            <Tabs defaultValue="arch-nodejs">
+              <TabsList>
+                <TabsTrigger value="arch-nodejs">Node.js / React</TabsTrigger>
+                <TabsTrigger value="arch-aspnet">ASP.NET / C#</TabsTrigger>
+              </TabsList>
+              <TabsContent value="arch-nodejs" className="mt-4">
+                <CodeBlock code={ARCHITECTURE_TEMPLATE} language="markdown" title="Example: docs/architecture/overview.md (Node.js)" />
+              </TabsContent>
+              <TabsContent value="arch-aspnet" className="mt-4">
+                <CodeBlock code={ARCHITECTURE_TEMPLATE_ASPNET} language="markdown" title="Example: docs/architecture/overview.md (ASP.NET)" />
+              </TabsContent>
+            </Tabs>
+          </div>
 
-          <CodeBlock
-            code={CONVENTIONS_TEMPLATE}
-            language="markdown"
-            title="Example: docs/conventions/code-style.md"
-          />
+          <div>
+            <h3 className="mb-3 text-base font-medium">Code Style Conventions Example</h3>
+            <Tabs defaultValue="conv-nodejs">
+              <TabsList>
+                <TabsTrigger value="conv-nodejs">Node.js / React</TabsTrigger>
+                <TabsTrigger value="conv-aspnet">ASP.NET / C#</TabsTrigger>
+              </TabsList>
+              <TabsContent value="conv-nodejs" className="mt-4">
+                <CodeBlock code={CONVENTIONS_TEMPLATE} language="markdown" title="Example: docs/conventions/code-style.md (Node.js)" />
+              </TabsContent>
+              <TabsContent value="conv-aspnet" className="mt-4">
+                <CodeBlock code={CONVENTIONS_TEMPLATE_ASPNET} language="markdown" title="Example: docs/conventions/code-style.md (ASP.NET)" />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </section>
 

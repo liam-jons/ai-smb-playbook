@@ -50,7 +50,7 @@ export const sections: Section[] = [
     subtitle: 'Responsible AI use for your team',
     track: 'both',
     description:
-      'A parameterised governance policy template covering responsible AI use, data handling, and compliance.',
+      'A customisable governance policy template covering responsible AI use, data handling, and compliance.',
     icon: 'Shield',
   },
   {
