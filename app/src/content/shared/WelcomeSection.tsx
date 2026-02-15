@@ -1,0 +1,611 @@
+import { useCallback } from 'react';
+import { Link } from 'react-router';
+import {
+  Users,
+  Code,
+  ArrowRight,
+  Zap,
+  MessageSquareHeart,
+  Download,
+  BookOpen,
+  Brain,
+  MessageSquare,
+  GitBranch,
+  Shield,
+  PenTool,
+  FileCode,
+  Map,
+  AlertTriangle,
+  TestTube,
+  Plug,
+} from 'lucide-react';
+import { motion } from 'motion/react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { CalloutCard } from '@/components/content/CalloutCard';
+import { cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
+
+/* ------------------------------------------------------------------ */
+/*  Static data — hoisted outside component to avoid re-creation      */
+/* ------------------------------------------------------------------ */
+
+const GENERAL_HIGHLIGHTS = [
+  { icon: Brain, label: 'How context works (interactive simulator)' },
+  { icon: MessageSquare, label: 'Session management and handoff prompts' },
+  { icon: GitBranch, label: 'Skills, extensions, and the decision tree' },
+  { icon: Shield, label: 'AI governance policy' },
+  { icon: PenTool, label: 'Brand voice and UK English' },
+] as const;
+
+const DEV_HIGHLIGHTS = [
+  { icon: FileCode, label: 'CLAUDE.md files and documentation structure' },
+  { icon: Map, label: 'Codebase mapping with AI agents' },
+  { icon: AlertTriangle, label: 'Avoiding hallucinations and quick-fix patterns' },
+  { icon: TestTube, label: 'AI-driven regression testing' },
+  { icon: Plug, label: 'MCP and plugin recommendations' },
+] as const;
+
+const QUICK_WINS = [
+  {
+    title: 'Set up UK English enforcement',
+    description:
+      'A one-line instruction that ensures all Claude output uses British spelling and grammar.',
+    link: { to: '/general/brand-voice', label: 'Go to Brand Voice' },
+  },
+  {
+    title: 'Review the governance policy',
+    description:
+      'A ready-made, parameterised AI governance template — fill in the blanks and share with your team.',
+    link: { to: '/general/governance', label: 'Go to Governance' },
+  },
+  {
+    title: 'Learn session handoff prompts',
+    description:
+      'Copy the one-line prompt that gets Claude to write its own handoff note, so you can pick up where you left off.',
+    link: { to: '/general/sessions', label: 'Go to Sessions' },
+  },
+  {
+    title: 'Explore the starter kit',
+    description:
+      'Drop-in skill files, commands, and templates — ready to paste into Claude Desktop or Claude Code.',
+    link: { to: '/general/skills-extensions', label: 'Go to Skills' },
+  },
+] as const;
+
+const QUICK_REFERENCE_ITEMS = [
+  {
+    heading: 'Context Management',
+    items: [
+      'Start a fresh session when switching tasks or topics.',
+      'Paste files as attachments to preserve context space.',
+      'When quality drops, it is usually a context problem — start fresh.',
+    ],
+  },
+  {
+    heading: 'Session Handoff',
+    items: [
+      'Prompt: "Write a structured handoff note covering what we have done, decisions made, and next steps."',
+      'Paste the handoff into your next session for continuity.',
+    ],
+  },
+  {
+    heading: 'Skills',
+    items: [
+      'Skills are reusable instruction files that shape Claude\'s behaviour.',
+      'Claude Desktop: Settings > Skills > Add from file.',
+      'Claude Code: Place .md files in .claude/skills/ in your project root.',
+    ],
+  },
+  {
+    heading: 'UK English',
+    items: [
+      'Add to your project instructions or CLAUDE.md: "Always use UK English spelling and grammar."',
+      'Reinforced by the brand-voice skill in the starter kit.',
+    ],
+  },
+  {
+    heading: 'For Developers',
+    items: [
+      'CLAUDE.md: project context, tech stack, conventions — read by Claude Code on every session.',
+      'Break large tasks into atomic specs before asking Claude to build.',
+      'Use /plugin install for: pr-review-toolkit, security-guidance, context7.',
+    ],
+  },
+] as const;
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion helper                                              */
+/* ------------------------------------------------------------------ */
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as number[] },
+};
+
+const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as number[] },
+};
+
+/* ------------------------------------------------------------------ */
+/*  Print helper — builds document via DOM manipulation                */
+/* ------------------------------------------------------------------ */
+
+function buildPrintDocument(): string {
+  const sections = QUICK_REFERENCE_ITEMS.map((section) => {
+    const listItems = section.items
+      .map((item) => `<li>${escapeHtml(item)}</li>`)
+      .join('');
+    return `<h2>${escapeHtml(section.heading)}</h2><ul>${listItems}</ul>`;
+  }).join('');
+
+  return [
+    '<!DOCTYPE html>',
+    '<html lang="en">',
+    '<head>',
+    '<meta charset="utf-8" />',
+    `<title>${siteConfig.appTitle} — Quick Reference Card</title>`,
+    '<style>',
+    '*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }',
+    'body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif; font-size: 11pt; line-height: 1.5; color: #1a1a2e; padding: 24pt 32pt; max-width: 700pt; }',
+    'h1 { font-size: 16pt; margin-bottom: 4pt; }',
+    'h2 { font-size: 12pt; margin-top: 14pt; margin-bottom: 4pt; border-bottom: 1px solid #d4d4d8; padding-bottom: 2pt; }',
+    'ul { padding-left: 16pt; margin-top: 2pt; }',
+    'li { margin-bottom: 2pt; }',
+    '.subtitle { font-size: 9pt; color: #64748b; margin-bottom: 12pt; }',
+    '@media print { body { padding: 0; } }',
+    '</style>',
+    '</head>',
+    '<body>',
+    `<h1>${siteConfig.appTitle} — Quick Reference</h1>`,
+    `<p class="subtitle">Key takeaways from the AI training sessions (${siteConfig.trainingDate})</p>`,
+    sections,
+    '</body>',
+    '</html>',
+  ].join('\n');
+}
+
+function escapeHtml(text: string): string {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export function WelcomeSection() {
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const motionProps = prefersReducedMotion ? {} : fadeInUp;
+  const motionFadeProps = prefersReducedMotion ? {} : fadeIn;
+
+  const handlePrint = useCallback(() => {
+    const html = buildPrintDocument();
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const printWindow = window.open(url, '_blank');
+
+    if (printWindow) {
+      printWindow.addEventListener('afterprint', () => {
+        URL.revokeObjectURL(url);
+      });
+      // Give the window time to load, then trigger print
+      printWindow.addEventListener('load', () => {
+        printWindow.print();
+      });
+    } else {
+      URL.revokeObjectURL(url);
+    }
+  }, []);
+
+  return (
+    <div className="space-y-12">
+      {/* ── Hero / Opening ────────────────────────────────── */}
+      <motion.section {...motionProps} aria-labelledby="welcome-heading">
+        <h2
+          id="welcome-heading"
+          className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl"
+          style={{ lineHeight: 1.2 }}
+        >
+          Your AI Playbook
+        </h2>
+        <div className="space-y-4 text-base leading-relaxed text-muted-foreground" style={{ maxWidth: '65ch' }}>
+          <p>
+            Following the AI training sessions with your team on {siteConfig.trainingDate},
+            we put together this interactive playbook as a practical reference — the
+            kind of take-away material you asked for.
+          </p>
+          <p>
+            It covers the core topics from the training — context management, skills,
+            session handling, governance — plus developer-specific guidance for the
+            dev team.
+          </p>
+          <p>
+            Everything here is designed to be immediately usable. Prompts, templates,
+            and code examples all have a copy button — take what you need and use it
+            straight away.
+          </p>
+        </div>
+      </motion.section>
+
+      <Separator />
+
+      {/* ── How to Use This Playbook ─────────────────────── */}
+      <motion.section {...motionFadeProps} aria-labelledby="how-to-use-heading">
+        <h2
+          id="how-to-use-heading"
+          className="mb-4 text-xl font-semibold tracking-tight"
+        >
+          How to Use This Playbook
+        </h2>
+        <ul className="space-y-3 text-base leading-relaxed text-muted-foreground">
+          <li className="flex gap-3">
+            <span className="mt-1 shrink-0 text-primary" aria-hidden="true">
+              <Users className="h-4 w-4" />
+            </span>
+            <span>
+              <strong className="text-foreground">Two tracks.</strong>{' '}
+              The playbook is organised into a General track (for everyone using
+              Claude via claude.ai or Claude Desktop) and a Developer track (for the
+              dev team using Claude Code). You can switch tracks at any time.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="mt-1 shrink-0 text-primary" aria-hidden="true">
+              <BookOpen className="h-4 w-4" />
+            </span>
+            <span>
+              <strong className="text-foreground">Start anywhere.</strong>{' '}
+              You do not need to read this front-to-back. Each section is
+              self-contained. If you already know what you are looking for, jump
+              straight there.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="mt-1 shrink-0 text-primary" aria-hidden="true">
+              <Zap className="h-4 w-4" />
+            </span>
+            <span>
+              <strong className="text-foreground">Copy-to-clipboard.</strong>{' '}
+              Every prompt, template, and code example has a copy button. Take what
+              you need and paste it directly into Claude.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="mt-1 shrink-0 text-primary" aria-hidden="true">
+              <MessageSquareHeart className="h-4 w-4" />
+            </span>
+            <span>
+              <strong className="text-foreground">Feedback.</strong>{' '}
+              If something is unclear, missing, or you want more detail on a topic,
+              there is a feedback button available on every page.
+            </span>
+          </li>
+        </ul>
+      </motion.section>
+
+      <Separator />
+
+      {/* ── Track Selector ───────────────────────────────── */}
+      <motion.section {...motionFadeProps} aria-labelledby="choose-track-heading">
+        <h2
+          id="choose-track-heading"
+          className="mb-6 text-xl font-semibold tracking-tight"
+        >
+          Choose Your Track
+        </h2>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          {/* General track card */}
+          <Link to="/general" className="group block focus-visible:outline-none">
+            <Card
+              className={cn(
+                'h-full transition-shadow duration-200',
+                'hover:shadow-md',
+                'group-focus-visible:ring-[3px] group-focus-visible:ring-ring/50',
+                'active:scale-[0.99] transition-transform duration-100'
+              )}
+            >
+              <CardHeader>
+                <div className="mb-2 flex items-center gap-2">
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"
+                    aria-hidden="true"
+                  >
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <Badge variant="secondary" className="text-xs">
+                    General
+                  </Badge>
+                </div>
+                <CardTitle className="text-lg">
+                  I use Claude in the browser or desktop app
+                </CardTitle>
+                <CardDescription className="text-sm leading-relaxed">
+                  General track — context management, skills, governance, brand
+                  voice, and more.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-[gap] duration-200">
+                  Start the General track
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Developer track card */}
+          <Link to="/developer" className="group block focus-visible:outline-none">
+            <Card
+              className={cn(
+                'h-full transition-shadow duration-200',
+                'hover:shadow-md',
+                'group-focus-visible:ring-[3px] group-focus-visible:ring-ring/50',
+                'active:scale-[0.99] transition-transform duration-100'
+              )}
+            >
+              <CardHeader>
+                <div className="mb-2 flex items-center gap-2">
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"
+                    aria-hidden="true"
+                  >
+                    <Code className="h-5 w-5" />
+                  </div>
+                  <Badge variant="secondary" className="text-xs">
+                    Developer
+                  </Badge>
+                </div>
+                <CardTitle className="text-lg">
+                  I use Claude Code for development
+                </CardTitle>
+                <CardDescription className="text-sm leading-relaxed">
+                  Developer track — CLAUDE.md files, documentation structure,
+                  testing, plugins, and more.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-[gap] duration-200">
+                  Start the Developer track
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+
+        <p className="mt-4 text-sm text-muted-foreground">
+          Not sure? Start with the General track — it covers the fundamentals that
+          apply to everyone. You can switch to the Developer track at any time.
+        </p>
+      </motion.section>
+
+      <Separator />
+
+      {/* ── What's Covered ───────────────────────────────── */}
+      <section aria-labelledby="whats-covered-heading">
+        <h2
+          id="whats-covered-heading"
+          className="mb-6 text-xl font-semibold tracking-tight"
+        >
+          What's Covered
+        </h2>
+        <div className="grid gap-8 sm:grid-cols-2">
+          {/* General column */}
+          <div>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              General Track
+            </h3>
+            <ul className="space-y-2.5">
+              {GENERAL_HIGHLIGHTS.map(({ icon: Icon, label }) => (
+                <li key={label} className="flex items-start gap-2.5 text-sm text-foreground">
+                  <Icon
+                    className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Developer column */}
+          <div>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Developer Track
+            </h3>
+            <ul className="space-y-2.5">
+              {DEV_HIGHLIGHTS.map(({ icon: Icon, label }) => (
+                <li key={label} className="flex items-start gap-2.5 text-sm text-foreground">
+                  <Icon
+                    className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <Separator />
+
+      {/* ── Quick Wins ───────────────────────────────────── */}
+      <section aria-labelledby="quick-wins-heading">
+        <h2
+          id="quick-wins-heading"
+          className="mb-2 text-xl font-semibold tracking-tight"
+        >
+          Quick Wins
+        </h2>
+        <p className="mb-6 text-sm text-muted-foreground">
+          Things you can do right now, in under five minutes.
+        </p>
+        <div className="space-y-4">
+          {QUICK_WINS.map((win) => (
+            <div
+              key={win.title}
+              className="flex flex-col gap-2 rounded-lg border border-border bg-card px-5 py-4"
+            >
+              <h3 className="text-sm font-semibold text-foreground">
+                {win.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {win.description}
+              </p>
+              <Link
+                to={win.link.to}
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+              >
+                {win.link.label}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Separator />
+
+      {/* ── Quick Reference Card ─────────────────────────── */}
+      <section aria-labelledby="quick-ref-heading">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2
+              id="quick-ref-heading"
+              className="text-xl font-semibold tracking-tight"
+            >
+              Quick Reference Card
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              A printable one-page summary of the key takeaways.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="default"
+            onClick={handlePrint}
+            className="gap-2 self-start sm:self-auto"
+          >
+            <Download className="h-4 w-4" />
+            Download Quick Reference (PDF)
+          </Button>
+        </div>
+
+        <div className="rounded-lg border border-border bg-card px-5 py-6">
+          <div className="space-y-6">
+            {QUICK_REFERENCE_ITEMS.map((section) => (
+              <div key={section.heading}>
+                <h3 className="mb-2 text-sm font-semibold text-foreground">
+                  {section.heading}
+                </h3>
+                <ul className="space-y-1">
+                  {section.items.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
+                    >
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40" aria-hidden="true" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Separator />
+
+      {/* ── How This Was Built (Meta-narrative) ──────────── */}
+      <section aria-labelledby="how-built-heading">
+        <h2 id="how-built-heading" className="sr-only">
+          How this playbook was built
+        </h2>
+        <CalloutCard variant="info" title="How this playbook was built">
+          <p className="leading-relaxed">
+            This playbook was built using the exact tools and workflows it
+            describes. The content was planned and researched using Claude with
+            structured prompts and session handoffs — the same techniques covered in
+            your training. The app itself was built by parallel Claude Code agents,
+            each working from a detailed spec. Skills, CLAUDE.md files, and the
+            governance principles described here were used throughout. These are not
+            theoretical techniques — they are the same workflows that produced this
+            deliverable.
+          </p>
+        </CalloutCard>
+      </section>
+
+      <Separator />
+
+      {/* ── Feedback ─────────────────────────────────────── */}
+      <section aria-labelledby="feedback-heading">
+        <h2
+          id="feedback-heading"
+          className="mb-3 text-xl font-semibold tracking-tight"
+        >
+          Feedback
+        </h2>
+        <p className="mb-4 text-sm leading-relaxed text-muted-foreground" style={{ maxWidth: '65ch' }}>
+          Spotted something that could be clearer? Want more detail on a specific
+          topic? Use the feedback button — it is available on every page. Your
+          feedback goes directly to {siteConfig.consultantName} and will be used to improve the playbook.
+        </p>
+        <Button
+          variant="outline"
+          size="default"
+          className="gap-2"
+          onClick={() => {
+            const event = new CustomEvent('open-feedback');
+            window.dispatchEvent(event);
+          }}
+        >
+          <MessageSquareHeart className="h-4 w-4" />
+          Send Feedback
+        </Button>
+      </section>
+
+      {/* ── Process Doc Link ─────────────────────────────── */}
+      <Separator />
+      <section aria-labelledby="process-doc-heading">
+        <h2
+          id="process-doc-heading"
+          className="mb-3 text-xl font-semibold tracking-tight"
+        >
+          How We Built This
+        </h2>
+        <p className="mb-4 text-sm leading-relaxed text-muted-foreground" style={{ maxWidth: '65ch' }}>
+          Interested in the end-to-end process behind this deliverable? The
+          repeatable workflow document captures every step — from recording the
+          training sessions to deploying this app — so it can be replicated for
+          future projects.
+        </p>
+        <Link
+          to="/process"
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+        >
+          View the process document
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </section>
+    </div>
+  );
+}

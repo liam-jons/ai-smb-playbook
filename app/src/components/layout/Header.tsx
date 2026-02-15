@@ -1,0 +1,144 @@
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { Menu, X, MessageSquareHeart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from './ThemeToggle';
+import { cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
+
+export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const currentTrack = location.pathname.startsWith('/general')
+    ? 'general'
+    : location.pathname.startsWith('/developer')
+      ? 'developer'
+      : null;
+
+  const handleTrackSwitch = (track: string) => {
+    navigate(`/${track}`);
+    setMobileMenuOpen(false);
+  };
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+        {/* Logo / Title */}
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors"
+        >
+          {siteConfig.appTitle}
+        </Link>
+
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Track navigation">
+          <button
+            onClick={() => handleTrackSwitch('general')}
+            className={cn(
+              'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+              currentTrack === 'general'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+            )}
+            aria-current={currentTrack === 'general' ? 'page' : undefined}
+          >
+            General Users
+          </button>
+          <button
+            onClick={() => handleTrackSwitch('developer')}
+            className={cn(
+              'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+              currentTrack === 'developer'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+            )}
+            aria-current={currentTrack === 'developer' ? 'page' : undefined}
+          >
+            Developers
+          </button>
+        </nav>
+
+        {/* Desktop actions */}
+        <div className="hidden items-center gap-1 md:flex">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Send feedback"
+            onClick={() => {
+              const event = new CustomEvent('open-feedback');
+              window.dispatchEvent(event);
+            }}
+          >
+            <MessageSquareHeart className="h-5 w-5" />
+          </Button>
+          <ThemeToggle />
+        </div>
+
+        {/* Mobile menu button */}
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown */}
+      {mobileMenuOpen && (
+        <nav
+          className="border-t border-border bg-background px-4 py-3 md:hidden"
+          aria-label="Mobile navigation"
+        >
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => handleTrackSwitch('general')}
+              className={cn(
+                'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
+                currentTrack === 'general'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-foreground hover:bg-accent'
+              )}
+            >
+              General Users
+            </button>
+            <button
+              onClick={() => handleTrackSwitch('developer')}
+              className={cn(
+                'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
+                currentTrack === 'developer'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-foreground hover:bg-accent'
+              )}
+            >
+              Developers
+            </button>
+            <Button
+              variant="ghost"
+              className="justify-start"
+              onClick={() => {
+                const event = new CustomEvent('open-feedback');
+                window.dispatchEvent(event);
+                setMobileMenuOpen(false);
+              }}
+            >
+              <MessageSquareHeart className="mr-2 h-4 w-4" />
+              Send Feedback
+            </Button>
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}

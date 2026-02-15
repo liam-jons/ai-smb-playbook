@@ -1,6 +1,21 @@
 node_modules/
 dist/
+build/
+coverage/
+.cache/
+.turbo/
 .DS_Store
 .env
 .env.local
 *.log
+.planning/
+.vercel/
+bun.lock
+package-lock.json
+
+# Development artifacts (not part of deliverable)
+delivery-email.md
+dark-mode-governance.png
+feedback-dialog.png
+mobile-developer-welcome.png
+tablet-developer-welcome.png
