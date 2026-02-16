@@ -21,6 +21,9 @@ export const siteConfig = {
   /** Feedback recipient email address */
   feedbackEmail: 'liam@aisolutionhub.co.uk',
 
+  /** Feedback sender email (Resend verified domain) */
+  feedbackSenderEmail: 'playbook@feedback.aisolutionhub.co.uk',
+
   /** Consultant / trainer name used in welcome copy */
   consultantName: 'Liam',
 
