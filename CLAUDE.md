@@ -68,11 +68,13 @@ cd app && bun install        # Install dependencies
 cd app && bun run dev        # Local dev server (port 4100)
 cd app && bun run build      # TypeScript check + production build
 cd app && bun run lint       # ESLint
+cd app && bun run format     # Prettier — format all files
+cd app && bun run format:check  # Prettier — check without writing
 cd app && bun run preview    # Preview production build locally
 cd app && bunx tsc --noEmit  # Type check only (no emit)
 ```
 
-No test suite is configured. Current quality checks are `build` (TypeScript) and `lint` (ESLint).
+No test suite is configured. Current quality checks are `build` (TypeScript), `lint` (ESLint), and `format:check` (Prettier).
 
 ## Deployment
 
