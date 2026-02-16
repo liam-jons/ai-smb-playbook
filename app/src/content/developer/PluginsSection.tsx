@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -78,8 +80,7 @@ const plugins: PluginEntry[] = [
     provides: ['Skills', 'Commands'],
     whatItDoes:
       'claude-md-improver audits CLAUDE.md files against the current codebase. /revise-claude-md captures learnings from the current session and proposes updates.',
-    whenToUse:
-      'Periodically to keep CLAUDE.md accurate. See Section 1.8 for detailed walkthrough.',
+    whenToUse: 'Periodically to keep CLAUDE.md accurate.',
     installCommand: '/plugin install claude-md-management',
     category: 'Development Workflow',
   },
@@ -114,7 +115,7 @@ const plugins: PluginEntry[] = [
     requirements:
       'CodeRabbit CLI must be installed: curl -fsSL https://cli.coderabbit.ai/install.sh | sh && coderabbit auth login',
     securityNote:
-      'CodeRabbit sends your code to an external service for analysis. Ensure this is acceptable under your data handling policies (Section 1.5).',
+      'CodeRabbit sends your code to an external service for analysis. Ensure this is acceptable under your governance policy.',
     category: 'Security & Code Quality',
   },
   // External Service Integrations
@@ -143,7 +144,7 @@ const plugins: PluginEntry[] = [
     whatItDoes:
       'Fetches current documentation from actual source repositories \u2014 not from Claude\u2019s training data. Supports version-specific lookups.',
     whenToUse:
-      'Working with third-party libraries where Claude\u2019s training data may be outdated. Choose this OR deepwiki (Section 1.13), not both.',
+      'Working with third-party libraries where Claude\u2019s training data may be outdated. Choose this OR deepwiki, not both.',
     installCommand: '/plugin install context7',
     category: 'External Services',
   },
@@ -153,9 +154,9 @@ const plugins: PluginEntry[] = [
     description: 'Browser automation and end-to-end testing MCP server.',
     provides: ['MCP'],
     whatItDoes:
-      'Full browser control: navigate, screenshot, fill forms, click, extract text, run E2E tests. See Section 1.13 for safety guidance.',
+      'Full browser control: navigate, screenshot, fill forms, click, extract text, run E2E tests.',
     whenToUse:
-      'Testing web applications, verifying CSS changes, regression checks. See Section 1.12 for detailed testing approaches.',
+      'Testing web applications, verifying CSS changes, regression checks.',
     installCommand: '/plugin install playwright',
     securityNote:
       'Full browser control \u2014 use only on staging/development environments.',
@@ -304,6 +305,7 @@ Before installing a new plugin:
 /* -------------------------------------------------------------------------- */
 
 export function PluginsSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* 1. What Are Plugins */}
@@ -435,7 +437,14 @@ export function PluginsSection() {
               <p className="text-sm font-medium">MCP servers</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 Load tool definitions at session start. Ongoing cost — same as
-                standalone MCP (see Section 1.13).
+                standalone MCP (see{' '}
+                <Link
+                  to={`/${track}/mcp-usage`}
+                  className="text-primary hover:underline"
+                >
+                  Section 1.13
+                </Link>
+                ).
               </p>
             </div>
           </div>
@@ -520,6 +529,19 @@ export function PluginsSection() {
                             </p>
                             <p className="mb-2 text-sm text-muted-foreground">
                               {plugin.whatItDoes}
+                              {plugin.name === 'playwright' && (
+                                <>
+                                  {' '}
+                                  See{' '}
+                                  <Link
+                                    to={`/${track}/mcp-usage`}
+                                    className="text-primary hover:underline"
+                                  >
+                                    Section 1.13
+                                  </Link>{' '}
+                                  for safety guidance.
+                                </>
+                              )}
                             </p>
                             <p className="mb-3 text-sm">
                               <strong className="text-foreground">
@@ -527,6 +549,45 @@ export function PluginsSection() {
                               </strong>{' '}
                               <span className="text-muted-foreground">
                                 {plugin.whenToUse}
+                                {plugin.name === 'claude-md-management' && (
+                                  <>
+                                    {' '}
+                                    See{' '}
+                                    <Link
+                                      to={`/${track}/claude-md`}
+                                      className="text-primary hover:underline"
+                                    >
+                                      Section 1.8
+                                    </Link>{' '}
+                                    for detailed walkthrough.
+                                  </>
+                                )}
+                                {plugin.name === 'context7' && (
+                                  <>
+                                    {' '}
+                                    See also{' '}
+                                    <Link
+                                      to={`/${track}/mcp-usage`}
+                                      className="text-primary hover:underline"
+                                    >
+                                      Section 1.13
+                                    </Link>
+                                    .
+                                  </>
+                                )}
+                                {plugin.name === 'playwright' && (
+                                  <>
+                                    {' '}
+                                    See{' '}
+                                    <Link
+                                      to={`/${track}/regression-testing`}
+                                      className="text-primary hover:underline"
+                                    >
+                                      Section 1.12
+                                    </Link>{' '}
+                                    for detailed testing approaches.
+                                  </>
+                                )}
                               </span>
                             </p>
                             {plugin.requirements && (
@@ -538,6 +599,19 @@ export function PluginsSection() {
                             {plugin.securityNote && (
                               <p className="mb-2 text-xs text-warning-muted-foreground">
                                 <strong>Security:</strong> {plugin.securityNote}
+                                {plugin.name === 'coderabbit' && (
+                                  <>
+                                    {' '}
+                                    (
+                                    <Link
+                                      to={`/${track}/governance`}
+                                      className="text-primary hover:underline"
+                                    >
+                                      Section 1.5
+                                    </Link>
+                                    )
+                                  </>
+                                )}
                               </p>
                             )}
                             <CodeBlock
@@ -625,10 +699,21 @@ export function PluginsSection() {
             </div>
             <p className="mb-1 text-sm text-muted-foreground">
               External SaaS documentation platform. Auto-generates API docs from
-              code. Complements the documentation structure approach from
-              Section 1.9 &mdash; use Mintlify for public-facing API
-              documentation and the Section 1.9 patterns for internal project
-              documentation.
+              code. Complements the documentation structure approach from{' '}
+              <Link
+                to={`/${track}/documentation`}
+                className="text-primary hover:underline"
+              >
+                Section 1.9
+              </Link>{' '}
+              &mdash; use Mintlify for public-facing API documentation and the{' '}
+              <Link
+                to={`/${track}/documentation`}
+                className="text-primary hover:underline"
+              >
+                Section 1.9
+              </Link>{' '}
+              patterns for internal project documentation.
             </p>
             <p className="text-sm">
               <strong className="text-foreground">When to consider:</strong>{' '}
@@ -656,8 +741,14 @@ export function PluginsSection() {
                 starter-kit/skills/agent-browser/SKILL.md
               </code>
               ). Automates browser interactions for testing, form filling, and
-              screenshots. Complements the regression testing approaches from
-              Section 1.12.
+              screenshots. Complements the regression testing approaches from{' '}
+              <Link
+                to={`/${track}/regression-testing`}
+                className="text-primary hover:underline"
+              >
+                Section 1.12
+              </Link>
+              .
             </p>
             <p className="text-sm">
               <strong className="text-foreground">When to consider:</strong>{' '}
@@ -715,9 +806,15 @@ export function PluginsSection() {
 
         <CalloutCard variant="info" className="mt-4">
           Start with the official marketplace only. Before adding any
-          third-party marketplace, follow the approval process in the governance
-          policy (Section 1.5). Third-party plugins can contain arbitrary code —
-          review the source before installing.
+          third-party marketplace, follow the approval process in the{' '}
+          <Link
+            to={`/${track}/governance`}
+            className="text-primary hover:underline"
+          >
+            governance policy (Section 1.5)
+          </Link>
+          . Third-party plugins can contain arbitrary code — review the source
+          before installing.
         </CalloutCard>
       </section>
 
@@ -755,7 +852,13 @@ export function PluginsSection() {
             Review installed plugins periodically — uninstall plugins you are no
             longer using.
           </p>
-          <p>Check for plugin errors in the /plugin Errors tab.</p>
+          <p>
+            Check for plugin errors in the{' '}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+              /plugin
+            </code>{' '}
+            Errors tab.
+          </p>
           <p>
             Plugin skills are namespaced, so multiple plugins can coexist
             without conflicts.
@@ -791,10 +894,16 @@ export function PluginsSection() {
 
       {/* Governance */}
       <CalloutCard variant="info" title="Governance">
-        Before installing any new plugin, follow the approval process in the AI
-        Governance Policy (Section 1.5). Official marketplace plugins have a
-        lower barrier; third-party plugins and those with external API
-        connections require additional review of data handling and credentials.
+        Before installing any new plugin, follow the approval process in the{' '}
+        <Link
+          to={`/${track}/governance`}
+          className="text-primary hover:underline"
+        >
+          AI Governance Policy (Section 1.5)
+        </Link>
+        . Official marketplace plugins have a lower barrier; third-party plugins
+        and those with external API connections require additional review of
+        data handling and credentials.
       </CalloutCard>
     </div>
   );

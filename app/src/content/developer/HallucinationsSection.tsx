@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -7,6 +8,7 @@ import {
 } from '@/components/ui/collapsible';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
@@ -56,7 +58,7 @@ List the subtasks in dependency order. Do not implement anything yet.`,
     title: 'Plan Before Implementing',
     whenToUse: 'Every non-trivial development task. Make it a habit.',
     explanation:
-      'Asking Claude to plan before coding forces it to reason about the approach, surface assumptions, and reveal potential issues before any code is written. This is the single most effective pattern for avoiding quick-fix behaviour \u2014 Claude cannot take shortcuts if it has to articulate its strategy first.\n\nFor larger tasks, write the plan as a specification document saved to a .planning/ directory. This gives Claude a concrete reference to work from, and gives you an artefact to review before implementation begins.',
+      'Asking Claude to plan before coding forces it to reason about the approach, surface assumptions, and reveal potential issues before any code is written. This is the single most effective pattern for avoiding quick-fix behaviour \u2014 Claude cannot take shortcuts if it has to articulate its strategy first.\n\nFor larger tasks, write the plan as a specification document saved to a dedicated planning directory (e.g., `.planning/`). This gives Claude a concrete reference to work from, and gives you an artefact to review before implementation begins.',
     crossTrack: true,
     crossTrackNote:
       'This works just as well outside of coding \u2014 ask Claude to outline its plan before writing a report, drafting a policy, or preparing meeting notes.',
@@ -189,7 +191,9 @@ const HARNESS_PROMPT = `I am going to use a structured workflow for this task. W
 
 We will then repeat steps 4-7 for each remaining subtask.
 
-Here is the task: [describe task]
+Here is the task:
+
+[describe task]
 
 Start with step 1 \u2014 break this into atomic subtasks.`;
 
@@ -245,6 +249,7 @@ const keyTakeaways = [
 /* -------------------------------------------------------------------------- */
 
 export function HallucinationsSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* Mini-nav */}
@@ -352,7 +357,12 @@ export function HallucinationsSection() {
         </p>
         <p className="mt-2 text-xs text-muted-foreground">
           See the{' '}
-          <strong className="text-foreground">Skills &amp; Extensions</strong>{' '}
+          <Link
+            to={`/${track}/skills-extensions`}
+            className="text-primary hover:underline"
+          >
+            Skills, Extensions &amp; Decision Tree
+          </Link>{' '}
           section for how to create and install skill files.
         </p>
       </CalloutCard>

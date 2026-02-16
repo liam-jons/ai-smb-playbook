@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -95,7 +97,7 @@ const docsDirectories: DocsDirectory[] = [
     ],
     exampleFiles: ['nextjs-llms.txt', 'supabase-llms.txt'],
     whyUseful:
-      'Claude\u2019s training data has a cutoff date. If your project uses a framework that has changed since that cutoff, an llms.txt file gives Claude current, accurate documentation. The context7 MCP (Section 1.14) can also fetch these dynamically, but local copies are available offline and cost no API calls.',
+      'Claude\u2019s training data has a cutoff date. If your project uses a framework that has changed since that cutoff, an llms.txt file gives Claude current, accurate documentation. The context7 plugin (Section 1.15) can also fetch these dynamically, but local copies are available offline and cost no API calls.',
     whatDoesNotBelong:
       'Full vendor documentation sites. Use condensed, LLM-ready versions instead.',
   },
@@ -188,7 +190,7 @@ const gettingStartedPhases = [
     title: 'Generate initial documentation',
     time: '30 minutes',
     description:
-      'Use the gsd-codebase-mapper (Section 1.10) to analyse your existing codebase and generate structured documents. This gives you a substantial starting point.',
+      'Use the gsd-codebase-mapper (Section 1.11) to analyse your existing codebase and generate structured documents. This gives you a substantial starting point.',
   },
   {
     phase: 3,
@@ -373,6 +375,7 @@ Claude writes code that fits the existing codebase`;
 /* -------------------------------------------------------------------------- */
 
 export function DocumentationSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* 1. Why Documentation Structure Matters */}
@@ -579,7 +582,14 @@ export function DocumentationSection() {
 
         <CalloutCard variant="info" className="mt-6">
           For a complete guide to running the codebase mapper and using its
-          output, see <strong>Section 1.10 &mdash; Codebase Mapping</strong>.
+          output, see{' '}
+          <Link
+            to={`/${track}/codebase-mapping`}
+            className="text-primary hover:underline"
+          >
+            Section 1.11 &mdash; Codebase Mapping
+          </Link>
+          .
         </CalloutCard>
       </section>
 
@@ -744,6 +754,8 @@ export function DocumentationSection() {
         </div>
       </section>
 
+      <Separator />
+
       <CalloutCard variant="info" title="llms.txt">
         Many popular frameworks now publish{' '}
         <code className="rounded bg-muted px-1 py-0.5 text-xs">llms.txt</code>{' '}
@@ -753,8 +765,11 @@ export function DocumentationSection() {
         </code>{' '}
         files &mdash; condensed documentation designed for AI consumption. When
         available, these are a significant quality improvement. Check your
-        framework&apos;s website or the <strong>context7</strong> MCP (Section
-        1.14) for dynamic lookups.
+        framework&apos;s website or the{' '}
+        <Link to={`/${track}/plugins`} className="text-primary hover:underline">
+          context7 plugin (Section 1.15)
+        </Link>{' '}
+        for dynamic lookups.
       </CalloutCard>
     </div>
   );

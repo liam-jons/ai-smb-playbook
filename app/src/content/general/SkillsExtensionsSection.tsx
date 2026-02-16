@@ -1535,10 +1535,14 @@ export function SkillsExtensionsSection() {
               On claude.ai and Claude Desktop, you trigger skills by describing
               what you want. No commands needed.
             </p>
-            <CodeBlock
-              code={naturalLanguageTriggerGuide}
-              title="Natural language skill triggers"
-            />
+            <CalloutCard
+              variant="info"
+              title="Using Skills with Natural Language"
+            >
+              <div className="mt-2 whitespace-pre-line text-sm">
+                {naturalLanguageTriggerGuide}
+              </div>
+            </CalloutCard>
           </section>
 
           <Separator />
@@ -1771,10 +1775,14 @@ export function SkillsExtensionsSection() {
               projects.
             </p>
             <div className="space-y-6">
-              <CodeBlock
-                code={naturalLanguageTriggerGuide}
-                title="Natural language skill triggers"
-              />
+              <CalloutCard
+                variant="info"
+                title="Using Skills with Natural Language"
+              >
+                <div className="mt-2 whitespace-pre-line text-sm">
+                  {naturalLanguageTriggerGuide}
+                </div>
+              </CalloutCard>
               <CodeBlock
                 code={ukEnglishSkillExample}
                 language="markdown"

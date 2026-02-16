@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -439,7 +441,7 @@ const gettingStartedSteps = [
     step: 5,
     title: 'Add documentation pointers',
     description:
-      'If you have docs, reference them. If you do not (most projects), note that Section 1.9 covers setting up a /docs structure.',
+      'If you have docs, reference them. If you do not (most projects), note that Section 1.10 covers setting up a /docs structure.',
   },
   {
     step: 6,
@@ -454,6 +456,7 @@ const gettingStartedSteps = [
 /* -------------------------------------------------------------------------- */
 
 export function ClaudeMdSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* 1. What CLAUDE.md Files Are */}
@@ -563,9 +566,12 @@ export function ClaudeMdSection() {
               /docs
             </code>{' '}
             folder (covered in detail in{' '}
-            <span className="font-medium text-foreground">
-              Section 1.9 &mdash; Documentation Structure
-            </span>
+            <Link
+              to={`/${track}/documentation`}
+              className="text-primary hover:underline"
+            >
+              Section 1.10 &mdash; Documentation Structure
+            </Link>
             ).
           </p>
           <p className="text-sm">
@@ -1034,11 +1040,19 @@ export function ClaudeMdSection() {
         </p>
       </CalloutCard>
 
+      <div className="my-4" />
+
       {/* Cross-reference */}
       <CalloutCard variant="info" title="Next step">
         For a complete guide to setting up the /docs structure that CLAUDE.md
         points to, see{' '}
-        <strong>Section 1.9 &mdash; Documentation Structure</strong>.
+        <Link
+          to={`/${track}/documentation`}
+          className="text-primary hover:underline"
+        >
+          Section 1.10 &mdash; Documentation Structure
+        </Link>
+        .
       </CalloutCard>
     </div>
   );

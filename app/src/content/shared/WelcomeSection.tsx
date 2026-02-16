@@ -74,7 +74,7 @@ const QUICK_REFERENCE_ITEMS_ALL = [
     heading: 'Skills (Developer)',
     track: 'developer' as const,
     items: [
-      'Claude Code: Place .md files in .claude/skills/ in your project root.',
+      'Claude Code: Place skill directories (containing a SKILL.md file) in .claude/skills/ in your project root.',
     ],
   },
   {
@@ -91,7 +91,7 @@ const QUICK_REFERENCE_ITEMS_ALL = [
     items: [
       'CLAUDE.md: project context, tech stack, conventions \u2014 read by Claude Code on every session.',
       'Break large tasks into atomic specs before asking Claude to build.',
-      'Use /plugin install for: pr-review-toolkit, security-guidance, context7.',
+      'Use claude plugin install for: pr-review-toolkit, security-guidance, context7.',
     ],
   },
 ];

@@ -1,9 +1,11 @@
+import { Link } from 'react-router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -59,7 +61,7 @@ const testingApproaches: TestingApproach[] = [
     ],
     limitations: [
       'Requires Claude Code (not available in claude.ai or Claude Desktop)',
-      'Claude generates the test scripts \u2014 hallucinated selectors are a real risk (see Section 1.11)',
+      'Claude generates the test scripts \u2014 hallucinated selectors are a real risk',
       'Generated tests need human review before being trusted in CI/CD',
       'No built-in visual regression (screenshot comparison) without additional tooling',
     ],
@@ -165,7 +167,7 @@ const gettingStartedSteps = [
     step: 1,
     title: 'Install the Playwright MCP',
     description:
-      'Add the Playwright MCP server to your Claude Code configuration. See Section 1.13 for installation guidance.',
+      'Add the Playwright MCP server to your Claude Code configuration.',
   },
   {
     step: 2,
@@ -201,7 +203,7 @@ const gettingStartedSteps = [
 
 const limitations = [
   'AI testing is not deterministic. The same prompt can generate slightly different test scripts on different runs.',
-  'Hallucinated selectors are a real risk. Claude may generate selectors that look correct but do not match your actual DOM. Always review generated tests manually. (See Section 1.11.)',
+  'Hallucinated selectors are a real risk. Claude may generate selectors that look correct but do not match your actual DOM. Always review generated tests manually.',
   'Scheduling is not solved. Ghost Inspector can run tests on a schedule. AI-driven testing currently requires manual initiation or custom orchestration.',
   'Reporting is DIY. Ghost Inspector provides dashboards and history. AI-generated Playwright tests require you to build or adopt a reporting layer.',
   'Cost can be unpredictable. Ghost Inspector has predictable subscription costs. AI token costs depend on test complexity and regeneration frequency.',
@@ -213,6 +215,7 @@ const limitations = [
 /* -------------------------------------------------------------------------- */
 
 export function RegressionTestingSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* Opening */}
@@ -289,7 +292,22 @@ export function RegressionTestingSection() {
                   </h4>
                   <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     {approach.limitations.map((lim) => (
-                      <li key={lim}>{lim}</li>
+                      <li key={lim}>
+                        {lim}
+                        {lim.includes('hallucinated selectors') && (
+                          <>
+                            {' '}
+                            (see{' '}
+                            <Link
+                              to={`/${track}/hallucinations`}
+                              className="text-primary hover:underline"
+                            >
+                              Section 1.11
+                            </Link>
+                            )
+                          </>
+                        )}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -470,6 +488,19 @@ export function RegressionTestingSection() {
                 <p className="text-sm font-medium">{step.title}</p>
                 <p className="mt-0.5 text-sm text-muted-foreground">
                   {step.description}
+                  {step.step === 1 && (
+                    <>
+                      {' '}
+                      See{' '}
+                      <Link
+                        to={`/${track}/mcp-usage`}
+                        className="text-primary hover:underline"
+                      >
+                        Section 1.13
+                      </Link>{' '}
+                      for installation guidance.
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -482,8 +513,23 @@ export function RegressionTestingSection() {
       {/* Limitations */}
       <CalloutCard variant="warning" title="Honest Limitations">
         <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
-          {limitations.map((lim) => (
-            <li key={lim}>{lim}</li>
+          {limitations.map((lim, i) => (
+            <li key={lim}>
+              {lim}
+              {i === 1 && (
+                <>
+                  {' '}
+                  (see{' '}
+                  <Link
+                    to={`/${track}/hallucinations`}
+                    className="text-primary hover:underline"
+                  >
+                    Section 1.11
+                  </Link>
+                  )
+                </>
+              )}
+            </li>
           ))}
         </ul>
       </CalloutCard>

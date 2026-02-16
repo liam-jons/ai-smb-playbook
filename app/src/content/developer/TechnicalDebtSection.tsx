@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -214,7 +216,7 @@ const workflowSteps = [
     step: 1,
     title: 'Start with the mapper output',
     description:
-      'If you have not run /gsd:map-codebase (Section 1.10), do that first. The CONCERNS.md document gives you a baseline.',
+      'If you have not run /gsd:map-codebase, do that first. The CONCERNS.md document gives you a baseline.',
   },
   {
     step: 2,
@@ -270,6 +272,7 @@ const remediationPrinciples = [
 /* -------------------------------------------------------------------------- */
 
 export function TechnicalDebtSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* Opening */}
@@ -301,8 +304,14 @@ export function TechnicalDebtSection() {
             <strong className="text-foreground">auditing</strong> (finding
             problems) and{' '}
             <strong className="text-foreground">remediation</strong> (fixing
-            them). The mapper&apos;s CONCERNS.md from Section 1.10 is your
-            starting point &mdash; this section takes you deeper.
+            them). The mapper&apos;s CONCERNS.md from{' '}
+            <Link
+              to={`/${track}/codebase-mapping`}
+              className="text-primary hover:underline"
+            >
+              Section 1.10
+            </Link>{' '}
+            is your starting point &mdash; this section takes you deeper.
           </p>
         </div>
       </section>
@@ -335,6 +344,19 @@ export function TechnicalDebtSection() {
                 <p className="text-sm font-medium">{step.title}</p>
                 <p className="mt-0.5 text-sm text-muted-foreground">
                   {step.description}
+                  {step.step === 1 && (
+                    <>
+                      {' '}
+                      (
+                      <Link
+                        to={`/${track}/codebase-mapping`}
+                        className="text-primary hover:underline"
+                      >
+                        Section 1.10
+                      </Link>
+                      )
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -368,8 +390,15 @@ export function TechnicalDebtSection() {
 
         <CalloutCard variant="info" className="mb-6">
           For large codebases, a single audit prompt may not cover everything.
-          Use the subagent pattern from Section 1.10 &mdash; break the audit
-          into focused tasks, each with its own context window.
+          Use the subagent pattern from{' '}
+          <Link
+            to={`/${track}/skills-extensions`}
+            className="text-primary hover:underline"
+          >
+            Section 1.4
+          </Link>{' '}
+          &mdash; break the audit into focused tasks, each with its own context
+          window.
         </CalloutCard>
 
         {/* Audit Prompts */}
@@ -567,6 +596,19 @@ Important constraints:
                 <p className="text-sm font-medium">{principle.title}</p>
                 <p className="mt-0.5 text-sm text-muted-foreground">
                   {principle.description}
+                  {principle.title === 'Update the documentation' && (
+                    <>
+                      {' '}
+                      (see{' '}
+                      <Link
+                        to={`/${track}/codebase-mapping`}
+                        className="text-primary hover:underline"
+                      >
+                        Section 1.10
+                      </Link>
+                      )
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -648,12 +690,36 @@ Focus on:
 
       {/* Cross-references */}
       <CalloutCard variant="info">
-        This section builds on <strong>Section 1.10 (Codebase Mapping)</strong>{' '}
+        This section builds on{' '}
+        <Link
+          to={`/${track}/codebase-mapping`}
+          className="text-primary hover:underline"
+        >
+          Section 1.10 (Codebase Mapping)
+        </Link>{' '}
         &mdash; run the mapper first to generate a baseline CONCERNS.md. The
         remediation approach uses the anti-hallucination patterns from{' '}
-        <strong>Section 1.11</strong> (plan first, wait for approval). After
-        fixing debt, update your CLAUDE.md and /docs structure (Sections 1.8 and
-        1.9).
+        <Link
+          to={`/${track}/hallucinations`}
+          className="text-primary hover:underline"
+        >
+          Section 1.11
+        </Link>{' '}
+        (plan first, wait for approval). After fixing debt, update your{' '}
+        <Link
+          to={`/${track}/claude-md`}
+          className="text-primary hover:underline"
+        >
+          CLAUDE.md (Section 1.8)
+        </Link>{' '}
+        and{' '}
+        <Link
+          to={`/${track}/documentation`}
+          className="text-primary hover:underline"
+        >
+          documentation structure (Section 1.9)
+        </Link>
+        .
       </CalloutCard>
     </div>
   );

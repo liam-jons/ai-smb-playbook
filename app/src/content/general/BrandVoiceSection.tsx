@@ -559,8 +559,8 @@ export function BrandVoiceSection() {
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
             UK English is about language mechanics. Brand voice is about
             personality — how your organisation sounds, what it stands for, and
-            how it adapts across different contexts. The brand-voice skill
-            provides a structured framework for documenting your brand voice
+            how it adapts across different contexts. The skills in the starter
+            kit provide a structured framework for documenting your brand voice
             through a guided conversation with Claude.
           </p>
         </div>
@@ -624,8 +624,8 @@ export function BrandVoiceSection() {
             The Seven Framework Sections
           </h3>
           <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-            The brand-voice skill guides you through seven areas. Here is what
-            each covers and an illustrative example.
+            The brand-voice and brand-review skills guide you through seven
+            areas. Here is what each covers and an illustrative example.
           </p>
 
           <Accordion type="single" collapsible className="space-y-1">
@@ -682,6 +682,7 @@ export function BrandVoiceSection() {
             title="Brand Voice Setup Prompt"
             description="Start a guided brand voice documentation session with Claude"
             prompt={brandVoiceSetupPrompt}
+            context="Fill in the bracketed sections with your company's details before pasting."
             whenToUse="When you want to create or update your organisation's brand voice document"
           />
 
@@ -849,9 +850,9 @@ export function BrandVoiceSection() {
             </CalloutCard>
 
             <CalloutCard variant="info" title="Skill design reference">
-              The brand-voice SKILL.md file is an example of well-structured
-              skill design — note the WHEN/WHEN NOT description pattern, clear
-              sections, and comprehensive coverage. See{' '}
+              The brand-voice and brand-review SKILL.md files are examples of
+              well-structured skill design — note the WHEN/WHEN NOT description
+              pattern, clear sections, and comprehensive coverage. See{' '}
               <Link
                 to={`/${track}/skills-extensions`}
                 className="font-semibold text-primary hover:underline"
@@ -926,7 +927,7 @@ export function BrandVoiceSection() {
                   className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-success/50"
                   aria-hidden="true"
                 />
-                UK English skill (belt and braces)
+                UK English skill (belt-and-braces)
               </li>
             </ul>
           </div>

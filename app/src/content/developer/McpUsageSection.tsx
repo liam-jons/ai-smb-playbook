@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -42,14 +44,14 @@ const recommendedMcps: McpRecommendation[] = [
     examplePrompt:
       'Look up the current documentation for [library name] using deepwiki before implementing this feature. Check for any breaking changes since the version we are currently using.',
     extraNote:
-      'Context7 (covered in Section 1.14 as a plugin) provides similar documentation lookup functionality. deepwiki is a standalone MCP server; Context7 is available as both an MCP server and an official plugin. Choose one \u2014 running both is redundant and doubles the context cost.',
+      'Context7 provides similar documentation lookup functionality. deepwiki is a standalone MCP server; Context7 is available as both an MCP server and an official plugin. Choose one \u2014 running both is redundant and doubles the context cost.',
   },
   {
     name: 'Playwright (chrome-devtools)',
     whatItDoes:
       'Gives Claude Code the ability to control a web browser \u2014 navigate to pages, click elements, fill forms, take screenshots, and run end-to-end tests. The Playwright MCP server from Microsoft is the standard browser automation tool for Claude Code.',
     whyItMatters:
-      'Phew! builds web applications (LMS, Audit System, PDMS). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing Ghost Inspector workflows (see Section 1.12).',
+      'Phew! builds web applications (LMS, Audit System, PDMS). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing Ghost Inspector workflows.',
     configJson: `{
   "mcpServers": {
     "playwright": {
@@ -208,6 +210,7 @@ After use:
 /* -------------------------------------------------------------------------- */
 
 export function McpUsageSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* 1. What Are MCP Servers */}
@@ -360,7 +363,7 @@ export function McpUsageSection() {
           </p>
           <ol className="list-inside list-decimal space-y-1">
             <li>
-              <strong className="text-foreground">Local</strong> (
+              <strong className="text-foreground">Local</strong> (project-level{' '}
               <code className="rounded bg-muted px-1 py-0.5 text-xs">
                 .mcp.json
               </code>{' '}
@@ -467,6 +470,19 @@ export function McpUsageSection() {
                   Why it matters for Phew!:
                 </strong>{' '}
                 {mcp.whyItMatters}
+                {mcp.name === 'Playwright (chrome-devtools)' && (
+                  <>
+                    {' '}
+                    (see{' '}
+                    <Link
+                      to={`/${track}/regression-testing`}
+                      className="text-primary hover:underline"
+                    >
+                      Section 1.12
+                    </Link>
+                    )
+                  </>
+                )}
               </p>
 
               <CodeBlock
@@ -490,7 +506,24 @@ export function McpUsageSection() {
 
               {mcp.extraNote && (
                 <CalloutCard variant="info" className="mt-4">
-                  {mcp.extraNote}
+                  {mcp.name === 'deepwiki' ? (
+                    <>
+                      Context7 (covered in{' '}
+                      <Link
+                        to={`/${track}/plugins`}
+                        className="text-primary hover:underline"
+                      >
+                        Section 1.14
+                      </Link>{' '}
+                      as a plugin) provides similar documentation lookup
+                      functionality. deepwiki is a standalone MCP server;
+                      Context7 is available as both an MCP server and an
+                      official plugin. Choose one &mdash; running both is
+                      redundant and doubles the context cost.
+                    </>
+                  ) : (
+                    mcp.extraNote
+                  )}
                 </CalloutCard>
               )}
             </div>
@@ -698,6 +731,14 @@ export function McpUsageSection() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        <div className="mt-4">
+          <CodeBlock
+            code="/mcp"
+            language="bash"
+            title="Check MCP server status"
+          />
+        </div>
       </section>
 
       <Separator />
@@ -742,29 +783,29 @@ export function McpUsageSection() {
 
         <p className="mt-3 text-sm text-muted-foreground">
           See{' '}
-          <strong className="text-foreground">
-            Section 1.4 (Skills &amp; Extensions Decision Tree)
-          </strong>{' '}
+          <Link
+            to={`/${track}/skills-extensions`}
+            className="text-primary hover:underline"
+          >
+            Section 1.4 (Skills, Extensions &amp; Decision Tree)
+          </Link>{' '}
           for the full comparison.
         </p>
       </section>
 
       {/* 8. Governance */}
       <CalloutCard variant="info" title="Governance">
-        Before adding any new MCP server, follow the approval process in the AI
-        Governance Policy (Section 1.5). The governance policy covers: who can
-        approve new MCP connections, what security review is required, how to
-        document which MCP servers are in use, and periodic review of connected
-        servers.
+        Before adding any new MCP server, follow the approval process in the{' '}
+        <Link
+          to={`/${track}/governance`}
+          className="text-primary hover:underline"
+        >
+          AI Governance Policy (Section 1.5)
+        </Link>
+        . The governance policy covers: who can approve new MCP connections,
+        what security review is required, how to document which MCP servers are
+        in use, and periodic review of connected servers.
       </CalloutCard>
-
-      <div className="mt-4">
-        <CodeBlock
-          code="/mcp"
-          language="bash"
-          title="Check MCP server status"
-        />
-      </div>
     </div>
   );
 }

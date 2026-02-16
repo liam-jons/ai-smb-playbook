@@ -605,15 +605,15 @@ No AI extension may access safeguarding case data without formal Tier 3 assessme
 
 ---
 
-## Appendix B — Extension Type Quick Reference
+## Appendix A — Extension Type Quick Reference
 
 | Type | Risk Tier | Approval | Context Cost | Maintenance |
 |------|-----------|----------|--------------|-------------|
 | Skills | Low | Self-serve | Medium | Manual updates |
 | Plugins | Low–Medium | Self-serve (marketplace) | Low | Automatic updates |
-| MCPs | Medium–High | Team lead approval | Low | Manual config |
+| MCPs | Medium\u2013High | AI Lead approval | Low | Manual config |
 | Commands | Low | Self-serve | Low | Manual updates |
-| Hooks | Medium | Team lead approval | None | Manual maintenance |
+| Hooks | Medium | AI Lead approval | None | Manual maintenance |
 | Subagents | High | Team + security review | High | Complex maintenance |`;
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
@@ -761,7 +761,7 @@ export function GovernancePolicySection() {
   return (
     <div className="space-y-12">
       {/* Introduction */}
-      <section aria-labelledby="gov-intro-heading">
+      <section>
         <p className="max-w-prose text-base leading-relaxed text-foreground">
           This is not about creating red tape. It is about having a clear,
           lightweight process so your team can adopt new AI tools confidently
@@ -798,6 +798,10 @@ export function GovernancePolicySection() {
           <span className="text-sm text-muted-foreground">
             Copy full policy to clipboard
           </span>
+          <p className="w-full text-xs text-muted-foreground">
+            Remember to replace the {'{{placeholder}}'} values before
+            distributing.
+          </p>
           <Button
             variant="outline"
             size="sm"
@@ -926,7 +930,7 @@ export function GovernancePolicySection() {
 
         {viewMode === 'walkthrough' ? (
           <Accordion type="single" collapsible className="space-y-1">
-            {filteredSections.map((section, index) => {
+            {filteredSections.map((section) => {
               const Icon = section.icon;
               return (
                 <AccordionItem
@@ -941,7 +945,7 @@ export function GovernancePolicySection() {
                         aria-hidden="true"
                       />
                       <span>
-                        {index + 1}. {section.title}
+                        {section.number}. {section.title}
                       </span>
                     </span>
                   </AccordionTrigger>
@@ -1069,11 +1073,11 @@ export function GovernancePolicySection() {
         />
       </section>
 
-      {/* Appendix B — Extension Type Quick Reference */}
+      {/* Appendix A — Extension Type Quick Reference */}
       <Separator />
-      <section aria-labelledby="appendix-b-heading">
+      <section aria-labelledby="appendix-a-heading">
         <h2
-          id="appendix-b-heading"
+          id="appendix-a-heading"
           className="mb-1 text-xl font-semibold tracking-tight sm:text-2xl"
         >
           Extension Type Quick Reference
@@ -1123,7 +1127,7 @@ export function GovernancePolicySection() {
                 {
                   type: 'MCPs',
                   risk: 'Medium\u2013High',
-                  approval: 'Team lead approval',
+                  approval: 'AI Lead approval',
                   context: 'Low',
                   maintenance: 'Manual config',
                 },
@@ -1137,7 +1141,7 @@ export function GovernancePolicySection() {
                 {
                   type: 'Hooks',
                   risk: 'Medium',
-                  approval: 'Team lead approval',
+                  approval: 'AI Lead approval',
                   context: 'None',
                   maintenance: 'Manual maintenance',
                 },
@@ -1311,7 +1315,7 @@ export function GovernancePolicySection() {
                   to={`/${track}/mcp-usage`}
                   className="font-semibold text-primary hover:underline"
                 >
-                  Section 1.13 — Safe MCP Usage
+                  Section 1.14 — Safe MCP Usage
                 </Link>
                 .
               </p>
@@ -1321,7 +1325,7 @@ export function GovernancePolicySection() {
                   to={`/${track}/plugins`}
                   className="font-semibold text-primary hover:underline"
                 >
-                  Section 1.14 — Plugin Recommendations
+                  Section 1.15 — Plugin Recommendations
                 </Link>
                 .
               </p>

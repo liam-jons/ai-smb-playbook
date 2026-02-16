@@ -540,7 +540,7 @@ export function RecurringTasksSection() {
             title="Self-Updating Skill Template"
             description="A template for creating skills that improve themselves after each run"
             prompt={selfUpdatingSkillPrompt}
-            context="Replace the bracketed placeholders with your specific task details"
+            context="This is a skill template — save it as a SKILL.md file rather than pasting directly into Claude. Replace the bracketed placeholders with your specific task details."
             whenToUse="When creating a new recurring workflow that benefits from incremental improvement"
           />
 
@@ -648,8 +648,8 @@ export function RecurringTasksSection() {
             .
           </p>
           <p>
-            For implementation details on Pattern 4 (external triggers), see the{' '}
-            <strong>Developer track</strong>.
+            For implementation details on Pattern 4 (external triggers), explore
+            the Developer track sections for implementation details.
           </p>
         </div>
       </section>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -326,7 +328,7 @@ const gettingStartedSteps = [
     step: 2,
     title: 'Run the command',
     description:
-      'Execute /gsd:map-codebase. Optionally specify a focus area: /gsd:map-codebase api',
+      'Execute /gsd:map-codebase. Optionally specify a focus area: /gsd:map-codebase api.',
   },
   {
     step: 3,
@@ -365,6 +367,7 @@ const whenToSkip = [
 /* -------------------------------------------------------------------------- */
 
 export function CodebaseMappingSection() {
+  const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
       {/* Opening */}
@@ -553,7 +556,7 @@ export function CodebaseMappingSection() {
             <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
             <div>
               <p className="text-sm font-medium">
-                Each agent gets its own full 200k token context
+                Each agent gets its own full 200,000-token context window
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 The orchestrator delegates to specialised agents, each of which
@@ -686,9 +689,15 @@ export function CodebaseMappingSection() {
         </h2>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
           The mapper&apos;s output becomes the seed content for the /docs
-          structure described in Section 1.9. After running the mapper, move the
-          relevant content into your /docs directories and update CLAUDE.md to
-          point to it.
+          structure described in{' '}
+          <Link
+            to={`/${track}/documentation`}
+            className="text-primary hover:underline"
+          >
+            Section 1.10 &mdash; Documentation Structure
+          </Link>
+          . After running the mapper, move the relevant content into your /docs
+          directories and update CLAUDE.md to point to it.
         </p>
 
         <div className="overflow-x-auto">
@@ -770,7 +779,13 @@ export function CodebaseMappingSection() {
         The mapper output is a starting point, not a finished product. Review
         each document, correct inaccuracies, and it becomes your baseline for
         the /docs structure described in{' '}
-        <strong>Section 1.9 &mdash; Documentation Structure</strong>.
+        <Link
+          to={`/${track}/documentation`}
+          className="text-primary hover:underline"
+        >
+          Section 1.10 &mdash; Documentation Structure
+        </Link>
+        .
       </CalloutCard>
     </div>
   );
