@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router';
+import { Analytics } from '@vercel/analytics/react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { FeedbackWidget } from './FeedbackWidget';
@@ -19,6 +20,7 @@ export function AppLayout() {
 
       <Footer />
       <FeedbackWidget />
+      <Analytics />
     </div>
   );
 }
