@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { Menu, X, MessageSquareHeart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeSettings } from './ThemeSettings';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 
@@ -77,12 +77,12 @@ export function Header() {
           >
             <MessageSquareHeart className="h-5 w-5" />
           </Button>
-          <ThemeToggle />
+          <ThemeSettings />
         </div>
 
         {/* Mobile menu button */}
         <div className="flex items-center gap-1 md:hidden">
-          <ThemeToggle />
+          <ThemeSettings />
           <Button
             variant="ghost"
             size="icon"

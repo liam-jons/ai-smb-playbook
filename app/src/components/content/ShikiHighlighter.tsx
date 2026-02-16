@@ -13,7 +13,24 @@ import themeGithubLight from 'shiki/themes/github-light.mjs';
 import themeGithubDark from 'shiki/themes/github-dark.mjs';
 
 const SUPPORTED_LANGS = ['markdown', 'bash', 'json', 'text'] as const;
-const SUPPORTED_THEMES = ['github-light', 'github-dark'] as const;
+const SUPPORTED_THEMES = [
+  'github-light',
+  'github-dark',
+  'vitesse-dark',
+  'dracula-soft',
+  'min-light',
+  'min-dark',
+] as const;
+
+// Lazy theme loaders for creative themes — only fetched when a creative theme is active
+const lazyThemeImports: Record<string, () => Promise<unknown>> = {
+  'vitesse-dark': () => import('shiki/themes/vitesse-dark.mjs'),
+  'dracula-soft': () => import('shiki/themes/dracula-soft.mjs'),
+  'min-light': () => import('shiki/themes/min-light.mjs'),
+  'min-dark': () => import('shiki/themes/min-dark.mjs'),
+};
+
+const loadedThemes = new Set<string>(['github-light', 'github-dark']);
 
 let highlighterPromise: Promise<HighlighterCore> | null = null;
 
@@ -26,6 +43,20 @@ function getHighlighter(): Promise<HighlighterCore> {
     });
   }
   return highlighterPromise;
+}
+
+async function ensureThemeLoaded(themeName: string): Promise<void> {
+  if (loadedThemes.has(themeName)) return;
+  const highlighter = await getHighlighter();
+  const loader = lazyThemeImports[themeName];
+  if (loader) {
+    const themeModule = await loader();
+    // The theme module default export is the theme object
+    await highlighter.loadTheme(
+      themeModule as Parameters<typeof highlighter.loadTheme>[0],
+    );
+    loadedThemes.add(themeName);
+  }
 }
 
 interface ShikiHighlighterProps {
@@ -46,18 +77,24 @@ export function ShikiHighlighter({
   useEffect(() => {
     let cancelled = false;
 
-    getHighlighter().then((highlighter) => {
+    async function highlight() {
+      // Ensure the requested theme is loaded (no-op for eagerly loaded defaults)
+      const resolvedTheme = (SUPPORTED_THEMES as readonly string[]).includes(
+        theme,
+      )
+        ? theme
+        : 'github-light';
+
+      await ensureThemeLoaded(resolvedTheme);
+      if (cancelled) return;
+
+      const highlighter = await getHighlighter();
       if (cancelled) return;
 
       // Fall back to 'text' for any unsupported language
       const lang = (SUPPORTED_LANGS as readonly string[]).includes(language)
         ? language
         : 'text';
-      const resolvedTheme = (SUPPORTED_THEMES as readonly string[]).includes(
-        theme,
-      )
-        ? theme
-        : 'github-light';
 
       const result = highlighter.codeToHtml(code, {
         lang,
@@ -67,7 +104,9 @@ export function ShikiHighlighter({
       if (!cancelled) {
         setHtml(result);
       }
-    });
+    }
+
+    highlight();
 
     return () => {
       cancelled = true;

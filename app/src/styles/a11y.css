@@ -1,0 +1,163 @@
+/* ============================================================
+   Accessibility Mode Overrides
+   Layer 3 in the cascade: Brand tokens < Creative themes < A11y
+   Accessibility always wins over creative themes for typography.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   Dyslexia-Friendly Mode — Typography overrides
+   Applied regardless of creative theme
+   ---------------------------------------------------------- */
+[data-a11y-mode='dyslexia'] {
+  --font-sans:
+    'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
+  --a11y-letter-spacing: 0.05em;
+  --a11y-word-spacing: 0.16em;
+  --a11y-line-height: 1.8;
+  --a11y-font-weight: 500;
+  --a11y-paragraph-spacing: 1.5em;
+  --a11y-max-width: 70ch;
+}
+
+/* OpenDyslexic font override within dyslexia mode */
+[data-a11y-font='opendyslexic'] {
+  --font-sans: 'OpenDyslexic', ui-sans-serif, system-ui, sans-serif;
+  font-size-adjust: 0.5;
+}
+
+/* Dyslexia mode — Colour overrides (only when NO creative theme) */
+:root[data-a11y-mode='dyslexia']:not([data-theme]) {
+  --background: oklch(0.97 0.01 80);
+  --card: oklch(0.985 0.008 80);
+  --foreground: oklch(0.15 0.01 60);
+  --muted: oklch(0.94 0.01 80);
+  --border: oklch(0.88 0.01 80);
+  --sidebar: oklch(0.96 0.01 80);
+  --sidebar-foreground: oklch(0.15 0.01 60);
+  --sidebar-border: oklch(0.88 0.01 80);
+}
+
+.dark[data-a11y-mode='dyslexia']:not([data-theme]) {
+  --background: oklch(0.18 0.01 60);
+  --card: oklch(0.22 0.01 60);
+  --foreground: oklch(0.92 0.008 80);
+  --muted: oklch(0.28 0.01 60);
+  --border: oklch(0.32 0.01 60);
+  --sidebar: oklch(0.2 0.01 60);
+  --sidebar-foreground: oklch(0.92 0.008 80);
+  --sidebar-border: oklch(0.32 0.01 60);
+}
+
+/* ----------------------------------------------------------
+   High Contrast Mode
+   Overrides everything including creative theme colours
+   ---------------------------------------------------------- */
+
+/* Light + high contrast */
+:root[data-a11y-mode='high-contrast'] {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0 0 0);
+  --primary: oklch(0.3 0.15 250);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9 0 0);
+  --secondary-foreground: oklch(0.1 0 0);
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.2 0 0);
+  --accent: oklch(0.9 0 0);
+  --accent-foreground: oklch(0.1 0 0);
+  --destructive: oklch(0.45 0.25 25);
+  --border: oklch(0 0 0);
+  --input: oklch(0 0 0);
+  --ring: oklch(0 0 0);
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0 0 0);
+  --sidebar-primary: oklch(0.3 0.15 250);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9 0 0);
+  --sidebar-accent-foreground: oklch(0.1 0 0);
+  --sidebar-border: oklch(0 0 0);
+  --sidebar-ring: oklch(0 0 0);
+  --theme-heading-glow: none;
+  --theme-shadow: none;
+  --theme-scanline-opacity: 0;
+  --theme-border-width: 2px;
+}
+
+/* Dark + high contrast */
+.dark[data-a11y-mode='high-contrast'] {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.05 0 0);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.05 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.75 0.15 250);
+  --primary-foreground: oklch(0 0 0);
+  --secondary: oklch(0.15 0 0);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.1 0 0);
+  --muted-foreground: oklch(0.8 0 0);
+  --accent: oklch(0.15 0 0);
+  --accent-foreground: oklch(0.95 0 0);
+  --destructive: oklch(0.65 0.25 25);
+  --border: oklch(1 0 0);
+  --input: oklch(1 0 0);
+  --ring: oklch(1 0 0);
+  --sidebar: oklch(0.05 0 0);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.75 0.15 250);
+  --sidebar-primary-foreground: oklch(0 0 0);
+  --sidebar-accent: oklch(0.15 0 0);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(1 0 0);
+  --sidebar-ring: oklch(1 0 0);
+  --theme-heading-glow: none;
+  --theme-shadow: none;
+  --theme-scanline-opacity: 0;
+  --theme-border-width: 2px;
+}
+
+/* ----------------------------------------------------------
+   Large Text Mode — Scale only, no colour changes
+   ---------------------------------------------------------- */
+[data-a11y-mode='large-text'] {
+  --a11y-font-size-scale: 1.25;
+}
+
+/* ----------------------------------------------------------
+   Combined state: High-contrast + creative theme effects
+   Suppress visual effects that reduce contrast
+   ---------------------------------------------------------- */
+[data-a11y-mode='high-contrast'][data-theme='retro-terminal'],
+[data-a11y-mode='high-contrast'][data-theme='synthwave'],
+[data-a11y-mode='high-contrast'][data-theme='minimal-ink'] {
+  --theme-heading-glow: none;
+  --theme-shadow: none;
+  --theme-scanline-opacity: 0;
+}
+
+/* ----------------------------------------------------------
+   System: forced-colors (Windows High Contrast)
+   ---------------------------------------------------------- */
+@media (forced-colors: active) {
+  :root {
+    --theme-heading-glow: none;
+    --theme-shadow: none;
+    --theme-scanline-opacity: 0;
+  }
+}
+
+/* ----------------------------------------------------------
+   System: prefers-contrast auto-detection hint
+   The actual activation is handled by the useAccessibility hook.
+   This provides a CSS-only fallback for non-JS environments.
+   ---------------------------------------------------------- */
+@media (prefers-contrast: more) {
+  :root:not([data-a11y-mode]) {
+    --theme-border-width: 2px;
+  }
+}

@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CopyButton } from './CopyButton';
 import { useTheme } from '@/hooks/useTheme';
+import { getShikiTheme } from '@/themes';
 
 const ShikiHighlighter = lazy(() =>
   import('./ShikiHighlighter').then((mod) => ({
@@ -31,7 +32,7 @@ export function CodeBlock({
   title,
   showLineNumbers = false,
 }: CodeBlockProps) {
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, creativeTheme } = useTheme();
 
   return (
     <Card className="group relative overflow-hidden border-border bg-muted/40">
@@ -64,7 +65,7 @@ export function CodeBlock({
           <ShikiHighlighter
             code={code}
             language={language}
-            theme={resolvedTheme === 'dark' ? 'github-dark' : 'github-light'}
+            theme={getShikiTheme(resolvedTheme, creativeTheme)}
             showLineNumbers={showLineNumbers}
           />
         </Suspense>

@@ -40,7 +40,7 @@ export function SectionPage() {
   const CustomComponent = sectionComponents[section.slug];
 
   return (
-    <article>
+    <article className="content-area">
       {/* Section header */}
       <header className="mb-8">
         <div className="mb-3 flex items-center gap-2">
