@@ -87,6 +87,8 @@ export function Header() {
             variant="ghost"
             size="icon"
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -101,6 +103,7 @@ export function Header() {
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
         <nav
+          id="mobile-nav"
           className="border-t border-border bg-background px-4 py-3 md:hidden"
           aria-label="Mobile navigation"
         >

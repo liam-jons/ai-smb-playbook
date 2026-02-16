@@ -496,10 +496,18 @@ export function ClaudeMdSection() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="pb-2 pr-4 font-medium">Type</th>
-                  <th className="pb-2 pr-4 font-medium">Location</th>
-                  <th className="pb-2 pr-4 font-medium">Purpose</th>
-                  <th className="pb-2 font-medium">Shared?</th>
+                  <th scope="col" className="pb-2 pr-4 font-medium">
+                    Type
+                  </th>
+                  <th scope="col" className="pb-2 pr-4 font-medium">
+                    Location
+                  </th>
+                  <th scope="col" className="pb-2 pr-4 font-medium">
+                    Purpose
+                  </th>
+                  <th scope="col" className="pb-2 font-medium">
+                    Shared?
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -733,11 +741,11 @@ export function ClaudeMdSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium" />
-                <th className="pb-2 pr-4 font-medium">
+                <th scope="col" className="pb-2 pr-4 font-medium" />
+                <th scope="col" className="pb-2 pr-4 font-medium">
                   claude-md-improver (skill)
                 </th>
-                <th className="pb-2 font-medium">
+                <th scope="col" className="pb-2 font-medium">
                   /revise-claude-md (command)
                 </th>
               </tr>

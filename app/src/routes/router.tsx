@@ -1,7 +1,8 @@
-import { createBrowserRouter, Navigate } from 'react-router';
+import { createBrowserRouter } from 'react-router';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { TrackLayout } from '@/components/layout/TrackLayout';
 import { HomePage } from '@/components/layout/HomePage';
+import { NotFoundPage } from '@/components/layout/NotFoundPage';
 import { SectionPage } from '@/components/content/SectionPage';
 import { ProcessDocPage } from '@/content/shared/ProcessDocPage';
 
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <Navigate to="/" replace />,
+        element: <NotFoundPage />,
       },
     ],
   },

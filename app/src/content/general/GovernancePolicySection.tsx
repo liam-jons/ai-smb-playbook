@@ -1087,11 +1087,21 @@ export function GovernancePolicySection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="py-2 pr-4 font-medium">Type</th>
-                <th className="py-2 pr-4 font-medium">Risk Tier</th>
-                <th className="py-2 pr-4 font-medium">Approval</th>
-                <th className="py-2 pr-4 font-medium">Context Cost</th>
-                <th className="py-2 font-medium">Maintenance</th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Type
+                </th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Risk Tier
+                </th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Approval
+                </th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Context Cost
+                </th>
+                <th scope="col" className="py-2 font-medium">
+                  Maintenance
+                </th>
               </tr>
             </thead>
             <tbody>

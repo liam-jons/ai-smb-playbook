@@ -25,6 +25,7 @@ export function Footer() {
           </div>
           <div className="flex gap-4 text-xs">
             <button
+              type="button"
               onClick={() => {
                 const event = new CustomEvent('open-feedback');
                 window.dispatchEvent(event);

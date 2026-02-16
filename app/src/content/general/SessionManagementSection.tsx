@@ -92,11 +92,15 @@ export function SessionManagementSection() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-left">
-                    <th className="py-2 pr-4 font-medium">Context usage</th>
-                    <th className="py-2 pr-4 font-medium">
+                    <th scope="col" className="py-2 pr-4 font-medium">
+                      Context usage
+                    </th>
+                    <th scope="col" className="py-2 pr-4 font-medium">
                       What you will notice
                     </th>
-                    <th className="py-2 font-medium">What to do</th>
+                    <th scope="col" className="py-2 font-medium">
+                      What to do
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -469,9 +473,15 @@ export function SessionManagementSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="py-2 pr-4 font-medium">Aspect</th>
-                <th className="py-2 pr-4 font-medium">claude.ai / Desktop</th>
-                <th className="py-2 font-medium">Claude Code</th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Aspect
+                </th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  claude.ai / Desktop
+                </th>
+                <th scope="col" className="py-2 font-medium">
+                  Claude Code
+                </th>
               </tr>
             </thead>
             <tbody>

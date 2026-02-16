@@ -103,7 +103,7 @@ export function FeedbackWidget() {
       {/* Floating button — visible on all pages */}
       <Button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full shadow-lg md:hidden"
+        className="fixed bottom-20 right-6 z-50 h-12 w-12 rounded-full shadow-lg md:hidden"
         size="icon"
         aria-label="Send feedback"
       >

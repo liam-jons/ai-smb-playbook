@@ -507,9 +507,15 @@ export function CodebaseMappingSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Agent</th>
-                <th className="pb-2 pr-4 font-medium">Focus Area</th>
-                <th className="pb-2 font-medium">Documents Produced</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Agent
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Focus Area
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  Documents Produced
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -689,8 +695,12 @@ export function CodebaseMappingSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Mapper Output</th>
-                <th className="pb-2 font-medium">Feeds Into</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Mapper Output
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  Feeds Into
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -730,10 +740,12 @@ export function CodebaseMappingSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">
+                <th scope="col" className="pb-2 pr-4 font-medium">
                   When Claude is&hellip;
                 </th>
-                <th className="pb-2 font-medium">It loads&hellip;</th>
+                <th scope="col" className="pb-2 font-medium">
+                  It loads&hellip;
+                </th>
               </tr>
             </thead>
             <tbody>

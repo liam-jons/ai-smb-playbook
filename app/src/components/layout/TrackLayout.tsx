@@ -24,14 +24,22 @@ export function TrackLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('sidebar-collapsed') === 'true';
+    try {
+      if (typeof window === 'undefined') return false;
+      return localStorage.getItem('sidebar-collapsed') === 'true';
+    } catch {
+      return false;
+    }
   });
 
   const toggleSidebar = useCallback(() => {
     setSidebarCollapsed((prev) => {
       const next = !prev;
-      localStorage.setItem('sidebar-collapsed', String(next));
+      try {
+        localStorage.setItem('sidebar-collapsed', String(next));
+      } catch {
+        // Ignore — private browsing or storage full
+      }
       return next;
     });
   }, []);
@@ -135,7 +143,7 @@ export function TrackLayout() {
                 <Link
                   to={`/${track}/${prev.slug}`}
                   className={cn(
-                    'group flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors',
+                    'group flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors',
                     'hover:bg-accent hover:text-foreground',
                   )}
                 >
@@ -154,7 +162,7 @@ export function TrackLayout() {
                 <Link
                   to={`/${track}/${next.slug}`}
                   className={cn(
-                    'group flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors',
+                    'group flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors',
                     'hover:bg-accent hover:text-foreground',
                   )}
                 >

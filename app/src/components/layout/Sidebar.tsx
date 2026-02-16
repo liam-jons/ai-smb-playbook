@@ -208,7 +208,7 @@ export function Sidebar({
                       <span>
                         <span className="mr-1.5 text-xs text-muted-foreground/70">
                           {section.id}
-                        </span>
+                        </span>{' '}
                         {section.sidebarTitle ?? section.title}
                       </span>
                     )}

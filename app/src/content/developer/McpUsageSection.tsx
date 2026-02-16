@@ -293,10 +293,18 @@ export function McpUsageSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Feature</th>
-                <th className="pb-2 pr-4 font-medium">When it loads</th>
-                <th className="pb-2 pr-4 font-medium">Context cost</th>
-                <th className="pb-2 font-medium">Mitigation</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Feature
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  When it loads
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Context cost
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  Mitigation
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -707,9 +715,15 @@ export function McpUsageSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Need</th>
-                <th className="pb-2 pr-4 font-medium">Use</th>
-                <th className="pb-2 font-medium">Why</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Need
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Use
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  Why
+                </th>
               </tr>
             </thead>
             <tbody>

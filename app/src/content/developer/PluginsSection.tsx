@@ -353,10 +353,18 @@ export function PluginsSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Approach</th>
-                <th className="pb-2 pr-4 font-medium">Auto-updates</th>
-                <th className="pb-2 pr-4 font-medium">Team sharing</th>
-                <th className="pb-2 font-medium">Setup effort</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Approach
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Auto-updates
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Team sharing
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  Setup effort
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -551,10 +559,18 @@ export function PluginsSection() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-left">
-                    <th className="pb-2 pr-4 font-medium">Plugin</th>
-                    <th className="pb-2 pr-4 font-medium">Author</th>
-                    <th className="pb-2 pr-4 font-medium">Components</th>
-                    <th className="pb-2 font-medium">Install</th>
+                    <th scope="col" className="pb-2 pr-4 font-medium">
+                      Plugin
+                    </th>
+                    <th scope="col" className="pb-2 pr-4 font-medium">
+                      Author
+                    </th>
+                    <th scope="col" className="pb-2 pr-4 font-medium">
+                      Components
+                    </th>
+                    <th scope="col" className="pb-2 font-medium">
+                      Install
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -670,9 +686,15 @@ export function PluginsSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Aspect</th>
-                <th className="pb-2 pr-4 font-medium">Official Marketplace</th>
-                <th className="pb-2 font-medium">Third-Party Marketplaces</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Aspect
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Official Marketplace
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  Third-Party Marketplaces
+                </th>
               </tr>
             </thead>
             <tbody>

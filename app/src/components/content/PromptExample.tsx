@@ -46,7 +46,7 @@ export function PromptExample({
         <div className="group relative rounded-md border border-border bg-muted/50 p-4">
           <CopyButton
             text={prompt}
-            className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100"
+            className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
           />
           <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">
             {prompt}

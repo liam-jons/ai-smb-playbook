@@ -321,9 +321,15 @@ export function RegressionTestingSection() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="pb-2 pr-4 font-medium">Capability</th>
-                <th className="pb-2 pr-4 font-medium">Ghost Inspector</th>
-                <th className="pb-2 font-medium">AI-Driven (Current State)</th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Capability
+                </th>
+                <th scope="col" className="pb-2 pr-4 font-medium">
+                  Ghost Inspector
+                </th>
+                <th scope="col" className="pb-2 font-medium">
+                  AI-Driven (Current State)
+                </th>
               </tr>
             </thead>
             <tbody>
