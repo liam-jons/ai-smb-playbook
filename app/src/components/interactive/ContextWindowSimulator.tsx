@@ -308,7 +308,7 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
         mcpServers={state.mcpServers}
         claudeMdLines={state.claudeMdLines}
         skillCount={state.skillCount}
-        toolSearchEnabled={state.toolSearchEnabled}
+        toolSearchEnabled={isDev ? state.toolSearchEnabled : true}
         activePreset={state.activePreset}
         isDev={isDev}
         usagePercentage={usagePercentage}

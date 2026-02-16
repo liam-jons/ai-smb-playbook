@@ -11,6 +11,7 @@ import {
   type ContextSegmentData,
   TOTAL_CONTEXT,
   formatTokens,
+  getSegmentLabel,
 } from '@/content/shared/context-simulator-data';
 
 interface SegmentRender {
@@ -61,6 +62,7 @@ export function ContextWindowBar({
         {segments.map((s) => {
           const minWidth = Math.max(s.percentage, 1);
           const showLabel = s.percentage > 5;
+          const displayLabel = getSegmentLabel(s.segment, isDev);
 
           return (
             <Tooltip key={s.segment.id}>
@@ -80,7 +82,7 @@ export function ContextWindowBar({
                       'bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(0,0,0,0.06)_4px,rgba(0,0,0,0.06)_8px)] dark:bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.06)_4px,rgba(255,255,255,0.06)_8px)]',
                   )}
                   style={{ width: `${minWidth}%` }}
-                  aria-label={`${s.segment.label}: approximately ${formatTokens(s.tokens)} tokens, ${s.percentage.toFixed(1)}% of context window`}
+                  aria-label={`${displayLabel}: approximately ${formatTokens(s.tokens)} tokens, ${s.percentage.toFixed(1)}% of context window`}
                 >
                   {/* Degradation overlay on conversation segment */}
                   {s.segment.isConversation &&
@@ -135,14 +137,14 @@ export function ContextWindowBar({
                   {/* Segment label */}
                   {showLabel && !isCompacted && (
                     <span className="relative z-20 hidden truncate px-1 text-[10px] text-white drop-shadow-sm sm:inline">
-                      {s.segment.label}
+                      {displayLabel}
                     </span>
                   )}
                 </motion.div>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="max-w-72">
                 <div className="space-y-1">
-                  <p className="font-semibold">{s.segment.label}</p>
+                  <p className="font-semibold">{displayLabel}</p>
                   <p className="text-xs text-muted-foreground">
                     ~{formatTokens(s.tokens)} tokens ({s.percentage.toFixed(1)}
                     %)
@@ -216,7 +218,7 @@ export function ContextWindowBar({
               )}
             />
             <span className="text-[11px] text-muted-foreground">
-              {s.segment.label}
+              {getSegmentLabel(s.segment, isDev)}
             </span>
           </div>
         ))}

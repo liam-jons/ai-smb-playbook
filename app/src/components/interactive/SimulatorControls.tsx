@@ -247,18 +247,20 @@ function SliderControls({
     <>
       <RangeSlider
         id={`${sliderId}-mcp`}
-        label="MCP Servers"
+        label={isDev ? 'MCP Servers' : 'Connected extensions'}
         value={mcpServers}
         min={0}
         max={10}
         step={1}
         tokenDisplay={`~${formatTokens(mcpTokens)} tokens`}
-        ariaValueText={`${mcpServers} MCP servers, approximately ${formatTokens(mcpTokens)} tokens`}
+        ariaValueText={`${mcpServers} ${isDev ? 'MCP servers' : 'extensions'}, approximately ${formatTokens(mcpTokens)} tokens`}
         onChange={onMcpServersChange}
       />
       <RangeSlider
         id={`${sliderId}-cmd`}
-        label="CLAUDE.md size (lines)"
+        label={
+          isDev ? 'CLAUDE.md size (lines)' : 'Project instructions (lines)'
+        }
         value={claudeMdLines}
         min={0}
         max={1000}

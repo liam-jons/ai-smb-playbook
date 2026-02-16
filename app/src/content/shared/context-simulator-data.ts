@@ -103,6 +103,7 @@ export const segments: ContextSegmentData[] = [
   {
     id: 'mcp-tools',
     label: 'MCP Tools',
+    generalLabel: 'Extensions',
     defaultTokens: 12_000,
     colour: 'bg-amber-500',
     colourDark: 'dark:bg-amber-400',

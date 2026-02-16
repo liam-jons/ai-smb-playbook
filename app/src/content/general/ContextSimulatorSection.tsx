@@ -13,6 +13,7 @@ import { useTrack } from '@/hooks/useTrack';
 import {
   sessionHandoffPrompt,
   compactInstructions,
+  contextTipVariants,
 } from '@/content/shared/context-simulator-data';
 
 export function ContextSimulatorSection() {
@@ -355,9 +356,9 @@ export function ContextSimulatorSection() {
                   until quality drops.
                 </li>
                 <li>
-                  <strong>Put critical instructions in CLAUDE.md.</strong> These
-                  load at the start of every session and benefit from primacy
-                  bias (the model pays strong attention to what comes first).
+                  {isDev
+                    ? contextTipVariants.tip3.developer
+                    : contextTipVariants.tip3.general}
                 </li>
                 <li>
                   <strong>
@@ -367,9 +368,9 @@ export function ContextSimulatorSection() {
                   (recency bias).
                 </li>
                 <li>
-                  <strong>Do not rely on mid-conversation instructions.</strong>{' '}
-                  If you said "always use TypeScript" ten messages ago, it may
-                  have faded. Put it in CLAUDE.md instead.
+                  {isDev
+                    ? contextTipVariants.tip5.developer
+                    : contextTipVariants.tip5.general}
                 </li>
                 {isDev && (
                   <>
