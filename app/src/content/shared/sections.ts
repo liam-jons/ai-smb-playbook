@@ -37,6 +37,7 @@ export const sections: Section[] = [
     id: '1.4',
     slug: 'skills-extensions',
     title: 'Skills, Extensions & Decision Tree',
+    sidebarTitle: 'Extending Claude',
     subtitle: 'Choosing the right tool for the job',
     track: 'both',
     description:
@@ -67,8 +68,9 @@ export const sections: Section[] = [
     id: '1.7',
     slug: 'recurring-tasks',
     title: 'Recurring & Scheduled Tasks',
+    sidebarTitle: 'Task Automation',
     subtitle: 'Automating the repetitive',
-    track: 'general',
+    track: 'both',
     description:
       'How to set up recurring prompts and scheduled workflows for routine business tasks.',
     icon: 'Clock',
@@ -149,6 +151,7 @@ export const sections: Section[] = [
     id: '1.15',
     slug: 'technical-debt',
     title: 'Codebase Auditing & Technical Debt',
+    sidebarTitle: 'Code Auditing & Debt',
     subtitle: 'Using AI for code quality',
     track: 'developer',
     description:

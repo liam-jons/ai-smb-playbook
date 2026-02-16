@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Outlet, Navigate, useParams, Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,30 @@ export function TrackLayout() {
   const { section: sectionSlug } = useParams<{ section: string }>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('sidebar-collapsed') === 'true';
+  });
+
+  const toggleSidebar = useCallback(() => {
+    setSidebarCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem('sidebar-collapsed', String(next));
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleSidebar]);
+
   if (!isValidTrack) {
     return <Navigate to="/" replace />;
   }
@@ -43,9 +67,23 @@ export function TrackLayout() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-1 gap-0">
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 border-r border-border lg:block">
-        <ScrollArea className="h-[calc(100vh-3.5rem-1px)] py-4 pr-2 pl-4">
-          <Sidebar track={track} />
+      <aside
+        className={cn(
+          'hidden shrink-0 border-r border-border transition-all duration-300 lg:block',
+          sidebarCollapsed ? 'w-14' : 'w-72',
+        )}
+      >
+        <ScrollArea
+          className={cn(
+            'h-[calc(100vh-3.5rem-1px)] py-4',
+            sidebarCollapsed ? 'px-1.5' : 'pr-2 pl-4',
+          )}
+        >
+          <Sidebar
+            track={track}
+            collapsed={sidebarCollapsed}
+            onToggleCollapse={toggleSidebar}
+          />
         </ScrollArea>
       </aside>
 

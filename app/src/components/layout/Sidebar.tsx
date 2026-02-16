@@ -18,7 +18,16 @@ import {
   Plug,
   Puzzle,
   Search,
+  Package,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import type { Track, Section } from '@/content/shared/types';
 
 type IconComponent = ComponentType<
@@ -41,33 +50,32 @@ const iconMap: Record<string, IconComponent> = {
   Plug,
   Puzzle,
   Search,
+  Package,
 };
 
-/** Parse the sub-number from a section ID like "1.7" -> 7, "1.16" -> 16 */
-function parseSectionNumber(id: string): number {
-  const parts = id.split('.');
-  return parts.length > 1 ? parseInt(parts[1], 10) : 0;
-}
+type Annotation =
+  | { type: 'group-header'; label: string; first: boolean }
+  | { type: 'track-note' };
 
-/** Detect numbering gaps between adjacent sections and return a note to display. */
-function getGapNote(
-  prev: Section | undefined,
-  current: Section,
+/** Return an annotation to render before this section, if any. */
+function getAnnotation(
+  section: Section,
+  index: number,
   track: Track,
-): string | null {
-  if (!prev) return null;
-
-  const prevNum = parseSectionNumber(prev.id);
-  const currNum = parseSectionNumber(current.id);
-
-  // Only show a note when more than one section number is skipped
-  if (currNum - prevNum <= 1) return null;
-
-  if (track === 'general') {
-    return 'Sections 1.8\u20131.15 are in the Developer track';
+): Annotation | null {
+  // "Core Topics" header before the very first section (both tracks)
+  if (index === 0) {
+    return { type: 'group-header', label: 'Core Topics', first: true };
   }
-  if (track === 'developer') {
-    return 'Section 1.7 is in the General track';
+
+  // Developer track: "Developer Topics" header before 1.8
+  if (track === 'developer' && section.id === '1.8') {
+    return { type: 'group-header', label: 'Developer Topics', first: false };
+  }
+
+  // General track: track note between 1.7 and 1.16
+  if (track === 'general' && section.id === '1.16') {
+    return { type: 'track-note' };
   }
 
   return null;
@@ -77,54 +85,147 @@ interface SidebarProps {
   track: Track;
   className?: string;
   onNavClick?: () => void;
+  collapsed?: boolean;
+  onToggleCollapse?: () => void;
 }
 
-export function Sidebar({ track, className, onNavClick }: SidebarProps) {
+export function Sidebar({
+  track,
+  className,
+  onNavClick,
+  collapsed,
+  onToggleCollapse,
+}: SidebarProps) {
   const { section: activeSlug } = useParams<{ section: string }>();
   const sections = getSectionsForTrack(track);
 
   return (
-    <nav
-      className={cn('flex flex-col gap-0.5', className)}
-      aria-label="Section navigation"
-    >
-      {sections.map((section, index) => {
-        const Icon = section.icon ? iconMap[section.icon] : null;
-        const isActive = activeSlug === section.slug;
-        const prevSection = index > 0 ? sections[index - 1] : undefined;
-        const gapNote = getGapNote(prevSection, section, track);
-
-        return (
-          <div key={section.id}>
-            {gapNote && (
-              <div className="my-2 border-t border-border px-3 pt-2">
-                <p className="text-[11px] leading-snug text-muted-foreground/60 italic">
-                  {gapNote}
-                </p>
-              </div>
+    <TooltipProvider>
+      <nav
+        className={cn('flex flex-col gap-0.5', className)}
+        aria-label="Section navigation"
+      >
+        {onToggleCollapse && (
+          <div
+            className={cn(
+              'mb-2 flex',
+              collapsed ? 'justify-center' : 'justify-end pr-1',
             )}
-            <Link
-              to={`/${track}/${section.slug}`}
-              onClick={onNavClick}
-              className={cn(
-                'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors',
-                isActive
-                  ? 'bg-accent font-medium text-accent-foreground'
-                  : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-              )}
-              aria-current={isActive ? 'page' : undefined}
+          >
+            <button
+              onClick={onToggleCollapse}
+              className="rounded-md p-1.5 text-muted-foreground/60 transition-colors hover:bg-accent hover:text-foreground"
+              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={
+                collapsed
+                  ? 'Expand sidebar (\u2318B)'
+                  : 'Collapse sidebar (\u2318B)'
+              }
             >
-              {Icon && <Icon className="h-4 w-4 shrink-0" />}
-              <span className="truncate">
-                <span className="mr-1.5 text-xs text-muted-foreground/70">
-                  {section.id}
-                </span>
-                {section.title}
-              </span>
-            </Link>
+              {collapsed ? (
+                <PanelLeftOpen className="h-4 w-4" />
+              ) : (
+                <PanelLeftClose className="h-4 w-4" />
+              )}
+            </button>
           </div>
-        );
-      })}
-    </nav>
+        )}
+
+        {sections.map((section, index) => {
+          const Icon = section.icon ? iconMap[section.icon] : null;
+          const isActive = activeSlug === section.slug;
+          const annotation = getAnnotation(section, index, track);
+          const isStarterKit = section.slug === 'starter-kit';
+          const needsDivider = isStarterKit && !annotation && index > 0;
+
+          return (
+            <div key={section.id}>
+              {/* Group headers */}
+              {!collapsed && annotation?.type === 'group-header' && (
+                <div
+                  className={cn(
+                    'px-3 pb-1',
+                    annotation.first ? 'pt-0' : 'mt-4 pt-2',
+                  )}
+                >
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+                    {annotation.label}
+                  </span>
+                </div>
+              )}
+
+              {/* General track note between core topics and starter kit */}
+              {!collapsed && annotation?.type === 'track-note' && (
+                <div className="my-2 border-y border-border px-3 py-3">
+                  <p className="text-[11px] leading-snug text-muted-foreground/60 italic">
+                    More topics are available in the Developer Playbook.
+                  </p>
+                  <Link
+                    to="/developer"
+                    onClick={onNavClick}
+                    className="mt-1 inline-block text-[11px] font-medium text-primary hover:underline"
+                  >
+                    Switch to Developer track
+                  </Link>
+                </div>
+              )}
+
+              {/* Divider before Starter Kit when no annotation already provides one */}
+              {!collapsed && needsDivider && (
+                <div className="my-2 border-t border-border" />
+              )}
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    to={`/${track}/${section.slug}`}
+                    onClick={onNavClick}
+                    className={cn(
+                      'flex rounded-md py-2 text-sm transition-colors',
+                      collapsed
+                        ? 'justify-center px-0'
+                        : 'items-start gap-2.5 px-3',
+                      isStarterKit
+                        ? isActive
+                          ? 'bg-primary/10 font-medium text-primary'
+                          : 'bg-primary/5 font-medium text-primary hover:bg-primary/10'
+                        : isActive
+                          ? 'bg-accent font-medium text-accent-foreground'
+                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                    )}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    {Icon && (
+                      <Icon
+                        className={cn(
+                          'h-4 w-4 shrink-0',
+                          !collapsed && 'mt-0.5',
+                          isStarterKit && 'text-primary',
+                        )}
+                      />
+                    )}
+                    {!collapsed && (
+                      <span>
+                        <span className="mr-1.5 text-xs text-muted-foreground/70">
+                          {section.id}
+                        </span>
+                        {section.sidebarTitle ?? section.title}
+                      </span>
+                    )}
+                  </Link>
+                </TooltipTrigger>
+                {collapsed && (
+                  <TooltipContent side="right" sideOffset={8}>
+                    <span>
+                      {section.id} {section.sidebarTitle ?? section.title}
+                    </span>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </div>
+          );
+        })}
+      </nav>
+    </TooltipProvider>
   );
 }

@@ -7,6 +7,7 @@ import {
   MessageSquareHeart,
   Download,
   BookOpen,
+  Package,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
@@ -38,7 +39,7 @@ function getQuickWins(track: string) {
       title: 'Explore the starter kit',
       description:
         'Drop-in skill files, commands, and templates \u2014 ready to paste into Claude Desktop or Claude Code.',
-      link: { to: `/${track}/skills-extensions`, label: 'Go to Skills' },
+      link: { to: `/${track}/starter-kit`, label: 'Go to Starter Kit' },
     },
   ];
 }
@@ -293,6 +294,31 @@ export function WelcomeSection() {
           </li>
         </ul>
       </motion.section>
+
+      {/* ── Starter Kit Callout ────────────────────────── */}
+      <Link
+        to={`/${track}/starter-kit`}
+        className="group block rounded-lg border border-primary/20 bg-primary/5 px-5 py-5 transition-colors hover:bg-primary/10"
+      >
+        <div className="flex items-start gap-4">
+          <div className="rounded-md bg-primary/10 p-2">
+            <Package className="h-5 w-5 text-primary" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-base font-semibold text-foreground">
+              Starter Kit — Ready-to-Use Files
+            </h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              Drop-in skill files, commands, templates, and governance policy —
+              everything you need to configure Claude for your team.
+            </p>
+            <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+              Go to Starter Kit
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </div>
+        </div>
+      </Link>
 
       <Separator />
 

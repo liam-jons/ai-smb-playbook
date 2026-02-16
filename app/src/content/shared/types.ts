@@ -13,6 +13,8 @@ export interface Section {
   track: Track | 'both';
   /** Brief description of the section content */
   description: string;
+  /** Shorter title for sidebar display (falls back to title) */
+  sidebarTitle?: string;
   /** Lucide icon name for navigation */
   icon?: string;
 }
