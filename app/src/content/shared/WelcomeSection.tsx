@@ -2,61 +2,17 @@ import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import {
   Users,
-  Code,
   ArrowRight,
   Zap,
   MessageSquareHeart,
   Download,
   BookOpen,
-  Brain,
-  MessageSquare,
-  GitBranch,
-  Shield,
-  PenTool,
-  FileCode,
-  Map,
-  AlertTriangle,
-  TestTube,
-  Plug,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { CalloutCard } from '@/components/content/CalloutCard';
-import { cn } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { useTrack } from '@/hooks/useTrack';
-
-/* ------------------------------------------------------------------ */
-/*  Static data — hoisted outside component to avoid re-creation      */
-/* ------------------------------------------------------------------ */
-
-const GENERAL_HIGHLIGHTS = [
-  { icon: Brain, label: 'How context works (interactive simulator)' },
-  { icon: MessageSquare, label: 'Session management and handoff prompts' },
-  { icon: GitBranch, label: 'Skills, extensions, and the decision tree' },
-  { icon: Shield, label: 'AI governance policy' },
-  { icon: PenTool, label: 'Brand voice and UK English' },
-] as const;
-
-const DEV_HIGHLIGHTS = [
-  { icon: FileCode, label: 'CLAUDE.md files and documentation structure' },
-  { icon: Map, label: 'Codebase mapping with AI agents' },
-  {
-    icon: AlertTriangle,
-    label: 'Avoiding hallucinations and quick-fix patterns',
-  },
-  { icon: TestTube, label: 'AI-driven regression testing' },
-  { icon: Plug, label: 'MCP and plugin recommendations' },
-] as const;
 
 function getQuickWins(track: string) {
   return [
@@ -340,168 +296,6 @@ export function WelcomeSection() {
 
       <Separator />
 
-      {/* ── Track Selector ───────────────────────────────── */}
-      <motion.section
-        {...motionFadeProps}
-        aria-labelledby="choose-track-heading"
-      >
-        <h2
-          id="choose-track-heading"
-          className="mb-6 text-xl font-semibold tracking-tight"
-        >
-          Choose Your Track
-        </h2>
-
-        <div className="grid gap-6 sm:grid-cols-2">
-          {/* General track card */}
-          <Link
-            to="/general"
-            className="group block focus-visible:outline-none"
-          >
-            <Card
-              className={cn(
-                'h-full transition-shadow duration-200',
-                'hover:shadow-md',
-                'group-focus-visible:ring-[3px] group-focus-visible:ring-ring/50',
-                'active:scale-[0.99] transition-transform duration-100',
-              )}
-            >
-              <CardHeader>
-                <div className="mb-2 flex items-center gap-2">
-                  <div
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"
-                    aria-hidden="true"
-                  >
-                    <Users className="h-5 w-5" />
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    General
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg">
-                  I use Claude in the browser or desktop app
-                </CardTitle>
-                <CardDescription className="text-sm leading-relaxed">
-                  General track — context management, skills, governance, brand
-                  voice, and more.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-[gap] duration-200">
-                  Start the General track
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </CardContent>
-            </Card>
-          </Link>
-
-          {/* Developer track card */}
-          <Link
-            to="/developer"
-            className="group block focus-visible:outline-none"
-          >
-            <Card
-              className={cn(
-                'h-full transition-shadow duration-200',
-                'hover:shadow-md',
-                'group-focus-visible:ring-[3px] group-focus-visible:ring-ring/50',
-                'active:scale-[0.99] transition-transform duration-100',
-              )}
-            >
-              <CardHeader>
-                <div className="mb-2 flex items-center gap-2">
-                  <div
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"
-                    aria-hidden="true"
-                  >
-                    <Code className="h-5 w-5" />
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    Developer
-                  </Badge>
-                </div>
-                <CardTitle className="text-lg">
-                  I use Claude Code for development
-                </CardTitle>
-                <CardDescription className="text-sm leading-relaxed">
-                  Developer track — CLAUDE.md files, documentation structure,
-                  testing, plugins, and more.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-[gap] duration-200">
-                  Start the Developer track
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </CardContent>
-            </Card>
-          </Link>
-        </div>
-
-        <p className="mt-4 text-sm text-muted-foreground">
-          Not sure? Start with the General track — it covers the fundamentals
-          that apply to everyone. You can switch to the Developer track at any
-          time.
-        </p>
-      </motion.section>
-
-      <Separator />
-
-      {/* ── What's Covered ───────────────────────────────── */}
-      <section aria-labelledby="whats-covered-heading">
-        <h2
-          id="whats-covered-heading"
-          className="mb-6 text-xl font-semibold tracking-tight"
-        >
-          What's Covered
-        </h2>
-        <div className="grid gap-8 sm:grid-cols-2">
-          {/* General column */}
-          <div>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              General Track
-            </h3>
-            <ul className="space-y-2.5">
-              {GENERAL_HIGHLIGHTS.map(({ icon: Icon, label }) => (
-                <li
-                  key={label}
-                  className="flex items-start gap-2.5 text-sm text-foreground"
-                >
-                  <Icon
-                    className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                    aria-hidden="true"
-                  />
-                  <span>{label}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Developer column */}
-          <div>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Developer Track
-            </h3>
-            <ul className="space-y-2.5">
-              {DEV_HIGHLIGHTS.map(({ icon: Icon, label }) => (
-                <li
-                  key={label}
-                  className="flex items-start gap-2.5 text-sm text-foreground"
-                >
-                  <Icon
-                    className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                    aria-hidden="true"
-                  />
-                  <span>{label}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <Separator />
-
       {/* ── Quick Wins ───────────────────────────────────── */}
       <section aria-labelledby="quick-wins-heading">
         <h2
@@ -595,21 +389,40 @@ export function WelcomeSection() {
 
       {/* ── How This Was Built (Meta-narrative) ──────────── */}
       <section aria-labelledby="how-built-heading">
-        <h2 id="how-built-heading" className="sr-only">
-          How this playbook was built
+        <h2
+          id="how-built-heading"
+          className="mb-3 text-xl font-semibold tracking-tight"
+        >
+          How This Playbook Was Built
         </h2>
-        <CalloutCard variant="info" title="How this playbook was built">
-          <p className="leading-relaxed">
-            This playbook was built using the exact tools and workflows it
-            describes. The content was planned and researched using Claude with
-            structured prompts and session handoffs — the same techniques
-            covered in your training. The app itself was built by parallel
-            Claude Code agents, each working from a detailed spec. Skills,
-            CLAUDE.md files, and the governance principles described here were
-            used throughout. These are not theoretical techniques — they are the
-            same workflows that produced this deliverable.
-          </p>
-        </CalloutCard>
+        <p
+          className="mb-4 text-sm leading-relaxed text-muted-foreground"
+          style={{ maxWidth: '65ch' }}
+        >
+          This playbook was built using the exact tools and workflows it
+          describes. The content was planned and researched using Claude with
+          structured prompts and session handoffs — the same techniques covered
+          in your training. The app itself was built by parallel Claude Code
+          agents, each working from a detailed spec. Skills, CLAUDE.md files,
+          and the governance principles described here were used throughout.
+          These are not theoretical techniques — they are the same workflows
+          that produced this deliverable.
+        </p>
+        <p
+          className="mb-4 text-sm leading-relaxed text-muted-foreground"
+          style={{ maxWidth: '65ch' }}
+        >
+          Interested in the end-to-end process? The repeatable workflow document
+          captures every step — from recording the training sessions to
+          deploying this app — so it can be replicated for future projects.
+        </p>
+        <Link
+          to="/process"
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+        >
+          View the process document
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
       </section>
 
       <Separator />
@@ -643,33 +456,6 @@ export function WelcomeSection() {
           <MessageSquareHeart className="h-4 w-4" />
           Send Feedback
         </Button>
-      </section>
-
-      {/* ── Process Doc Link ─────────────────────────────── */}
-      <Separator />
-      <section aria-labelledby="process-doc-heading">
-        <h2
-          id="process-doc-heading"
-          className="mb-3 text-xl font-semibold tracking-tight"
-        >
-          How We Built This
-        </h2>
-        <p
-          className="mb-4 text-sm leading-relaxed text-muted-foreground"
-          style={{ maxWidth: '65ch' }}
-        >
-          Interested in the end-to-end process behind this deliverable? The
-          repeatable workflow document captures every step — from recording the
-          training sessions to deploying this app — so it can be replicated for
-          future projects.
-        </p>
-        <Link
-          to="/process"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-        >
-          View the process document
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
       </section>
     </div>
   );

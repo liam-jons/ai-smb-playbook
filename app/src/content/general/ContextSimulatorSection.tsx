@@ -106,6 +106,66 @@ export function ContextSimulatorSection() {
       </section>
 
       {/* ─────────────────────────────────────────────
+          Area 2b: Session Hygiene
+          ───────────────────────────────────────────── */}
+      <section aria-labelledby="session-hygiene-heading">
+        <h2
+          id="session-hygiene-heading"
+          className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
+          My Session Feels Slow — What Do I Do?
+        </h2>
+        <p className="mb-4 max-w-[65ch] text-sm text-muted-foreground">
+          If Claude seems sluggish, repetitive, or less precise than when you
+          started, the context window is likely getting full. Here is what to
+          do:
+        </p>
+
+        <ol className="max-w-[65ch] list-inside list-decimal space-y-3 text-sm leading-relaxed">
+          <li>
+            <strong>Start a fresh session.</strong> It costs nothing and is
+            almost always the right move. A clean context window gives Claude
+            its full attention back immediately.
+          </li>
+          <li>
+            <strong>Use a handoff prompt before closing.</strong> Ask Claude to
+            summarise the current state so you can paste it into the new
+            session. See{' '}
+            <Link
+              to={`/${track}/sessions`}
+              className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+            >
+              Session Management
+            </Link>{' '}
+            for ready-made handoff templates.
+          </li>
+          {isDev && (
+            <li>
+              <strong>
+                Check{' '}
+                <code className="rounded bg-muted px-1 py-0.5 text-xs font-mono">
+                  git status
+                </code>{' '}
+                before starting fresh.
+              </strong>{' '}
+              If you are using Claude Code, make sure you do not have
+              uncommitted work before closing the session. A quick{' '}
+              <code className="rounded bg-muted px-1 py-0.5 text-xs font-mono">
+                git status
+              </code>{' '}
+              confirms nothing will be lost.
+            </li>
+          )}
+          <li>
+            <strong>Remember why this happens.</strong> The context window
+            simulator above shows it clearly: as the window fills, Claude's
+            attention is spread thinner across more content. Starting fresh is
+            not losing progress — it is giving Claude room to think.
+          </li>
+        </ol>
+      </section>
+
+      {/* ─────────────────────────────────────────────
           Area 3: Educational Narrative
           ───────────────────────────────────────────── */}
       <section aria-labelledby="narrative-heading">

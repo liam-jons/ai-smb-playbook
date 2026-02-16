@@ -1070,9 +1070,9 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
   {
     id: 'template-governance-policy',
     name: 'Governance Policy',
-    description: 'Parameterised AI governance policy for UK SMBs.',
+    description: 'Customisable AI governance policy for UK SMBs.',
     longDescription:
-      'A comprehensive governance policy template covering all AI extension types (skills, plugins, MCPs, commands, agents, hooks). Parameterised with {{PLACEHOLDER}} variables for company name, industry, team size, and more. Includes approval workflows, risk assessment criteria, GDPR considerations, and a review schedule. Designed for UK organisations.',
+      'A comprehensive governance policy template covering all AI extension types (skills, plugins, MCPs, commands, agents, hooks). Uses fill-in-the-blanks {{PLACEHOLDER}} variables for company name, industry, team size, and more. Includes approval workflows, risk assessment criteria, GDPR considerations, and a review schedule. Designed for UK organisations.',
     category: 'template',
     tracks: ['general', 'developer'],
     priority: 'medium',

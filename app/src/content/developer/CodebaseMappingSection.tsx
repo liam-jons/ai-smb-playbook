@@ -409,6 +409,45 @@ export function CodebaseMappingSection() {
 
       <Separator />
 
+      {/* Common Mapper Inaccuracies */}
+      <CalloutCard
+        variant="important"
+        title="Common Mapper Inaccuracies — Always Verify"
+      >
+        <ul className="mt-2 list-inside list-disc space-y-1.5 text-sm">
+          <li>
+            <strong>Dependency versions</strong> — mapper may report outdated or
+            incorrect version numbers (always check{' '}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+              package.json
+            </code>{' '}
+            or{' '}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">
+              .csproj
+            </code>
+            )
+          </li>
+          <li>
+            <strong>Dead code detection</strong> — mapper may flag code as
+            unused when it is actually called dynamically or via reflection
+          </li>
+          <li>
+            <strong>Architecture boundaries</strong> — mapper may misidentify
+            module boundaries or service layers, especially in monolithic
+            codebases
+          </li>
+          <li>
+            <strong>Test coverage claims</strong> — mapper estimates may not
+            match actual coverage reports
+          </li>
+        </ul>
+        <p className="mt-3 text-sm">
+          Treat mapper output as a first draft, not a source of truth. Review
+          each document against the actual codebase before sharing with the
+          team.
+        </p>
+      </CalloutCard>
+
       {/* The 7 Output Documents */}
       <section aria-labelledby="output-documents">
         <h2

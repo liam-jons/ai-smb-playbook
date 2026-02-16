@@ -391,6 +391,54 @@ export function TechnicalDebtSection() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        <Separator className="my-8" />
+
+        {/* Quick Health Check */}
+        <h3 className="mb-4 text-lg font-medium">Quick Health Check</h3>
+        <p className="mb-4 max-w-prose text-sm text-muted-foreground">
+          The audit prompts above are thorough but time-intensive. When you need
+          a fast codebase assessment &mdash; say, at the start of a sprint or
+          before diving into a new feature &mdash; this lighter prompt covers
+          the essentials in roughly five minutes.
+        </p>
+
+        <PromptExample
+          title="Quick Health Check"
+          description="A five-minute sweep of the most common codebase health indicators."
+          prompt={`Run a quick health check on this codebase. Keep it concise — I want a brief summary for each area, not a full audit. Flag only genuine issues, not style preferences.
+
+1. **Dependency freshness**
+   - Are there any dependencies with known security vulnerabilities?
+   - Are any packages more than 2 major versions behind?
+   - For NuGet packages (ASP.NET/C#) or Composer/npm packages (WordPress), flag anything end-of-life or unmaintained.
+
+2. **Obvious security issues**
+   - Hardcoded secrets, API keys, or credentials in source files
+   - Missing input validation on user-facing endpoints
+   - Any configuration files exposing sensitive data
+
+3. **Code duplication**
+   - Identify the worst cases of copy-pasted logic (3+ duplicated blocks)
+   - Suggest which duplications would benefit most from extraction
+
+4. **Unused exports and imports**
+   - List exported functions, components, or classes that are never imported elsewhere
+   - Flag imports that are declared but never referenced
+
+5. **Test coverage gaps**
+   - Which critical paths (authentication, payment processing, data mutations) have no tests?
+   - Are there test files that exist but contain no meaningful assertions?
+
+Format the output as a simple pass/warn/fail for each area with a one-line summary, followed by details only for warn or fail items.`}
+          whenToUse="At the start of a sprint, before major feature work, or as a regular weekly check."
+        />
+
+        <CalloutCard variant="tip" className="mt-4">
+          Run this at the start of each sprint or before any major feature work.
+          It takes far less time than a full audit and catches the most
+          impactful issues early.
+        </CalloutCard>
       </section>
 
       <Separator />

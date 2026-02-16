@@ -985,7 +985,7 @@ export function GovernancePolicySection() {
 
       <Separator />
 
-      {/* Parameterisation Reference */}
+      {/* Customisation Reference */}
       <section aria-labelledby="params-heading">
         <h2
           id="params-heading"

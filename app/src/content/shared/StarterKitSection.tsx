@@ -15,6 +15,7 @@ import {
   Map,
   Check,
   Download,
+  ArrowRight,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -911,6 +912,8 @@ function FileBrowser() {
 /* ------------------------------------------------------------------ */
 
 export function StarterKitSection() {
+  const { track } = useTrack();
+  const isDev = track === 'developer';
   const prefersReducedMotion = useMemo(getReducedMotion, []);
 
   const motionProps = prefersReducedMotion ? {} : fadeInUp;
@@ -939,12 +942,22 @@ export function StarterKitSection() {
             specific needs.
           </p>
           <p>
-            There are two ways to get these files: browse and copy from this
-            page, or grab the{' '}
-            <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono">
-              starter-kit/
-            </code>{' '}
-            folder from the project repository.
+            {isDev ? (
+              <>
+                There are two ways to get these files: browse and copy from this
+                page, or grab the{' '}
+                <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono">
+                  starter-kit/
+                </code>{' '}
+                folder from the project repository.
+              </>
+            ) : (
+              <>
+                Browse and copy the files you need directly from this page.
+                Every file has a copy button and installation instructions for
+                your platform.
+              </>
+            )}
           </p>
           <p>
             <strong className="text-foreground">Key distinction:</strong>{' '}
@@ -1011,6 +1024,43 @@ export function StarterKitSection() {
             </p>
           </div>
         </CalloutCard>
+      </motion.section>
+
+      <Separator />
+
+      {/* ── Track completion ─────────────────────────────── */}
+      <motion.section {...motionFadeProps}>
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="pt-6">
+            <h3 className="mb-2 text-lg font-semibold text-foreground">
+              You&apos;ve completed the {isDev ? 'Developer' : 'General'} track
+            </h3>
+            <p
+              className="mb-4 text-sm leading-relaxed text-muted-foreground"
+              style={{ maxWidth: '65ch' }}
+            >
+              {isDev
+                ? 'You now have everything you need to use Claude Code effectively — from CLAUDE.md setup to testing, plugins, and governance. The starter kit files above will get your projects up and running quickly.'
+                : 'You now have a solid foundation for using Claude effectively — from context management to skills, governance, and brand voice. The starter kit files above will help you put it all into practice.'}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+              >
+                Back to homepage
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link
+                to={isDev ? '/general' : '/developer'}
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+              >
+                Explore the {isDev ? 'General' : 'Developer'} track
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </motion.section>
     </div>
   );

@@ -389,6 +389,33 @@ export function McpUsageSection() {
         </div>
 
         <CalloutCard
+          variant="info"
+          title="Node.js required for npx"
+          className="mt-4"
+        >
+          Most MCP servers use{' '}
+          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">npx</code> to
+          launch, which requires <strong>Node.js</strong> to be installed on
+          your machine. If your main development stack is .NET, C#, or another
+          non-Node language, you will still need Node.js installed to run MCP
+          servers &mdash; even if you never use it for your own projects.
+          Install the latest LTS version from{' '}
+          <a
+            href="https://nodejs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-foreground"
+          >
+            nodejs.org
+          </a>{' '}
+          and verify with{' '}
+          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
+            node --version
+          </code>{' '}
+          in your terminal.
+        </CalloutCard>
+
+        <CalloutCard
           variant="warning"
           title="Never hard-code credentials"
           className="mt-4"
@@ -461,6 +488,114 @@ export function McpUsageSection() {
             </div>
           ))}
         </div>
+      </section>
+
+      <Separator />
+
+      {/* 4b. Discovering MCP Servers */}
+      <section aria-labelledby="discovering-mcps">
+        <h2
+          id="discovering-mcps"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
+          Discovering MCP Servers
+        </h2>
+
+        <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
+          <p>
+            The MCP ecosystem is growing quickly. Beyond the two recommended
+            servers above, there are hundreds of community-built MCP servers
+            covering databases, cloud services, project management tools, and
+            more. Here is how to find them.
+          </p>
+        </div>
+
+        <div className="mt-6 space-y-4">
+          <div className="rounded-lg border border-border/50 px-4 py-3">
+            <h4 className="text-sm font-medium">Official MCP Registry</h4>
+            <p className="mt-1 text-sm text-muted-foreground">
+              The{' '}
+              <a
+                href="https://github.com/modelcontextprotocol/servers"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                Model Context Protocol servers repository
+              </a>{' '}
+              on GitHub maintains a curated list of official and community MCP
+              servers. The registry is still growing, but it is the best
+              starting point for finding well-maintained servers. Check the
+              README for servers categorised by function (databases, browsers,
+              APIs, etc.).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border/50 px-4 py-3">
+            <h4 className="text-sm font-medium">GitHub Search</h4>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Search GitHub for{' '}
+              <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
+                mcp-server-
+              </code>{' '}
+              to find community-built servers. Most MCP server repositories
+              follow the naming convention{' '}
+              <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
+                mcp-server-[service-name]
+              </code>
+              . Check the repository&rsquo;s stars, recent activity, and
+              documentation quality before adopting &mdash; as with any
+              open-source dependency.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border/50 px-4 py-3">
+            <h4 className="text-sm font-medium">
+              Claude Code Plugin Marketplace
+            </h4>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Run{' '}
+              <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
+                claude plugin list
+              </code>{' '}
+              in your terminal to browse officially supported plugins, many of
+              which bundle MCP servers with pre-configured skills and hooks.
+              Plugins are the easiest way to add MCP functionality because they
+              handle configuration automatically.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border/50 px-4 py-3">
+            <h4 className="text-sm font-medium">Community Recommendations</h4>
+            <p className="mt-1 text-sm text-muted-foreground">
+              The{' '}
+              <a
+                href="https://discord.gg/anthropic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                Anthropic Discord
+              </a>{' '}
+              has active channels where developers share MCP servers they have
+              built or found useful. Developer forums, Reddit (r/ClaudeAI), and
+              X/Twitter are also good sources for discovering new servers as the
+              ecosystem evolves.
+            </p>
+          </div>
+        </div>
+
+        <CalloutCard
+          variant="tip"
+          title="Evaluate before you install"
+          className="mt-4"
+        >
+          Every MCP server you add consumes context and has access to your
+          environment. Before installing a new server, ask: Does this need to
+          run locally or is a hosted HTTP server available? What permissions
+          does it require? Is it actively maintained? Run it in a test project
+          first before adding it to production workflows.
+        </CalloutCard>
       </section>
 
       <Separator />
