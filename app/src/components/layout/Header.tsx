@@ -34,14 +34,17 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Track navigation">
+        <nav
+          className="hidden items-center gap-1 md:flex"
+          aria-label="Track navigation"
+        >
           <button
             onClick={() => handleTrackSwitch('general')}
             className={cn(
               'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
               currentTrack === 'general'
                 ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
             )}
             aria-current={currentTrack === 'general' ? 'page' : undefined}
           >
@@ -53,7 +56,7 @@ export function Header() {
               'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
               currentTrack === 'developer'
                 ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
             )}
             aria-current={currentTrack === 'developer' ? 'page' : undefined}
           >
@@ -108,7 +111,7 @@ export function Header() {
                 'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
                 currentTrack === 'general'
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-foreground hover:bg-accent'
+                  : 'text-foreground hover:bg-accent',
               )}
             >
               General Users
@@ -119,7 +122,7 @@ export function Header() {
                 'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
                 currentTrack === 'developer'
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-foreground hover:bg-accent'
+                  : 'text-foreground hover:bg-accent',
               )}
             >
               Developers

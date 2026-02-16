@@ -2,11 +2,20 @@ import { useState } from 'react';
 import { Outlet, Navigate, useParams, Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sidebar } from './Sidebar';
 import { useTrack } from '@/hooks/useTrack';
-import { getSectionsForTrack, getAdjacentSections, getSectionBySlug } from '@/content/shared/sections';
+import {
+  getSectionsForTrack,
+  getAdjacentSections,
+  getSectionBySlug,
+} from '@/content/shared/sections';
 import { cn } from '@/lib/utils';
 
 export function TrackLayout() {
@@ -71,10 +80,7 @@ export function TrackLayout() {
         </div>
 
         {/* Page content */}
-        <main
-          id="main-content"
-          className="flex-1 px-4 py-6 sm:px-6 lg:px-8"
-        >
+        <main id="main-content" className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-[65ch]">
             <Outlet />
           </div>
@@ -92,12 +98,14 @@ export function TrackLayout() {
                   to={`/${track}/${prev.slug}`}
                   className={cn(
                     'group flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors',
-                    'hover:bg-accent hover:text-foreground'
+                    'hover:bg-accent hover:text-foreground',
                   )}
                 >
                   <ChevronLeft className="h-4 w-4" />
                   <div className="text-left">
-                    <div className="text-xs text-muted-foreground/70">Previous</div>
+                    <div className="text-xs text-muted-foreground/70">
+                      Previous
+                    </div>
                     <div className="font-medium">{prev.title}</div>
                   </div>
                 </Link>
@@ -109,7 +117,7 @@ export function TrackLayout() {
                   to={`/${track}/${next.slug}`}
                   className={cn(
                     'group flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors',
-                    'hover:bg-accent hover:text-foreground'
+                    'hover:bg-accent hover:text-foreground',
                   )}
                 >
                   <div className="text-right">

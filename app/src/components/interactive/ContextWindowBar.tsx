@@ -77,7 +77,7 @@ export function ContextWindowBar({
                     s.segment.colour,
                     s.segment.colourDark,
                     s.segment.isBuffer &&
-                      'bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(0,0,0,0.06)_4px,rgba(0,0,0,0.06)_8px)] dark:bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.06)_4px,rgba(255,255,255,0.06)_8px)]'
+                      'bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(0,0,0,0.06)_4px,rgba(0,0,0,0.06)_8px)] dark:bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.06)_4px,rgba(255,255,255,0.06)_8px)]',
                   )}
                   style={{ width: `${minWidth}%` }}
                   aria-label={`${s.segment.label}: approximately ${formatTokens(s.tokens)} tokens, ${s.percentage.toFixed(1)}% of context window`}
@@ -144,7 +144,8 @@ export function ContextWindowBar({
                 <div className="space-y-1">
                   <p className="font-semibold">{s.segment.label}</p>
                   <p className="text-xs text-muted-foreground">
-                    ~{formatTokens(s.tokens)} tokens ({s.percentage.toFixed(1)}%)
+                    ~{formatTokens(s.tokens)} tokens ({s.percentage.toFixed(1)}
+                    %)
                   </p>
                   <p className="text-xs">
                     {isDev
@@ -211,7 +212,7 @@ export function ContextWindowBar({
                 s.segment.colour,
                 s.segment.colourDark,
                 s.segment.isBuffer &&
-                  'bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)]'
+                  'bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)]',
               )}
             />
             <span className="text-[11px] text-muted-foreground">

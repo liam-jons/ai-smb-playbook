@@ -1,6 +1,10 @@
 ---
 name: markdown-converter
-description: Convert documents and files to Markdown using markitdown. Use when converting PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls), HTML, CSV, JSON, XML, images (with EXIF/OCR), audio (with transcription), ZIP archives, YouTube URLs, or EPubs to Markdown format for LLM processing or text analysis.
+description:
+  Convert documents and files to Markdown using markitdown. Use when converting
+  PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls), HTML, CSV, JSON,
+  XML, images (with EXIF/OCR), audio (with transcription), ZIP archives, YouTube
+  URLs, or EPubs to Markdown format for LLM processing or text analysis.
 ---
 
 # Markdown Converter
@@ -64,4 +68,5 @@ uvx markitdown scan.pdf -d -e "https://your-resource.cognitiveservices.azure.com
 
 - Output preserves document structure: headings, tables, lists, links
 - First run caches dependencies; subsequent runs are faster
-- For complex PDFs with poor extraction, use `-d` with Azure Document Intelligence
+- For complex PDFs with poor extraction, use `-d` with Azure Document
+  Intelligence

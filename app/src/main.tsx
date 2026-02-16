@@ -10,5 +10,5 @@ createRoot(document.getElementById('root')!).render(
     <TooltipProvider>
       <RouterProvider router={router} />
     </TooltipProvider>
-  </StrictMode>
+  </StrictMode>,
 );

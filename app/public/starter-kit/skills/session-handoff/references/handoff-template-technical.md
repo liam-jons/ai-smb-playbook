@@ -10,10 +10,9 @@
 
 # Session [N] Continuation Prompt
 
-**Project:** [Project name] — [one-line description]
-**Previous Session:** Session [N-1] ([short description of what it covered])
-**Date Created:** [DD/MM/YYYY]
-**Repository:** [absolute path to repo root]
+**Project:** [Project name] — [one-line description] **Previous Session:**
+Session [N-1] ([short description of what it covered]) **Date Created:**
+[DD/MM/YYYY] **Repository:** [absolute path to repo root]
 
 ---
 
@@ -67,12 +66,12 @@ Read these files in order before beginning any work:
 
 ## Remaining Work Tracker
 
-| Item | Category | Status | Notes |
-|------|----------|--------|-------|
-| [Work item] | [Type] | **Complete** | [Session completed in] |
-| [Work item] | [Type] | **In Progress** | [What remains] |
-| [Work item] | [Type] | Not Started | [Dependencies] |
-| [Work item] | [Type] | **Blocked** | [What is blocking it] |
+| Item        | Category | Status          | Notes                  |
+| ----------- | -------- | --------------- | ---------------------- |
+| [Work item] | [Type]   | **Complete**    | [Session completed in] |
+| [Work item] | [Type]   | **In Progress** | [What remains]         |
+| [Work item] | [Type]   | Not Started     | [Dependencies]         |
+| [Work item] | [Type]   | **Blocked**     | [What is blocking it]  |
 
 ---
 
@@ -98,7 +97,8 @@ Additional session-specific context:
 
 <!-- For multi-agent work, note which tasks can be parallelised -->
 
-**Parallelisation:** Tasks [A] and [B] can be run as parallel subagents. Task [C] depends on both completing first.
+**Parallelisation:** Tasks [A] and [B] can be run as parallel subagents. Task
+[C] depends on both completing first.
 
 ---
 
@@ -119,12 +119,12 @@ project-root/
 
 ## Technology Stack
 
-| Layer | Technology | Notes |
-|-------|-----------|-------|
-| Language | [e.g., TypeScript] | [version if relevant] |
-| Framework | [e.g., React] | |
-| Database | [e.g., PostgreSQL] | |
-| Hosting | [e.g., Vercel] | |
+| Layer     | Technology         | Notes                 |
+| --------- | ------------------ | --------------------- |
+| Language  | [e.g., TypeScript] | [version if relevant] |
+| Framework | [e.g., React]      |                       |
+| Database  | [e.g., PostgreSQL] |                       |
+| Hosting   | [e.g., Vercel]     |                       |
 
 ---
 

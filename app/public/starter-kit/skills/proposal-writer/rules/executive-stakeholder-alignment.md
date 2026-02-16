@@ -8,7 +8,8 @@ tags: stakeholder, champion, buying-committee, internal, alignment
 
 **Impact: HIGH**
 
-Your proposal must arm your champion to sell internally. Every stakeholder has different priorities; address them all.
+Your proposal must arm your champion to sell internally. Every stakeholder has
+different priorities; address them all.
 
 ### The Buying Committee Reality
 
@@ -28,16 +29,16 @@ Your proposal must arm your champion to sell internally. Every stakeholder has d
 
 ### Stakeholder Mapping
 
-| Role | Primary Concern | Success Metric | Reads |
-|------|-----------------|----------------|-------|
-| **CEO** | Strategic fit, risk | Market position | Exec summary |
-| **CFO** | ROI, budget, risk | Payback period | Investment section |
-| **CTO** | Technical fit, scalability | Architecture alignment | Solution section |
-| **VP/Director** | Outcomes, timeline | Team impact | Full proposal |
-| **Technical Lead** | How it works, integration | Implementation details | Technical sections |
-| **Procurement** | Compliance, terms | Process requirements | Terms section |
-| **Legal** | Risk, liability | Acceptable terms | MSA |
-| **End Users** | Day-to-day impact | Ease of use | Not usually included |
+| Role               | Primary Concern            | Success Metric         | Reads                |
+| ------------------ | -------------------------- | ---------------------- | -------------------- |
+| **CEO**            | Strategic fit, risk        | Market position        | Exec summary         |
+| **CFO**            | ROI, budget, risk          | Payback period         | Investment section   |
+| **CTO**            | Technical fit, scalability | Architecture alignment | Solution section     |
+| **VP/Director**    | Outcomes, timeline         | Team impact            | Full proposal        |
+| **Technical Lead** | How it works, integration  | Implementation details | Technical sections   |
+| **Procurement**    | Compliance, terms          | Process requirements   | Terms section        |
+| **Legal**          | Risk, liability            | Acceptable terms       | MSA                  |
+| **End Users**      | Day-to-day impact          | Ease of use            | Not usually included |
 
 ### Good Example: Multi-Stakeholder Proposal Sections
 
@@ -46,66 +47,65 @@ Your proposal must arm your champion to sell internally. Every stakeholder has d
 
 ### For Executive Leadership
 
-| Priority | How We Deliver |
-|----------|----------------|
-| Risk mitigation | 85% reduction in credential exposure incidents |
-| Competitive readiness | SOC 2 compliance in 6 weeks vs. 6 months |
+| Priority               | How We Deliver                                   |
+| ---------------------- | ------------------------------------------------ |
+| Risk mitigation        | 85% reduction in credential exposure incidents   |
+| Competitive readiness  | SOC 2 compliance in 6 weeks vs. 6 months         |
 | Operational efficiency | 240 hours/year automated; team focuses on growth |
 
-**Bottom line:** SecretStash protects the company while accelerating
-your ability to close enterprise customers.
+**Bottom line:** SecretStash protects the company while accelerating your
+ability to close enterprise customers.
 
 ---
 
 ### For Finance
 
-| Priority | How We Deliver |
-|----------|----------------|
-| Budget predictability | Fixed annual pricing, no surprise overages |
-| ROI confidence | 3.2x return, 4-month payback (see Section 5) |
-| Cost control | Price locked Year 1, capped at 5% on renewal |
+| Priority              | How We Deliver                               |
+| --------------------- | -------------------------------------------- |
+| Budget predictability | Fixed annual pricing, no surprise overages   |
+| ROI confidence        | 3.2x return, 4-month payback (see Section 5) |
+| Cost control          | Price locked Year 1, capped at 5% on renewal |
 
-**Bottom line:** Investment of $84K returns $270K in Year 1 value.
-Full TCO comparison to alternatives available.
+**Bottom line:** Investment of $84K returns $270K in Year 1 value. Full TCO
+comparison to alternatives available.
 
 ---
 
 ### For Engineering Leadership
 
-| Priority | How We Deliver |
-|----------|----------------|
-| Developer experience | 4.8/5 developer satisfaction rating |
-| No workflow disruption | Native CLI, IDE, and CI/CD integrations |
-| Scalability | Handles your growth from 50 to 200+ engineers |
+| Priority               | How We Deliver                                |
+| ---------------------- | --------------------------------------------- |
+| Developer experience   | 4.8/5 developer satisfaction rating           |
+| No workflow disruption | Native CLI, IDE, and CI/CD integrations       |
+| Scalability            | Handles your growth from 50 to 200+ engineers |
 
-**Bottom line:** Your developers will actually use this.
-97% adoption rate within 30 days of deployment.
+**Bottom line:** Your developers will actually use this. 97% adoption rate
+within 30 days of deployment.
 
 ---
 
 ### For Security
 
-| Priority | How We Deliver |
-|----------|----------------|
-| Compliance readiness | SOC 2 Type II, ISO 27001, HIPAA |
-| Audit trails | Complete logging of all access and changes |
+| Priority                | How We Deliver                              |
+| ----------------------- | ------------------------------------------- |
+| Compliance readiness    | SOC 2 Type II, ISO 27001, HIPAA             |
+| Audit trails            | Complete logging of all access and changes  |
 | Zero-trust architecture | End-to-end encryption, no plaintext storage |
 
-**Bottom line:** Pass your next security audit with confidence.
-Audit prep package included.
+**Bottom line:** Pass your next security audit with confidence. Audit prep
+package included.
 
 ---
 
 ### For Implementation Team
 
-| Priority | How We Deliver |
-|----------|----------------|
-| Low effort | 4-6 week implementation, 10 hours/week from your team |
-| Clear ownership | Dedicated implementation engineer assigned |
-| Migration support | Automated migration tools + guided runbooks |
+| Priority          | How We Deliver                                        |
+| ----------------- | ----------------------------------------------------- |
+| Low effort        | 4-6 week implementation, 10 hours/week from your team |
+| Clear ownership   | Dedicated implementation engineer assigned            |
+| Migration support | Automated migration tools + guided runbooks           |
 
-**Bottom line:** We do the heavy lifting. Your team validates
-and approves.
+**Bottom line:** We do the heavy lifting. Your team validates and approves.
 ```
 
 ### Bad Example: Single-Perspective Proposal
@@ -113,11 +113,12 @@ and approves.
 ```markdown
 ## Why Choose SecretStash
 
-SecretStash is a comprehensive secrets management platform
-that provides enterprise-grade security, developer-friendly
-tooling, and seamless integrations.
+SecretStash is a comprehensive secrets management platform that provides
+enterprise-grade security, developer-friendly tooling, and seamless
+integrations.
 
 Our platform features:
+
 - AES-256 encryption
 - Role-based access control
 - Automated secret rotation
@@ -126,11 +127,12 @@ Our platform features:
 - CI/CD plugins
 - REST API
 
-Join over 500 companies who trust SecretStash for their
-secrets management needs.
+Join over 500 companies who trust SecretStash for their secrets management
+needs.
 ```
 
 **Why it fails:**
+
 - One-size-fits-all message
 - Feature-focused, not outcome-focused
 - Doesn't address any specific stakeholder
@@ -141,13 +143,13 @@ secrets management needs.
 
 **For each key stakeholder, create:**
 
-| Stakeholder | Leave-Behind | Format |
-|-------------|--------------|--------|
-| CEO | Strategic value summary | 1-page PDF |
-| CFO | ROI calculator | Excel + PDF summary |
-| CTO | Technical architecture | Architecture diagram + FAQ |
-| Security | Compliance checklist | PDF checklist |
-| Champion | Internal pitch deck | PowerPoint |
+| Stakeholder | Leave-Behind            | Format                     |
+| ----------- | ----------------------- | -------------------------- |
+| CEO         | Strategic value summary | 1-page PDF                 |
+| CFO         | ROI calculator          | Excel + PDF summary        |
+| CTO         | Technical architecture  | Architecture diagram + FAQ |
+| Security    | Compliance checklist    | PDF checklist              |
+| Champion    | Internal pitch deck     | PowerPoint                 |
 
 ### The Champion Enablement Package
 
@@ -184,14 +186,14 @@ We want to make your internal conversations easier:
 
 ### Objection Handling by Stakeholder
 
-| Stakeholder | Common Objection | Counter |
-|-------------|------------------|---------|
-| **CEO** | "Not strategic right now" | Connect to company OKRs, show competitive risk |
-| **CFO** | "Too expensive" | ROI analysis, cost of inaction, phased approach |
-| **CTO** | "Not our architecture" | Flexible integration, hybrid support |
-| **Security** | "Doesn't meet our requirements" | Compliance mapping, gap analysis |
-| **Procurement** | "Process takes 6 months" | Expedited path, executive sponsor |
-| **Champion** | "Can't get consensus" | Stakeholder-specific content, exec alignment |
+| Stakeholder     | Common Objection                | Counter                                         |
+| --------------- | ------------------------------- | ----------------------------------------------- |
+| **CEO**         | "Not strategic right now"       | Connect to company OKRs, show competitive risk  |
+| **CFO**         | "Too expensive"                 | ROI analysis, cost of inaction, phased approach |
+| **CTO**         | "Not our architecture"          | Flexible integration, hybrid support            |
+| **Security**    | "Doesn't meet our requirements" | Compliance mapping, gap analysis                |
+| **Procurement** | "Process takes 6 months"        | Expedited path, executive sponsor               |
+| **Champion**    | "Can't get consensus"           | Stakeholder-specific content, exec alignment    |
 
 ### Questions to Uncover Stakeholders
 
@@ -220,17 +222,16 @@ Ask during discovery:
 
 **If you have 2 minutes:** Read the Executive Summary (page 2)
 
-**If you have 10 minutes:** Add the Solution Overview (pages 4-6)
-and Investment Summary (page 10)
+**If you have 10 minutes:** Add the Solution Overview (pages 4-6) and Investment
+Summary (page 10)
 
-**If you're evaluating technically:** Focus on Approach and
-Integration sections (pages 6-9)
+**If you're evaluating technically:** Focus on Approach and Integration sections
+(pages 6-9)
 
-**If you're approving budget:** Executive Summary (page 2) and
-Investment & ROI (pages 10-12)
+**If you're approving budget:** Executive Summary (page 2) and Investment & ROI
+(pages 10-12)
 
-**If you're reviewing terms:** See Section 8 (page 14) and
-attached MSA
+**If you're reviewing terms:** See Section 8 (page 14) and attached MSA
 ```
 
 ### Stakeholder Sign-Off Tracking
@@ -242,21 +243,21 @@ attached MSA
 
 Based on our discussion, here's the path to approval:
 
-| Stakeholder | Role | Status | Target Date |
-|-------------|------|--------|-------------|
-| Sarah Chen | Champion | Reviewing | March 20 |
-| Marcus Johnson | Security | Pending | March 22 |
-| Jennifer Martinez | Budget approval | Awaiting review | March 25 |
-| David Park | Technical validation | Pending | March 22 |
-| Procurement | Contract review | Not started | March 28 |
+| Stakeholder       | Role                 | Status          | Target Date |
+| ----------------- | -------------------- | --------------- | ----------- |
+| Sarah Chen        | Champion             | Reviewing       | March 20    |
+| Marcus Johnson    | Security             | Pending         | March 22    |
+| Jennifer Martinez | Budget approval      | Awaiting review | March 25    |
+| David Park        | Technical validation | Pending         | March 22    |
+| Procurement       | Contract review      | Not started     | March 28    |
 
-**Target decision date:** April 1, 2025
-**Implementation start:** April 15, 2025
+**Target decision date:** April 1, 2025 **Implementation start:** April 15, 2025
 ```
 
 ### Consensus-Building Strategies
 
 **When stuck:**
+
 ```
 1. Identify the blocker: Who hasn't bought in? Why?
 2. Get facetime: Direct conversation > email chain

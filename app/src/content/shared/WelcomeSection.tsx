@@ -50,7 +50,10 @@ const GENERAL_HIGHLIGHTS = [
 const DEV_HIGHLIGHTS = [
   { icon: FileCode, label: 'CLAUDE.md files and documentation structure' },
   { icon: Map, label: 'Codebase mapping with AI agents' },
-  { icon: AlertTriangle, label: 'Avoiding hallucinations and quick-fix patterns' },
+  {
+    icon: AlertTriangle,
+    label: 'Avoiding hallucinations and quick-fix patterns',
+  },
   { icon: TestTube, label: 'AI-driven regression testing' },
   { icon: Plug, label: 'MCP and plugin recommendations' },
 ] as const;
@@ -106,7 +109,7 @@ const QUICK_REFERENCE_ITEMS_ALL = [
     heading: 'Skills',
     track: 'both' as const,
     items: [
-      'Skills are reusable instruction files that shape Claude\'s behaviour.',
+      "Skills are reusable instruction files that shape Claude's behaviour.",
       'Claude Desktop: Settings > Skills > Add from file.',
     ],
   },
@@ -137,9 +140,9 @@ const QUICK_REFERENCE_ITEMS_ALL = [
 ];
 
 function getQuickReferenceItems(track: string) {
-  return QUICK_REFERENCE_ITEMS_ALL
-    .filter((section) => section.track === 'both' || section.track === track)
-    .map(({ heading, items }) => ({ heading, items }));
+  return QUICK_REFERENCE_ITEMS_ALL.filter(
+    (section) => section.track === 'both' || section.track === track,
+  ).map(({ heading, items }) => ({ heading, items }));
 }
 
 /* ------------------------------------------------------------------ */
@@ -164,12 +167,14 @@ const fadeIn = {
 
 function buildPrintDocument(track: string): string {
   const referenceItems = getQuickReferenceItems(track);
-  const sections = referenceItems.map((section) => {
-    const listItems = section.items
-      .map((item) => `<li>${escapeHtml(item)}</li>`)
-      .join('');
-    return `<h2>${escapeHtml(section.heading)}</h2><ul>${listItems}</ul>`;
-  }).join('');
+  const sections = referenceItems
+    .map((section) => {
+      const listItems = section.items
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join('');
+      return `<h2>${escapeHtml(section.heading)}</h2><ul>${listItems}</ul>`;
+    })
+    .join('');
 
   return [
     '<!DOCTYPE html>',
@@ -211,7 +216,10 @@ export function WelcomeSection() {
   const { track } = useTrack();
 
   const quickWins = useMemo(() => getQuickWins(track), [track]);
-  const quickReferenceItems = useMemo(() => getQuickReferenceItems(track), [track]);
+  const quickReferenceItems = useMemo(
+    () => getQuickReferenceItems(track),
+    [track],
+  );
 
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
@@ -250,21 +258,25 @@ export function WelcomeSection() {
         >
           Your AI Playbook
         </h2>
-        <div className="space-y-4 text-base leading-relaxed text-muted-foreground" style={{ maxWidth: '65ch' }}>
+        <div
+          className="space-y-4 text-base leading-relaxed text-muted-foreground"
+          style={{ maxWidth: '65ch' }}
+        >
           <p>
-            Following the AI training sessions with your team on {siteConfig.trainingDate},
-            we put together this interactive playbook as a practical reference — the
-            kind of take-away material you asked for.
+            Following the AI training sessions with your team on{' '}
+            {siteConfig.trainingDate}, we put together this interactive playbook
+            as a practical reference — the kind of take-away material you asked
+            for.
           </p>
           <p>
-            It covers the core topics from the training — context management, skills,
-            session handling, governance — plus developer-specific guidance for the
-            dev team.
+            It covers the core topics from the training — context management,
+            skills, session handling, governance — plus developer-specific
+            guidance for the dev team.
           </p>
           <p>
-            Everything here is designed to be immediately usable. Prompts, templates,
-            and code examples all have a copy button — take what you need and use it
-            straight away.
+            Everything here is designed to be immediately usable. Prompts,
+            templates, and code examples all have a copy button — take what you
+            need and use it straight away.
           </p>
         </div>
       </motion.section>
@@ -285,10 +297,11 @@ export function WelcomeSection() {
               <Users className="h-4 w-4" />
             </span>
             <span>
-              <strong className="text-foreground">Two tracks.</strong>{' '}
-              The playbook is organised into a General track (for everyone using
-              Claude via claude.ai or Claude Desktop) and a Developer track (for the
-              dev team using Claude Code). You can switch tracks at any time.
+              <strong className="text-foreground">Two tracks.</strong> The
+              playbook is organised into a General track (for everyone using
+              Claude via claude.ai or Claude Desktop) and a Developer track (for
+              the dev team using Claude Code). You can switch tracks at any
+              time.
             </span>
           </li>
           <li className="flex gap-3">
@@ -296,8 +309,8 @@ export function WelcomeSection() {
               <BookOpen className="h-4 w-4" />
             </span>
             <span>
-              <strong className="text-foreground">Start anywhere.</strong>{' '}
-              You do not need to read this front-to-back. Each section is
+              <strong className="text-foreground">Start anywhere.</strong> You
+              do not need to read this front-to-back. Each section is
               self-contained. If you already know what you are looking for, jump
               straight there.
             </span>
@@ -308,8 +321,8 @@ export function WelcomeSection() {
             </span>
             <span>
               <strong className="text-foreground">Copy-to-clipboard.</strong>{' '}
-              Every prompt, template, and code example has a copy button. Take what
-              you need and paste it directly into Claude.
+              Every prompt, template, and code example has a copy button. Take
+              what you need and paste it directly into Claude.
             </span>
           </li>
           <li className="flex gap-3">
@@ -317,8 +330,8 @@ export function WelcomeSection() {
               <MessageSquareHeart className="h-4 w-4" />
             </span>
             <span>
-              <strong className="text-foreground">Feedback.</strong>{' '}
-              If something is unclear, missing, or you want more detail on a topic,
+              <strong className="text-foreground">Feedback.</strong> If
+              something is unclear, missing, or you want more detail on a topic,
               there is a feedback button available on every page.
             </span>
           </li>
@@ -328,7 +341,10 @@ export function WelcomeSection() {
       <Separator />
 
       {/* ── Track Selector ───────────────────────────────── */}
-      <motion.section {...motionFadeProps} aria-labelledby="choose-track-heading">
+      <motion.section
+        {...motionFadeProps}
+        aria-labelledby="choose-track-heading"
+      >
         <h2
           id="choose-track-heading"
           className="mb-6 text-xl font-semibold tracking-tight"
@@ -338,13 +354,16 @@ export function WelcomeSection() {
 
         <div className="grid gap-6 sm:grid-cols-2">
           {/* General track card */}
-          <Link to="/general" className="group block focus-visible:outline-none">
+          <Link
+            to="/general"
+            className="group block focus-visible:outline-none"
+          >
             <Card
               className={cn(
                 'h-full transition-shadow duration-200',
                 'hover:shadow-md',
                 'group-focus-visible:ring-[3px] group-focus-visible:ring-ring/50',
-                'active:scale-[0.99] transition-transform duration-100'
+                'active:scale-[0.99] transition-transform duration-100',
               )}
             >
               <CardHeader>
@@ -377,13 +396,16 @@ export function WelcomeSection() {
           </Link>
 
           {/* Developer track card */}
-          <Link to="/developer" className="group block focus-visible:outline-none">
+          <Link
+            to="/developer"
+            className="group block focus-visible:outline-none"
+          >
             <Card
               className={cn(
                 'h-full transition-shadow duration-200',
                 'hover:shadow-md',
                 'group-focus-visible:ring-[3px] group-focus-visible:ring-ring/50',
-                'active:scale-[0.99] transition-transform duration-100'
+                'active:scale-[0.99] transition-transform duration-100',
               )}
             >
               <CardHeader>
@@ -417,8 +439,9 @@ export function WelcomeSection() {
         </div>
 
         <p className="mt-4 text-sm text-muted-foreground">
-          Not sure? Start with the General track — it covers the fundamentals that
-          apply to everyone. You can switch to the Developer track at any time.
+          Not sure? Start with the General track — it covers the fundamentals
+          that apply to everyone. You can switch to the Developer track at any
+          time.
         </p>
       </motion.section>
 
@@ -440,7 +463,10 @@ export function WelcomeSection() {
             </h3>
             <ul className="space-y-2.5">
               {GENERAL_HIGHLIGHTS.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-start gap-2.5 text-sm text-foreground">
+                <li
+                  key={label}
+                  className="flex items-start gap-2.5 text-sm text-foreground"
+                >
                   <Icon
                     className="mt-0.5 h-4 w-4 shrink-0 text-primary"
                     aria-hidden="true"
@@ -458,7 +484,10 @@ export function WelcomeSection() {
             </h3>
             <ul className="space-y-2.5">
               {DEV_HIGHLIGHTS.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-start gap-2.5 text-sm text-foreground">
+                <li
+                  key={label}
+                  className="flex items-start gap-2.5 text-sm text-foreground"
+                >
                   <Icon
                     className="mt-0.5 h-4 w-4 shrink-0 text-primary"
                     aria-hidden="true"
@@ -548,7 +577,10 @@ export function WelcomeSection() {
                       key={item}
                       className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
                     >
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40" aria-hidden="true" />
+                      <span
+                        className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40"
+                        aria-hidden="true"
+                      />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -570,12 +602,12 @@ export function WelcomeSection() {
           <p className="leading-relaxed">
             This playbook was built using the exact tools and workflows it
             describes. The content was planned and researched using Claude with
-            structured prompts and session handoffs — the same techniques covered in
-            your training. The app itself was built by parallel Claude Code agents,
-            each working from a detailed spec. Skills, CLAUDE.md files, and the
-            governance principles described here were used throughout. These are not
-            theoretical techniques — they are the same workflows that produced this
-            deliverable.
+            structured prompts and session handoffs — the same techniques
+            covered in your training. The app itself was built by parallel
+            Claude Code agents, each working from a detailed spec. Skills,
+            CLAUDE.md files, and the governance principles described here were
+            used throughout. These are not theoretical techniques — they are the
+            same workflows that produced this deliverable.
           </p>
         </CalloutCard>
       </section>
@@ -590,10 +622,14 @@ export function WelcomeSection() {
         >
           Feedback
         </h2>
-        <p className="mb-4 text-sm leading-relaxed text-muted-foreground" style={{ maxWidth: '65ch' }}>
-          Spotted something that could be clearer? Want more detail on a specific
-          topic? Use the feedback button — it is available on every page. Your
-          feedback goes directly to {siteConfig.consultantName} and will be used to improve the playbook.
+        <p
+          className="mb-4 text-sm leading-relaxed text-muted-foreground"
+          style={{ maxWidth: '65ch' }}
+        >
+          Spotted something that could be clearer? Want more detail on a
+          specific topic? Use the feedback button — it is available on every
+          page. Your feedback goes directly to {siteConfig.consultantName} and
+          will be used to improve the playbook.
         </p>
         <Button
           variant="outline"
@@ -618,7 +654,10 @@ export function WelcomeSection() {
         >
           How We Built This
         </h2>
-        <p className="mb-4 text-sm leading-relaxed text-muted-foreground" style={{ maxWidth: '65ch' }}>
+        <p
+          className="mb-4 text-sm leading-relaxed text-muted-foreground"
+          style={{ maxWidth: '65ch' }}
+        >
           Interested in the end-to-end process behind this deliverable? The
           repeatable workflow document captures every step — from recording the
           training sessions to deploying this app — so it can be replicated for

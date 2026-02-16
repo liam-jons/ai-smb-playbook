@@ -2,7 +2,10 @@ import { Suspense } from 'react';
 import { useParams, Navigate } from 'react-router';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { getSectionBySlug, getSectionsForTrack } from '@/content/shared/sections';
+import {
+  getSectionBySlug,
+  getSectionsForTrack,
+} from '@/content/shared/sections';
 import { useTrack } from '@/hooks/useTrack';
 import { sectionComponents } from '@/content/shared/registry';
 

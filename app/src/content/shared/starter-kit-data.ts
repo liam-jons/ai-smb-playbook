@@ -124,7 +124,6 @@ export const QUICK_START_STEPS: QuickStartStep[] = [
 /*  Install instruction templates                                      */
 /* ------------------------------------------------------------------ */
 
-
 const SKILL_INSTALL_CLAUDE_CODE =
   'Copy the skill folder to your project: cp -r starter-kit/skills/SKILL_NAME .claude/skills/SKILL_NAME\n\nOr install globally: cp -r starter-kit/skills/SKILL_NAME ~/.claude/skills/SKILL_NAME';
 
@@ -852,7 +851,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
   {
     id: 'skill-uk-english',
     name: 'UK English',
-    description: 'Enforce UK English spelling, grammar, and conventions in all output.',
+    description:
+      'Enforce UK English spelling, grammar, and conventions in all output.',
     longDescription:
       'Ensures Claude uses British English throughout — correct spellings (colour, organise, behaviour), UK date formats (DD/MM/YYYY), GBP currency (£), and British grammar conventions. Works on all platforms.',
     category: 'skill',
@@ -861,7 +861,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/uk-english/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('uk-english'),
-    installCommand: 'cp -r starter-kit/skills/uk-english .claude/skills/uk-english',
+    installCommand:
+      'cp -r starter-kit/skills/uk-english .claude/skills/uk-english',
   },
   {
     id: 'skill-session-handoff',
@@ -875,7 +876,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/session-handoff/',
     isMultiFile: true,
     installInstructions: skillInstall('session-handoff'),
-    installCommand: 'cp -r starter-kit/skills/session-handoff .claude/skills/session-handoff',
+    installCommand:
+      'cp -r starter-kit/skills/session-handoff .claude/skills/session-handoff',
     rawContent: RAW_SESSION_HANDOFF_SKILL,
   },
   {
@@ -890,7 +892,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/brand-voice/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('brand-voice'),
-    installCommand: 'cp -r starter-kit/skills/brand-voice .claude/skills/brand-voice',
+    installCommand:
+      'cp -r starter-kit/skills/brand-voice .claude/skills/brand-voice',
   },
   {
     id: 'skill-brand-review',
@@ -904,7 +907,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/brand-review/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('brand-review'),
-    installCommand: 'cp -r starter-kit/skills/brand-review .claude/skills/brand-review',
+    installCommand:
+      'cp -r starter-kit/skills/brand-review .claude/skills/brand-review',
   },
   {
     id: 'skill-brainstorming',
@@ -918,7 +922,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/brainstorming/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('brainstorming'),
-    installCommand: 'cp -r starter-kit/skills/brainstorming .claude/skills/brainstorming',
+    installCommand:
+      'cp -r starter-kit/skills/brainstorming .claude/skills/brainstorming',
   },
   {
     id: 'skill-writing-plans',
@@ -932,7 +937,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/writing-plans/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('writing-plans'),
-    installCommand: 'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
+    installCommand:
+      'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
   },
   {
     id: 'skill-writing-skills',
@@ -946,7 +952,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/writing-skills/',
     isMultiFile: true,
     installInstructions: skillInstall('writing-skills'),
-    installCommand: 'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
+    installCommand:
+      'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
   },
   {
     id: 'skill-proposal-writer',
@@ -960,7 +967,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/proposal-writer/',
     isMultiFile: true,
     installInstructions: skillInstall('proposal-writer'),
-    installCommand: 'cp -r starter-kit/skills/proposal-writer .claude/skills/proposal-writer',
+    installCommand:
+      'cp -r starter-kit/skills/proposal-writer .claude/skills/proposal-writer',
   },
   {
     id: 'skill-file-organizer',
@@ -974,7 +982,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/file-organizer/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('file-organizer'),
-    installCommand: 'cp -r starter-kit/skills/file-organizer .claude/skills/file-organizer',
+    installCommand:
+      'cp -r starter-kit/skills/file-organizer .claude/skills/file-organizer',
   },
   {
     id: 'skill-markdown-converter',
@@ -988,7 +997,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/markdown-converter/SKILL.md',
     isMultiFile: false,
     installInstructions: skillInstall('markdown-converter'),
-    installCommand: 'cp -r starter-kit/skills/markdown-converter .claude/skills/markdown-converter',
+    installCommand:
+      'cp -r starter-kit/skills/markdown-converter .claude/skills/markdown-converter',
   },
   {
     id: 'skill-mermaid-diagrams',
@@ -1002,7 +1012,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/mermaid-diagrams/',
     isMultiFile: true,
     installInstructions: skillInstall('mermaid-diagrams'),
-    installCommand: 'cp -r starter-kit/skills/mermaid-diagrams .claude/skills/mermaid-diagrams',
+    installCommand:
+      'cp -r starter-kit/skills/mermaid-diagrams .claude/skills/mermaid-diagrams',
   },
   {
     id: 'skill-canvas-design',
@@ -1016,7 +1027,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/canvas-design/',
     isMultiFile: true,
     installInstructions: skillInstall('canvas-design'),
-    installCommand: 'cp -r starter-kit/skills/canvas-design .claude/skills/canvas-design',
+    installCommand:
+      'cp -r starter-kit/skills/canvas-design .claude/skills/canvas-design',
   },
   {
     id: 'skill-agent-browser',
@@ -1030,7 +1042,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     filePath: 'skills/agent-browser/',
     isMultiFile: true,
     installInstructions: skillInstall('agent-browser'),
-    installCommand: 'cp -r starter-kit/skills/agent-browser .claude/skills/agent-browser',
+    installCommand:
+      'cp -r starter-kit/skills/agent-browser .claude/skills/agent-browser',
   },
 
   // ── Commands ──────────────────────────────────────────────────────
@@ -1049,7 +1062,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
       claudeCode:
         'Copy the command file to your project:\ncp starter-kit/commands/brand-review.md .claude/commands/brand-review.md\n\nInvoke with: /brand-review',
     },
-    installCommand: 'cp starter-kit/commands/brand-review.md .claude/commands/brand-review.md',
+    installCommand:
+      'cp starter-kit/commands/brand-review.md .claude/commands/brand-review.md',
   },
 
   // ── Templates ─────────────────────────────────────────────────────
@@ -1066,11 +1080,11 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     isMultiFile: false,
     installInstructions: {
       claudeCode:
-        'Copy to your project or use as a standalone document:\ncp starter-kit/templates/governance-policy-template.md ./governance-policy.md\n\nReplace all {{PLACEHOLDER}} values with your organisation\'s details.',
+        "Copy to your project or use as a standalone document:\ncp starter-kit/templates/governance-policy-template.md ./governance-policy.md\n\nReplace all {{PLACEHOLDER}} values with your organisation's details.",
       claudeDesktop:
-        'Download the file, open it in a text editor, and replace all {{PLACEHOLDER}} values with your organisation\'s details. Share with your team for review.',
+        "Download the file, open it in a text editor, and replace all {{PLACEHOLDER}} values with your organisation's details. Share with your team for review.",
       claudeAi:
-        'Copy the template content into a new document. Replace all {{PLACEHOLDER}} values with your organisation\'s details.',
+        "Copy the template content into a new document. Replace all {{PLACEHOLDER}} values with your organisation's details.",
     },
     rawContent: RAW_GOVERNANCE_POLICY,
   },
@@ -1094,7 +1108,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
   {
     id: 'template-docs-structure',
     name: 'Docs Structure',
-    description: 'Recommended /docs directory layout for AI-readable codebases.',
+    description:
+      'Recommended /docs directory layout for AI-readable codebases.',
     longDescription:
       'A guide describing the recommended /docs directory structure based on the progressive disclosure principle: CLAUDE.md as the map, /docs as the system of record. Covers five directories (architecture, conventions, integrations, schemas, references) with example files, maintenance guidance, and instructions for populating with the GSD codebase mapper.',
     category: 'template',
@@ -1432,7 +1447,9 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-export function getFilesForCategory(category: StarterKitCategory): StarterKitFile[] {
+export function getFilesForCategory(
+  category: StarterKitCategory,
+): StarterKitFile[] {
   return STARTER_KIT_FILES.filter((f) => f.category === category);
 }
 
@@ -1442,10 +1459,10 @@ export function getFilesForTrack(track: Track): StarterKitFile[] {
 
 export function getFilesForCategoryAndTrack(
   category: StarterKitCategory,
-  track: Track
+  track: Track,
 ): StarterKitFile[] {
   return STARTER_KIT_FILES.filter(
-    (f) => f.category === category && f.tracks.includes(track)
+    (f) => f.category === category && f.tracks.includes(track),
   );
 }
 

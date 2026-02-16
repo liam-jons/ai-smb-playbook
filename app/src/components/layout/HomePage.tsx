@@ -1,6 +1,12 @@
 import { Link } from 'react-router';
 import { Users, Code, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getSectionsForTrack } from '@/content/shared/sections';
 import { siteConfig } from '@/config/site';
@@ -18,7 +24,9 @@ export function HomePage() {
             {siteConfig.appTitle}
           </h1>
           <p className="mx-auto max-w-xl text-lg text-muted-foreground">
-            {siteConfig.metaDescription} at {siteConfig.companyName.replace(' Limited', '')}. Choose your track to get started.
+            {siteConfig.metaDescription} at{' '}
+            {siteConfig.companyName.replace(' Limited', '')}. Choose your track
+            to get started.
           </p>
         </div>
 
@@ -46,7 +54,9 @@ export function HomePage() {
                 <ul className="mb-4 space-y-1 text-sm text-muted-foreground">
                   {generalSections.slice(0, 4).map((s) => (
                     <li key={s.id} className="flex items-center gap-1.5">
-                      <span className="text-xs text-muted-foreground/60">{s.id}</span>
+                      <span className="text-xs text-muted-foreground/60">
+                        {s.id}
+                      </span>
                       {s.title}
                     </li>
                   ))}
@@ -78,15 +88,17 @@ export function HomePage() {
                 </div>
                 <CardTitle className="text-xl">Developers</CardTitle>
                 <CardDescription>
-                  For the development team. Covers Claude Code, CLAUDE.md
-                  files, codebase mapping, testing, and technical workflows.
+                  For the development team. Covers Claude Code, CLAUDE.md files,
+                  codebase mapping, testing, and technical workflows.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="mb-4 space-y-1 text-sm text-muted-foreground">
                   {developerSections.slice(0, 4).map((s) => (
                     <li key={s.id} className="flex items-center gap-1.5">
-                      <span className="text-xs text-muted-foreground/60">{s.id}</span>
+                      <span className="text-xs text-muted-foreground/60">
+                        {s.id}
+                      </span>
                       {s.title}
                     </li>
                   ))}

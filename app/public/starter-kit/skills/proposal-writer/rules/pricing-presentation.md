@@ -8,7 +8,8 @@ tags: pricing, investment, anchoring, packaging, value
 
 **Impact: CRITICAL**
 
-How you present pricing determines perceived value. Price is never just a number—it's a story about worth.
+How you present pricing determines perceived value. Price is never just a
+number—it's a story about worth.
 
 ### The Golden Rule of Pricing Presentation
 
@@ -21,13 +22,13 @@ RIGHT:  Value → Anchor → Present investment → Reinforce ROI
 
 ### Pricing Psychology Fundamentals
 
-| Principle | Application |
-|-----------|-------------|
-| **Anchoring** | Show larger number first (total value, competitor price, cost of inaction) |
-| **Decoy Effect** | Include a package that makes your preferred option look better |
-| **Loss Aversion** | Frame around what they lose by not acting |
-| **Precise Numbers** | $84,750 feels calculated; $85,000 feels arbitrary |
-| **Investment Language** | "Investment" not "cost" or "price" |
+| Principle               | Application                                                                |
+| ----------------------- | -------------------------------------------------------------------------- |
+| **Anchoring**           | Show larger number first (total value, competitor price, cost of inaction) |
+| **Decoy Effect**        | Include a package that makes your preferred option look better             |
+| **Loss Aversion**       | Frame around what they lose by not acting                                  |
+| **Precise Numbers**     | $84,750 feels calculated; $85,000 feels arbitrary                          |
+| **Investment Language** | "Investment" not "cost" or "price"                                         |
 
 ### The Value-First Pricing Structure
 
@@ -62,40 +63,40 @@ RIGHT:  Value → Anchor → Present investment → Reinforce ROI
 
 ### Value Summary
 
-Based on our discovery and analysis, implementing SecretStash
-will deliver the following quantified value:
+Based on our discovery and analysis, implementing SecretStash will deliver the
+following quantified value:
 
-| Value Driver | Annual Impact |
-|-------------|---------------|
-| Developer productivity recovery | $120,000 |
-| Security incident prevention | $80,000 |
-| Compliance acceleration | $50,000 |
-| Manual rotation elimination | $20,000 |
-| **Total Annual Value** | **$270,000** |
+| Value Driver                    | Annual Impact |
+| ------------------------------- | ------------- |
+| Developer productivity recovery | $120,000      |
+| Security incident prevention    | $80,000       |
+| Compliance acceleration         | $50,000       |
+| Manual rotation elimination     | $20,000       |
+| **Total Annual Value**          | **$270,000**  |
 
 ### Investment Options
 
-We've prepared three implementation approaches based on your
-stated priorities and timeline:
+We've prepared three implementation approaches based on your stated priorities
+and timeline:
 
-| | Foundation | Professional | Enterprise |
-|---|---|---|---|
-| **Best For** | Core needs | Recommended | Full platform |
-| | | **MOST POPULAR** | |
-| Secret Management | ✓ | ✓ | ✓ |
-| Automated Rotation | ✓ | ✓ | ✓ |
-| SSO Integration | — | ✓ | ✓ |
-| Dedicated Support | — | ✓ | ✓ |
-| Custom Training | — | — | ✓ |
-| On-prem Option | — | — | ✓ |
-| **Users Included** | 50 | 150 | Unlimited |
-| **Annual Investment** | $36,000 | $84,000 | $156,000 |
-| **Monthly Equivalent** | $3,000/mo | $7,000/mo | $13,000/mo |
+|                        | Foundation | Professional     | Enterprise    |
+| ---------------------- | ---------- | ---------------- | ------------- |
+| **Best For**           | Core needs | Recommended      | Full platform |
+|                        |            | **MOST POPULAR** |               |
+| Secret Management      | ✓          | ✓                | ✓             |
+| Automated Rotation     | ✓          | ✓                | ✓             |
+| SSO Integration        | —          | ✓                | ✓             |
+| Dedicated Support      | —          | ✓                | ✓             |
+| Custom Training        | —          | —                | ✓             |
+| On-prem Option         | —          | —                | ✓             |
+| **Users Included**     | 50         | 150              | Unlimited     |
+| **Annual Investment**  | $36,000    | $84,000          | $156,000      |
+| **Monthly Equivalent** | $3,000/mo  | $7,000/mo        | $13,000/mo    |
 
 ### Our Recommendation
 
-Based on your growth trajectory (50 → 200 engineers) and
-SOC 2 timeline, we recommend **Professional** as it:
+Based on your growth trajectory (50 → 200 engineers) and SOC 2 timeline, we
+recommend **Professional** as it:
 
 - Scales with your team without per-seat upgrades
 - Includes SSO integration you'll need for compliance
@@ -103,12 +104,12 @@ SOC 2 timeline, we recommend **Professional** as it:
 
 ### Return on Investment
 
-| Metric | Calculation |
-|--------|-------------|
-| Year 1 Investment | $84,000 |
-| Year 1 Value | $270,000 |
-| **Net Value** | **$186,000** |
-| **ROI** | **3.2x** |
+| Metric             | Calculation  |
+| ------------------ | ------------ |
+| Year 1 Investment  | $84,000      |
+| Year 1 Value       | $270,000     |
+| **Net Value**      | **$186,000** |
+| **ROI**            | **3.2x**     |
 | **Payback Period** | **4 months** |
 
 ### Payment Options
@@ -127,11 +128,11 @@ To accommodate budget cycles, we offer:
 
 ### Our Plans
 
-| Plan | Price |
-|------|-------|
-| Basic | $2,000/month |
-| Pro | $5,000/month |
-| Enterprise | Contact us |
+| Plan       | Price        |
+| ---------- | ------------ |
+| Basic      | $2,000/month |
+| Pro        | $5,000/month |
+| Enterprise | Contact us   |
 
 ### Add-ons
 
@@ -142,13 +143,14 @@ To accommodate budget cycles, we offer:
 
 ### Terms
 
-All plans require annual commitment. 30-day notice required
-for cancellation. Prices subject to change.
+All plans require annual commitment. 30-day notice required for cancellation.
+Prices subject to change.
 
 Contact your sales representative for a custom quote.
 ```
 
 **Why it fails:**
+
 - Price shown with no value context
 - Generic plans with no alignment to customer needs
 - Add-ons feel like nickel-and-diming
@@ -171,6 +173,7 @@ Option 1 (Low)      Option 2 (Target)    Option 3 (High)
 ```
 
 **Naming your options:**
+
 ```
 Generic (weak):     Basic, Standard, Premium
 Value-based (good): Foundation, Growth, Scale
@@ -179,34 +182,34 @@ Outcome-based:      Launch, Accelerate, Transform
 
 ### Anchoring Techniques
 
-| Technique | Example |
-|-----------|---------|
-| **Value Anchor** | "This delivers $270K in value for an investment of $84K" |
-| **Cost-of-Inaction Anchor** | "Current approach costs $180K/year; solution costs $84K" |
-| **Competitor Anchor** | "Comparable solutions range from $100K-$200K annually" |
-| **Per-Unit Reframe** | "$700/engineer/year — less than one hour of lost productivity weekly" |
-| **Daily Breakdown** | "That's $230/day for enterprise-grade security" |
+| Technique                   | Example                                                               |
+| --------------------------- | --------------------------------------------------------------------- |
+| **Value Anchor**            | "This delivers $270K in value for an investment of $84K"              |
+| **Cost-of-Inaction Anchor** | "Current approach costs $180K/year; solution costs $84K"              |
+| **Competitor Anchor**       | "Comparable solutions range from $100K-$200K annually"                |
+| **Per-Unit Reframe**        | "$700/engineer/year — less than one hour of lost productivity weekly" |
+| **Daily Breakdown**         | "That's $230/day for enterprise-grade security"                       |
 
 ### Price Objection Prevention
 
 Build these into your pricing section:
 
-| Objection | Prevention |
-|-----------|------------|
-| "Too expensive" | Lead with value, show ROI |
-| "Over budget" | Offer payment terms, phased approach |
+| Objection         | Prevention                                 |
+| ----------------- | ------------------------------------------ |
+| "Too expensive"   | Lead with value, show ROI                  |
+| "Over budget"     | Offer payment terms, phased approach       |
 | "Need to compare" | Position against alternatives preemptively |
-| "Not in plan" | Show cost of delay |
-| "Need discount" | Build value-adds instead of price cuts |
+| "Not in plan"     | Show cost of delay                         |
+| "Need discount"   | Build value-adds instead of price cuts     |
 
 ### Discount Strategy
 
 **Never discount without getting something:**
 
-| They Ask For | You Can Exchange |
-|--------------|------------------|
-| 10% discount | Annual prepay, case study, referral |
-| 15% discount | Multi-year commitment, press release |
+| They Ask For  | You Can Exchange                              |
+| ------------- | --------------------------------------------- |
+| 10% discount  | Annual prepay, case study, referral           |
+| 15% discount  | Multi-year commitment, press release          |
 | 20%+ discount | Expanded scope, pilot program, advisory board |
 
 ### Anti-Patterns

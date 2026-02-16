@@ -53,7 +53,9 @@ export function ShikiHighlighter({
       const lang = (SUPPORTED_LANGS as readonly string[]).includes(language)
         ? language
         : 'text';
-      const resolvedTheme = (SUPPORTED_THEMES as readonly string[]).includes(theme)
+      const resolvedTheme = (SUPPORTED_THEMES as readonly string[]).includes(
+        theme,
+      )
         ? theme
         : 'github-light';
 
@@ -79,7 +81,8 @@ export function ShikiHighlighter({
     <div
       className={cn(
         'overflow-x-auto [&_pre]:p-4 [&_pre]:text-sm [&_pre]:leading-relaxed [&_pre]:!bg-transparent',
-        showLineNumbers && '[&_.line]:before:mr-4 [&_.line]:before:text-muted-foreground/40'
+        showLineNumbers &&
+          '[&_.line]:before:mr-4 [&_.line]:before:text-muted-foreground/40',
       )}
       dangerouslySetInnerHTML={{ __html: html }}
     />

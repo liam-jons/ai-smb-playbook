@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -31,8 +36,10 @@ const docsDirectories: DocsDirectory[] = [
       'Deployment architecture: how the system is deployed, what infrastructure it uses',
     ],
     exampleFiles: ['overview.md', 'domain-model.md', 'data-flow.md'],
-    whyUseful: 'When asked to add a new feature, Claude can read the architecture doc to understand where the new code should live, what patterns to follow, and how it connects to existing systems.',
-    whatDoesNotBelong: 'Line-by-line code walkthroughs, implementation details that change frequently, or anything that duplicates what is already clear from reading the code itself.',
+    whyUseful:
+      'When asked to add a new feature, Claude can read the architecture doc to understand where the new code should live, what patterns to follow, and how it connects to existing systems.',
+    whatDoesNotBelong:
+      'Line-by-line code walkthroughs, implementation details that change frequently, or anything that duplicates what is already clear from reading the code itself.',
   },
   {
     name: 'conventions',
@@ -44,8 +51,10 @@ const docsDirectories: DocsDirectory[] = [
       'Error handling conventions: how errors are handled, logged, and surfaced',
     ],
     exampleFiles: ['code-style.md', 'patterns.md', 'git-workflow.md'],
-    whyUseful: 'Consistency. Instead of Claude guessing your conventions by reading a few files, it reads a clear specification and follows it everywhere.',
-    whatDoesNotBelong: 'Generic advice that applies to any project. Only project-specific conventions belong here.',
+    whyUseful:
+      'Consistency. Instead of Claude guessing your conventions by reading a few files, it reads a clear specification and follows it everywhere.',
+    whatDoesNotBelong:
+      'Generic advice that applies to any project. Only project-specific conventions belong here.',
   },
   {
     name: 'integrations',
@@ -57,8 +66,10 @@ const docsDirectories: DocsDirectory[] = [
       'Rate limits, retry strategies, fallback behaviour',
     ],
     exampleFiles: ['stripe.md', 'sendgrid.md'],
-    whyUseful: 'Third-party integrations are where hallucinations are most likely. Claude\u2019s training data may include outdated API signatures. Your integration docs tell Claude exactly how your project uses each service, with current API patterns.',
-    whatDoesNotBelong: 'Full vendor documentation. Link to that instead; focus on how your project uses the service.',
+    whyUseful:
+      'Third-party integrations are where hallucinations are most likely. Claude\u2019s training data may include outdated API signatures. Your integration docs tell Claude exactly how your project uses each service, with current API patterns.',
+    whatDoesNotBelong:
+      'Full vendor documentation. Link to that instead; focus on how your project uses the service.',
   },
   {
     name: 'schemas',
@@ -69,8 +80,10 @@ const docsDirectories: DocsDirectory[] = [
       'Data dictionaries: what each field means in business terms',
     ],
     exampleFiles: ['database.md', 'api-endpoints.md'],
-    whyUseful: 'When writing database queries or API handlers, Claude can reference the actual schema instead of inferring it from code. This drastically reduces errors in data access code.',
-    whatDoesNotBelong: 'Auto-generated schema dumps without context. Add business-level annotations.',
+    whyUseful:
+      'When writing database queries or API handlers, Claude can reference the actual schema instead of inferring it from code. This drastically reduces errors in data access code.',
+    whatDoesNotBelong:
+      'Auto-generated schema dumps without context. Add business-level annotations.',
   },
   {
     name: 'references',
@@ -81,8 +94,10 @@ const docsDirectories: DocsDirectory[] = [
       'Condensed API references for frameworks used in the project',
     ],
     exampleFiles: ['nextjs-llms.txt', 'supabase-llms.txt'],
-    whyUseful: 'Claude\u2019s training data has a cutoff date. If your project uses a framework that has changed since that cutoff, an llms.txt file gives Claude current, accurate documentation. The context7 MCP (Section 1.14) can also fetch these dynamically, but local copies are available offline and cost no API calls.',
-    whatDoesNotBelong: 'Full vendor documentation sites. Use condensed, LLM-ready versions instead.',
+    whyUseful:
+      'Claude\u2019s training data has a cutoff date. If your project uses a framework that has changed since that cutoff, an llms.txt file gives Claude current, accurate documentation. The context7 MCP (Section 1.14) can also fetch these dynamically, but local copies are available offline and cost no API calls.',
+    whatDoesNotBelong:
+      'Full vendor documentation sites. Use condensed, LLM-ready versions instead.',
   },
 ];
 
@@ -101,7 +116,8 @@ const maintenanceLevels: MaintenanceLevel[] = [
     title: 'Manual Updates',
     badge: 'Start Here',
     badgeVariant: 'default',
-    description: 'The simplest approach: when you change something, update the docs.',
+    description:
+      'The simplest approach: when you change something, update the docs.',
     details: [
       'PR checklist item: "If this change affects architecture, conventions, schemas, or integrations, update the relevant doc."',
       'Session habit: Run /revise-claude-md at the end of productive sessions to capture learnings.',
@@ -112,7 +128,8 @@ const maintenanceLevels: MaintenanceLevel[] = [
     title: 'Agent-Driven Doc Gardening',
     badge: 'Intermediate',
     badgeVariant: 'secondary',
-    description: 'Use Claude itself to maintain documentation. Run periodic reviews where Claude reads the code and the docs, identifies discrepancies, and proposes updates.',
+    description:
+      'Use Claude itself to maintain documentation. Run periodic reviews where Claude reads the code and the docs, identifies discrepancies, and proposes updates.',
     details: [
       'Monthly or before a major project phase.',
       'Claude reads the code and the docs, identifies discrepancies, and proposes updates.',
@@ -124,7 +141,8 @@ const maintenanceLevels: MaintenanceLevel[] = [
     title: 'CI-Based Verification',
     badge: 'Advanced',
     badgeVariant: 'outline',
-    description: 'Automated CI jobs that validate documentation is up to date, cross-linked, and structured correctly.',
+    description:
+      'Automated CI jobs that validate documentation is up to date, cross-linked, and structured correctly.',
     details: [
       'A linter that checks all files referenced in CLAUDE.md actually exist.',
       'A check that schema docs match the actual database schema.',
@@ -135,20 +153,61 @@ const maintenanceLevels: MaintenanceLevel[] = [
 ];
 
 const whatNotToDocument = [
-  { title: 'Obvious code structure', description: 'If it is clear from reading the code, do not duplicate it in docs. The purpose of docs is to capture what the code does not tell you.' },
-  { title: 'Generic programming advice', description: '"Use meaningful variable names" is not project documentation. Only document conventions specific to your project.' },
-  { title: 'Frequently changing implementation details', description: 'If a piece of code changes weekly, documenting its specifics creates maintenance burden. Document the pattern, not the instance.' },
-  { title: 'Everything', description: 'Completeness is not the goal. Impact is. A small set of accurate, useful docs beats a large set of stale, overwhelming docs.' },
+  {
+    title: 'Obvious code structure',
+    description:
+      'If it is clear from reading the code, do not duplicate it in docs. The purpose of docs is to capture what the code does not tell you.',
+  },
+  {
+    title: 'Generic programming advice',
+    description:
+      '"Use meaningful variable names" is not project documentation. Only document conventions specific to your project.',
+  },
+  {
+    title: 'Frequently changing implementation details',
+    description:
+      'If a piece of code changes weekly, documenting its specifics creates maintenance burden. Document the pattern, not the instance.',
+  },
+  {
+    title: 'Everything',
+    description:
+      'Completeness is not the goal. Impact is. A small set of accurate, useful docs beats a large set of stale, overwhelming docs.',
+  },
 ];
 
 const gettingStartedPhases = [
-  { phase: 1, title: 'Scaffold the structure', time: '5 minutes', description: 'Create the directories. Even empty directories signal intent and give Claude a place to look.' },
-  { phase: 2, title: 'Generate initial documentation', time: '30 minutes', description: 'Use the gsd-codebase-mapper (Section 1.10) to analyse your existing codebase and generate structured documents. This gives you a substantial starting point.' },
-  { phase: 3, title: 'Add high-value content first', time: '1\u20132 hours over a week', description: 'Prioritise: conventions (highest per-token impact), schemas (prevents data-layer hallucinations), integration gotchas, and an architecture overview.' },
-  { phase: 4, title: 'Maintain incrementally', time: 'Ongoing', description: 'Build documentation into normal work. When you fix a bug caused by undocumented behaviour, document it. When you add an integration, add a doc.' },
+  {
+    phase: 1,
+    title: 'Scaffold the structure',
+    time: '5 minutes',
+    description:
+      'Create the directories. Even empty directories signal intent and give Claude a place to look.',
+  },
+  {
+    phase: 2,
+    title: 'Generate initial documentation',
+    time: '30 minutes',
+    description:
+      'Use the gsd-codebase-mapper (Section 1.10) to analyse your existing codebase and generate structured documents. This gives you a substantial starting point.',
+  },
+  {
+    phase: 3,
+    title: 'Add high-value content first',
+    time: '1\u20132 hours over a week',
+    description:
+      'Prioritise: conventions (highest per-token impact), schemas (prevents data-layer hallucinations), integration gotchas, and an architecture overview.',
+  },
+  {
+    phase: 4,
+    title: 'Maintain incrementally',
+    time: 'Ongoing',
+    description:
+      'Build documentation into normal work. When you fix a bug caused by undocumented behaviour, document it. When you add an integration, add a doc.',
+  },
 ];
 
-const SCAFFOLD_COMMAND = 'mkdir -p docs/architecture docs/conventions docs/integrations docs/schemas docs/references';
+const SCAFFOLD_COMMAND =
+  'mkdir -p docs/architecture docs/conventions docs/integrations docs/schemas docs/references';
 
 const CLAUDE_MD_POINTERS = `## Documentation
 
@@ -318,40 +377,49 @@ export function DocumentationSection() {
     <div className="flex flex-col gap-12">
       {/* 1. Why Documentation Structure Matters */}
       <section aria-labelledby="why-doc-structure">
-        <h2 id="why-doc-structure" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="why-doc-structure"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Why Documentation Structure Matters for AI
         </h2>
 
         <CalloutCard variant="important" className="mb-6">
           <p className="text-sm italic">
-            &ldquo;From the agent&apos;s point of view, anything it can&apos;t access in-context effectively doesn&apos;t exist.&rdquo;
+            &ldquo;From the agent&apos;s point of view, anything it can&apos;t
+            access in-context effectively doesn&apos;t exist.&rdquo;
           </p>
         </CalloutCard>
 
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            Knowledge that lives in Slack threads, Google Docs, team meetings, or people&apos;s heads is
-            invisible to Claude. It cannot access any of it. The only knowledge Claude can use is what
-            exists in the repository: code, markdown files, configuration, schemas.
+            Knowledge that lives in Slack threads, Google Docs, team meetings,
+            or people&apos;s heads is invisible to Claude. It cannot access any
+            of it. The only knowledge Claude can use is what exists in the
+            repository: code, markdown files, configuration, schemas.
           </p>
           <p>
-            This means documentation is not just for humans any more &mdash; it is a direct input to the
-            quality of Claude&apos;s output. A well-documented codebase produces better AI-assisted code.
-            A poorly-documented one produces guesswork. This approach is informed by patterns shared by
-            engineering teams at organisations like OpenAI, who found that concise, structured project
-            documentation significantly improves AI code generation quality.
+            This means documentation is not just for humans any more &mdash; it
+            is a direct input to the quality of Claude&apos;s output. A
+            well-documented codebase produces better AI-assisted code. A
+            poorly-documented one produces guesswork. This approach is informed
+            by patterns shared by engineering teams at organisations like
+            OpenAI, who found that concise, structured project documentation
+            significantly improves AI code generation quality.
           </p>
           <p>
-            If your team aligned on an architectural pattern in a Slack discussion last month, Claude
-            does not know about it. Every piece of undocumented tribal knowledge is a source of errors
-            when Claude writes code.
+            If your team aligned on an architectural pattern in a Slack
+            discussion last month, Claude does not know about it. Every piece of
+            undocumented tribal knowledge is a source of errors when Claude
+            writes code.
           </p>
         </div>
 
         <CalloutCard variant="info" title="For Phew!" className="mt-6">
-          Most teams do not have extensive documentation, and that is normal. The goal is not to document
-          everything overnight &mdash; it is to build a lightweight structure that grows incrementally and
-          pays for itself through better AI output.
+          Most teams do not have extensive documentation, and that is normal.
+          The goal is not to document everything overnight &mdash; it is to
+          build a lightweight structure that grows incrementally and pays for
+          itself through better AI output.
         </CalloutCard>
       </section>
 
@@ -359,7 +427,10 @@ export function DocumentationSection() {
 
       {/* 2. The Recommended /docs Structure */}
       <section aria-labelledby="docs-structure">
-        <h2 id="docs-structure" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="docs-structure"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           The Recommended /docs Structure
         </h2>
 
@@ -374,12 +445,16 @@ export function DocumentationSection() {
             <AccordionItem key={dir.name} value={dir.name}>
               <AccordionTrigger>
                 <span className="flex items-center gap-2">
-                  <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-normal">{dir.path}</code>
+                  <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-normal">
+                    {dir.path}
+                  </code>
                 </span>
               </AccordionTrigger>
               <AccordionContent className="space-y-3">
                 <div>
-                  <h4 className="mb-1 text-sm font-medium">What to put here:</h4>
+                  <h4 className="mb-1 text-sm font-medium">
+                    What to put here:
+                  </h4>
                   <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     {dir.whatToPut.map((item) => (
                       <li key={item}>{item}</li>
@@ -390,17 +465,28 @@ export function DocumentationSection() {
                   <h4 className="mb-1 text-sm font-medium">Example files:</h4>
                   <div className="flex flex-wrap gap-2">
                     {dir.exampleFiles.map((file) => (
-                      <Badge key={file} variant="outline" className="text-xs font-normal">{file}</Badge>
+                      <Badge
+                        key={file}
+                        variant="outline"
+                        className="text-xs font-normal"
+                      >
+                        {file}
+                      </Badge>
                     ))}
                   </div>
                 </div>
                 <div className="rounded-md border border-emerald-500/30 bg-emerald-50/50 px-3 py-2 dark:bg-emerald-950/20">
-                  <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">What makes this useful for Claude:</p>
-                  <p className="text-xs text-muted-foreground">{dir.whyUseful}</p>
+                  <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                    What makes this useful for Claude:
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {dir.whyUseful}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">
-                    <strong>What does NOT belong here:</strong> {dir.whatDoesNotBelong}
+                    <strong>What does NOT belong here:</strong>{' '}
+                    {dir.whatDoesNotBelong}
                   </p>
                 </div>
               </AccordionContent>
@@ -413,16 +499,21 @@ export function DocumentationSection() {
 
       {/* 3. Progressive Disclosure */}
       <section aria-labelledby="progressive-disclosure">
-        <h2 id="progressive-disclosure" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="progressive-disclosure"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Progressive Disclosure: How CLAUDE.md and /docs Work Together
         </h2>
 
         <div className="mb-6 max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            CLAUDE.md is loaded into context automatically at session start. It costs tokens. Keep it short.
-            The /docs files are <strong className="text-foreground">not</strong> loaded automatically &mdash; Claude
-            reads them on demand, when it needs them. CLAUDE.md tells Claude what exists and where to find it.
-            /docs contains the actual detail.
+            CLAUDE.md is loaded into context automatically at session start. It
+            costs tokens. Keep it short. The /docs files are{' '}
+            <strong className="text-foreground">not</strong> loaded
+            automatically &mdash; Claude reads them on demand, when it needs
+            them. CLAUDE.md tells Claude what exists and where to find it. /docs
+            contains the actual detail.
           </p>
         </div>
 
@@ -433,9 +524,10 @@ export function DocumentationSection() {
         />
 
         <CalloutCard variant="tip" className="mt-4">
-          Claude reads documentation on a need-to-know basis. A task about the frontend never loads the
-          database schema doc. This is efficient &mdash; the right information is available without crowding
-          out the task.
+          Claude reads documentation on a need-to-know basis. A task about the
+          frontend never loads the database schema doc. This is efficient
+          &mdash; the right information is available without crowding out the
+          task.
         </CalloutCard>
       </section>
 
@@ -443,28 +535,41 @@ export function DocumentationSection() {
 
       {/* 4. Getting Started */}
       <section aria-labelledby="getting-started-docs">
-        <h2 id="getting-started-docs" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="getting-started-docs"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Getting Started: From Zero to a Working /docs Structure
         </h2>
 
         <div className="space-y-6">
           {gettingStartedPhases.map((phase) => (
             <div key={phase.phase} className="flex gap-4">
-              <div className={cn(
-                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
-                'bg-primary/10 text-primary'
-              )}>
+              <div
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
+                  'bg-primary/10 text-primary',
+                )}
+              >
                 {phase.phase}
               </div>
               <div className="flex-1 pt-0.5">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium">{phase.title}</p>
-                  <Badge variant="outline" className="text-xs">{phase.time}</Badge>
+                  <Badge variant="outline" className="text-xs">
+                    {phase.time}
+                  </Badge>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">{phase.description}</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {phase.description}
+                </p>
                 {phase.phase === 1 && (
                   <div className="mt-3">
-                    <CodeBlock code={SCAFFOLD_COMMAND} language="bash" title="Create the directory structure" />
+                    <CodeBlock
+                      code={SCAFFOLD_COMMAND}
+                      language="bash"
+                      title="Create the directory structure"
+                    />
                   </div>
                 )}
               </div>
@@ -473,8 +578,8 @@ export function DocumentationSection() {
         </div>
 
         <CalloutCard variant="info" className="mt-6">
-          For a complete guide to running the codebase mapper and using its output,
-          see <strong>Section 1.10 &mdash; Codebase Mapping</strong>.
+          For a complete guide to running the codebase mapper and using its
+          output, see <strong>Section 1.10 &mdash; Codebase Mapping</strong>.
         </CalloutCard>
       </section>
 
@@ -482,18 +587,30 @@ export function DocumentationSection() {
 
       {/* 5. Maintenance */}
       <section aria-labelledby="maintenance">
-        <h2 id="maintenance" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="maintenance"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Keeping Documentation Current
         </h2>
 
         <div className="grid gap-4 sm:grid-cols-3">
           {maintenanceLevels.map((level) => (
-            <div key={level.level} className="flex flex-col rounded-lg border border-border p-4">
+            <div
+              key={level.level}
+              className="flex flex-col rounded-lg border border-border p-4"
+            >
               <div className="mb-2 flex items-center gap-2">
-                <Badge variant={level.badgeVariant} className="text-xs">{level.badge}</Badge>
+                <Badge variant={level.badgeVariant} className="text-xs">
+                  {level.badge}
+                </Badge>
               </div>
-              <h3 className="mb-1 text-sm font-medium">Level {level.level}: {level.title}</h3>
-              <p className="mb-3 text-xs text-muted-foreground">{level.description}</p>
+              <h3 className="mb-1 text-sm font-medium">
+                Level {level.level}: {level.title}
+              </h3>
+              <p className="mb-3 text-xs text-muted-foreground">
+                {level.description}
+              </p>
               <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
                 {level.details.map((detail) => (
                   <li key={detail}>{detail}</li>
@@ -504,9 +621,10 @@ export function DocumentationSection() {
         </div>
 
         <CalloutCard variant="tip" className="mt-6">
-          <strong>Recommendation for Phew!:</strong> Start with Level 1. It costs nothing and provides
-          immediate value. Move to Level 2 when the team is comfortable with the /docs structure.
-          Level 3 is worth considering only when the documentation set is large enough to warrant
+          <strong>Recommendation for Phew!:</strong> Start with Level 1. It
+          costs nothing and provides immediate value. Move to Level 2 when the
+          team is comfortable with the /docs structure. Level 3 is worth
+          considering only when the documentation set is large enough to warrant
           automated checks.
         </CalloutCard>
       </section>
@@ -515,25 +633,34 @@ export function DocumentationSection() {
 
       {/* 6. What NOT to Document */}
       <section aria-labelledby="what-not-to-document">
-        <h2 id="what-not-to-document" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="what-not-to-document"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           What NOT to Document
         </h2>
 
         <div className="space-y-3">
           {whatNotToDocument.map((item) => (
-            <div key={item.title} className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
+            <div
+              key={item.title}
+              className="flex gap-3 rounded-lg border border-border/50 px-4 py-3"
+            >
               <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-destructive/60" />
               <div>
                 <p className="text-sm font-medium">{item.title}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{item.description}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {item.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
         <CalloutCard variant="info" className="mt-4">
-          <strong>The litmus test:</strong> Before writing a doc, ask: &ldquo;If Claude reads this, will it produce better
-          code on this project?&rdquo; If yes, write it. If it is generic knowledge Claude already has from
+          <strong>The litmus test:</strong> Before writing a doc, ask: &ldquo;If
+          Claude reads this, will it produce better code on this project?&rdquo;
+          If yes, write it. If it is generic knowledge Claude already has from
           training, skip it.
         </CalloutCard>
       </section>
@@ -542,7 +669,10 @@ export function DocumentationSection() {
 
       {/* 7. Copyable Content */}
       <section aria-labelledby="doc-templates">
-        <h2 id="doc-templates" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="doc-templates"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Copyable Templates
         </h2>
 
@@ -561,33 +691,53 @@ export function DocumentationSection() {
           />
 
           <div>
-            <h3 className="mb-3 text-base font-medium">Architecture Overview Example</h3>
+            <h3 className="mb-3 text-base font-medium">
+              Architecture Overview Example
+            </h3>
             <Tabs defaultValue="arch-nodejs">
               <TabsList>
                 <TabsTrigger value="arch-nodejs">Node.js / React</TabsTrigger>
                 <TabsTrigger value="arch-aspnet">ASP.NET / C#</TabsTrigger>
               </TabsList>
               <TabsContent value="arch-nodejs" className="mt-4">
-                <CodeBlock code={ARCHITECTURE_TEMPLATE} language="markdown" title="Example: docs/architecture/overview.md (Node.js)" />
+                <CodeBlock
+                  code={ARCHITECTURE_TEMPLATE}
+                  language="markdown"
+                  title="Example: docs/architecture/overview.md (Node.js)"
+                />
               </TabsContent>
               <TabsContent value="arch-aspnet" className="mt-4">
-                <CodeBlock code={ARCHITECTURE_TEMPLATE_ASPNET} language="markdown" title="Example: docs/architecture/overview.md (ASP.NET)" />
+                <CodeBlock
+                  code={ARCHITECTURE_TEMPLATE_ASPNET}
+                  language="markdown"
+                  title="Example: docs/architecture/overview.md (ASP.NET)"
+                />
               </TabsContent>
             </Tabs>
           </div>
 
           <div>
-            <h3 className="mb-3 text-base font-medium">Code Style Conventions Example</h3>
+            <h3 className="mb-3 text-base font-medium">
+              Code Style Conventions Example
+            </h3>
             <Tabs defaultValue="conv-nodejs">
               <TabsList>
                 <TabsTrigger value="conv-nodejs">Node.js / React</TabsTrigger>
                 <TabsTrigger value="conv-aspnet">ASP.NET / C#</TabsTrigger>
               </TabsList>
               <TabsContent value="conv-nodejs" className="mt-4">
-                <CodeBlock code={CONVENTIONS_TEMPLATE} language="markdown" title="Example: docs/conventions/code-style.md (Node.js)" />
+                <CodeBlock
+                  code={CONVENTIONS_TEMPLATE}
+                  language="markdown"
+                  title="Example: docs/conventions/code-style.md (Node.js)"
+                />
               </TabsContent>
               <TabsContent value="conv-aspnet" className="mt-4">
-                <CodeBlock code={CONVENTIONS_TEMPLATE_ASPNET} language="markdown" title="Example: docs/conventions/code-style.md (ASP.NET)" />
+                <CodeBlock
+                  code={CONVENTIONS_TEMPLATE_ASPNET}
+                  language="markdown"
+                  title="Example: docs/conventions/code-style.md (ASP.NET)"
+                />
               </TabsContent>
             </Tabs>
           </div>
@@ -595,10 +745,16 @@ export function DocumentationSection() {
       </section>
 
       <CalloutCard variant="info" title="llms.txt">
-        Many popular frameworks now publish <code className="rounded bg-muted px-1 py-0.5 text-xs">llms.txt</code>{' '}
-        or <code className="rounded bg-muted px-1 py-0.5 text-xs">llms-full.txt</code> files &mdash; condensed
-        documentation designed for AI consumption. When available, these are a significant quality improvement.
-        Check your framework&apos;s website or the <strong>context7</strong> MCP (Section 1.14) for dynamic lookups.
+        Many popular frameworks now publish{' '}
+        <code className="rounded bg-muted px-1 py-0.5 text-xs">llms.txt</code>{' '}
+        or{' '}
+        <code className="rounded bg-muted px-1 py-0.5 text-xs">
+          llms-full.txt
+        </code>{' '}
+        files &mdash; condensed documentation designed for AI consumption. When
+        available, these are a significant quality improvement. Check your
+        framework&apos;s website or the <strong>context7</strong> MCP (Section
+        1.14) for dynamic lookups.
       </CalloutCard>
     </div>
   );

@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
@@ -19,7 +24,8 @@ interface AuditType {
 const auditTypes: AuditType[] = [
   {
     name: 'Security Audit',
-    description: 'Scans for hardcoded secrets, injection risks, missing auth checks, insecure dependencies, and exposed debug endpoints.',
+    description:
+      'Scans for hardcoded secrets, injection risks, missing auth checks, insecure dependencies, and exposed debug endpoints.',
     prompt: `Conduct a security audit of this codebase. For each finding, provide:
 - Severity: Critical / High / Medium / Low
 - File path(s) affected
@@ -43,7 +49,8 @@ Start by scanning all source files, then check configuration files and environme
   },
   {
     name: 'Performance Audit',
-    description: 'Identifies N+1 queries, missing indexes, unbounded queries, synchronous bottlenecks, and missing caching opportunities.',
+    description:
+      'Identifies N+1 queries, missing indexes, unbounded queries, synchronous bottlenecks, and missing caching opportunities.',
     prompt: `Analyse this codebase for performance issues. For each finding, provide:
 - Impact: High / Medium / Low
 - File path(s) affected
@@ -67,7 +74,8 @@ Check database queries, API endpoints, and rendering logic. Prioritise findings 
   },
   {
     name: 'Dependency Health Audit',
-    description: 'Checks for vulnerabilities, deprecated packages, unused dependencies, and licence issues.',
+    description:
+      'Checks for vulnerabilities, deprecated packages, unused dependencies, and licence issues.',
     prompt: `Audit the dependencies in this project. For each issue found, provide:
 - Risk level: Critical / High / Medium / Low
 - Package name and current version
@@ -90,7 +98,8 @@ Read the package manifest and lock file, then cross-reference with actual import
   },
   {
     name: 'Architecture Consistency Audit',
-    description: 'Detects layer violations, circular dependencies, inconsistent patterns, and misplaced files.',
+    description:
+      'Detects layer violations, circular dependencies, inconsistent patterns, and misplaced files.',
     prompt: `Analyse this codebase for architectural consistency. Compare the actual code against the patterns described in the documentation (check CLAUDE.md, any docs/ folder, and ARCHITECTURE.md if present). For each finding, provide:
 - Severity: High / Medium / Low
 - File path(s) affected
@@ -114,7 +123,8 @@ Compare the documented architecture (if any) against the actual code organisatio
   },
   {
     name: 'Test Coverage Audit',
-    description: 'Identifies untested files, critical gaps, tautological tests, and missing E2E coverage.',
+    description:
+      'Identifies untested files, critical gaps, tautological tests, and missing E2E coverage.',
     prompt: `Analyse the test coverage and testing practices in this codebase. For each finding, provide:
 - Priority: High / Medium / Low
 - File path(s) affected
@@ -138,7 +148,8 @@ Start by listing all source files and their corresponding test files (if any). T
   },
   {
     name: 'Code Quality / Standards Compliance',
-    description: 'Checks for long functions, deep nesting, magic numbers, duplicated code, and console.log statements.',
+    description:
+      'Checks for long functions, deep nesting, magic numbers, duplicated code, and console.log statements.',
     prompt: `Review this codebase for code quality and standards compliance. For each finding, provide:
 - Priority: High / Medium / Low
 - File path(s) affected
@@ -176,25 +187,82 @@ const DEBT_EXAMPLE = `**Manual webhook signature validation:**
 - Fix approach: Create shared \`lib/stripe/validate-webhook.ts\` middleware`;
 
 const crossRefAnalysis = [
-  { capability: 'Inconsistent patterns', description: 'Scan all files in a directory and identify where coding conventions are not followed.' },
-  { capability: 'Dead code detection', description: 'Trace imports and references across the codebase to identify exported functions never imported.' },
-  { capability: 'Dependency analysis', description: 'Read package.json, check which dependencies are actually imported, and flag unused ones.' },
-  { capability: 'Security pattern scanning', description: 'Look for vulnerability patterns across all files simultaneously.' },
+  {
+    capability: 'Inconsistent patterns',
+    description:
+      'Scan all files in a directory and identify where coding conventions are not followed.',
+  },
+  {
+    capability: 'Dead code detection',
+    description:
+      'Trace imports and references across the codebase to identify exported functions never imported.',
+  },
+  {
+    capability: 'Dependency analysis',
+    description:
+      'Read package.json, check which dependencies are actually imported, and flag unused ones.',
+  },
+  {
+    capability: 'Security pattern scanning',
+    description:
+      'Look for vulnerability patterns across all files simultaneously.',
+  },
 ];
 
 const workflowSteps = [
-  { step: 1, title: 'Start with the mapper output', description: 'If you have not run /gsd:map-codebase (Section 1.10), do that first. The CONCERNS.md document gives you a baseline.' },
-  { step: 2, title: 'Choose your audit focus', description: 'Pick a specific focus area for each session: security, performance, dependencies, architecture, test coverage, or code quality.' },
-  { step: 3, title: 'Run a focused audit prompt', description: 'Use one of the prompts below, tailored to the specific focus area.' },
-  { step: 4, title: 'Review and triage findings', description: 'Review each finding, confirm it is valid (Claude can produce false positives), and prioritise.' },
-  { step: 5, title: 'Document confirmed findings', description: 'Add confirmed issues to your CONCERNS.md or tech debt tracker.' },
+  {
+    step: 1,
+    title: 'Start with the mapper output',
+    description:
+      'If you have not run /gsd:map-codebase (Section 1.10), do that first. The CONCERNS.md document gives you a baseline.',
+  },
+  {
+    step: 2,
+    title: 'Choose your audit focus',
+    description:
+      'Pick a specific focus area for each session: security, performance, dependencies, architecture, test coverage, or code quality.',
+  },
+  {
+    step: 3,
+    title: 'Run a focused audit prompt',
+    description:
+      'Use one of the prompts below, tailored to the specific focus area.',
+  },
+  {
+    step: 4,
+    title: 'Review and triage findings',
+    description:
+      'Review each finding, confirm it is valid (Claude can produce false positives), and prioritise.',
+  },
+  {
+    step: 5,
+    title: 'Document confirmed findings',
+    description:
+      'Add confirmed issues to your CONCERNS.md or tech debt tracker.',
+  },
 ];
 
 const remediationPrinciples = [
-  { title: 'Always review before executing', description: 'Claude should propose the fix plan before implementing it. This prevents over-engineering.' },
-  { title: 'One debt item at a time', description: 'Do not try to fix multiple items in a single session. Each gets its own focused session with clean context.' },
-  { title: 'Test after every fix', description: 'Run existing tests after each change. If none exist, add tests for the changed code as part of the fix.' },
-  { title: 'Update the documentation', description: 'After fixing a debt item, update CONCERNS.md and CONVENTIONS.md if the fix introduced new patterns.' },
+  {
+    title: 'Always review before executing',
+    description:
+      'Claude should propose the fix plan before implementing it. This prevents over-engineering.',
+  },
+  {
+    title: 'One debt item at a time',
+    description:
+      'Do not try to fix multiple items in a single session. Each gets its own focused session with clean context.',
+  },
+  {
+    title: 'Test after every fix',
+    description:
+      'Run existing tests after each change. If none exist, add tests for the changed code as part of the fix.',
+  },
+  {
+    title: 'Update the documentation',
+    description:
+      'After fixing a debt item, update CONCERNS.md and CONVENTIONS.md if the fix introduced new patterns.',
+  },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -206,26 +274,35 @@ export function TechnicalDebtSection() {
     <div className="flex flex-col gap-12">
       {/* Opening */}
       <section aria-labelledby="why-audit">
-        <h2 id="why-audit" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="why-audit"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Why Audit with AI?
         </h2>
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            Every codebase accumulates issues over time &mdash; shortcuts taken under deadline pressure,
-            dependencies that fall behind, patterns that made sense years ago but no longer fit. For a
-            team of Phew!&apos;s size, dedicating time to comprehensive code audits is difficult to justify
-            when there is client work to deliver.
+            Every codebase accumulates issues over time &mdash; shortcuts taken
+            under deadline pressure, dependencies that fall behind, patterns
+            that made sense years ago but no longer fit. For a team of
+            Phew!&apos;s size, dedicating time to comprehensive code audits is
+            difficult to justify when there is client work to deliver.
           </p>
           <p>
-            Claude changes this equation. It can analyse an entire codebase in minutes, cross-referencing
-            across files to spot inconsistencies, security risks, and performance problems that are invisible
-            when reviewing files one at a time. During the training, this was demonstrated when Claude
-            generated a 21KB concerns file from a single codebase analysis.
+            Claude changes this equation. It can analyse an entire codebase in
+            minutes, cross-referencing across files to spot inconsistencies,
+            security risks, and performance problems that are invisible when
+            reviewing files one at a time. During the training, this was
+            demonstrated when Claude generated a 21KB concerns file from a
+            single codebase analysis.
           </p>
           <p>
-            This section covers two complementary workflows: <strong className="text-foreground">auditing</strong>{' '}
-            (finding problems) and <strong className="text-foreground">remediation</strong> (fixing them).
-            The mapper&apos;s CONCERNS.md from Section 1.10 is your starting point &mdash; this section takes you deeper.
+            This section covers two complementary workflows:{' '}
+            <strong className="text-foreground">auditing</strong> (finding
+            problems) and{' '}
+            <strong className="text-foreground">remediation</strong> (fixing
+            them). The mapper&apos;s CONCERNS.md from Section 1.10 is your
+            starting point &mdash; this section takes you deeper.
           </p>
         </div>
       </section>
@@ -234,7 +311,10 @@ export function TechnicalDebtSection() {
 
       {/* Part 1: Auditing */}
       <section aria-labelledby="audit-workflow">
-        <h2 id="audit-workflow" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="audit-workflow"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Part 1: Codebase Auditing
         </h2>
 
@@ -243,55 +323,70 @@ export function TechnicalDebtSection() {
         <div className="mb-8 space-y-4">
           {workflowSteps.map((step) => (
             <div key={step.step} className="flex gap-4">
-              <div className={cn(
-                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
-                'bg-primary/10 text-primary'
-              )}>
+              <div
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
+                  'bg-primary/10 text-primary',
+                )}
+              >
                 {step.step}
               </div>
               <div className="pt-1">
                 <p className="text-sm font-medium">{step.title}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{step.description}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Multi-file Cross-Reference */}
-        <h3 className="mb-4 text-lg font-medium">Multi-File Cross-Reference Analysis</h3>
+        <h3 className="mb-4 text-lg font-medium">
+          Multi-File Cross-Reference Analysis
+        </h3>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          What makes Claude particularly effective at auditing is its ability to analyse patterns across
-          files simultaneously:
+          What makes Claude particularly effective at auditing is its ability to
+          analyse patterns across files simultaneously:
         </p>
         <div className="mb-8 space-y-3">
           {crossRefAnalysis.map((item) => (
-            <div key={item.capability} className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
+            <div
+              key={item.capability}
+              className="flex gap-3 rounded-lg border border-border/50 px-4 py-3"
+            >
               <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
               <div>
                 <p className="text-sm font-medium">{item.capability}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{item.description}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {item.description}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
         <CalloutCard variant="info" className="mb-6">
-          For large codebases, a single audit prompt may not cover everything. Use the subagent pattern
-          from Section 1.10 &mdash; break the audit into focused tasks, each with its own context window.
+          For large codebases, a single audit prompt may not cover everything.
+          Use the subagent pattern from Section 1.10 &mdash; break the audit
+          into focused tasks, each with its own context window.
         </CalloutCard>
 
         {/* Audit Prompts */}
-        <h3 className="mb-4 text-lg font-medium">Audit Prompts by Focus Area</h3>
+        <h3 className="mb-4 text-lg font-medium">
+          Audit Prompts by Focus Area
+        </h3>
         <Accordion type="single" collapsible>
           {auditTypes.map((audit) => (
             <AccordionItem key={audit.name} value={audit.name}>
-              <AccordionTrigger className="text-sm font-medium">{audit.name}</AccordionTrigger>
+              <AccordionTrigger className="text-sm font-medium">
+                {audit.name}
+              </AccordionTrigger>
               <AccordionContent className="space-y-3">
-                <p className="text-sm text-muted-foreground">{audit.description}</p>
-                <PromptExample
-                  title={audit.name}
-                  prompt={audit.prompt}
-                />
+                <p className="text-sm text-muted-foreground">
+                  {audit.description}
+                </p>
+                <PromptExample title={audit.name} prompt={audit.prompt} />
               </AccordionContent>
             </AccordionItem>
           ))}
@@ -302,7 +397,10 @@ export function TechnicalDebtSection() {
 
       {/* Part 2: Technical Debt */}
       <section aria-labelledby="tech-debt">
-        <h2 id="tech-debt" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="tech-debt"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Part 2: Handling Technical Debt
         </h2>
 
@@ -310,9 +408,10 @@ export function TechnicalDebtSection() {
         <h3 className="mb-4 text-lg font-medium">Documenting Technical Debt</h3>
         <div className="mb-4 max-w-prose text-sm text-muted-foreground">
           <p>
-            Claude can only act on well-documented debt. A vague note like &ldquo;auth needs work&rdquo; is not
-            actionable. A structured entry with file paths, impact assessment, and suggested fix approach
-            gives Claude everything it needs.
+            Claude can only act on well-documented debt. A vague note like
+            &ldquo;auth needs work&rdquo; is not actionable. A structured entry
+            with file paths, impact assessment, and suggested fix approach gives
+            Claude everything it needs.
           </p>
         </div>
 
@@ -357,10 +456,18 @@ Here are the items:
         />
 
         <div className="mt-4 flex flex-wrap gap-2">
-          <Badge variant="destructive" className="text-xs">P1 — Fix now</Badge>
-          <Badge className="bg-amber-500/80 text-xs hover:bg-amber-500/70">P2 — Fix this sprint</Badge>
-          <Badge variant="default" className="text-xs">P3 — Fix this quarter</Badge>
-          <Badge variant="secondary" className="text-xs">P4 — Fix when convenient</Badge>
+          <Badge variant="destructive" className="text-xs">
+            P1 — Fix now
+          </Badge>
+          <Badge className="bg-amber-500/80 text-xs hover:bg-amber-500/70">
+            P2 — Fix this sprint
+          </Badge>
+          <Badge variant="default" className="text-xs">
+            P3 — Fix this quarter
+          </Badge>
+          <Badge variant="secondary" className="text-xs">
+            P4 — Fix when convenient
+          </Badge>
         </div>
       </section>
 
@@ -368,7 +475,10 @@ Here are the items:
 
       {/* Remediation */}
       <section aria-labelledby="remediation">
-        <h2 id="remediation" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="remediation"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Executing Debt Remediation
         </h2>
 
@@ -400,11 +510,16 @@ Important constraints:
 
         <div className="mt-6 space-y-3">
           {remediationPrinciples.map((principle) => (
-            <div key={principle.title} className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
+            <div
+              key={principle.title}
+              className="flex gap-3 rounded-lg border border-border/50 px-4 py-3"
+            >
               <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
               <div>
                 <p className="text-sm font-medium">{principle.title}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{principle.description}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {principle.description}
+                </p>
               </div>
             </div>
           ))}
@@ -415,13 +530,17 @@ Important constraints:
 
       {/* Architecture Drift */}
       <section aria-labelledby="architecture-drift">
-        <h2 id="architecture-drift" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="architecture-drift"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Architecture Drift Detection
         </h2>
         <div className="mb-4 max-w-prose text-sm text-muted-foreground">
           <p>
-            Claude can keep architecture documentation current by comparing documented architecture against
-            actual code and flagging drift. This is particularly valuable after a period of rapid development.
+            Claude can keep architecture documentation current by comparing
+            documented architecture against actual code and flagging drift. This
+            is particularly valuable after a period of rapid development.
           </p>
         </div>
 
@@ -448,28 +567,45 @@ Focus on:
 
       {/* Ongoing Maintenance */}
       <section aria-labelledby="maintenance">
-        <h2 id="maintenance" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="maintenance"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Ongoing Maintenance
         </h2>
         <div className="max-w-prose space-y-4 text-sm text-muted-foreground">
           <p>
-            Auditing is not a one-time activity. Codebases continue to accumulate debt as new features
-            are added and requirements change.
+            Auditing is not a one-time activity. Codebases continue to
+            accumulate debt as new features are added and requirements change.
           </p>
           <ul className="list-inside list-disc space-y-1">
-            <li>Run the mapper (<code className="rounded bg-muted px-1 py-0.5 text-xs">/gsd:map-codebase</code>) quarterly, or before any major new feature begins.</li>
-            <li>Keep CONCERNS.md as a living document &mdash; update it when issues are found and resolved.</li>
-            <li>Consider the &ldquo;doc-gardening agent&rdquo; pattern: a scheduled task that scans for stale or obsolete documentation.</li>
+            <li>
+              Run the mapper (
+              <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                /gsd:map-codebase
+              </code>
+              ) quarterly, or before any major new feature begins.
+            </li>
+            <li>
+              Keep CONCERNS.md as a living document &mdash; update it when
+              issues are found and resolved.
+            </li>
+            <li>
+              Consider the &ldquo;doc-gardening agent&rdquo; pattern: a
+              scheduled task that scans for stale or obsolete documentation.
+            </li>
           </ul>
         </div>
       </section>
 
       {/* Cross-references */}
       <CalloutCard variant="info">
-        This section builds on <strong>Section 1.10 (Codebase Mapping)</strong> &mdash; run the mapper first
-        to generate a baseline CONCERNS.md. The remediation approach uses the anti-hallucination patterns
-        from <strong>Section 1.11</strong> (plan first, wait for approval). After fixing debt,
-        update your CLAUDE.md and /docs structure (Sections 1.8 and 1.9).
+        This section builds on <strong>Section 1.10 (Codebase Mapping)</strong>{' '}
+        &mdash; run the mapper first to generate a baseline CONCERNS.md. The
+        remediation approach uses the anti-hallucination patterns from{' '}
+        <strong>Section 1.11</strong> (plan first, wait for approval). After
+        fixing debt, update your CLAUDE.md and /docs structure (Sections 1.8 and
+        1.9).
       </CalloutCard>
     </div>
   );

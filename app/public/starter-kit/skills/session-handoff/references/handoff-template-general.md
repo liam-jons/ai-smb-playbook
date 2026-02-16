@@ -13,17 +13,19 @@
 
 ---
 
-**How to Use This:** Paste everything below into a new conversation to continue where you left off.
+**How to Use This:** Paste everything below into a new conversation to continue
+where you left off.
 
 ---
 
 ## What We Were Working On
 
-[Describe the project or task in plain language. Include enough context that someone reading this for the first time would understand what you are doing and why.]
+[Describe the project or task in plain language. Include enough context that
+someone reading this for the first time would understand what you are doing and
+why.]
 
-**Project/Task:** [Name or short description]
-**Started:** [When you began this work]
-**Goal:** [What you are trying to achieve overall]
+**Project/Task:** [Name or short description] **Started:** [When you began this
+work] **Goal:** [What you are trying to achieve overall]
 
 ---
 
@@ -47,7 +49,8 @@
 ## Important Things to Remember
 
 - [Key decisions that should not be revisited]
-- [Preferences or constraints Claude should follow (e.g., tone, format, audience)]
+- [Preferences or constraints Claude should follow (e.g., tone, format,
+  audience)]
 - [Anything that was tried and did not work]
 - [Any deadlines or time constraints]
 
@@ -55,7 +58,8 @@
 
 ## Instructions for Claude
 
-[Any specific instructions about how Claude should approach the next session. For example:]
+[Any specific instructions about how Claude should approach the next session.
+For example:]
 
 - [Continue in the same tone and style as before]
 - [Focus on [specific area] first]

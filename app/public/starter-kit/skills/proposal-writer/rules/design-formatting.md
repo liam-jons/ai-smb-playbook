@@ -8,7 +8,8 @@ tags: design, formatting, layout, visual, branding
 
 **Impact: MEDIUM-HIGH**
 
-Design signals professionalism and makes proposals easier to read. Good formatting can't save bad content, but bad formatting can kill good content.
+Design signals professionalism and makes proposals easier to read. Good
+formatting can't save bad content, but bad formatting can kill good content.
 
 ### The Proposal Design Hierarchy
 
@@ -37,13 +38,13 @@ Design signals professionalism and makes proposals easier to read. Good formatti
 
 ### Design Principles for Proposals
 
-| Principle | Implementation |
-|-----------|----------------|
-| **Scannability** | Headers, bullets, whitespace — reader should get 80% by scanning |
-| **Consistency** | Same fonts, colors, spacing throughout |
-| **Hierarchy** | Important things look important |
-| **Professionalism** | Clean, polished, error-free |
-| **Accessibility** | Readable fonts, sufficient contrast |
+| Principle           | Implementation                                                   |
+| ------------------- | ---------------------------------------------------------------- |
+| **Scannability**    | Headers, bullets, whitespace — reader should get 80% by scanning |
+| **Consistency**     | Same fonts, colors, spacing throughout                           |
+| **Hierarchy**       | Important things look important                                  |
+| **Professionalism** | Clean, polished, error-free                                      |
+| **Accessibility**   | Readable fonts, sufficient contrast                              |
 
 ### Good Example: Well-Formatted Section
 
@@ -88,6 +89,7 @@ SecretStash is a secrets management platform. We provide centralized secrets man
 ```
 
 **Why it fails:**
+
 - Wall of text with no structure
 - No visual hierarchy
 - Impossible to scan
@@ -96,19 +98,20 @@ SecretStash is a secrets management platform. We provide centralized secrets man
 
 ### Typography Guidelines
 
-| Element | Recommendation |
-|---------|----------------|
-| **Headings** | Sans-serif (Arial, Helvetica, Calibri), 14-18pt |
-| **Body** | Serif or sans-serif, 10-12pt, 1.15-1.5 line spacing |
-| **Minimum font** | Never below 9pt |
-| **Font limit** | 2 fonts maximum (heading + body) |
-| **Bold** | For emphasis, not entire paragraphs |
-| **Italics** | For definitions or light emphasis |
-| **ALL CAPS** | Headers only, never body text |
+| Element          | Recommendation                                      |
+| ---------------- | --------------------------------------------------- |
+| **Headings**     | Sans-serif (Arial, Helvetica, Calibri), 14-18pt     |
+| **Body**         | Serif or sans-serif, 10-12pt, 1.15-1.5 line spacing |
+| **Minimum font** | Never below 9pt                                     |
+| **Font limit**   | 2 fonts maximum (heading + body)                    |
+| **Bold**         | For emphasis, not entire paragraphs                 |
+| **Italics**      | For definitions or light emphasis                   |
+| **ALL CAPS**     | Headers only, never body text                       |
 
 ### Color Usage
 
 **Brand colors:**
+
 ```
 Primary:    Use for headers, key elements
 Secondary:  Use for accents, callouts
@@ -116,6 +119,7 @@ Neutral:    Use for body text, backgrounds
 ```
 
 **Color rules:**
+
 - 60/30/10 rule: 60% primary, 30% secondary, 10% accent
 - Maintain sufficient contrast (4.5:1 minimum for text)
 - Don't use color as only differentiator (accessibility)
@@ -124,6 +128,7 @@ Neutral:    Use for body text, backgrounds
 ### Table Formatting
 
 **Good table design:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
@@ -140,6 +145,7 @@ Neutral:    Use for body text, backgrounds
 ```
 
 **Table rules:**
+
 - Clear headers with visual distinction
 - Consistent alignment (numbers right, text left)
 - Adequate row height
@@ -148,19 +154,20 @@ Neutral:    Use for body text, backgrounds
 
 ### Whitespace Guidelines
 
-| Element | Spacing |
-|---------|---------|
-| **Page margins** | 0.75" - 1" all sides |
-| **Section spacing** | 24-36pt before major sections |
-| **Paragraph spacing** | 6-12pt between paragraphs |
-| **Line spacing** | 1.15-1.5 for body text |
-| **Bullet spacing** | 6pt between items |
+| Element               | Spacing                       |
+| --------------------- | ----------------------------- |
+| **Page margins**      | 0.75" - 1" all sides          |
+| **Section spacing**   | 24-36pt before major sections |
+| **Paragraph spacing** | 6-12pt between paragraphs     |
+| **Line spacing**      | 1.15-1.5 for body text        |
+| **Bullet spacing**    | 6pt between items             |
 
 **Rule:** When in doubt, add more whitespace.
 
 ### Page Layout Templates
 
 **Cover page:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
@@ -188,6 +195,7 @@ Neutral:    Use for body text, backgrounds
 ```
 
 **Content page:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ [Your Logo]                          [Client Name] Proposal │
@@ -208,25 +216,25 @@ Neutral:    Use for body text, backgrounds
 
 ### Visual Elements to Include
 
-| Element | Purpose | When to Use |
-|---------|---------|-------------|
-| **Comparison tables** | Side-by-side evaluation | Pricing, features |
-| **Timeline diagrams** | Show project phases | Implementation plans |
-| **Process flows** | Explain methodology | Approach sections |
-| **Icons** | Visual anchors | Section headers, lists |
-| **Charts** | Quantify claims | ROI, metrics |
-| **Screenshots** | Show product | Solution sections |
-| **Customer logos** | Build credibility | Proof sections |
+| Element               | Purpose                 | When to Use            |
+| --------------------- | ----------------------- | ---------------------- |
+| **Comparison tables** | Side-by-side evaluation | Pricing, features      |
+| **Timeline diagrams** | Show project phases     | Implementation plans   |
+| **Process flows**     | Explain methodology     | Approach sections      |
+| **Icons**             | Visual anchors          | Section headers, lists |
+| **Charts**            | Quantify claims         | ROI, metrics           |
+| **Screenshots**       | Show product            | Solution sections      |
+| **Customer logos**    | Build credibility       | Proof sections         |
 
 ### File Format & Delivery
 
-| Format | When to Use | Considerations |
-|--------|-------------|----------------|
-| **PDF** | Default choice | Preserves formatting, universal |
-| **Interactive PDF** | Embedded links | Test before sending |
-| **Word** | If editing needed | Risk of formatting breaks |
-| **Presentation** | In-person delivery | Complement, don't replace written |
-| **Web/HTML** | Digital experience | Consider platforms like Qwilr, Proposify |
+| Format              | When to Use        | Considerations                           |
+| ------------------- | ------------------ | ---------------------------------------- |
+| **PDF**             | Default choice     | Preserves formatting, universal          |
+| **Interactive PDF** | Embedded links     | Test before sending                      |
+| **Word**            | If editing needed  | Risk of formatting breaks                |
+| **Presentation**    | In-person delivery | Complement, don't replace written        |
+| **Web/HTML**        | Digital experience | Consider platforms like Qwilr, Proposify |
 
 ### Pre-Send Checklist
 

@@ -75,15 +75,51 @@ interface QuickStartStep {
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const placeholders: PlaceholderDef[] = [
-  { placeholder: '{{COMPANY_NAME}}', description: 'Organisation name', example: 'Phew Design Limited' },
-  { placeholder: '{{INDUSTRY}}', description: 'Primary industry or sector', example: 'Safeguarding and public sector software' },
-  { placeholder: '{{TEAM_SIZE}}', description: 'Approximate team size', example: '10' },
-  { placeholder: '{{EFFECTIVE_DATE}}', description: 'Date the policy takes effect', example: '01/03/2026' },
-  { placeholder: '{{LAST_REVIEWED}}', description: 'Date of last review', example: '01/03/2026' },
-  { placeholder: '{{POLICY_OWNER}}', description: 'Name or role of the policy owner', example: 'AI Lead' },
-  { placeholder: '{{AI_LEAD_NAME}}', description: 'Name of the designated AI Lead', example: '[To be confirmed]' },
-  { placeholder: '{{AI_LEAD_ROLE}}', description: 'Role/title of the AI Lead', example: '[To be confirmed]' },
-  { placeholder: '{{NEXT_REVIEW}}', description: 'Date of next scheduled review', example: '01/06/2026' },
+  {
+    placeholder: '{{COMPANY_NAME}}',
+    description: 'Organisation name',
+    example: 'Phew Design Limited',
+  },
+  {
+    placeholder: '{{INDUSTRY}}',
+    description: 'Primary industry or sector',
+    example: 'Safeguarding and public sector software',
+  },
+  {
+    placeholder: '{{TEAM_SIZE}}',
+    description: 'Approximate team size',
+    example: '10',
+  },
+  {
+    placeholder: '{{EFFECTIVE_DATE}}',
+    description: 'Date the policy takes effect',
+    example: '01/03/2026',
+  },
+  {
+    placeholder: '{{LAST_REVIEWED}}',
+    description: 'Date of last review',
+    example: '01/03/2026',
+  },
+  {
+    placeholder: '{{POLICY_OWNER}}',
+    description: 'Name or role of the policy owner',
+    example: 'AI Lead',
+  },
+  {
+    placeholder: '{{AI_LEAD_NAME}}',
+    description: 'Name of the designated AI Lead',
+    example: '[To be confirmed]',
+  },
+  {
+    placeholder: '{{AI_LEAD_ROLE}}',
+    description: 'Role/title of the AI Lead',
+    example: '[To be confirmed]',
+  },
+  {
+    placeholder: '{{NEXT_REVIEW}}',
+    description: 'Date of next scheduled review',
+    example: '01/06/2026',
+  },
 ];
 
 const riskTiers: RiskTier[] = [
@@ -95,14 +131,15 @@ const riskTiers: RiskTier[] = [
       'Read-only or output-only functionality (no external data access)',
       'No access to sensitive data, customer information, or production systems',
       'From a verified/official source (Anthropic marketplace, known publisher)',
-      'Affects only the individual user\'s workflow',
+      "Affects only the individual user's workflow",
     ],
     examples: [
       'Official Anthropic plugins (commit-commands, code-simplifier, context7)',
       'Internal skills that format output or enforce style rules (UK English, brand voice)',
       'Read-only MCP servers (documentation lookup, public API queries)',
     ],
-    approval: 'Self-approval. Log in the AI Extension Register and notify the AI Lead.',
+    approval:
+      'Self-approval. Log in the AI Extension Register and notify the AI Lead.',
   },
   {
     level: 2,
@@ -120,7 +157,8 @@ const riskTiers: RiskTier[] = [
       'Hooks that modify files automatically (Britfix, linting hooks)',
       'Skills provisioned organisation-wide by admin',
     ],
-    approval: 'AI Lead approval required. Submit a brief request and wait for confirmation before installation.',
+    approval:
+      'AI Lead approval required. Submit a brief request and wait for confirmation before installation.',
   },
   {
     level: 3,
@@ -139,7 +177,8 @@ const riskTiers: RiskTier[] = [
       'Browser automation tools operating on live client sites',
       'Agent teams with autonomous decision-making authority',
     ],
-    approval: 'AI Lead review + MD sign-off. A written risk assessment must be completed and retained.',
+    approval:
+      'AI Lead review + MD sign-off. A written risk assessment must be completed and retained.',
   },
 ];
 
@@ -579,7 +618,11 @@ No AI extension may access safeguarding case data without formal Tier 3 assessme
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-function PlaceholderBadge({ placeholder, description, example }: PlaceholderDef) {
+function PlaceholderBadge({
+  placeholder,
+  description,
+  example,
+}: PlaceholderDef) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -612,16 +655,21 @@ function renderContentWithPlaceholders(text: string) {
 }
 
 function RiskTierCard({ tier }: { tier: RiskTier }) {
-  const colourMap: Record<string, { bg: string; border: string; badge: string }> = {
+  const colourMap: Record<
+    string,
+    { bg: string; border: string; badge: string }
+  > = {
     emerald: {
       bg: 'bg-emerald-50/50 dark:bg-emerald-950/20',
       border: 'border-emerald-200 dark:border-emerald-800/40',
-      badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+      badge:
+        'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
     },
     amber: {
       bg: 'bg-amber-50/50 dark:bg-amber-950/20',
       border: 'border-amber-200 dark:border-amber-800/40',
-      badge: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+      badge:
+        'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
     },
     red: {
       bg: 'bg-red-50/50 dark:bg-red-950/20',
@@ -634,10 +682,17 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
   return (
     <div className={cn('rounded-lg border p-4', c.bg, c.border)}>
       <div className="mb-3 flex items-center gap-2">
-        <span className={cn('inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold', c.badge)}>
+        <span
+          className={cn(
+            'inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold',
+            c.badge,
+          )}
+        >
           Tier {tier.level}
         </span>
-        <span className="text-sm font-semibold text-foreground">{tier.label}</span>
+        <span className="text-sm font-semibold text-foreground">
+          {tier.label}
+        </span>
       </div>
 
       <div className="space-y-3">
@@ -645,10 +700,16 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
           <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Characteristics
           </span>
-          <ul className="mt-1.5 space-y-1 text-sm text-muted-foreground" role="list">
+          <ul
+            className="mt-1.5 space-y-1 text-sm text-muted-foreground"
+            role="list"
+          >
             {tier.characteristics.map((c, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30"
+                  aria-hidden="true"
+                />
                 {c}
               </li>
             ))}
@@ -659,10 +720,16 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
           <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Examples
           </span>
-          <ul className="mt-1.5 space-y-1 text-sm text-muted-foreground" role="list">
+          <ul
+            className="mt-1.5 space-y-1 text-sm text-muted-foreground"
+            role="list"
+          >
             {tier.examples.map((e, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30"
+                  aria-hidden="true"
+                />
                 {e}
               </li>
             ))}
@@ -670,7 +737,9 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
         </div>
 
         <div className="rounded-md bg-card/50 px-3 py-2">
-          <span className="text-xs font-medium text-muted-foreground">Approval: </span>
+          <span className="text-xs font-medium text-muted-foreground">
+            Approval:{' '}
+          </span>
           <span className="text-sm text-foreground">{tier.approval}</span>
         </div>
       </div>
@@ -683,10 +752,12 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
 export function GovernancePolicySection() {
   const { track } = useTrack();
   const isGeneral = track === 'general';
-  const [viewMode, setViewMode] = useState<'walkthrough' | 'full'>('walkthrough');
+  const [viewMode, setViewMode] = useState<'walkthrough' | 'full'>(
+    'walkthrough',
+  );
 
   const filteredSections = policySections.filter((s) =>
-    s.tracks.includes(track)
+    s.tracks.includes(track),
   );
 
   return (
@@ -694,15 +765,16 @@ export function GovernancePolicySection() {
       {/* Introduction */}
       <section aria-labelledby="gov-intro-heading">
         <p className="max-w-prose text-base leading-relaxed text-foreground">
-          This is not about creating red tape. It is about having a clear, lightweight process
-          so your team can adopt new AI tools confidently without wondering whether they should
-          have asked someone first.
+          This is not about creating red tape. It is about having a clear,
+          lightweight process so your team can adopt new AI tools confidently
+          without wondering whether they should have asked someone first.
         </p>
         <div className="mt-4 space-y-3">
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-            The policy below is a fill-in-the-blanks template — Phew! can use it as-is by filling in a few
-            details, and it can be adapted for other organisations by changing the highlighted
-            variables. Each variable is shown as a{' '}
+            The policy below is a fill-in-the-blanks template — Phew! can use it
+            as-is by filling in a few details, and it can be adapted for other
+            organisations by changing the highlighted variables. Each variable
+            is shown as a{' '}
             <PlaceholderBadge
               placeholder="{{EXAMPLE}}"
               description="A placeholder variable"
@@ -714,20 +786,28 @@ export function GovernancePolicySection() {
             The standalone template is available in the starter kit at{' '}
             <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
               starter-kit/templates/governance-policy-template.md
-            </code>.
+            </code>
+            .
           </p>
         </div>
 
         {/* Download / Copy full document */}
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <CopyButton text={fullPolicyText} className="h-auto gap-2 px-3 py-2 opacity-100" />
-          <span className="text-sm text-muted-foreground">Copy full policy to clipboard</span>
+          <CopyButton
+            text={fullPolicyText}
+            className="h-auto gap-2 px-3 py-2 opacity-100"
+          />
+          <span className="text-sm text-muted-foreground">
+            Copy full policy to clipboard
+          </span>
           <Button
             variant="outline"
             size="sm"
             className="gap-2"
             onClick={() => {
-              const blob = new Blob([fullPolicyText], { type: 'text/markdown' });
+              const blob = new Blob([fullPolicyText], {
+                type: 'text/markdown',
+              });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');
               a.href = url;
@@ -755,7 +835,8 @@ export function GovernancePolicySection() {
               Quick Start: Three Things to Do This Week
             </h2>
             <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-              You do not need to implement the entire policy at once. Start with these three steps.
+              You do not need to implement the entire policy at once. Start with
+              these three steps.
             </p>
 
             <div className="space-y-4">
@@ -767,7 +848,10 @@ export function GovernancePolicySection() {
                     className="flex items-start gap-4 rounded-lg border border-border px-4 py-4"
                   >
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Icon className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <Icon
+                        className="h-4 w-4 text-primary"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
@@ -801,8 +885,9 @@ export function GovernancePolicySection() {
           Risk Categories
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Extensions are classified into three tiers. The tier determines how much approval is needed.
-          Most day-to-day extensions will be Tier 1 — self-approval with a quick log entry.
+          Extensions are classified into three tiers. The tier determines how
+          much approval is needed. Most day-to-day extensions will be Tier 1 —
+          self-approval with a quick log entry.
         </p>
 
         <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-3">
@@ -825,7 +910,8 @@ export function GovernancePolicySection() {
               The Full Policy
             </h2>
             <p className="mt-1 max-w-prose text-sm text-muted-foreground">
-              Walk through the policy section by section, or view the full document in one page.
+              Walk through the policy section by section, or view the full
+              document in one page.
             </p>
           </div>
           <Tabs
@@ -908,8 +994,8 @@ export function GovernancePolicySection() {
           How to Customise the Template
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Replace each placeholder with your organisation's details. Hover or tap on any
-          placeholder to see what to substitute.
+          Replace each placeholder with your organisation's details. Hover or
+          tap on any placeholder to see what to substitute.
         </p>
 
         <ScrollArea className="w-full rounded-lg border border-border">
@@ -917,13 +1003,22 @@ export function GovernancePolicySection() {
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Placeholder
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Description
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Example value
                   </th>
                 </tr>
@@ -934,14 +1029,18 @@ export function GovernancePolicySection() {
                     key={p.placeholder}
                     className={cn(
                       'border-b border-border last:border-b-0',
-                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
                     )}
                   >
                     <td className="px-3 py-2.5">
                       <PlaceholderBadge {...p} />
                     </td>
-                    <td className="px-3 py-2.5 text-muted-foreground">{p.description}</td>
-                    <td className="px-3 py-2.5 text-muted-foreground">{p.example}</td>
+                    <td className="px-3 py-2.5 text-muted-foreground">
+                      {p.description}
+                    </td>
+                    <td className="px-3 py-2.5 text-muted-foreground">
+                      {p.example}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -962,8 +1061,8 @@ export function GovernancePolicySection() {
           Extension Register Template
         </h2>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          A starting register pre-populated with the extensions from the Phew! starter kit. Copy
-          this into a shared spreadsheet or markdown file.
+          A starting register pre-populated with the extensions from the Phew!
+          starter kit. Copy this into a shared spreadsheet or markdown file.
         </p>
         <CodeBlock
           code={registerTemplate}
@@ -982,8 +1081,8 @@ export function GovernancePolicySection() {
           Extension Type Quick Reference
         </h2>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          A summary of each extension type, its typical risk tier, approval process,
-          context cost, and maintenance requirements.
+          A summary of each extension type, its typical risk tier, approval
+          process, context cost, and maintenance requirements.
         </p>
 
         <div className="overflow-x-auto">
@@ -999,25 +1098,69 @@ export function GovernancePolicySection() {
             </thead>
             <tbody>
               {[
-                { type: 'Skills', risk: 'Low', approval: 'Self-serve', context: 'Medium', maintenance: 'Manual updates' },
-                { type: 'Plugins', risk: 'Low\u2013Medium', approval: 'Self-serve (marketplace)', context: 'Low', maintenance: 'Automatic updates' },
-                { type: 'MCPs', risk: 'Medium\u2013High', approval: 'Team lead approval', context: 'Low', maintenance: 'Manual config' },
-                { type: 'Commands', risk: 'Low', approval: 'Self-serve', context: 'Low', maintenance: 'Manual updates' },
-                { type: 'Hooks', risk: 'Medium', approval: 'Team lead approval', context: 'None', maintenance: 'Manual maintenance' },
-                { type: 'Subagents', risk: 'High', approval: 'Team + security review', context: 'High', maintenance: 'Complex maintenance' },
+                {
+                  type: 'Skills',
+                  risk: 'Low',
+                  approval: 'Self-serve',
+                  context: 'Medium',
+                  maintenance: 'Manual updates',
+                },
+                {
+                  type: 'Plugins',
+                  risk: 'Low\u2013Medium',
+                  approval: 'Self-serve (marketplace)',
+                  context: 'Low',
+                  maintenance: 'Automatic updates',
+                },
+                {
+                  type: 'MCPs',
+                  risk: 'Medium\u2013High',
+                  approval: 'Team lead approval',
+                  context: 'Low',
+                  maintenance: 'Manual config',
+                },
+                {
+                  type: 'Commands',
+                  risk: 'Low',
+                  approval: 'Self-serve',
+                  context: 'Low',
+                  maintenance: 'Manual updates',
+                },
+                {
+                  type: 'Hooks',
+                  risk: 'Medium',
+                  approval: 'Team lead approval',
+                  context: 'None',
+                  maintenance: 'Manual maintenance',
+                },
+                {
+                  type: 'Subagents',
+                  risk: 'High',
+                  approval: 'Team + security review',
+                  context: 'High',
+                  maintenance: 'Complex maintenance',
+                },
               ].map((row, i) => (
                 <tr
                   key={row.type}
                   className={cn(
                     'border-b border-border/50',
-                    i === 5 && 'border-b-0'
+                    i === 5 && 'border-b-0',
                   )}
                 >
                   <td className="py-2 pr-4 font-medium">{row.type}</td>
-                  <td className="py-2 pr-4 text-muted-foreground">{row.risk}</td>
-                  <td className="py-2 pr-4 text-muted-foreground">{row.approval}</td>
-                  <td className="py-2 pr-4 text-muted-foreground">{row.context}</td>
-                  <td className="py-2 text-muted-foreground">{row.maintenance}</td>
+                  <td className="py-2 pr-4 text-muted-foreground">
+                    {row.risk}
+                  </td>
+                  <td className="py-2 pr-4 text-muted-foreground">
+                    {row.approval}
+                  </td>
+                  <td className="py-2 pr-4 text-muted-foreground">
+                    {row.context}
+                  </td>
+                  <td className="py-2 text-muted-foreground">
+                    {row.maintenance}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1049,7 +1192,10 @@ export function GovernancePolicySection() {
                     className="flex items-start gap-4 rounded-lg border border-border px-4 py-4"
                   >
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Icon className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <Icon
+                        className="h-4 w-4 text-primary"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
@@ -1085,24 +1231,44 @@ export function GovernancePolicySection() {
             </p>
 
             <div className="space-y-4">
-              <CalloutCard variant="info" title="Permission management via settings.json">
-                Use <code className="rounded bg-muted px-1 text-xs">.claude/settings.json</code>{' '}
-                to control which tools and MCP servers are available. Scope settings at user,
-                project, or local level. Project-level settings are version-controlled and apply
-                to all developers on the project.
+              <CalloutCard
+                variant="info"
+                title="Permission management via settings.json"
+              >
+                Use{' '}
+                <code className="rounded bg-muted px-1 text-xs">
+                  .claude/settings.json
+                </code>{' '}
+                to control which tools and MCP servers are available. Scope
+                settings at user, project, or local level. Project-level
+                settings are version-controlled and apply to all developers on
+                the project.
               </CalloutCard>
 
-              <CalloutCard variant="tip" title="Reference implementations in the starter kit">
-                The <code className="rounded bg-muted px-1 text-xs">uk-english</code> and{' '}
-                <code className="rounded bg-muted px-1 text-xs">brand-review</code> skills in
-                the starter kit are examples of well-structured internal skills that meet the
-                technical standards in Section 6.
+              <CalloutCard
+                variant="tip"
+                title="Reference implementations in the starter kit"
+              >
+                The{' '}
+                <code className="rounded bg-muted px-1 text-xs">
+                  uk-english
+                </code>{' '}
+                and{' '}
+                <code className="rounded bg-muted px-1 text-xs">
+                  brand-review
+                </code>{' '}
+                skills in the starter kit are examples of well-structured
+                internal skills that meet the technical standards in Section 6.
               </CalloutCard>
 
-              <CalloutCard variant="warning" title="Hooks carry higher governance weight">
-                Hooks run automatically without user interaction. Even a simple hook like Britfix
-                (UK English post-processing) modifies files every time Claude writes code. Always
-                classify hooks as Tier 2 minimum and test thoroughly before deploying.
+              <CalloutCard
+                variant="warning"
+                title="Hooks carry higher governance weight"
+              >
+                Hooks run automatically without user interaction. Even a simple
+                hook like Britfix (UK English post-processing) modifies files
+                every time Claude writes code. Always classify hooks as Tier 2
+                minimum and test thoroughly before deploying.
               </CalloutCard>
             </div>
           </section>
@@ -1121,23 +1287,35 @@ export function GovernancePolicySection() {
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
             For details on what each extension type is and when to use it, see{' '}
-            <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+            <Link
+              to={`/${track}/skills-extensions`}
+              className="font-semibold text-primary hover:underline"
+            >
               Section 1.4 — Skills, Extensions &amp; Decision Tree
-            </Link>.
+            </Link>
+            .
           </p>
           {!isGeneral && (
             <>
               <p>
                 For safe MCP server configuration, see{' '}
-                <Link to={`/${track}/mcp-usage`} className="font-semibold text-primary hover:underline">
+                <Link
+                  to={`/${track}/mcp-usage`}
+                  className="font-semibold text-primary hover:underline"
+                >
                   Section 1.13 — Safe MCP Usage
-                </Link>.
+                </Link>
+                .
               </p>
               <p>
                 For plugin evaluation and recommendations, see{' '}
-                <Link to={`/${track}/plugins`} className="font-semibold text-primary hover:underline">
+                <Link
+                  to={`/${track}/plugins`}
+                  className="font-semibold text-primary hover:underline"
+                >
                   Section 1.14 — Plugin Recommendations
-                </Link>.
+                </Link>
+                .
               </p>
             </>
           )}

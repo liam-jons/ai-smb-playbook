@@ -13,7 +13,7 @@ export function useCopyToClipboard(resetDelay = 2000) {
         console.error('Failed to copy:', err);
       }
     },
-    [resetDelay]
+    [resetDelay],
   );
 
   return { copied, copy };

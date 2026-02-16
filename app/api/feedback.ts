@@ -27,8 +27,8 @@ const VALID_CATEGORIES = ['more-info', 'issue', 'general'] as const;
 
 const CATEGORY_LABELS: Record<string, string> = {
   'more-info': 'Request more info',
-  'issue': 'Report an issue',
-  'general': 'General feedback',
+  issue: 'Report an issue',
+  general: 'General feedback',
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -50,14 +50,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!category || typeof category !== 'string') {
     return res.status(400).json({ error: 'Category is required' });
   }
-  if (!VALID_CATEGORIES.includes(category as (typeof VALID_CATEGORIES)[number])) {
+  if (
+    !VALID_CATEGORIES.includes(category as (typeof VALID_CATEGORIES)[number])
+  ) {
     return res.status(400).json({ error: 'Invalid category' });
   }
   if (!message || typeof message !== 'string' || !message.trim()) {
     return res.status(400).json({ error: 'Message is required' });
   }
   if (message.length > 5000) {
-    return res.status(400).json({ error: 'Message too long (max 5000 characters)' });
+    return res
+      .status(400)
+      .json({ error: 'Message too long (max 5000 characters)' });
   }
 
   const categoryLabel = CATEGORY_LABELS[category] ?? category;

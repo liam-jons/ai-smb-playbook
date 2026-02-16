@@ -21,13 +21,13 @@
 
 <!-- List the core technologies. Keep it to the essentials. -->
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Language | [e.g., TypeScript] | [e.g., 5.x] |
-| Framework | [e.g., Next.js] | [e.g., 15.x] |
-| Database | [e.g., PostgreSQL] | [e.g., 16] |
-| Hosting | [e.g., Vercel] | |
-| Package Manager | [e.g., npm / pnpm / yarn] | |
+| Layer           | Technology                | Version      |
+| --------------- | ------------------------- | ------------ |
+| Language        | [e.g., TypeScript]        | [e.g., 5.x]  |
+| Framework       | [e.g., Next.js]           | [e.g., 15.x] |
+| Database        | [e.g., PostgreSQL]        | [e.g., 16]   |
+| Hosting         | [e.g., Vercel]            |              |
+| Package Manager | [e.g., npm / pnpm / yarn] |              |
 
 ## Dev Commands
 
@@ -70,8 +70,8 @@ project-root/
 
 <!-- Mention entry points, key files, or unusual patterns -->
 
-**Entry point:** `[e.g., src/index.ts]`
-**Main config:** `[e.g., next.config.js]`
+**Entry point:** `[e.g., src/index.ts]` **Main config:**
+`[e.g., next.config.js]`
 
 ## Code Style
 
@@ -79,8 +79,10 @@ project-root/
 
 - [e.g., Use named exports, not default exports]
 - [e.g., Prefer `const` over `let`; never use `var`]
-- [e.g., Use descriptive variable names; no single-letter variables except loop counters]
-- [e.g., Import order: external packages, then internal modules, then relative imports]
+- [e.g., Use descriptive variable names; no single-letter variables except loop
+  counters]
+- [e.g., Import order: external packages, then internal modules, then relative
+  imports]
 - [e.g., Use `@/` path alias for all imports from `src/`]
 - [e.g., Functions over classes unless the framework requires classes]
 
@@ -89,8 +91,10 @@ project-root/
 <!-- How tests are structured and what patterns to follow -->
 
 - **Test runner:** [e.g., Vitest / Jest / Playwright]
-- **Test location:** [e.g., Co-located with source files as `*.test.ts` / Separate `tests/` directory]
-- **Naming:** [e.g., `describe('ModuleName', () => { it('should do something', ...) })`]
+- **Test location:** [e.g., Co-located with source files as `*.test.ts` /
+  Separate `tests/` directory]
+- **Naming:** [e.g., `describe('ModuleName', () => { it('should do something',
+  ...) })`]
 - **Coverage target:** [e.g., 80% for new code]
 - **Patterns:** [e.g., Prefer integration tests over unit tests for API routes]
 
@@ -116,17 +120,23 @@ API_KEY=               # [what service this authenticates with]
 
 <!-- Non-obvious patterns, common mistakes, things Claude tends to get wrong -->
 
-- [e.g., The `users` table uses soft deletes — always include `WHERE deleted_at IS NULL`]
-- [e.g., API routes require authentication middleware — do not create unprotected endpoints]
-- [e.g., The CI pipeline runs on Node 20, not Node 22 — do not use Node 22 features]
+- [e.g., The `users` table uses soft deletes — always include `WHERE deleted_at
+  IS NULL`]
+- [e.g., API routes require authentication middleware — do not create
+  unprotected endpoints]
+- [e.g., The CI pipeline runs on Node 20, not Node 22 — do not use Node 22
+  features]
 - [e.g., CSS modules are used in `/components` but Tailwind is used in `/app`]
-- [e.g., Never import from barrel files (`index.ts`) — import directly from the source file]
+- [e.g., Never import from barrel files (`index.ts`) — import directly from the
+  source file]
 
 ## Style
 
 <!-- Language and formatting conventions -->
 
-- **UK English throughout.** All output must use UK English spelling and grammar (e.g., colour, organise, behaviour, centre, analyse). Use UK date format (DD/MM/YYYY) and GBP (£) for currency.
+- **UK English throughout.** All output must use UK English spelling and grammar
+  (e.g., colour, organise, behaviour, centre, analyse). Use UK date format
+  (DD/MM/YYYY) and GBP (£) for currency.
 
 <!-- Add any additional style rules specific to your project -->
 
@@ -135,6 +145,7 @@ API_KEY=               # [what service this authenticates with]
 <!-- Point to /docs for detailed information. This keeps CLAUDE.md lean. -->
 
 For detailed documentation, see:
+
 - `docs/architecture/` — System architecture and domain model
 - `docs/conventions/` — Coding standards and patterns
 - `docs/integrations/` — Third-party service documentation

@@ -134,8 +134,7 @@ export const segments: ContextSegmentData[] = [
     defaultTokens: ENVIRONMENT_TOKENS,
     colour: 'bg-slate-400',
     colourDark: 'dark:bg-slate-500',
-    description:
-      'Git status, working directory, OS information.',
+    description: 'Git status, working directory, OS information.',
     detailedDescription:
       'Repository state, working directory info, OS details. Approximately 500\u20131,000 tokens. Relatively stable across sessions.',
     isFixed: true,
@@ -211,8 +210,7 @@ export const degradationStages: DegradationStage[] = [
     colourDark: 'dark:bg-emerald-400',
     badgeClass:
       'border-emerald-500/30 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-400/30',
-    description:
-      'Claude can recall everything in the conversation accurately.',
+    description: 'Claude can recall everything in the conversation accurately.',
     detailedDescription:
       'Full recall of all conversation context. Consistent adherence to CLAUDE.md rules. Accurate file recall and code understanding.',
     overlayOpacity: 0,
@@ -266,7 +264,8 @@ export const conversationTurnTypes: ConversationTurnType[] = [
     id: 'short',
     label: 'Short exchange',
     tokenRange: [2_500, 3_500],
-    description: '~1,000 tokens (your message) + ~2,000 tokens (Claude\u2019s response)',
+    description:
+      '~1,000 tokens (your message) + ~2,000 tokens (Claude\u2019s response)',
   },
   {
     id: 'code-review',
@@ -314,18 +313,25 @@ When compacting this conversation, always preserve:
 export const contextTipVariants = {
   /** Tip 3: Where to put critical instructions */
   tip3: {
-    general: 'Put critical instructions in your project custom instructions, so they load at the start of every session and benefit from primacy bias (the model pays strong attention to what comes first).',
-    developer: 'Put critical instructions in CLAUDE.md. These load at the start of every session and benefit from primacy bias (the model pays strong attention to what comes first).',
+    general:
+      'Put critical instructions in your project custom instructions, so they load at the start of every session and benefit from primacy bias (the model pays strong attention to what comes first).',
+    developer:
+      'Put critical instructions in CLAUDE.md. These load at the start of every session and benefit from primacy bias (the model pays strong attention to what comes first).',
   },
   /** Tip 5: Mid-conversation instruction fade */
   tip5: {
-    general: 'Do not rely on mid-conversation instructions. If you told Claude \u2018always use UK English\u2019 ten messages ago, it may have faded. Put it in your project custom instructions instead.',
-    developer: 'Do not rely on mid-conversation instructions. If you said \u2018always use TypeScript\u2019 ten messages ago, it may have faded. Put it in CLAUDE.md instead.',
+    general:
+      'Do not rely on mid-conversation instructions. If you told Claude \u2018always use UK English\u2019 ten messages ago, it may have faded. Put it in your project custom instructions instead.',
+    developer:
+      'Do not rely on mid-conversation instructions. If you said \u2018always use TypeScript\u2019 ten messages ago, it may have faded. Put it in CLAUDE.md instead.',
   },
 } as const;
 
 /** Get the display label for a segment, using the general-friendly label when not in developer track */
-export function getSegmentLabel(segment: ContextSegmentData, isDev: boolean): string {
+export function getSegmentLabel(
+  segment: ContextSegmentData,
+  isDev: boolean,
+): string {
   if (!isDev && segment.generalLabel) {
     return segment.generalLabel;
   }
@@ -371,11 +377,9 @@ export function calculateTokens(config: {
 }
 
 /** Get degradation stage from usage percentage */
-export function getDegradationStage(
-  usagePercentage: number
-): DegradationStage {
+export function getDegradationStage(usagePercentage: number): DegradationStage {
   const sorted = [...degradationStages].sort(
-    (a, b) => b.threshold - a.threshold
+    (a, b) => b.threshold - a.threshold,
   );
   return (
     sorted.find((s) => usagePercentage >= s.threshold) ?? degradationStages[0]

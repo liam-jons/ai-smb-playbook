@@ -317,7 +317,7 @@ const storageOptions: StorageOption[] = [
   {
     environment: 'Claude Desktop / claude.ai',
     where: 'Project knowledge file',
-    how: 'Add the document to a project\'s knowledge base. Claude loads it automatically for all conversations in that project.',
+    how: "Add the document to a project's knowledge base. Claude loads it automatically for all conversations in that project.",
   },
   {
     environment: 'Claude Code',
@@ -354,8 +354,7 @@ export function BrandVoiceSection() {
               Part 1
             </Badge>
             <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-xs">
-              <Clock className="mr-1 h-3 w-3" aria-hidden="true" />
-              2 minutes
+              <Clock className="mr-1 h-3 w-3" aria-hidden="true" />2 minutes
             </Badge>
           </div>
           <h2
@@ -365,9 +364,9 @@ export function BrandVoiceSection() {
             UK English Enforcement
           </h2>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
-            Claude defaults to US English because its training data is predominantly American.
-            There is no global switch — but it takes two minutes to fix, and you will never have
-            to think about it again.
+            Claude defaults to US English because its training data is
+            predominantly American. There is no global switch — but it takes two
+            minutes to fix, and you will never have to think about it again.
           </p>
         </div>
 
@@ -490,16 +489,17 @@ export function BrandVoiceSection() {
               ))}
 
               <CalloutCard variant="info" title="Code context rule">
-                In code contexts, UK English applies only to comments, documentation, and
-                user-facing strings — never to variable names, function names, CSS properties,
-                or API parameters. Write{' '}
+                In code contexts, UK English applies only to comments,
+                documentation, and user-facing strings — never to variable
+                names, function names, CSS properties, or API parameters. Write{' '}
                 <code className="rounded bg-muted px-1 text-xs">
                   {'// Initialise the colour palette'}
                 </code>{' '}
                 but keep{' '}
                 <code className="rounded bg-muted px-1 text-xs">
                   {'const color = getColor()'}
-                </code>.
+                </code>
+                .
               </CalloutCard>
             </TabsContent>
           </Tabs>
@@ -517,7 +517,7 @@ export function BrandVoiceSection() {
                 <ChevronDown
                   className={cn(
                     'h-4 w-4 text-muted-foreground transition-transform duration-200',
-                    ukSkillOpen && 'rotate-180'
+                    ukSkillOpen && 'rotate-180',
                   )}
                   aria-hidden="true"
                 />
@@ -557,10 +557,11 @@ export function BrandVoiceSection() {
             Brand Voice Setup
           </h2>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
-            UK English is about language mechanics. Brand voice is about personality — how your
-            organisation sounds, what it stands for, and how it adapts across different contexts.
-            The brand-voice skill provides a structured framework for documenting your brand
-            voice through a guided conversation with Claude.
+            UK English is about language mechanics. Brand voice is about
+            personality — how your organisation sounds, what it stands for, and
+            how it adapts across different contexts. The brand-voice skill
+            provides a structured framework for documenting your brand voice
+            through a guided conversation with Claude.
           </p>
         </div>
 
@@ -575,8 +576,8 @@ export function BrandVoiceSection() {
                 Minimum required
               </span>
               <p className="mt-1 text-sm text-muted-foreground">
-                A willingness to make decisions about how the brand communicates. No prior
-                documentation is strictly necessary.
+                A willingness to make decisions about how the brand
+                communicates. No prior documentation is strictly necessary.
               </p>
             </div>
             <div className="rounded-md border-l-2 border-blue-500/40 bg-blue-50/30 px-4 py-3 dark:bg-blue-950/10">
@@ -584,9 +585,14 @@ export function BrandVoiceSection() {
                 Strongly recommended
               </span>
               <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
-                <li>2–3 examples of on-brand content (website copy, marketing emails, social posts)</li>
+                <li>
+                  2–3 examples of on-brand content (website copy, marketing
+                  emails, social posts)
+                </li>
                 <li>A basic understanding of the target audience</li>
-                <li>Known terminology preferences (product names, industry terms)</li>
+                <li>
+                  Known terminology preferences (product names, industry terms)
+                </li>
               </ul>
             </div>
             <div className="rounded-md border-l-2 border-violet-500/40 bg-violet-50/30 px-4 py-3 dark:bg-violet-950/10">
@@ -601,10 +607,14 @@ export function BrandVoiceSection() {
             </div>
           </div>
 
-          <CalloutCard variant="tip" title="Head start for Phew!" className="mt-4">
-            The website scrape has already captured brand-relevant content — IMPACT values, tone
-            observations, and sector terminology. Bring these to the setup conversation as a
-            starting point.
+          <CalloutCard
+            variant="tip"
+            title="Head start for Phew!"
+            className="mt-4"
+          >
+            The website scrape has already captured brand-relevant content —
+            IMPACT values, tone observations, and sector terminology. Bring
+            these to the setup conversation as a starting point.
           </CalloutCard>
         </div>
 
@@ -614,8 +624,8 @@ export function BrandVoiceSection() {
             The Seven Framework Sections
           </h3>
           <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-            The brand-voice skill guides you through seven areas. Here is what each covers and
-            an illustrative example.
+            The brand-voice skill guides you through seven areas. Here is what
+            each covers and an illustrative example.
           </p>
 
           <Accordion type="single" collapsible className="space-y-1">
@@ -646,7 +656,9 @@ export function BrandVoiceSection() {
                       <span className="text-xs font-medium text-muted-foreground">
                         Phew! example
                       </span>
-                      <p className="mt-1 text-sm text-foreground">{section.phewExample}</p>
+                      <p className="mt-1 text-sm text-foreground">
+                        {section.phewExample}
+                      </p>
                     </div>
                   </AccordionContent>
                 </AccordionItem>
@@ -673,9 +685,14 @@ export function BrandVoiceSection() {
             whenToUse="When you want to create or update your organisation's brand voice document"
           />
 
-          <CalloutCard variant="tip" title="Team session recommended" className="mt-4">
-            This works best when a few people contribute — book 45 minutes with whoever knows
-            the brand best. You can run it as a group exercise in a single Claude conversation.
+          <CalloutCard
+            variant="tip"
+            title="Team session recommended"
+            className="mt-4"
+          >
+            This works best when a few people contribute — book 45 minutes with
+            whoever knows the brand best. You can run it as a group exercise in
+            a single Claude conversation.
           </CalloutCard>
         </div>
 
@@ -685,43 +702,58 @@ export function BrandVoiceSection() {
             Where to Save the Brand Voice Document
           </h3>
           <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-            Once the conversation produces a brand voice document, save it where Claude can
-            access it in future sessions. The brand voice document is a{' '}
-            <strong>living document</strong> — review it when the brand evolves, messaging
-            changes, or new products launch.
+            Once the conversation produces a brand voice document, save it where
+            Claude can access it in future sessions. The brand voice document is
+            a <strong>living document</strong> — review it when the brand
+            evolves, messaging changes, or new products launch.
           </p>
 
           <div className="overflow-x-auto rounded-lg border border-border">
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Environment
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Where to store
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     How it works
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {storageOptions
-                  .filter((o) => isGeneral ? o.environment !== 'Claude Code' : true)
+                  .filter((o) =>
+                    isGeneral ? o.environment !== 'Claude Code' : true,
+                  )
                   .map((option, i) => (
                     <tr
                       key={i}
                       className={cn(
                         'border-b border-border last:border-b-0',
-                        i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                        i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
                       )}
                     >
                       <td className="px-3 py-2.5 font-medium text-foreground">
                         {option.environment}
                       </td>
-                      <td className="px-3 py-2.5 text-muted-foreground">{option.where}</td>
-                      <td className="px-3 py-2.5 text-muted-foreground">{option.how}</td>
+                      <td className="px-3 py-2.5 text-muted-foreground">
+                        {option.where}
+                      </td>
+                      <td className="px-3 py-2.5 text-muted-foreground">
+                        {option.how}
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -744,24 +776,34 @@ export function BrandVoiceSection() {
             <div className="mt-3 space-y-2 text-sm text-muted-foreground">
               <p>
                 <strong>In Claude Code:</strong> Invoke with{' '}
-                <code className="rounded bg-muted px-1 text-xs">/brand-review</code>
+                <code className="rounded bg-muted px-1 text-xs">
+                  /brand-review
+                </code>
               </p>
               <p>
-                <strong>In claude.ai / Claude Desktop:</strong> Ask naturally — &ldquo;Review
-                this content against our brand guidelines&rdquo;
+                <strong>In claude.ai / Claude Desktop:</strong> Ask naturally —
+                &ldquo;Review this content against our brand guidelines&rdquo;
               </p>
             </div>
           )}
 
-          <CalloutCard variant="info" title="Session management tip" className="mt-4">
-            Claude gives you better feedback when it has room to think. If you have spent a long
-            conversation creating content, start a fresh session for the review — load your brand
-            voice document, paste the content, and ask for a review.
+          <CalloutCard
+            variant="info"
+            title="Session management tip"
+            className="mt-4"
+          >
+            Claude gives you better feedback when it has room to think. If you
+            have spent a long conversation creating content, start a fresh
+            session for the review — load your brand voice document, paste the
+            content, and ask for a review.
           </CalloutCard>
 
           {/* Brand review skill file */}
           <div className="mt-4">
-            <Collapsible open={brandReviewOpen} onOpenChange={setBrandReviewOpen}>
+            <Collapsible
+              open={brandReviewOpen}
+              onOpenChange={setBrandReviewOpen}
+            >
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
@@ -771,7 +813,7 @@ export function BrandVoiceSection() {
                   <ChevronDown
                     className={cn(
                       'h-4 w-4 text-muted-foreground transition-transform duration-200',
-                      brandReviewOpen && 'rotate-180'
+                      brandReviewOpen && 'rotate-180',
                     )}
                     aria-hidden="true"
                   />
@@ -794,18 +836,26 @@ export function BrandVoiceSection() {
         {!isGeneral && (
           <div className="space-y-4">
             <CalloutCard variant="tip" title="Governance note">
-              Both the brand-voice and brand-review skills are Tier 1 extensions (internal,
-              read-only, no external data access). Log them in the AI Extension Register per{' '}
-              <Link to={`/${track}/governance`} className="font-semibold text-primary hover:underline">
+              Both the brand-voice and brand-review skills are Tier 1 extensions
+              (internal, read-only, no external data access). Log them in the AI
+              Extension Register per{' '}
+              <Link
+                to={`/${track}/governance`}
+                className="font-semibold text-primary hover:underline"
+              >
                 Section 1.5 — AI Governance Policy
-              </Link>.
+              </Link>
+              .
             </CalloutCard>
 
             <CalloutCard variant="info" title="Skill design reference">
-              The brand-voice SKILL.md file is an example of well-structured skill design — note
-              the WHEN/WHEN NOT description pattern, clear sections, and comprehensive coverage.
-              See{' '}
-              <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+              The brand-voice SKILL.md file is an example of well-structured
+              skill design — note the WHEN/WHEN NOT description pattern, clear
+              sections, and comprehensive coverage. See{' '}
+              <Link
+                to={`/${track}/skills-extensions`}
+                className="font-semibold text-primary hover:underline"
+              >
                 Section 1.4 — Skills, Extensions &amp; Decision Tree
               </Link>{' '}
               for more on skill design patterns.
@@ -830,9 +880,9 @@ export function BrandVoiceSection() {
           How It All Fits Together
         </h2>
         <p className="mb-6 max-w-prose text-sm leading-relaxed text-muted-foreground">
-          UK English enforcement and brand voice documentation are complementary layers. Start
-          with the quick win today. Plan the brand voice exercise for a team session in the next
-          fortnight.
+          UK English enforcement and brand voice documentation are complementary
+          layers. Start with the quick win today. Plan the brand voice exercise
+          for a team session in the next fortnight.
         </p>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -849,21 +899,33 @@ export function BrandVoiceSection() {
             </h3>
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                  aria-hidden="true"
+                />
                 Profile preferences
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                  aria-hidden="true"
+                />
                 Project instructions
               </li>
               {!isGeneral && (
                 <li className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50" aria-hidden="true" />
+                  <span
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                    aria-hidden="true"
+                  />
                   CLAUDE.md rule
                 </li>
               )}
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                  aria-hidden="true"
+                />
                 UK English skill (belt and braces)
               </li>
             </ul>
@@ -875,26 +937,40 @@ export function BrandVoiceSection() {
               <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-xs">
                 Deeper exercise
               </Badge>
-              <span className="text-xs text-muted-foreground">30–60 minutes</span>
+              <span className="text-xs text-muted-foreground">
+                30–60 minutes
+              </span>
             </div>
             <h3 className="mb-2 text-sm font-semibold text-foreground">
               Brand Voice Documentation
             </h3>
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  aria-hidden="true"
+                />
                 brand-voice skill (framework)
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  aria-hidden="true"
+                />
                 Guided conversation
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  aria-hidden="true"
+                />
                 Brand voice document (output)
               </li>
               <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50" aria-hidden="true" />
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  aria-hidden="true"
+                />
                 brand-review (ongoing checks)
               </li>
             </ul>
@@ -914,15 +990,23 @@ export function BrandVoiceSection() {
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
             For more on how skills work and when to use them, see{' '}
-            <Link to={`/${track}/skills-extensions`} className="font-semibold text-primary hover:underline">
+            <Link
+              to={`/${track}/skills-extensions`}
+              className="font-semibold text-primary hover:underline"
+            >
               Section 1.4 — Skills, Extensions &amp; Decision Tree
-            </Link>.
+            </Link>
+            .
           </p>
           <p>
             To register these skills in your governance process, see{' '}
-            <Link to={`/${track}/governance`} className="font-semibold text-primary hover:underline">
+            <Link
+              to={`/${track}/governance`}
+              className="font-semibold text-primary hover:underline"
+            >
               Section 1.5 — AI Governance Policy
-            </Link>.
+            </Link>
+            .
           </p>
         </div>
       </section>

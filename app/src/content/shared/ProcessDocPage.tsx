@@ -135,7 +135,7 @@ function renderInline(text: string): React.ReactNode[] {
       nodes.push(
         <strong key={match.index} className="font-semibold text-foreground">
           {match[2]}
-        </strong>
+        </strong>,
       );
     } else if (match[3]) {
       nodes.push(
@@ -144,7 +144,7 @@ function renderInline(text: string): React.ReactNode[] {
           className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono"
         >
           {match[3]}
-        </code>
+        </code>,
       );
     } else if (match[4] && match[5]) {
       nodes.push(
@@ -156,7 +156,7 @@ function renderInline(text: string): React.ReactNode[] {
           rel="noopener noreferrer"
         >
           {match[4]}
-        </a>
+        </a>,
       );
     }
 
@@ -187,7 +187,10 @@ function MarkdownRenderer({ blocks }: { blocks: MarkdownBlock[] }) {
               4: 'text-base font-semibold mb-2 mt-4',
             };
             return (
-              <Tag key={i} className={cn(sizes[block.level ?? 2], 'text-foreground')}>
+              <Tag
+                key={i}
+                className={cn(sizes[block.level ?? 2], 'text-foreground')}
+              >
                 {renderInline(block.content ?? '')}
               </Tag>
             );
@@ -206,7 +209,11 @@ function MarkdownRenderer({ blocks }: { blocks: MarkdownBlock[] }) {
 
           case 'list':
             return (
-              <ul key={i} className="mb-4 space-y-1.5 pl-1" style={{ maxWidth: '65ch' }}>
+              <ul
+                key={i}
+                className="mb-4 space-y-1.5 pl-1"
+                style={{ maxWidth: '65ch' }}
+              >
                 {block.items?.map((item, j) => (
                   <li
                     key={j}
@@ -270,7 +277,8 @@ export function ProcessDocPage() {
   useEffect(() => {
     fetch('/docs/repeatable-workflow.md')
       .then((res) => {
-        if (!res.ok) throw new Error('Failed to load document (' + res.status + ')');
+        if (!res.ok)
+          throw new Error('Failed to load document (' + res.status + ')');
         return res.text();
       })
       .then((text) => {
@@ -282,7 +290,10 @@ export function ProcessDocPage() {
 
   if (error) {
     return (
-      <main id="main-content" className="flex flex-1 items-center justify-center p-8">
+      <main
+        id="main-content"
+        className="flex flex-1 items-center justify-center p-8"
+      >
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
             Could not load the process document: {error}
@@ -301,7 +312,10 @@ export function ProcessDocPage() {
 
   if (!blocks) {
     return (
-      <main id="main-content" className="flex flex-1 items-center justify-center p-8">
+      <main
+        id="main-content"
+        className="flex flex-1 items-center justify-center p-8"
+      >
         <p className="text-sm text-muted-foreground">Loading...</p>
       </main>
     );
@@ -321,7 +335,10 @@ export function ProcessDocPage() {
 
         {/* Copy full document button */}
         <div className="mb-8 flex items-center gap-3">
-          <CopyButton text={rawContent} className="h-auto gap-2 px-3 py-2 opacity-100" />
+          <CopyButton
+            text={rawContent}
+            className="h-auto gap-2 px-3 py-2 opacity-100"
+          />
           <span className="text-sm text-muted-foreground">
             Copy full document to clipboard
           </span>

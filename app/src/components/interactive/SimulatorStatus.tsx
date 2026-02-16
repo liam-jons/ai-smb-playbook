@@ -35,9 +35,7 @@ export function SimulatorStatus({
             Turn {turnCount} of ~{estimatedTurnsRemaining + turnCount} before
             compaction
           </span>
-          <span className="sm:hidden">
-            Turn {turnCount}
-          </span>
+          <span className="sm:hidden">Turn {turnCount}</span>
         </span>
 
         {isDev && (
@@ -59,10 +57,7 @@ export function SimulatorStatus({
           {formatTokens(remaining)} remaining
         </span>
         <Badge
-          className={cn(
-            'text-xs font-medium',
-            degradationStage.badgeClass
-          )}
+          className={cn('text-xs font-medium', degradationStage.badgeClass)}
         >
           {degradationStage.label}
         </Badge>

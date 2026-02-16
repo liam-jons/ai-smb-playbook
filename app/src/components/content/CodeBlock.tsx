@@ -5,7 +5,9 @@ import { CopyButton } from './CopyButton';
 import { useTheme } from '@/hooks/useTheme';
 
 const ShikiHighlighter = lazy(() =>
-  import('./ShikiHighlighter').then((mod) => ({ default: mod.ShikiHighlighter }))
+  import('./ShikiHighlighter').then((mod) => ({
+    default: mod.ShikiHighlighter,
+  })),
 );
 
 interface CodeBlockProps {

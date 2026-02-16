@@ -21,7 +21,9 @@ import {
 } from 'lucide-react';
 import type { Track, Section } from '@/content/shared/types';
 
-type IconComponent = ComponentType<SVGProps<SVGSVGElement> & { className?: string }>;
+type IconComponent = ComponentType<
+  SVGProps<SVGSVGElement> & { className?: string }
+>;
 
 const iconMap: Record<string, IconComponent> = {
   Compass,
@@ -51,7 +53,7 @@ function parseSectionNumber(id: string): number {
 function getGapNote(
   prev: Section | undefined,
   current: Section,
-  track: Track
+  track: Track,
 ): string | null {
   if (!prev) return null;
 
@@ -108,7 +110,7 @@ export function Sidebar({ track, className, onNavClick }: SidebarProps) {
                 'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors',
                 isActive
                   ? 'bg-accent font-medium text-accent-foreground'
-                  : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
+                  : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
               )}
               aria-current={isActive ? 'page' : undefined}
             >

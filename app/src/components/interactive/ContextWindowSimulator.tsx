@@ -68,7 +68,7 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
 
   const rawConversationTokens = state.conversationTurns.reduce(
     (sum, t) => sum + t.tokens,
-    0
+    0,
   );
   const conversationTokens = state.isCompacted
     ? Math.round(rawConversationTokens * 0.5)
@@ -82,7 +82,7 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
     TOTAL_CONTEXT -
       tokenCalc.fixedOverhead -
       conversationTokens -
-      RESPONSE_BUFFER_TOKENS
+      RESPONSE_BUFFER_TOKENS,
   );
 
   const degradationStage = getDegradationStage(usagePercentage);
@@ -91,7 +91,7 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
   const avgTurnTokens = 5_500;
   const estimatedTurnsRemaining = Math.max(
     0,
-    Math.floor(availableSpace / avgTurnTokens)
+    Math.floor(availableSpace / avgTurnTokens),
   );
 
   // Build segment rendering data
@@ -116,17 +116,14 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
   // ─────────────────────────────────────────────
 
   const handleSliderChange = useCallback(
-    (
-      field: 'mcpServers' | 'claudeMdLines' | 'skillCount',
-      value: number
-    ) => {
+    (field: 'mcpServers' | 'claudeMdLines' | 'skillCount', value: number) => {
       setState((prev) => ({
         ...prev,
         [field]: value,
         activePreset: null,
       }));
     },
-    []
+    [],
   );
 
   const handleToolSearchChange = useCallback((value: boolean) => {
@@ -137,21 +134,18 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
     }));
   }, []);
 
-  const handlePresetSelect = useCallback(
-    (presetId: PresetData['id']) => {
-      const preset = presets.find((p) => p.id === presetId);
-      if (!preset) return;
-      setState((prev) => ({
-        ...prev,
-        mcpServers: preset.mcpServers,
-        claudeMdLines: preset.claudeMdLines,
-        skillCount: preset.skillCount,
-        toolSearchEnabled: preset.toolSearchEnabled,
-        activePreset: presetId,
-      }));
-    },
-    []
-  );
+  const handlePresetSelect = useCallback((presetId: PresetData['id']) => {
+    const preset = presets.find((p) => p.id === presetId);
+    if (!preset) return;
+    setState((prev) => ({
+      ...prev,
+      mcpServers: preset.mcpServers,
+      claudeMdLines: preset.claudeMdLines,
+      skillCount: preset.skillCount,
+      toolSearchEnabled: preset.toolSearchEnabled,
+      activePreset: presetId,
+    }));
+  }, []);
 
   const handleAddTurn = useCallback(
     (typeId?: string) => {
@@ -190,7 +184,7 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
         return { ...prev, conversationTurns: newTurns };
       });
     },
-    [isDev, tokenCalc.fixedOverhead, usableWindow]
+    [isDev, tokenCalc.fixedOverhead, usableWindow],
   );
 
   const handleCompact = useCallback(() => {
@@ -291,24 +285,23 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
       </div>
 
       {/* Turn details (developer track) */}
-      {isDev &&
-        state.conversationTurns.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {state.conversationTurns.slice(-5).map((turn) => (
-              <span
-                key={turn.id}
-                className="rounded-md border border-border bg-muted/50 px-2 py-0.5 text-xs tabular-nums text-muted-foreground"
-              >
-                {turn.label}: ~{formatTokens(turn.tokens)} tokens
-              </span>
-            ))}
-            {state.conversationTurns.length > 5 && (
-              <span className="px-2 py-0.5 text-xs text-muted-foreground">
-                +{state.conversationTurns.length - 5} earlier turns
-              </span>
-            )}
-          </div>
-        )}
+      {isDev && state.conversationTurns.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {state.conversationTurns.slice(-5).map((turn) => (
+            <span
+              key={turn.id}
+              className="rounded-md border border-border bg-muted/50 px-2 py-0.5 text-xs tabular-nums text-muted-foreground"
+            >
+              {turn.label}: ~{formatTokens(turn.tokens)} tokens
+            </span>
+          ))}
+          {state.conversationTurns.length > 5 && (
+            <span className="px-2 py-0.5 text-xs text-muted-foreground">
+              +{state.conversationTurns.length - 5} earlier turns
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Controls */}
       <SimulatorControls
@@ -332,10 +325,10 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
       {/* Multi-compaction warning */}
       {state.compactionCount > 1 && (
         <p className="text-xs text-muted-foreground">
-          This session has been compacted {state.compactionCount} times.
-          Each compaction summarises everything before it. Information loss
-          is cumulative — details that survived the first compaction may be
-          lost in the second.
+          This session has been compacted {state.compactionCount} times. Each
+          compaction summarises everything before it. Information loss is
+          cumulative — details that survived the first compaction may be lost in
+          the second.
         </p>
       )}
     </div>

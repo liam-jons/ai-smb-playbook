@@ -8,11 +8,13 @@ tags: executive, summary, c-level, decision-maker
 
 **Impact: CRITICAL**
 
-The executive summary is often the only page that gets read by the final decision-maker. It must stand alone and compel action.
+The executive summary is often the only page that gets read by the final
+decision-maker. It must stand alone and compel action.
 
 ### The One-Page Rule
 
 Executives have 2-3 minutes. Your exec summary must:
+
 - Fit on one page (max)
 - Be readable without context
 - Answer "why should I care?"
@@ -51,25 +53,25 @@ Executives have 2-3 minutes. Your exec summary must:
 ```markdown
 ## Executive Summary
 
-**Prepared for:** Jennifer Martinez, CTO, ScaleUp Inc.
-**Date:** March 15, 2025
+**Prepared for:** Jennifer Martinez, CTO, ScaleUp Inc. **Date:** March 15, 2025
 
 ### The Opportunity
 
-ScaleUp Inc. is positioning for a Series C raise in Q4 2025, with SOC 2
-Type II compliance as a critical requirement for enterprise customer
-acquisition. Your engineering team is growing 3x this year, requiring
-secure, scalable infrastructure that doesn't slow development velocity.
+ScaleUp Inc. is positioning for a Series C raise in Q4 2025, with SOC 2 Type II
+compliance as a critical requirement for enterprise customer acquisition. Your
+engineering team is growing 3x this year, requiring secure, scalable
+infrastructure that doesn't slow development velocity.
 
 ### The Challenge
 
 Current secrets management practices are creating measurable risk:
+
 - **$180K projected annual cost** from developer productivity loss
 - **12-week SOC 2 gap** in credentials management controls
 - **2 security incidents** in the past 6 months traced to exposed secrets
 
-Without addressing these gaps, the Series C timeline and enterprise
-sales pipeline are at risk.
+Without addressing these gaps, the Series C timeline and enterprise sales
+pipeline are at risk.
 
 ### Our Recommendation
 
@@ -83,24 +85,23 @@ organization, providing:
 
 ### Expected Outcomes
 
-| Metric | Current | With SecretStash | Impact |
-|--------|---------|------------------|--------|
-| Developer onboarding | 3 weeks | 4 days | 75% faster |
-| Secret rotation | Manual/20 hrs/mo | Automated | 240 hrs/year saved |
-| Security incidents | 2/quarter | 0 projected | Risk elimination |
-| SOC 2 readiness | 12-week gap | Compliant | Series C enablement |
+| Metric               | Current          | With SecretStash | Impact              |
+| -------------------- | ---------------- | ---------------- | ------------------- |
+| Developer onboarding | 3 weeks          | 4 days           | 75% faster          |
+| Secret rotation      | Manual/20 hrs/mo | Automated        | 240 hrs/year saved  |
+| Security incidents   | 2/quarter        | 0 projected      | Risk elimination    |
+| SOC 2 readiness      | 12-week gap      | Compliant        | Series C enablement |
 
 ### Investment
 
-**Total Year 1 Investment:** $84,000
-**Projected Year 1 ROI:** 3.2x ($270,000 in quantified value)
-**Implementation Timeline:** 6 weeks to full deployment
+**Total Year 1 Investment:** $84,000 **Projected Year 1 ROI:** 3.2x ($270,000 in
+quantified value) **Implementation Timeline:** 6 weeks to full deployment
 
 ### Next Step
 
-We recommend a 30-minute alignment call with your security and
-engineering leads to finalize scope and begin implementation planning.
-Sarah Chen is available March 18-22 for this discussion.
+We recommend a 30-minute alignment call with your security and engineering leads
+to finalize scope and begin implementation planning. Sarah Chen is available
+March 18-22 for this discussion.
 ```
 
 ### Bad Example: Weak Executive Summary
@@ -108,15 +109,14 @@ Sarah Chen is available March 18-22 for this discussion.
 ```markdown
 ## Executive Summary
 
-SecretStash is a leading secrets management platform trusted by over
-500 companies worldwide. We provide enterprise-grade security with
+SecretStash is a leading secrets management platform trusted by over 500
+companies worldwide. We provide enterprise-grade security with
 developer-friendly tooling.
 
 ### About SecretStash
 
-Founded in 2019, SecretStash has grown to serve customers across
-financial services, healthcare, and technology sectors. Our platform
-features:
+Founded in 2019, SecretStash has grown to serve customers across financial
+services, healthcare, and technology sectors. Our platform features:
 
 - AES-256 encryption
 - Role-based access control
@@ -133,11 +133,12 @@ features:
 
 ### Pricing
 
-Please see the attached pricing sheet for our various plans and options.
-Contact us for a custom quote.
+Please see the attached pricing sheet for our various plans and options. Contact
+us for a custom quote.
 ```
 
 **Why it fails:**
+
 - About the vendor, not the customer
 - No mention of customer's specific situation
 - Generic features, not outcomes
@@ -148,6 +149,7 @@ Contact us for a custom quote.
 ### Executive Summary Formulas
 
 **The "Because" Formula:**
+
 ```
 [Client] should move forward with [solution] because:
 1. [Business outcome 1]
@@ -158,6 +160,7 @@ The investment of [amount] returns [ROI] within [timeframe].
 ```
 
 **The "If/Then" Formula:**
+
 ```
 If [client] wants to achieve [goal] by [date], then [solution] is
 the fastest path because [differentiator].
@@ -166,6 +169,7 @@ Without action, [cost of inaction].
 ```
 
 **The "3-3-3" Formula:**
+
 ```
 3 sentences on their situation
 3 bullets on your solution
@@ -174,14 +178,14 @@ Without action, [cost of inaction].
 
 ### Writing Tips for Executives
 
-| Do | Don't |
-|----|-------|
+| Do                                | Don't                    |
+| --------------------------------- | ------------------------ |
 | Use their language from discovery | Use your internal jargon |
-| Quantify everything possible | Use vague qualifiers |
-| Name specific stakeholders | Be generic |
-| Include a clear recommendation | End with "let us know" |
-| Make it scannable | Write dense paragraphs |
-| Lead with outcomes | Lead with features |
+| Quantify everything possible      | Use vague qualifiers     |
+| Name specific stakeholders        | Be generic               |
+| Include a clear recommendation    | End with "let us know"   |
+| Make it scannable                 | Write dense paragraphs   |
+| Lead with outcomes                | Lead with features       |
 
 ### Executive Summary Checklist
 
@@ -203,13 +207,13 @@ Before sending, verify:
 
 ### Outcomes That Resonate by Persona
 
-| Persona | Outcome Language |
-|---------|------------------|
-| **CEO** | Revenue, competitive advantage, market position |
-| **CFO** | ROI, cost reduction, risk mitigation |
-| **CTO** | Technical excellence, scalability, team productivity |
-| **VP Sales** | Win rates, deal velocity, customer retention |
-| **VP Ops** | Efficiency, automation, error reduction |
+| Persona      | Outcome Language                                     |
+| ------------ | ---------------------------------------------------- |
+| **CEO**      | Revenue, competitive advantage, market position      |
+| **CFO**      | ROI, cost reduction, risk mitigation                 |
+| **CTO**      | Technical excellence, scalability, team productivity |
+| **VP Sales** | Win rates, deal velocity, customer retention         |
+| **VP Ops**   | Efficiency, automation, error reduction              |
 
 ### Anti-Patterns
 

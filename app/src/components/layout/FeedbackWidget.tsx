@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { MessageSquareHeart, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  MessageSquareHeart,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -86,7 +91,9 @@ export function FeedbackWidget() {
     } catch (err) {
       setSubmitState('error');
       setErrorMessage(
-        err instanceof Error ? err.message : 'Failed to send feedback. Please try again.'
+        err instanceof Error
+          ? err.message
+          : 'Failed to send feedback. Please try again.',
       );
     }
   };
@@ -116,7 +123,9 @@ export function FeedbackWidget() {
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
               <div>
-                <p className="font-medium text-foreground">Thanks for your feedback!</p>
+                <p className="font-medium text-foreground">
+                  Thanks for your feedback!
+                </p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   We'll review it and get back to you if needed.
                 </p>
@@ -184,7 +193,9 @@ export function FeedbackWidget() {
                 </Button>
                 <Button
                   onClick={handleSubmit}
-                  disabled={!category || !message.trim() || submitState === 'sending'}
+                  disabled={
+                    !category || !message.trim() || submitState === 'sending'
+                  }
                 >
                   {submitState === 'sending' ? (
                     <>

@@ -25,7 +25,8 @@ const testingApproaches: TestingApproach[] = [
     name: 'CoWork Browser Automation',
     badge: 'Available now',
     badgeVariant: 'default',
-    whatItIs: 'Anthropic\u2019s CoWork can directly control a web browser. When CoWork is in control, the browser displays an orange hue to indicate AI operation.',
+    whatItIs:
+      'Anthropic\u2019s CoWork can directly control a web browser. When CoWork is in control, the browser displays an orange hue to indicate AI operation.',
     capabilities: [
       'Navigate to URLs and interact with page elements (click, type, scroll)',
       'Handle authentication flows (login, SSO)',
@@ -40,13 +41,15 @@ const testingApproaches: TestingApproach[] = [
       'AI visual understanding can occasionally misidentify elements on complex pages',
       'No native CI/CD integration',
     ],
-    bestFor: 'Exploratory testing, ad-hoc verification, testing flows that are hard to script (visually complex interfaces, dynamic content).',
+    bestFor:
+      'Exploratory testing, ad-hoc verification, testing flows that are hard to script (visually complex interfaces, dynamic content).',
   },
   {
     name: 'Playwright MCP (Claude Code Integration)',
     badge: 'Available now',
     badgeVariant: 'default',
-    whatItIs: 'The Playwright MCP server gives Claude Code direct access to browser automation through Microsoft\u2019s Playwright framework \u2014 the same engine behind many professional testing tools.',
+    whatItIs:
+      'The Playwright MCP server gives Claude Code direct access to browser automation through Microsoft\u2019s Playwright framework \u2014 the same engine behind many professional testing tools.',
     capabilities: [
       'Launch browsers (Chromium, Firefox, WebKit) and navigate to pages',
       'Interact with elements using robust selectors (CSS, XPath, text content, ARIA roles)',
@@ -60,13 +63,15 @@ const testingApproaches: TestingApproach[] = [
       'Generated tests need human review before being trusted in CI/CD',
       'No built-in visual regression (screenshot comparison) without additional tooling',
     ],
-    bestFor: 'Generating test scripts for known user flows, bootstrapping a Playwright test suite, testing during development.',
+    bestFor:
+      'Generating test scripts for known user flows, bootstrapping a Playwright test suite, testing during development.',
   },
   {
     name: 'Computer Use API',
     badge: 'API only',
     badgeVariant: 'outline',
-    whatItIs: 'Anthropic\u2019s computer use capability allows Claude to control a full desktop environment \u2014 mouse, keyboard, screenshots. Available through the API.',
+    whatItIs:
+      'Anthropic\u2019s computer use capability allows Claude to control a full desktop environment \u2014 mouse, keyboard, screenshots. Available through the API.',
     capabilities: [
       'Control any desktop application, not just browsers',
       'Perform complex multi-application workflows',
@@ -78,7 +83,8 @@ const testingApproaches: TestingApproach[] = [
       'Slower than direct browser automation',
       'Not designed for high-frequency regression testing',
     ],
-    bestFor: 'One-off automation tasks, testing legacy applications, cross-application workflows. Not a primary regression testing tool.',
+    bestFor:
+      'One-off automation tasks, testing legacy applications, cross-application workflows. Not a primary regression testing tool.',
   },
 ];
 
@@ -90,26 +96,107 @@ interface ComparisonRow {
 }
 
 const comparisonRows: ComparisonRow[] = [
-  { capability: 'Recorded test creation', ghostInspector: 'Built-in browser extension recorder', aiDriven: 'CoWork follows instructions; Playwright MCP generates scripts from descriptions' },
-  { capability: 'Scheduled execution', ghostInspector: 'Yes \u2014 cron-like scheduling, recurring runs', aiDriven: 'Not natively available yet. Would require custom orchestration' },
-  { capability: 'CI/CD integration', ghostInspector: 'Built-in (webhooks, API, GitHub Actions)', aiDriven: 'Playwright scripts can run in CI/CD; CoWork/computer use cannot' },
-  { capability: 'Visual regression', ghostInspector: 'Screenshot comparison built-in', aiDriven: 'Not built-in. Would need Percy, Playwright screenshot comparison, or similar' },
-  { capability: 'Element selectors', ghostInspector: 'CSS selectors (can break on redesign)', aiDriven: 'AI can adapt to layout changes; Playwright selectors are more robust than CSS' },
-  { capability: 'Authentication handling', ghostInspector: 'Cookie injection, API-based auth', aiDriven: 'CoWork can perform actual login flows; Playwright can handle auth state' },
-  { capability: 'Reporting & history', ghostInspector: 'Dashboard with pass/fail history, screenshots', aiDriven: 'No built-in reporting. Would need custom solution' },
-  { capability: 'Team collaboration', ghostInspector: 'Shared tests, team management', aiDriven: 'Tests are code \u2014 version-controlled and reviewable in Git' },
-  { capability: 'Self-healing tests', ghostInspector: 'No (tests break when selectors change)', aiDriven: 'AI-generated tests can be regenerated from natural-language descriptions', highlight: true },
-  { capability: 'Cost', ghostInspector: 'Subscription-based per test run', aiDriven: 'API token costs per generation; Playwright execution is free' },
-  { capability: 'Maintenance burden', ghostInspector: 'High \u2014 tests break frequently on redesign', aiDriven: 'Lower for AI-generated tests (regenerate from descriptions); higher for initial setup' },
+  {
+    capability: 'Recorded test creation',
+    ghostInspector: 'Built-in browser extension recorder',
+    aiDriven:
+      'CoWork follows instructions; Playwright MCP generates scripts from descriptions',
+  },
+  {
+    capability: 'Scheduled execution',
+    ghostInspector: 'Yes \u2014 cron-like scheduling, recurring runs',
+    aiDriven: 'Not natively available yet. Would require custom orchestration',
+  },
+  {
+    capability: 'CI/CD integration',
+    ghostInspector: 'Built-in (webhooks, API, GitHub Actions)',
+    aiDriven: 'Playwright scripts can run in CI/CD; CoWork/computer use cannot',
+  },
+  {
+    capability: 'Visual regression',
+    ghostInspector: 'Screenshot comparison built-in',
+    aiDriven:
+      'Not built-in. Would need Percy, Playwright screenshot comparison, or similar',
+  },
+  {
+    capability: 'Element selectors',
+    ghostInspector: 'CSS selectors (can break on redesign)',
+    aiDriven:
+      'AI can adapt to layout changes; Playwright selectors are more robust than CSS',
+  },
+  {
+    capability: 'Authentication handling',
+    ghostInspector: 'Cookie injection, API-based auth',
+    aiDriven:
+      'CoWork can perform actual login flows; Playwright can handle auth state',
+  },
+  {
+    capability: 'Reporting & history',
+    ghostInspector: 'Dashboard with pass/fail history, screenshots',
+    aiDriven: 'No built-in reporting. Would need custom solution',
+  },
+  {
+    capability: 'Team collaboration',
+    ghostInspector: 'Shared tests, team management',
+    aiDriven: 'Tests are code \u2014 version-controlled and reviewable in Git',
+  },
+  {
+    capability: 'Self-healing tests',
+    ghostInspector: 'No (tests break when selectors change)',
+    aiDriven:
+      'AI-generated tests can be regenerated from natural-language descriptions',
+    highlight: true,
+  },
+  {
+    capability: 'Cost',
+    ghostInspector: 'Subscription-based per test run',
+    aiDriven: 'API token costs per generation; Playwright execution is free',
+  },
+  {
+    capability: 'Maintenance burden',
+    ghostInspector: 'High \u2014 tests break frequently on redesign',
+    aiDriven:
+      'Lower for AI-generated tests (regenerate from descriptions); higher for initial setup',
+  },
 ];
 
 const gettingStartedSteps = [
-  { step: 1, title: 'Install the Playwright MCP', description: 'Add the Playwright MCP server to your Claude Code configuration. See Section 1.13 for installation guidance.' },
-  { step: 2, title: 'Write your first AI-generated test', description: 'Pick a simple, stable user flow (e.g., "log into the admin panel and verify the dashboard loads"). Ask Claude to generate a Playwright test. Review the output and run it.' },
-  { step: 3, title: 'Build a natural-language test catalogue', description: 'Write plain-English descriptions of your 10 most important user journeys. Store them in your repo (e.g., /docs/test-scenarios/). These become the source of truth for test regeneration.' },
-  { step: 4, title: 'Experiment with CoWork for exploratory testing', description: 'On your next feature release, use CoWork to walk through the new functionality instead of (or in addition to) manual testing.' },
-  { step: 5, title: 'Evaluate after 4\u20136 weeks', description: 'After running AI-generated Playwright tests alongside Ghost Inspector, assess: which caught more bugs? Which required less maintenance?' },
-  { step: 6, title: 'Do not cancel Ghost Inspector yet', description: 'Keep it running for your critical paths until you have confidence in the replacement. The goal is not to save the subscription cost \u2014 it is to have better tests.' },
+  {
+    step: 1,
+    title: 'Install the Playwright MCP',
+    description:
+      'Add the Playwright MCP server to your Claude Code configuration. See Section 1.13 for installation guidance.',
+  },
+  {
+    step: 2,
+    title: 'Write your first AI-generated test',
+    description:
+      'Pick a simple, stable user flow (e.g., "log into the admin panel and verify the dashboard loads"). Ask Claude to generate a Playwright test. Review the output and run it.',
+  },
+  {
+    step: 3,
+    title: 'Build a natural-language test catalogue',
+    description:
+      'Write plain-English descriptions of your 10 most important user journeys. Store them in your repo (e.g., /docs/test-scenarios/). These become the source of truth for test regeneration.',
+  },
+  {
+    step: 4,
+    title: 'Experiment with CoWork for exploratory testing',
+    description:
+      'On your next feature release, use CoWork to walk through the new functionality instead of (or in addition to) manual testing.',
+  },
+  {
+    step: 5,
+    title: 'Evaluate after 4\u20136 weeks',
+    description:
+      'After running AI-generated Playwright tests alongside Ghost Inspector, assess: which caught more bugs? Which required less maintenance?',
+  },
+  {
+    step: 6,
+    title: 'Do not cancel Ghost Inspector yet',
+    description:
+      'Keep it running for your critical paths until you have confidence in the replacement. The goal is not to save the subscription cost \u2014 it is to have better tests.',
+  },
 ];
 
 const limitations = [
@@ -130,23 +217,30 @@ export function RegressionTestingSection() {
     <div className="flex flex-col gap-12">
       {/* Opening */}
       <section aria-labelledby="testing-landscape">
-        <h2 id="testing-landscape" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="testing-landscape"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           The Testing Landscape Is Shifting
         </h2>
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            Regression testing has traditionally required dedicated tools that record or script browser
-            interactions and replay them. Ghost Inspector is a solid example of this &mdash; and it works well
-            for Phew!&apos;s current needs.
+            Regression testing has traditionally required dedicated tools that
+            record or script browser interactions and replay them. Ghost
+            Inspector is a solid example of this &mdash; and it works well for
+            Phew!&apos;s current needs.
           </p>
           <p>
-            AI is changing this landscape. Instead of brittle recorded scripts that break when a CSS class
-            changes, AI-driven testing can understand what a page should do and verify it at a semantic level.
-            This is not science fiction &mdash; it is available now, with caveats.
+            AI is changing this landscape. Instead of brittle recorded scripts
+            that break when a CSS class changes, AI-driven testing can
+            understand what a page should do and verify it at a semantic level.
+            This is not science fiction &mdash; it is available now, with
+            caveats.
           </p>
           <p>
-            This section lays out what is currently possible, how it compares to Ghost Inspector, and a
-            practical path for Phew! to start experimenting alongside your existing setup.
+            This section lays out what is currently possible, how it compares to
+            Ghost Inspector, and a practical path for Phew! to start
+            experimenting alongside your existing setup.
           </p>
         </div>
       </section>
@@ -155,22 +249,34 @@ export function RegressionTestingSection() {
 
       {/* Current Capabilities */}
       <section aria-labelledby="current-capabilities">
-        <h2 id="current-capabilities" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="current-capabilities"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Current AI Testing Capabilities
         </h2>
 
         <div className="space-y-6">
           {testingApproaches.map((approach) => (
-            <div key={approach.name} className="rounded-lg border border-border p-4 sm:p-6">
+            <div
+              key={approach.name}
+              className="rounded-lg border border-border p-4 sm:p-6"
+            >
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <h3 className="text-base font-semibold">{approach.name}</h3>
-                <Badge variant={approach.badgeVariant} className="text-xs">{approach.badge}</Badge>
+                <Badge variant={approach.badgeVariant} className="text-xs">
+                  {approach.badge}
+                </Badge>
               </div>
-              <p className="mb-4 text-sm text-muted-foreground">{approach.whatItIs}</p>
+              <p className="mb-4 text-sm text-muted-foreground">
+                {approach.whatItIs}
+              </p>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">Capabilities</h4>
+                  <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Capabilities
+                  </h4>
                   <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     {approach.capabilities.map((cap) => (
                       <li key={cap}>{cap}</li>
@@ -178,7 +284,9 @@ export function RegressionTestingSection() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">Limitations</h4>
+                  <h4 className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Limitations
+                  </h4>
                   <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
                     {approach.limitations.map((lim) => (
                       <li key={lim}>{lim}</li>
@@ -189,7 +297,9 @@ export function RegressionTestingSection() {
 
               <p className="mt-3 text-sm">
                 <strong className="text-foreground">Best for:</strong>{' '}
-                <span className="text-muted-foreground">{approach.bestFor}</span>
+                <span className="text-muted-foreground">
+                  {approach.bestFor}
+                </span>
               </p>
             </div>
           ))}
@@ -200,7 +310,10 @@ export function RegressionTestingSection() {
 
       {/* Comparison Table */}
       <section aria-labelledby="comparison">
-        <h2 id="comparison" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="comparison"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Ghost Inspector Comparison
         </h2>
 
@@ -219,14 +332,20 @@ export function RegressionTestingSection() {
                   key={row.capability}
                   className={cn(
                     'border-b border-border/50',
-                    row.highlight && 'bg-primary/5'
+                    row.highlight && 'bg-primary/5',
                   )}
                 >
                   <td className="py-2 pr-4 font-medium">
                     {row.capability}
-                    {row.highlight && <Badge variant="default" className="ml-2 text-xs">Key advantage</Badge>}
+                    {row.highlight && (
+                      <Badge variant="default" className="ml-2 text-xs">
+                        Key advantage
+                      </Badge>
+                    )}
                   </td>
-                  <td className="py-2 pr-4 text-muted-foreground">{row.ghostInspector}</td>
+                  <td className="py-2 pr-4 text-muted-foreground">
+                    {row.ghostInspector}
+                  </td>
                   <td className="py-2 text-muted-foreground">{row.aiDriven}</td>
                 </tr>
               ))}
@@ -235,9 +354,11 @@ export function RegressionTestingSection() {
         </div>
 
         <CalloutCard variant="tip" className="mt-4">
-          The most compelling advantage of AI-driven testing is <strong>self-healing</strong>. Traditional
-          regression tests are notoriously brittle. AI-generated tests from natural-language descriptions
-          can be regenerated when the UI changes, rather than manually fixed.
+          The most compelling advantage of AI-driven testing is{' '}
+          <strong>self-healing</strong>. Traditional regression tests are
+          notoriously brittle. AI-generated tests from natural-language
+          descriptions can be regenerated when the UI changes, rather than
+          manually fixed.
         </CalloutCard>
       </section>
 
@@ -245,7 +366,10 @@ export function RegressionTestingSection() {
 
       {/* Integration Approaches */}
       <section aria-labelledby="approaches">
-        <h2 id="approaches" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="approaches"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Integration Approaches
         </h2>
 
@@ -255,10 +379,13 @@ export function RegressionTestingSection() {
             <TabsTrigger value="progressive">Progressive</TabsTrigger>
           </TabsList>
           <TabsContent value="conservative" className="mt-4 space-y-4">
-            <h3 className="text-base font-semibold">Approach A: AI-Assisted Test Generation</h3>
+            <h3 className="text-base font-semibold">
+              Approach A: AI-Assisted Test Generation
+            </h3>
             <p className="text-sm text-muted-foreground">
-              Use Claude (via Claude Code with Playwright MCP) to generate Playwright test scripts, then
-              run and maintain those scripts using standard tooling.
+              Use Claude (via Claude Code with Playwright MCP) to generate
+              Playwright test scripts, then run and maintain those scripts using
+              standard tooling.
             </p>
             <ol className="list-inside list-decimal space-y-1 text-sm text-muted-foreground">
               <li>Describe each test scenario in natural language</li>
@@ -266,29 +393,47 @@ export function RegressionTestingSection() {
               <li>Review the script, fix any hallucinated selectors</li>
               <li>Commit the test to your repo</li>
               <li>Run via standard Playwright CLI in CI/CD</li>
-              <li>When tests break after a redesign, ask Claude to regenerate from the original description</li>
+              <li>
+                When tests break after a redesign, ask Claude to regenerate from
+                the original description
+              </li>
             </ol>
             <CalloutCard variant="info">
-              <strong>Phew! starting point:</strong> Pick 3–5 existing Ghost Inspector tests and recreate
-              them as Playwright tests using Claude. Compare reliability and maintenance burden over 2–3 months.
+              <strong>Phew! starting point:</strong> Pick 3–5 existing Ghost
+              Inspector tests and recreate them as Playwright tests using
+              Claude. Compare reliability and maintenance burden over 2–3
+              months.
             </CalloutCard>
           </TabsContent>
           <TabsContent value="progressive" className="mt-4 space-y-4">
-            <h3 className="text-base font-semibold">Approach B: AI-as-Tester Hybrid</h3>
+            <h3 className="text-base font-semibold">
+              Approach B: AI-as-Tester Hybrid
+            </h3>
             <p className="text-sm text-muted-foreground">
-              Use CoWork or Playwright MCP for exploratory and ad-hoc testing alongside Ghost Inspector for
-              critical regression paths.
+              Use CoWork or Playwright MCP for exploratory and ad-hoc testing
+              alongside Ghost Inspector for critical regression paths.
             </p>
             <ol className="list-inside list-decimal space-y-1 text-sm text-muted-foreground">
-              <li>Ghost Inspector continues handling critical regression suites</li>
-              <li>CoWork handles exploratory testing for complex user journeys</li>
-              <li>For new features, use Claude to generate Playwright tests before they reach Ghost Inspector</li>
-              <li>Gradually migrate Ghost Inspector tests to Playwright as confidence builds</li>
+              <li>
+                Ghost Inspector continues handling critical regression suites
+              </li>
+              <li>
+                CoWork handles exploratory testing for complex user journeys
+              </li>
+              <li>
+                For new features, use Claude to generate Playwright tests before
+                they reach Ghost Inspector
+              </li>
+              <li>
+                Gradually migrate Ghost Inspector tests to Playwright as
+                confidence builds
+              </li>
             </ol>
             <CalloutCard variant="info">
-              <strong>Phew! starting point:</strong> Start using CoWork for manual QA tasks that are currently
-              done by hand (new feature walkthroughs, cross-browser checks). Document which tasks it handles
-              well and which it struggles with.
+              <strong>Phew! starting point:</strong> Start using CoWork for
+              manual QA tasks that are currently done by hand (new feature
+              walkthroughs, cross-browser checks). Document which tasks it
+              handles well and which it struggles with.
             </CalloutCard>
           </TabsContent>
         </Tabs>
@@ -298,21 +443,28 @@ export function RegressionTestingSection() {
 
       {/* Getting Started */}
       <section aria-labelledby="getting-started-testing">
-        <h2 id="getting-started-testing" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="getting-started-testing"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Practical Starting Points
         </h2>
         <div className="space-y-4">
           {gettingStartedSteps.map((step) => (
             <div key={step.step} className="flex gap-4">
-              <div className={cn(
-                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
-                'bg-primary/10 text-primary'
-              )}>
+              <div
+                className={cn(
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
+                  'bg-primary/10 text-primary',
+                )}
+              >
                 {step.step}
               </div>
               <div className="pt-1">
                 <p className="text-sm font-medium">{step.title}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">{step.description}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
@@ -334,7 +486,10 @@ export function RegressionTestingSection() {
 
       {/* Prompts */}
       <section aria-labelledby="testing-prompts">
-        <h2 id="testing-prompts" className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl">
+        <h2
+          id="testing-prompts"
+          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
           Copyable Prompts
         </h2>
         <div className="space-y-4">

@@ -39,8 +39,8 @@ export function SessionManagementSection() {
       {/* Key takeaway */}
       <CalloutCard variant="important">
         <p className="font-medium">
-          A fresh session with a good handoff beats a long degrading
-          session every time.
+          A fresh session with a good handoff beats a long degrading session
+          every time.
         </p>
       </CalloutCard>
 
@@ -55,9 +55,9 @@ export function SessionManagementSection() {
           When to Stop a Session and Start Fresh
         </h2>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-          Stopping a session is not failure — it is the single most
-          effective way to maintain Claude's quality. A fresh session with
-          a good briefing outperforms a long session every time.
+          Stopping a session is not failure — it is the single most effective
+          way to maintain Claude's quality. A fresh session with a good briefing
+          outperforms a long session every time.
         </p>
 
         {/* Rules of thumb */}
@@ -92,9 +92,7 @@ export function SessionManagementSection() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-left">
-                    <th className="py-2 pr-4 font-medium">
-                      Context usage
-                    </th>
+                    <th className="py-2 pr-4 font-medium">Context usage</th>
                     <th className="py-2 pr-4 font-medium">
                       What you will notice
                     </th>
@@ -107,8 +105,7 @@ export function SessionManagementSection() {
                       key={band.range}
                       className={cn(
                         'border-b border-border/50',
-                        i === tokenAwarenessBands.length - 1 &&
-                          'border-b-0'
+                        i === tokenAwarenessBands.length - 1 && 'border-b-0',
                       )}
                     >
                       <td className="py-2 pr-4 align-top font-medium tabular-nums">
@@ -137,21 +134,24 @@ export function SessionManagementSection() {
                   command to see current context consumption.
                 </li>
                 <li>
-                  <strong>claude.ai / Desktop:</strong> No direct
-                  indicator. Watch for the behavioural signals above
-                  (repetition, drift, forgetting).
+                  <strong>claude.ai / Desktop:</strong> No direct indicator.
+                  Watch for the behavioural signals above (repetition, drift,
+                  forgetting).
                 </li>
               </ul>
             </div>
 
-            <CalloutCard variant="tip" title="The 200K subtask benefit" className="mt-4">
+            <CalloutCard
+              variant="tip"
+              title="The 200K subtask benefit"
+              className="mt-4"
+            >
               <p>
-                When you break a large task into subtasks (see Part 3
-                below), each subtask gets its own fresh 200,000-token
-                context window. A five-subtask project effectively has
-                access to 1,000,000 tokens of context capacity — each
-                window sharp and focused — instead of cramming everything
-                into a single degrading session.
+                When you break a large task into subtasks (see Part 3 below),
+                each subtask gets its own fresh 200,000-token context window. A
+                five-subtask project effectively has access to 1,000,000 tokens
+                of context capacity — each window sharp and focused — instead of
+                cramming everything into a single degrading session.
               </p>
             </CalloutCard>
           </div>
@@ -186,31 +186,28 @@ export function SessionManagementSection() {
         <CalloutCard variant="info" className="mb-4">
           <p className="text-xs">
             <strong>Terminology:</strong> Throughout this playbook, we use
-            "handoff prompt" as the primary term for the structured
-            summary you create when ending a session. This is also called
-            a "continuation prompt" — they mean the same thing.
+            "handoff prompt" as the primary term for the structured summary you
+            create when ending a session. This is also called a "continuation
+            prompt" — they mean the same thing.
           </p>
         </CalloutCard>
 
         <p className="mb-6 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-          You do not need to write the handoff yourself. Ask Claude to
-          summarise the session and produce a handoff prompt. Claude has
-          access to the full conversation and can extract the key
-          information.
+          You do not need to write the handoff yourself. Ask Claude to summarise
+          the session and produce a handoff prompt. Claude has access to the
+          full conversation and can extract the key information.
         </p>
 
         {/* Workflow steps */}
         <div className="mb-8">
-          <h3 className="mb-4 text-lg font-medium">
-            The Handoff Workflow
-          </h3>
+          <h3 className="mb-4 text-lg font-medium">The Handoff Workflow</h3>
           <ol className="relative space-y-0 border-l-2 border-border pl-6">
             {handoffWorkflowSteps.map((step, i) => (
               <li
                 key={step.number}
                 className={cn(
                   'relative pb-6',
-                  i === handoffWorkflowSteps.length - 1 && 'pb-0'
+                  i === handoffWorkflowSteps.length - 1 && 'pb-0',
                 )}
               >
                 {/* Step number dot */}
@@ -231,15 +228,18 @@ export function SessionManagementSection() {
         {!isDev && (
           <CalloutCard variant="tip" className="mb-6">
             <p className="text-xs">
-              Think of this as saving your progress — like saving a game.
-              You capture where you are, then start a fresh page with that
-              summary at the top. If you work on the same type of task
-              regularly, consider setting up a{' '}
-              <Link to={`/${track}/skills-extensions`} className="font-medium text-primary hover:underline">
+              Think of this as saving your progress — like saving a game. You
+              capture where you are, then start a fresh page with that summary
+              at the top. If you work on the same type of task regularly,
+              consider setting up a{' '}
+              <Link
+                to={`/${track}/skills-extensions`}
+                className="font-medium text-primary hover:underline"
+              >
                 Project
               </Link>{' '}
-              in claude.ai with custom
-              instructions describing your usual workflow.
+              in claude.ai with custom instructions describing your usual
+              workflow.
             </p>
           </CalloutCard>
         )}
@@ -247,19 +247,14 @@ export function SessionManagementSection() {
         {/* Developer: Scenario types */}
         {isDev && (
           <div className="mt-6">
-            <h3 className="mb-3 text-lg font-medium">
-              Handoff Scenario Types
-            </h3>
+            <h3 className="mb-3 text-lg font-medium">Handoff Scenario Types</h3>
             <p className="mb-4 max-w-[65ch] text-sm text-muted-foreground">
-              Not all handoffs are the same. The right structure depends on
-              why you are stopping.
+              Not all handoffs are the same. The right structure depends on why
+              you are stopping.
             </p>
             <Accordion type="single" collapsible className="w-full">
               {handoffScenarios.map((scenario) => (
-                <AccordionItem
-                  key={scenario.id}
-                  value={scenario.id}
-                >
+                <AccordionItem key={scenario.id} value={scenario.id}>
                   <AccordionTrigger className="text-sm font-medium">
                     <span className="flex items-center gap-2">
                       {scenario.name}
@@ -273,15 +268,11 @@ export function SessionManagementSection() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="max-w-[65ch] space-y-3 text-sm">
-                      <p className="leading-relaxed">
-                        {scenario.description}
-                      </p>
+                      <p className="leading-relaxed">{scenario.description}</p>
                       <ul className="list-inside list-disc space-y-1 text-muted-foreground">
-                        {scenario.characteristics.map(
-                          (c, i) => (
-                            <li key={i}>{c}</li>
-                          )
-                        )}
+                        {scenario.characteristics.map((c, i) => (
+                          <li key={i}>{c}</li>
+                        ))}
                       </ul>
                     </div>
                   </AccordionContent>
@@ -297,51 +288,42 @@ export function SessionManagementSection() {
                   size="sm"
                   className="flex w-full items-center justify-between gap-2 text-sm text-muted-foreground"
                 >
-                  <span>
-                    Show information architecture for handoff prompts
-                  </span>
+                  <span>Show information architecture for handoff prompts</span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="mt-2 space-y-4 rounded-md border border-border bg-muted/30 p-4">
-                  {(
-                    ['universal', 'common', 'scenario-specific'] as const
-                  ).map((category) => {
-                    const elements = infoArchElements.filter(
-                      (e) => e.category === category
-                    );
-                    const labels = {
-                      universal:
-                        'Universal (every handoff needs these)',
-                      common: 'Common (most handoffs)',
-                      'scenario-specific':
-                        'Scenario-specific',
-                    };
-                    return (
-                      <div key={category}>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          {labels[category]}
-                        </p>
-                        <ul className="space-y-1">
-                          {elements.map((el) => (
-                            <li
-                              key={el.name}
-                              className="text-sm"
-                            >
-                              <span className="font-medium">
-                                {el.name}
-                              </span>
-                              <span className="text-muted-foreground">
-                                {' '}
-                                — {el.description}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  })}
+                  {(['universal', 'common', 'scenario-specific'] as const).map(
+                    (category) => {
+                      const elements = infoArchElements.filter(
+                        (e) => e.category === category,
+                      );
+                      const labels = {
+                        universal: 'Universal (every handoff needs these)',
+                        common: 'Common (most handoffs)',
+                        'scenario-specific': 'Scenario-specific',
+                      };
+                      return (
+                        <div key={category}>
+                          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            {labels[category]}
+                          </p>
+                          <ul className="space-y-1">
+                            {elements.map((el) => (
+                              <li key={el.name} className="text-sm">
+                                <span className="font-medium">{el.name}</span>
+                                <span className="text-muted-foreground">
+                                  {' '}
+                                  — {el.description}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    },
+                  )}
                 </div>
               </CollapsibleContent>
             </Collapsible>
@@ -360,9 +342,9 @@ export function SessionManagementSection() {
           Breaking Tasks into Subtasks
         </h2>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-          Large tasks produce better results when broken into focused
-          subtasks, each in its own session. This is not just good
-          practice — it is how you get the most from Claude's architecture.
+          Large tasks produce better results when broken into focused subtasks,
+          each in its own session. This is not just good practice — it is how
+          you get the most from Claude's architecture.
         </p>
 
         <h3 className="mb-3 text-lg font-medium">
@@ -370,8 +352,8 @@ export function SessionManagementSection() {
         </h3>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
           Each task should be broken down to the smallest unit that can be
-          completed independently. Each atomic task gets a fresh context
-          window, meaning Claude brings its full attention to each piece.
+          completed independently. Each atomic task gets a fresh context window,
+          meaning Claude brings its full attention to each piece.
         </p>
 
         {/* Worked examples */}
@@ -385,9 +367,7 @@ export function SessionManagementSection() {
                   size="sm"
                   className="flex w-full items-center justify-between gap-2 text-sm"
                 >
-                  <span>
-                    Show example: {example.title}
-                  </span>
+                  <span>Show example: {example.title}</span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </CollapsibleTrigger>
@@ -396,15 +376,10 @@ export function SessionManagementSection() {
                   <p className="mb-3 text-sm italic text-muted-foreground">
                     {example.context}
                   </p>
-                  <p className="mb-2 text-sm font-medium">
-                    Break it down:
-                  </p>
+                  <p className="mb-2 text-sm font-medium">Break it down:</p>
                   <ol className="space-y-2">
                     {example.steps.map((step) => (
-                      <li
-                        key={step.session}
-                        className="text-sm"
-                      >
+                      <li key={step.session} className="text-sm">
                         <span className="font-medium">
                           Session {step.session}:
                         </span>{' '}
@@ -418,8 +393,8 @@ export function SessionManagementSection() {
                     ))}
                   </ol>
                   <p className="mt-3 text-xs text-muted-foreground">
-                    Each session is focused. Claude does not need to hold
-                    the entire project in memory at once.
+                    Each session is focused. Claude does not need to hold the
+                    entire project in memory at once.
                   </p>
                 </div>
               </CollapsibleContent>
@@ -429,11 +404,15 @@ export function SessionManagementSection() {
         {isDev && (
           <CalloutCard variant="tip" className="mt-4">
             <p>
-              {workedExamples.find((e) => e.id === 'api-endpoint')
-                ?.steps.length ?? 4}{' '}
-              sessions x 200K tokens = {((workedExamples.find((e) => e.id === 'api-endpoint')?.steps.length ?? 4) * 200).toLocaleString('en-GB')}K
-              tokens of focused context capacity, versus a single session
-              that degrades past the halfway mark.
+              {workedExamples.find((e) => e.id === 'api-endpoint')?.steps
+                .length ?? 4}{' '}
+              sessions x 200K tokens ={' '}
+              {(
+                (workedExamples.find((e) => e.id === 'api-endpoint')?.steps
+                  .length ?? 4) * 200
+              ).toLocaleString('en-GB')}
+              K tokens of focused context capacity, versus a single session that
+              degrades past the halfway mark.
             </p>
           </CalloutCard>
         )}
@@ -441,9 +420,9 @@ export function SessionManagementSection() {
         {/* Meta-narrative */}
         <CalloutCard variant="info" className="mt-4">
           <p className="text-xs">
-            This playbook itself was built using the atomic task principle
-            — each section was a separate session with its own handoff
-            prompt and fresh context window.
+            This playbook itself was built using the atomic task principle —
+            each section was a separate session with its own handoff prompt and
+            fresh context window.
           </p>
         </CalloutCard>
       </section>
@@ -491,9 +470,7 @@ export function SessionManagementSection() {
             <thead>
               <tr className="border-b border-border text-left">
                 <th className="py-2 pr-4 font-medium">Aspect</th>
-                <th className="py-2 pr-4 font-medium">
-                  claude.ai / Desktop
-                </th>
+                <th className="py-2 pr-4 font-medium">claude.ai / Desktop</th>
                 <th className="py-2 font-medium">Claude Code</th>
               </tr>
             </thead>
@@ -503,8 +480,7 @@ export function SessionManagementSection() {
                   key={row.aspect}
                   className={cn(
                     'border-b border-border/50',
-                    i === platformComparisons.length - 1 &&
-                      'border-b-0'
+                    i === platformComparisons.length - 1 && 'border-b-0',
                   )}
                 >
                   <td className="py-2 pr-4 align-top font-medium">
@@ -570,23 +546,23 @@ export function SessionManagementSection() {
                 <ul className="list-inside list-disc space-y-1">
                   <li>
                     <strong>Add a memory:</strong> Tell Claude directly —
-                    &ldquo;Remember that we use UK English throughout all
-                    client communications&rdquo;
+                    &ldquo;Remember that we use UK English throughout all client
+                    communications&rdquo;
                   </li>
                   <li>
                     <strong>View memories:</strong> Go to Settings &gt; Memory
                     in claude.ai or the Claude Desktop app
                   </li>
                   <li>
-                    <strong>Delete a memory:</strong> Click the delete icon
-                    next to any memory in Settings, or tell Claude to forget
+                    <strong>Delete a memory:</strong> Click the delete icon next
+                    to any memory in Settings, or tell Claude to forget
                     something specific
                   </li>
                 </ul>
                 <p>
                   Claude will also sometimes suggest saving a memory when it
-                  notices you repeating the same instruction. You can approve
-                  or decline these suggestions.
+                  notices you repeating the same instruction. You can approve or
+                  decline these suggestions.
                 </p>
               </div>
             </AccordionContent>
@@ -642,8 +618,8 @@ export function SessionManagementSection() {
               <div className="max-w-[65ch] space-y-2 text-sm text-muted-foreground">
                 <ul className="list-inside list-disc space-y-1">
                   <li>
-                    Brand guidelines — colours, fonts, tone of voice, logo
-                    usage rules
+                    Brand guidelines — colours, fonts, tone of voice, logo usage
+                    rules
                   </li>
                   <li>
                     Your role and team structure — so Claude understands your
@@ -699,8 +675,8 @@ export function SessionManagementSection() {
                     <code className="rounded bg-muted px-1 py-0.5 text-xs font-mono">
                       .planning/continuation-prompts/session-N.md
                     </code>
-                    ), not just copy-paste them. This creates a project
-                    history that any team member can reference.
+                    ), not just copy-paste them. This creates a project history
+                    that any team member can reference.
                   </p>
                 </div>
               </AccordionContent>
@@ -714,9 +690,8 @@ export function SessionManagementSection() {
                 <div className="max-w-[65ch] space-y-2 text-sm text-muted-foreground">
                   <p>
                     As sessions accumulate, compress old sessions into a
-                    one-line summary and expand recent ones with full
-                    detail. This keeps handoffs concise while preserving
-                    context.
+                    one-line summary and expand recent ones with full detail.
+                    This keeps handoffs concise while preserving context.
                   </p>
                   <CodeBlock
                     code={`Sessions 01-04: Research and technology alignment (complete). See session-summary-04.md.
@@ -743,9 +718,9 @@ Session 06: Brainstorming — SME routing + auth decision
                 <div className="max-w-[65ch] space-y-2 text-sm text-muted-foreground">
                   <p>
                     For principles and constraints that repeat across every
-                    session, put them in CLAUDE.md instead of repeating
-                    them in handoffs. The handoff then references CLAUDE.md
-                    rather than duplicating it.
+                    session, put them in CLAUDE.md instead of repeating them in
+                    handoffs. The handoff then references CLAUDE.md rather than
+                    duplicating it.
                   </p>
                 </div>
               </AccordionContent>
@@ -758,10 +733,10 @@ Session 06: Brainstorming — SME routing + auth decision
               <AccordionContent>
                 <div className="max-w-[65ch] space-y-2 text-sm text-muted-foreground">
                   <p>
-                    When decomposing tasks, note which subtasks could be
-                    run as parallel subagents in Claude Code. Each
-                    subagent gets its own 200K context window, and only a
-                    summary returns to your main session.
+                    When decomposing tasks, note which subtasks could be run as
+                    parallel subagents in Claude Code. Each subagent gets its
+                    own 200K context window, and only a summary returns to your
+                    main session.
                   </p>
                 </div>
               </AccordionContent>
@@ -774,10 +749,10 @@ Session 06: Brainstorming — SME routing + auth decision
               <AccordionContent>
                 <div className="max-w-[65ch] space-y-2 text-sm text-muted-foreground">
                   <p>
-                    Claude Code hooks (PreCompact, SessionEnd) can be
-                    configured to generate automatic checkpoint handoffs.
-                    This is an advanced technique — the starter kit
-                    includes relevant files to get you started.
+                    Claude Code hooks (PreCompact, SessionEnd) can be configured
+                    to generate automatic checkpoint handoffs. This is an
+                    advanced technique — the starter kit includes relevant files
+                    to get you started.
                   </p>
                 </div>
               </AccordionContent>
@@ -790,8 +765,8 @@ Session 06: Brainstorming — SME routing + auth decision
               <AccordionContent>
                 <div className="max-w-[65ch] space-y-2 text-sm text-muted-foreground">
                   <p>
-                    The starter kit includes ready-to-use session handoff
-                    skill files in{' '}
+                    The starter kit includes ready-to-use session handoff skill
+                    files in{' '}
                     <code className="rounded bg-muted px-1 py-0.5 text-xs font-mono">
                       starter-kit/skills/
                     </code>{' '}
@@ -819,8 +794,8 @@ Session 06: Brainstorming — SME routing + auth decision
           Copyable Handoff Templates
         </h2>
         <p className="mb-6 max-w-[65ch] text-sm text-muted-foreground">
-          Copy any of these prompts and paste them into your conversation
-          when you are ready to wrap up.
+          Copy any of these prompts and paste them into your conversation when
+          you are ready to wrap up.
         </p>
 
         <div className="space-y-4">

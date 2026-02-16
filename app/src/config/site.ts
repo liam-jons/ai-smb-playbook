@@ -37,8 +37,7 @@ export const siteConfig = {
   emailSubjectPrefix: 'Phew AI Playbook',
 
   /** HTML meta description */
-  metaDescription:
-    'Practical guidance for getting the most from Claude AI',
+  metaDescription: 'Practical guidance for getting the most from Claude AI',
 
   /** Section 1.1 subtitle */
   welcomeSubtitle: 'Getting started with AI at Phew',

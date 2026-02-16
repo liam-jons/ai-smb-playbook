@@ -171,9 +171,7 @@ export const sections: Section[] = [
 
 /** Get sections filtered by track */
 export function getSectionsForTrack(track: 'general' | 'developer'): Section[] {
-  return sections.filter(
-    (s) => s.track === track || s.track === 'both'
-  );
+  return sections.filter((s) => s.track === track || s.track === 'both');
 }
 
 /** Find a section by its slug */
@@ -189,13 +187,14 @@ export function getSectionById(id: string): Section | undefined {
 /** Get next and previous sections within a track */
 export function getAdjacentSections(
   slug: string,
-  track: 'general' | 'developer'
+  track: 'general' | 'developer',
 ): { prev: Section | undefined; next: Section | undefined } {
   const trackSections = getSectionsForTrack(track);
   const index = trackSections.findIndex((s) => s.slug === slug);
 
   return {
     prev: index > 0 ? trackSections[index - 1] : undefined,
-    next: index < trackSections.length - 1 ? trackSections[index + 1] : undefined,
+    next:
+      index < trackSections.length - 1 ? trackSections[index + 1] : undefined,
   };
 }

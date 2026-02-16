@@ -27,20 +27,20 @@ export function ContextSimulatorSection() {
       <section aria-labelledby="context-intro-heading">
         <div className="max-w-[65ch] space-y-4">
           <p className="text-base leading-relaxed">
-            Every conversation with Claude happens inside a context window
-            — 200,000 tokens of working memory. Think of it as a desk: the
-            more you pile on, the harder it is to find what you need.
-            Understanding what is already on your desk when you start, and
-            how it fills up as you work, is the single most useful thing
-            you can learn about using Claude effectively.
+            Every conversation with Claude happens inside a context window —
+            200,000 tokens of working memory. Think of it as a desk: the more
+            you pile on, the harder it is to find what you need. Understanding
+            what is already on your desk when you start, and how it fills up as
+            you work, is the single most useful thing you can learn about using
+            Claude effectively.
           </p>
         </div>
 
         <CalloutCard variant="info" title="What is a token?" className="mt-6">
           <p>
-            Roughly 0.75 words. 200,000 tokens is about 150,000 words —
-            the length of two full novels. That sounds like a lot, but a
-            surprising amount is used before you type your first message.
+            Roughly 0.75 words. 200,000 tokens is about 150,000 words — the
+            length of two full novels. That sounds like a lot, but a surprising
+            amount is used before you type your first message.
           </p>
         </CalloutCard>
 
@@ -51,23 +51,28 @@ export function ContextSimulatorSection() {
             className="mt-4"
           >
             <p>
-              Claude's standard context window is 200,000 tokens. An
-              extended 1M-token window is available via the API (beta,
-              usage tier 4, requires header{' '}
+              Claude's standard context window is 200,000 tokens. An extended
+              1M-token window is available via the API (beta, usage tier 4,
+              requires header{' '}
               <code className="rounded bg-muted px-1 py-0.5 text-xs font-mono">
                 context-1m-2025-08-07
               </code>
-              ), charged at premium rates (2x input, 1.5x output). Claude
-              Code uses the 200K window by default.
+              ), charged at premium rates (2x input, 1.5x output). Claude Code
+              uses the 200K window by default.
             </p>
           </CalloutCard>
         )}
 
         {isDev && (
-          <CalloutCard variant="info" title="Extended thinking tokens" className="mt-4">
+          <CalloutCard
+            variant="info"
+            title="Extended thinking tokens"
+            className="mt-4"
+          >
             <p>
               Extended thinking tokens are consumed during a turn but stripped
-              afterwards — they do not permanently reduce your available context.
+              afterwards — they do not permanently reduce your available
+              context.
             </p>
           </CalloutCard>
         )}
@@ -84,20 +89,18 @@ export function ContextSimulatorSection() {
           Context Window Simulator
         </h2>
         <p className="mb-6 max-w-[65ch] text-sm text-muted-foreground">
-          See how the 200,000-token context window is allocated. Adjust
-          the settings, add conversation turns, and watch how the window
-          fills up.
+          See how the 200,000-token context window is allocated. Adjust the
+          settings, add conversation turns, and watch how the window fills up.
         </p>
 
         <ContextWindowSimulator isDev={isDev} />
 
         <CalloutCard variant="info" className="mt-4">
           <p className="text-xs">
-            <strong>Note:</strong> These numbers are ballpark estimates.
-            Exact token counts vary by Claude version, model,
-            configuration, and content. The proportions are more important
-            than the precise figures — they show how much of your context
-            is spoken for before you begin.
+            <strong>Note:</strong> These numbers are ballpark estimates. Exact
+            token counts vary by Claude version, model, configuration, and
+            content. The proportions are more important than the precise figures
+            — they show how much of your context is spoken for before you begin.
           </p>
         </CalloutCard>
       </section>
@@ -127,22 +130,20 @@ export function ContextSimulatorSection() {
             <AccordionContent>
               <div className="max-w-[65ch] space-y-4 text-sm leading-relaxed">
                 <p>
-                  When your context window fills up, Claude does not
-                  suddenly "forget" things — but it becomes progressively
-                  less effective at using information from the middle of
-                  your conversation. This is a well-documented property of
-                  how large language models process text (researchers call
-                  it "lost in the middle"). The most recent things you said
-                  and the instructions loaded at the start (your CLAUDE.md,
-                  system prompt) stay strong. Everything in between
-                  gradually fades.
+                  When your context window fills up, Claude does not suddenly
+                  "forget" things — but it becomes progressively less effective
+                  at using information from the middle of your conversation.
+                  This is a well-documented property of how large language
+                  models process text (researchers call it "lost in the
+                  middle"). The most recent things you said and the instructions
+                  loaded at the start (your CLAUDE.md, system prompt) stay
+                  strong. Everything in between gradually fades.
                 </p>
                 <p>
-                  <strong>The practical result:</strong> Claude might
-                  re-read files it already looked at, ask you questions you
-                  already answered, ignore conventions you established
-                  earlier, or try random solutions instead of reasoning
-                  through the problem.
+                  <strong>The practical result:</strong> Claude might re-read
+                  files it already looked at, ask you questions you already
+                  answered, ignore conventions you established earlier, or try
+                  random solutions instead of reasoning through the problem.
                 </p>
               </div>
             </AccordionContent>
@@ -155,24 +156,21 @@ export function ContextSimulatorSection() {
             </AccordionTrigger>
             <AccordionContent>
               <ol className="max-w-[65ch] list-inside list-decimal space-y-2 text-sm leading-relaxed">
-                <li>
-                  Claude asks about something you already told it
-                </li>
+                <li>Claude asks about something you already told it</li>
                 <li>Claude re-reads files it recently read</li>
                 <li>
-                  Claude ignores conventions established earlier in the
-                  session
+                  Claude ignores conventions established earlier in the session
                 </li>
                 <li>Responses become noticeably slower</li>
                 <li>
-                  Claude tries random approaches instead of reasoning
-                  through the problem
+                  Claude tries random approaches instead of reasoning through
+                  the problem
                 </li>
                 {isDev && (
                   <>
                     <li>
-                      The "compacting conversation" message appears (in
-                      Claude Code)
+                      The "compacting conversation" message appears (in Claude
+                      Code)
                     </li>
                     <li>
                       <code className="rounded bg-muted px-1 py-0.5 text-xs font-mono">
@@ -194,9 +192,9 @@ export function ContextSimulatorSection() {
             <AccordionContent>
               <div className="max-w-[65ch] space-y-4 text-sm leading-relaxed">
                 <p>
-                  When the context window is nearly full, Claude
-                  automatically summarises (compacts) your conversation to
-                  free up space. This preserves the gist but loses detail.
+                  When the context window is nearly full, Claude automatically
+                  summarises (compacts) your conversation to free up space. This
+                  preserves the gist but loses detail.
                 </p>
 
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -207,9 +205,7 @@ export function ContextSimulatorSection() {
                     <ul className="list-inside list-disc space-y-1 text-muted-foreground">
                       <li>Key decisions and their rationale</li>
                       <li>Current task state and progress</li>
-                      <li>
-                        Important code snippets and patterns
-                      </li>
+                      <li>Important code snippets and patterns</li>
                       <li>Next steps identified</li>
                     </ul>
                   </div>
@@ -222,13 +218,10 @@ export function ContextSimulatorSection() {
                       <li>Error traces from resolved issues</li>
                       <li>Trial-and-error iteration history</li>
                       <li>
-                        Nuanced instructions given early in the
-                        conversation
+                        Nuanced instructions given early in the conversation
                       </li>
                       <li>Specific phrasing and tone preferences</li>
-                      <li>
-                        Detailed tool results from earlier operations
-                      </li>
+                      <li>Detailed tool results from earlier operations</li>
                     </ul>
                   </div>
                 </div>
@@ -239,18 +232,16 @@ export function ContextSimulatorSection() {
                       How compaction works under the hood
                     </p>
                     <p className="text-xs leading-relaxed text-muted-foreground">
-                      When input tokens exceed ~80–95% of the window,
-                      Claude generates a summary of the entire
-                      conversation. This summary replaces all previous
-                      conversation history. The system prompt, tool
-                      definitions, CLAUDE.md, and environment context are
-                      reloaded fresh (not summarised). The compaction
-                      typically frees ~50% of consumed context tokens.
+                      When input tokens exceed ~80–95% of the window, Claude
+                      generates a summary of the entire conversation. This
+                      summary replaces all previous conversation history. The
+                      system prompt, tool definitions, CLAUDE.md, and
+                      environment context are reloaded fresh (not summarised).
+                      The compaction typically frees ~50% of consumed context
+                      tokens.
                     </p>
                     <div className="space-y-1">
-                      <p className="text-xs font-medium">
-                        Manual compaction:
-                      </p>
+                      <p className="text-xs font-medium">Manual compaction:</p>
                       <p className="text-xs text-muted-foreground">
                         In Claude Code, run{' '}
                         <code className="rounded bg-muted px-1 py-0.5 font-mono">
@@ -267,8 +258,7 @@ export function ContextSimulatorSection() {
                         </li>
                         <li>
                           <code className="rounded bg-muted px-1 py-0.5 font-mono">
-                            /compact only keep the API patterns we
-                            established
+                            /compact only keep the API patterns we established
                           </code>{' '}
                           — focused preservation
                         </li>
@@ -295,24 +285,19 @@ export function ContextSimulatorSection() {
             <AccordionContent>
               <ol className="max-w-[65ch] list-inside list-decimal space-y-3 text-sm leading-relaxed">
                 <li>
-                  <strong>Start fresh for each task.</strong> One context
-                  window per task. If the task is done, start a new session
-                  for the next one.
+                  <strong>Start fresh for each task.</strong> One context window
+                  per task. If the task is done, start a new session for the
+                  next one.
                 </li>
                 <li>
-                  <strong>
-                    Do not wait for degradation.
-                  </strong>{' '}
-                  Start a fresh session when you are around 60–70% full —
-                  do not push through until quality drops.
+                  <strong>Do not wait for degradation.</strong> Start a fresh
+                  session when you are around 60–70% full — do not push through
+                  until quality drops.
                 </li>
                 <li>
-                  <strong>
-                    Put critical instructions in CLAUDE.md.
-                  </strong>{' '}
-                  These load at the start of every session and benefit from
-                  primacy bias (the model pays strong attention to what
-                  comes first).
+                  <strong>Put critical instructions in CLAUDE.md.</strong> These
+                  load at the start of every session and benefit from primacy
+                  bias (the model pays strong attention to what comes first).
                 </li>
                 <li>
                   <strong>
@@ -322,20 +307,16 @@ export function ContextSimulatorSection() {
                   (recency bias).
                 </li>
                 <li>
-                  <strong>
-                    Do not rely on mid-conversation instructions.
-                  </strong>{' '}
-                  If you said "always use TypeScript" ten messages ago, it
-                  may have faded. Put it in CLAUDE.md instead.
+                  <strong>Do not rely on mid-conversation instructions.</strong>{' '}
+                  If you said "always use TypeScript" ten messages ago, it may
+                  have faded. Put it in CLAUDE.md instead.
                 </li>
                 {isDev && (
                   <>
                     <li>
-                      <strong>
-                        Keep CLAUDE.md under ~500 lines.
-                      </strong>{' '}
-                      Move reference material to skills (which load
-                      on-demand, not at startup).
+                      <strong>Keep CLAUDE.md under ~500 lines.</strong> Move
+                      reference material to skills (which load on-demand, not at
+                      startup).
                     </li>
                     <li>
                       <strong>Disconnect unused MCP servers.</strong> Run{' '}
@@ -345,8 +326,8 @@ export function ContextSimulatorSection() {
                       to see token costs per server.
                     </li>
                     <li>
-                      <strong>Use Tool Search</strong> (enabled by default
-                      since v2.1.7+) to defer MCP tool loading.
+                      <strong>Use Tool Search</strong> (enabled by default since
+                      v2.1.7+) to defer MCP tool loading.
                     </li>
                     <li>
                       <strong>
@@ -355,15 +336,13 @@ export function ContextSimulatorSection() {
                           disable-model-invocation: true
                         </code>
                       </strong>{' '}
-                      on skills you only trigger manually — their
-                      descriptions will not consume context.
+                      on skills you only trigger manually — their descriptions
+                      will not consume context.
                     </li>
                     <li>
-                      <strong>
-                        Use subagents for file-heavy tasks
-                      </strong>{' '}
-                      — their context is isolated from yours, so only the
-                      summary returns.
+                      <strong>Use subagents for file-heavy tasks</strong> —
+                      their context is isolated from yours, so only the summary
+                      returns.
                     </li>
                     <li>
                       <strong>
@@ -373,8 +352,8 @@ export function ContextSimulatorSection() {
                         </code>{' '}
                         proactively
                       </strong>{' '}
-                      at ~60–70% rather than waiting for auto-compact.
-                      Provide focus instructions to preserve what matters.
+                      at ~60–70% rather than waiting for auto-compact. Provide
+                      focus instructions to preserve what matters.
                     </li>
                     <li>
                       <strong>
@@ -402,18 +381,17 @@ export function ContextSimulatorSection() {
                   <p>
                     Claude Code reserves approximately 33,000–45,000 tokens
                     (roughly 20% of the window) as a buffer for generating
-                    responses. This space is NOT available for your
-                    conversation history.
+                    responses. This space is NOT available for your conversation
+                    history.
                   </p>
                   <CalloutCard variant="tip" title="Key insight">
                     <p>
-                      The "context remaining" percentage shown in Claude
-                      Code's status bar includes this buffer. When it shows
-                      20% remaining, you may only have ~3.5% of true free
-                      space before compaction triggers. This is why
-                      degradation sometimes seems to happen "suddenly" —
-                      the available space was smaller than the percentage
-                      suggested.
+                      The "context remaining" percentage shown in Claude Code's
+                      status bar includes this buffer. When it shows 20%
+                      remaining, you may only have ~3.5% of true free space
+                      before compaction triggers. This is why degradation
+                      sometimes seems to happen "suddenly" — the available space
+                      was smaller than the percentage suggested.
                     </p>
                   </CalloutCard>
                 </div>
@@ -434,7 +412,11 @@ export function ContextSimulatorSection() {
           Token Usage and Your Budget
         </h2>
 
-        <CalloutCard variant="info" title="Practical cost awareness" className="mb-4">
+        <CalloutCard
+          variant="info"
+          title="Practical cost awareness"
+          className="mb-4"
+        >
           <div className="space-y-2">
             <p>
               Claude Teams has usage limits — each conversation consumes tokens,
@@ -462,10 +444,10 @@ export function ContextSimulatorSection() {
         {isDev && (
           <CalloutCard variant="important" title="Claude Max" className="mt-4">
             <p>
-              For heavy API and token usage (automated pipelines, large
-              codebase work, many concurrent sessions), Claude Max at £180/month
-              provides significantly higher rate limits. Worth considering once
-              your team&apos;s usage consistently hits the Teams plan ceiling.
+              For heavy API and token usage (automated pipelines, large codebase
+              work, many concurrent sessions), Claude Max at £180/month provides
+              significantly higher rate limits. Worth considering once your
+              team&apos;s usage consistently hits the Teams plan ceiling.
             </p>
           </CalloutCard>
         )}
@@ -484,13 +466,12 @@ export function ContextSimulatorSection() {
 
         <div className="mb-4 max-w-[65ch] space-y-3">
           <p className="text-sm leading-relaxed text-muted-foreground">
-            <strong>How to use this:</strong> Copy this prompt and send it
-            to Claude when your session is getting long (around 60–70%
-            context usage, or when you notice signs of degradation). Claude
-            will write a detailed summary. Copy that summary, start a
-            fresh session, and paste it as your first message. You get a
-            clean 200,000-token window with all the important context
-            carried forward.
+            <strong>How to use this:</strong> Copy this prompt and send it to
+            Claude when your session is getting long (around 60–70% context
+            usage, or when you notice signs of degradation). Claude will write a
+            detailed summary. Copy that summary, start a fresh session, and
+            paste it as your first message. You get a clean 200,000-token window
+            with all the important context carried forward.
           </p>
         </div>
 
@@ -505,9 +486,9 @@ export function ContextSimulatorSection() {
           <p className="text-xs">
             <strong>Tip:</strong> You can customise this prompt. If you are
             working on code, add "include the exact file paths and function
-            names." If you are writing content, add "include the tone and
-            style decisions we made." The more specific you are about what
-            to preserve, the better the handoff.
+            names." If you are writing content, add "include the tone and style
+            decisions we made." The more specific you are about what to
+            preserve, the better the handoff.
           </p>
         </CalloutCard>
 
@@ -517,10 +498,10 @@ export function ContextSimulatorSection() {
               Compact Instructions for CLAUDE.md
             </h3>
             <p className="mb-3 max-w-[65ch] text-sm text-muted-foreground">
-              <strong>For Claude Code users:</strong> Add this section to
-              your project CLAUDE.md to control what gets preserved during
-              automatic compaction. Claude will reference these
-              instructions when summarising your conversation.
+              <strong>For Claude Code users:</strong> Add this section to your
+              project CLAUDE.md to control what gets preserved during automatic
+              compaction. Claude will reference these instructions when
+              summarising your conversation.
             </p>
             <CodeBlock
               code={compactInstructions}
@@ -533,8 +514,8 @@ export function ContextSimulatorSection() {
         {/* Cross-reference to session management */}
         <div className="mt-6 rounded-md border border-border bg-muted/30 px-4 py-3">
           <p className="text-sm text-muted-foreground">
-            For more on session management — when to stop, how to break
-            tasks into subtasks, and more copyable handoff templates — see{' '}
+            For more on session management — when to stop, how to break tasks
+            into subtasks, and more copyable handoff templates — see{' '}
             <Link
               to={`/${track}/sessions`}
               className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"

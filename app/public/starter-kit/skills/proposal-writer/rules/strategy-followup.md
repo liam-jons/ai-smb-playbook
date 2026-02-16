@@ -8,7 +8,8 @@ tags: follow-up, cadence, closing, objection, negotiation
 
 **Impact: HIGH**
 
-Most deals are lost in the follow-up, not the proposal. A great proposal without follow-up is just content marketing.
+Most deals are lost in the follow-up, not the proposal. A great proposal without
+follow-up is just content marketing.
 
 ### The Follow-Up Reality
 
@@ -28,15 +29,15 @@ Most deals are lost in the follow-up, not the proposal. A great proposal without
 
 ### The Follow-Up Framework
 
-| Timing | Action | Purpose |
-|--------|--------|---------|
-| **Day 0** | Send proposal | Initial delivery |
-| **Day 0 + 2 hrs** | Confirmation call/message | Ensure receipt, gauge reaction |
-| **Day 2** | Value-add email | Answer anticipated questions |
-| **Day 5** | Check-in call | Understand where they are |
-| **Day 7** | New information email | Add value, create reason to engage |
-| **Day 10** | Decision timeline check | Get commitment to timeline |
-| **Day 14+** | Periodic touches | Stay top of mind |
+| Timing            | Action                    | Purpose                            |
+| ----------------- | ------------------------- | ---------------------------------- |
+| **Day 0**         | Send proposal             | Initial delivery                   |
+| **Day 0 + 2 hrs** | Confirmation call/message | Ensure receipt, gauge reaction     |
+| **Day 2**         | Value-add email           | Answer anticipated questions       |
+| **Day 5**         | Check-in call             | Understand where they are          |
+| **Day 7**         | New information email     | Add value, create reason to engage |
+| **Day 10**        | Decision timeline check   | Get commitment to timeline         |
+| **Day 14+**       | Periodic touches          | Stay top of mind                   |
 
 ### Same-Day Follow-Up (Critical)
 
@@ -62,6 +63,7 @@ Best,
 ```
 
 **Why same-day matters:**
+
 - Confirms receipt
 - Shows engagement
 - Catches early objections
@@ -95,6 +97,7 @@ Best,
 ```
 
 **Value-add ideas:**
+
 - Additional case study (relevant industry)
 - ROI calculator customized to their data
 - Implementation timeline comparison
@@ -121,6 +124,7 @@ to answer questions in real-time?"
 ```
 
 **If voicemail:**
+
 ```
 "Hi Sarah, [Name] from SecretStash. Following up on the proposal.
 
@@ -132,19 +136,20 @@ can you give me 5 minutes when you have a chance?
 
 ### Handling Common Stalls
 
-| They Say | They Mean | Your Response |
-|----------|-----------|---------------|
-| "We're still reviewing" | No urgency | "What would help move forward?" |
-| "Waiting on budget" | Finance blocker | "Can I help build the business case?" |
-| "Need to talk to [X]" | Not the decider | "Can I join that conversation?" |
-| "Timing isn't right" | Priorities shifted | "When should we reconnect?" |
-| "Need more time" | Could be anything | "What specific concerns can I address?" |
+| They Say                | They Mean          | Your Response                           |
+| ----------------------- | ------------------ | --------------------------------------- |
+| "We're still reviewing" | No urgency         | "What would help move forward?"         |
+| "Waiting on budget"     | Finance blocker    | "Can I help build the business case?"   |
+| "Need to talk to [X]"   | Not the decider    | "Can I join that conversation?"         |
+| "Timing isn't right"    | Priorities shifted | "When should we reconnect?"             |
+| "Need more time"        | Could be anything  | "What specific concerns can I address?" |
 
 ### Reactivation Sequences
 
 **When proposal goes cold (2+ weeks silent):**
 
 **Email 1 (Day 14):**
+
 ```
 Subject: TechCorp proposal - still relevant?
 
@@ -163,6 +168,7 @@ Best,
 ```
 
 **Email 2 (Day 21):**
+
 ```
 Subject: Quick update for TechCorp
 
@@ -184,6 +190,7 @@ Best,
 ```
 
 **Email 3 (Day 28 - The Breakup):**
+
 ```
 Subject: Closing the loop on TechCorp
 
@@ -210,12 +217,12 @@ Best,
 
 **Don't rely on one contact:**
 
-| Contact | Purpose | Engagement |
-|---------|---------|------------|
-| Champion | Internal selling | Weekly touch |
-| Economic buyer | Final approval | Key moments only |
-| Technical evaluator | Validation | As needed |
-| Procurement | Process | When active |
+| Contact             | Purpose          | Engagement       |
+| ------------------- | ---------------- | ---------------- |
+| Champion            | Internal selling | Weekly touch     |
+| Economic buyer      | Final approval   | Key moments only |
+| Technical evaluator | Validation       | As needed        |
+| Procurement         | Process          | When active      |
 
 **Multi-thread outreach:**
 
@@ -240,6 +247,7 @@ To Economic Buyer (Day 7, via Champion intro):
 4. **Protect your walk-away:** Know your floor before negotiating
 
 **Trade options instead of discounts:**
+
 - Multi-year commitment
 - Upfront payment
 - Expanded scope / more users
@@ -258,6 +266,7 @@ matters most to you and answer questions in real-time."
 ```
 
 **Meeting structure:**
+
 - 5 min: Confirm understanding (did we capture your situation?)
 - 10 min: Solution highlights (what we propose)
 - 5 min: Investment & ROI (the business case)
@@ -265,13 +274,13 @@ matters most to you and answer questions in real-time."
 
 ### Tracking Follow-Up Activity
 
-| Metric | Target | Why |
-|--------|--------|-----|
-| Same-day confirmation | 100% | Ensure receipt |
-| Day 5 touch | 100% | Maintain momentum |
-| Multi-thread attempts | 2+ contacts | Reduce single-point risk |
-| Days to next meeting | < 7 | Keep deal active |
-| Proposal-to-decision | < 30 days | Shorter cycles, higher win rate |
+| Metric                | Target      | Why                             |
+| --------------------- | ----------- | ------------------------------- |
+| Same-day confirmation | 100%        | Ensure receipt                  |
+| Day 5 touch           | 100%        | Maintain momentum               |
+| Multi-thread attempts | 2+ contacts | Reduce single-point risk        |
+| Days to next meeting  | < 7         | Keep deal active                |
+| Proposal-to-decision  | < 30 days   | Shorter cycles, higher win rate |
 
 ### Anti-Patterns
 

@@ -78,7 +78,8 @@ export const rulesOfThumb: RuleOfThumb[] = [
     title: 'The "one task, one session" rule',
     description:
       'Each session should focus on a single task or a closely related set of tasks. If you are about to change topic entirely, start a new session.',
-    signal: 'You find yourself saying "while you\u2019re at it\u2026" or switching to a completely different subject.',
+    signal:
+      'You find yourself saying "while you\u2019re at it\u2026" or switching to a completely different subject.',
     tracks: ['general', 'developer'],
   },
   {
@@ -86,7 +87,8 @@ export const rulesOfThumb: RuleOfThumb[] = [
     title: 'The 30-message guideline',
     description:
       'After roughly 25\u201330 back-and-forth messages, consider wrapping up. Longer sessions are not automatically worse, but this is the zone where quality starts to decline for most tasks.',
-    signal: 'You have been going back and forth for a while and the conversation feels long.',
+    signal:
+      'You have been going back and forth for a while and the conversation feels long.',
     tracks: ['general', 'developer'],
   },
   {
@@ -94,7 +96,8 @@ export const rulesOfThumb: RuleOfThumb[] = [
     title: 'The repetition signal',
     description:
       'If Claude starts repeating information you already discussed, forgetting decisions you agreed on, or asking questions you have already answered, the session is degrading. Time to hand off.',
-    signal: 'Claude asks about something you told it ten messages ago, or re-reads a file it already examined.',
+    signal:
+      'Claude asks about something you told it ten messages ago, or re-reads a file it already examined.',
     tracks: ['general', 'developer'],
   },
   {
@@ -102,7 +105,8 @@ export const rulesOfThumb: RuleOfThumb[] = [
     title: 'The drift signal',
     description:
       'If Claude\u2019s responses start feeling less specific or more generic \u2014 giving you boilerplate where it previously gave tailored advice \u2014 the earlier context is losing influence. Wrap up.',
-    signal: 'Responses feel more vague or templated than they did earlier in the conversation.',
+    signal:
+      'Responses feel more vague or templated than they did earlier in the conversation.',
     tracks: ['general', 'developer'],
   },
   {
@@ -110,7 +114,8 @@ export const rulesOfThumb: RuleOfThumb[] = [
     title: 'The scope creep signal',
     description:
       'If your original task has grown significantly, the accumulated context is diluting focus. Better to start a new session for the additional work.',
-    signal: 'The conversation has expanded well beyond what you originally intended.',
+    signal:
+      'The conversation has expanded well beyond what you originally intended.',
     tracks: ['general', 'developer'],
   },
   {
@@ -118,7 +123,8 @@ export const rulesOfThumb: RuleOfThumb[] = [
     title: 'The "good stopping point" principle',
     description:
       'Just finished a draft? Agreed on a plan? Completed a review? This is the natural moment to create a handoff and start fresh for the next phase.',
-    signal: 'You have reached a clear milestone or deliverable in the current work.',
+    signal:
+      'You have reached a clear milestone or deliverable in the current work.',
     tracks: ['general', 'developer'],
   },
 ];
@@ -143,21 +149,18 @@ export const tokenAwarenessBands: TokenAwarenessBand[] = [
   },
   {
     range: '70\u201385%',
-    userExperience:
-      'Noticeable degradation; earlier context losing influence',
+    userExperience: 'Noticeable degradation; earlier context losing influence',
     recommendation:
       'Create a handoff now, before more context is lost. Be thorough \u2014 capture all decisions and state.',
   },
   {
     range: '85\u201395%',
     userExperience: 'Critical; auto-compaction imminent',
-    recommendation:
-      'Emergency save. Focus on essential information only.',
+    recommendation: 'Emergency save. Focus on essential information only.',
   },
   {
     range: 'Post-compaction',
-    userExperience:
-      'Session has been auto-compacted; gaps in recall',
+    userExperience: 'Session has been auto-compacted; gaps in recall',
     recommendation:
       'Recovery mode. Check saved outputs, recent git history, checkpoint files. Create a recovery handoff acknowledging what was lost.',
   },
@@ -302,7 +305,8 @@ export const infoArchElements: InfoArchElement[] = [
   {
     category: 'universal',
     name: 'Cumulative progress summary',
-    description: 'Recency-weighted \u2014 recent work expanded, older work compressed',
+    description:
+      'Recency-weighted \u2014 recent work expanded, older work compressed',
   },
   {
     category: 'universal',
@@ -332,12 +336,14 @@ export const infoArchElements: InfoArchElement[] = [
   {
     category: 'scenario-specific',
     name: 'Technology stack',
-    description: 'For technical projects \u2014 decided/recommended technologies',
+    description:
+      'For technical projects \u2014 decided/recommended technologies',
   },
   {
     category: 'scenario-specific',
     name: 'Decision framework',
-    description: 'For review/iteration handoffs \u2014 options, criteria, recommended path',
+    description:
+      'For review/iteration handoffs \u2014 options, criteria, recommended path',
   },
   {
     category: 'scenario-specific',
@@ -352,12 +358,14 @@ export const infoArchElements: InfoArchElement[] = [
   {
     category: 'scenario-specific',
     name: 'Environment setup',
-    description: 'For delegation \u2014 API keys, tool requirements, configuration',
+    description:
+      'For delegation \u2014 API keys, tool requirements, configuration',
   },
   {
     category: 'scenario-specific',
     name: 'Compaction warnings',
-    description: 'For emergency saves \u2014 what was lost and what to watch for',
+    description:
+      'For emergency saves \u2014 what was lost and what to watch for',
   },
 ];
 
@@ -409,13 +417,11 @@ export const workedExamples: WorkedExample[] = [
         session: 2,
         description:
           'Implement the database migration and model based on the agreed design.',
-        outcome:
-          'Handoff captures file changes and any deviations from plan.',
+        outcome: 'Handoff captures file changes and any deviations from plan.',
       },
       {
         session: 3,
-        description:
-          'Implement the endpoint and input validation.',
+        description: 'Implement the endpoint and input validation.',
         outcome: 'Handoff captures implementation state.',
       },
       {
@@ -457,10 +463,8 @@ export const platformComparisons: PlatformComparison[] = [
   },
   {
     aspect: 'Alternative to per-session handoffs',
-    claudeAi:
-      'Set up a Project with custom instructions for recurring work',
-    claudeCode:
-      'Use CLAUDE.md and /docs for persistent project context',
+    claudeAi: 'Set up a Project with custom instructions for recurring work',
+    claudeCode: 'Use CLAUDE.md and /docs for persistent project context',
   },
   {
     aspect: 'Skill invocation',

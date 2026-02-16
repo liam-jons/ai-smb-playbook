@@ -21,19 +21,23 @@ const variantConfig: Record<
 > = {
   info: {
     icon: Info,
-    className: 'border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400',
+    className:
+      'border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400',
   },
   warning: {
     icon: AlertTriangle,
-    className: 'border-amber-500/30 bg-amber-50/50 dark:bg-amber-950/20 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400',
+    className:
+      'border-amber-500/30 bg-amber-50/50 dark:bg-amber-950/20 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400',
   },
   tip: {
     icon: Lightbulb,
-    className: 'border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 [&>svg]:text-emerald-600 dark:[&>svg]:text-emerald-400',
+    className:
+      'border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 [&>svg]:text-emerald-600 dark:[&>svg]:text-emerald-400',
   },
   important: {
     icon: AlertCircle,
-    className: 'border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 [&>svg]:text-purple-600 dark:[&>svg]:text-purple-400',
+    className:
+      'border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 [&>svg]:text-purple-600 dark:[&>svg]:text-purple-400',
   },
 };
 

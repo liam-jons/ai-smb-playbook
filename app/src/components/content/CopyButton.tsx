@@ -17,7 +17,7 @@ export function CopyButton({ text, className }: CopyButtonProps) {
       size="icon"
       className={cn(
         'h-8 w-8 min-h-[44px] min-w-[44px] shrink-0 text-muted-foreground hover:text-foreground',
-        className
+        className,
       )}
       onClick={() => copy(text)}
       aria-label={copied ? 'Copied to clipboard' : 'Copy to clipboard'}

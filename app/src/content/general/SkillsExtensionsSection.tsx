@@ -139,7 +139,7 @@ const decisionTreeEntries: DecisionTreeEntry[] = [
     goal: 'I want to trigger a specific workflow with a command',
     recommended: 'Skills with slash command / natural language',
     explanation:
-      'Creates a repeatable workflow you can trigger on demand — like a macro or script, but powered by Claude\'s reasoning.',
+      "Creates a repeatable workflow you can trigger on demand — like a macro or script, but powered by Claude's reasoning.",
     example:
       '/review runs your code review checklist. /deploy executes your deployment workflow. /handoff creates a structured session summary.',
     platforms: ['claude.ai', 'Desktop', 'Code', 'CoWork'],
@@ -163,7 +163,7 @@ const decisionTreeEntries: DecisionTreeEntry[] = [
     generalNote:
       'On claude.ai, look for "Connectors" in your settings — these are pre-built, managed connections to services like Google Drive, Notion, and Slack. Your admin manages which Connectors are available.',
     devNote:
-      'In Claude Code, you configure MCP servers in .claude/settings.json. Each server\'s tool definitions load into context at session start, consuming up to 10% of your context window.',
+      "In Claude Code, you configure MCP servers in .claude/settings.json. Each server's tool definitions load into context at session start, consuming up to 10% of your context window.",
     referenceCardId: 'mcp',
     tracks: ['general', 'developer'],
     icon: Globe,
@@ -216,7 +216,7 @@ const decisionTreeEntries: DecisionTreeEntry[] = [
     explanation:
       'Bundles skills, hooks, subagents, and MCP servers into a single installable package that can be shared across repositories or distributed to others.',
     example:
-      'Package your team\'s code review skill, deployment hooks, and database MCP config into a single plugin that every developer installs.',
+      "Package your team's code review skill, deployment hooks, and database MCP config into a single plugin that every developer installs.",
     platforms: ['Code'],
     referenceCardId: 'plugins',
     tracks: ['developer'],
@@ -238,19 +238,97 @@ const decisionTreeEntries: DecisionTreeEntry[] = [
 ];
 
 const availabilityMatrix: AvailabilityRow[] = [
-  { feature: 'Skills (auto-invocation)', claudeAi: 'Yes', desktop: 'Yes', code: 'Yes', cowork: 'Yes' },
-  { feature: 'Skills (slash command /name)', claudeAi: '--', desktop: '--', code: 'Yes', cowork: 'Yes (via plugins)' },
-  { feature: 'Skills (admin-provisioned)', claudeAi: 'Yes', desktop: 'Yes', code: 'Yes', cowork: 'Yes' },
-  { feature: 'Skills (ZIP upload)', claudeAi: 'Yes', desktop: 'Yes', code: '-- (filesystem)', cowork: '--' },
-  { feature: 'Projects (custom instructions)', claudeAi: 'Yes', desktop: 'Yes', code: '--', cowork: '--' },
-  { feature: 'CLAUDE.md', claudeAi: '--', desktop: '--', code: 'Yes', cowork: '--' },
-  { feature: 'MCP servers', claudeAi: 'Connectors (managed)', desktop: 'Yes (settings)', code: 'Yes (full)', cowork: 'Via plugins' },
-  { feature: 'Subagents', claudeAi: '--', desktop: '--', code: 'Yes', cowork: '--' },
-  { feature: 'Agent Teams', claudeAi: '--', desktop: '--', code: 'Yes (experimental)', cowork: '--' },
-  { feature: 'Hooks', claudeAi: '--', desktop: '--', code: 'Yes', cowork: '--' },
-  { feature: 'Plugins', claudeAi: '--', desktop: '--', code: 'Yes', cowork: '--' },
-  { feature: 'LSP servers', claudeAi: '--', desktop: '--', code: 'Yes (via plugins)', cowork: '--' },
-  { feature: 'Slash commands', claudeAi: '--', desktop: '--', code: 'Yes', cowork: 'Yes (via plugins)' },
+  {
+    feature: 'Skills (auto-invocation)',
+    claudeAi: 'Yes',
+    desktop: 'Yes',
+    code: 'Yes',
+    cowork: 'Yes',
+  },
+  {
+    feature: 'Skills (slash command /name)',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes',
+    cowork: 'Yes (via plugins)',
+  },
+  {
+    feature: 'Skills (admin-provisioned)',
+    claudeAi: 'Yes',
+    desktop: 'Yes',
+    code: 'Yes',
+    cowork: 'Yes',
+  },
+  {
+    feature: 'Skills (ZIP upload)',
+    claudeAi: 'Yes',
+    desktop: 'Yes',
+    code: '-- (filesystem)',
+    cowork: '--',
+  },
+  {
+    feature: 'Projects (custom instructions)',
+    claudeAi: 'Yes',
+    desktop: 'Yes',
+    code: '--',
+    cowork: '--',
+  },
+  {
+    feature: 'CLAUDE.md',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes',
+    cowork: '--',
+  },
+  {
+    feature: 'MCP servers',
+    claudeAi: 'Connectors (managed)',
+    desktop: 'Yes (settings)',
+    code: 'Yes (full)',
+    cowork: 'Via plugins',
+  },
+  {
+    feature: 'Subagents',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes',
+    cowork: '--',
+  },
+  {
+    feature: 'Agent Teams',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes (experimental)',
+    cowork: '--',
+  },
+  {
+    feature: 'Hooks',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes',
+    cowork: '--',
+  },
+  {
+    feature: 'Plugins',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes',
+    cowork: '--',
+  },
+  {
+    feature: 'LSP servers',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes (via plugins)',
+    cowork: '--',
+  },
+  {
+    feature: 'Slash commands',
+    claudeAi: '--',
+    desktop: '--',
+    code: 'Yes',
+    cowork: 'Yes (via plugins)',
+  },
 ];
 
 const referenceCards: ReferenceCard[] = [
@@ -277,10 +355,22 @@ const referenceCards: ReferenceCard[] = [
     comparison: {
       headers: ['Aspect', 'CLAUDE.md', 'Skill'],
       rows: [
-        ['Loads', 'Every session, automatically', 'On demand (description at start, full content when used)'],
-        ['Can include files', 'Yes, with @path imports', 'Yes, with @path imports'],
+        [
+          'Loads',
+          'Every session, automatically',
+          'On demand (description at start, full content when used)',
+        ],
+        [
+          'Can include files',
+          'Yes, with @path imports',
+          'Yes, with @path imports',
+        ],
         ['Can trigger workflows', 'No', 'Yes, with /<name>'],
-        ['Best for', '"Always do X" rules', 'Reference material, invocable workflows'],
+        [
+          'Best for',
+          '"Always do X" rules',
+          'Reference material, invocable workflows',
+        ],
       ],
     },
     codeExample: {
@@ -339,7 +429,7 @@ const referenceCards: ReferenceCard[] = [
     whenToUse: [
       'Reusable reference material (brand guidelines, API docs, coding standards)',
       'Repeatable workflows (deployment, code review, session handoff)',
-      'Specialist knowledge Claude should have access to but doesn\'t need every session',
+      "Specialist knowledge Claude should have access to but doesn't need every session",
       'Any instruction set you want to share across team members',
     ],
     contextCost:
@@ -391,7 +481,7 @@ Produce a markdown document with:
     tracks: ['general', 'developer'],
     whenToUse: [
       'Claude needs to interact with an external system (database, API, browser, project management tool)',
-      'You want Claude to have access to real-time data, not just what\'s in the conversation',
+      "You want Claude to have access to real-time data, not just what's in the conversation",
       'You need Claude to take actions in external tools (post messages, create tickets, deploy code)',
     ],
     contextCost:
@@ -399,15 +489,27 @@ Produce a markdown document with:
     generalNote:
       'On claude.ai, MCP is presented as "Connectors" — pre-built, managed connections to services like Google Drive, Notion, and Slack. Your admin manages which Connectors are available to the team.',
     devDetails:
-      'Configure MCP servers in .claude/settings.json or .mcp.json. Disconnect servers you\'re not actively using — run /mcp to see token costs per server.',
+      "Configure MCP servers in .claude/settings.json or .mcp.json. Disconnect servers you're not actively using — run /mcp to see token costs per server.",
     warning:
       'MCP connections can fail silently mid-session. If a server disconnects, its tools disappear without warning. Check connection status with /mcp if Claude fails to use a tool it previously could access.',
     comparison: {
       headers: ['Aspect', 'MCP', 'Skill'],
       rows: [
-        ['What it is', 'Protocol for connecting to external services', 'Knowledge, workflows, reference material'],
-        ['Provides', 'Tools and data access', 'Knowledge, workflows, reference material'],
-        ['Examples', 'Slack integration, database queries, browser control', 'Code review checklist, deploy workflow, API style guide'],
+        [
+          'What it is',
+          'Protocol for connecting to external services',
+          'Knowledge, workflows, reference material',
+        ],
+        [
+          'Provides',
+          'Tools and data access',
+          'Knowledge, workflows, reference material',
+        ],
+        [
+          'Examples',
+          'Slack integration, database queries, browser control',
+          'Code review checklist, deploy workflow, API style guide',
+        ],
       ],
     },
     codeExample: {
@@ -433,7 +535,7 @@ Produce a markdown document with:
       'A task requires reading many files but you only need the findings',
       'Your context window is getting full and you want to offload work',
       'You need parallel workers on independent tasks',
-      'You want context isolation — the subagent\'s intermediate work doesn\'t clutter your session',
+      "You want context isolation — the subagent's intermediate work doesn't clutter your session",
     ],
     contextCost:
       'Zero cost on your main context — subagents run in complete isolation.',
@@ -468,11 +570,31 @@ Produce a markdown document with:
     comparison: {
       headers: ['Aspect', 'Subagent', 'Agent Team'],
       rows: [
-        ['Context', 'Own window; results return to caller', 'Own window; fully independent'],
-        ['Communication', 'Reports results back to main agent only', 'Teammates message each other directly'],
-        ['Coordination', 'Main agent manages all work', 'Shared task list with self-coordination'],
-        ['Best for', 'Focused tasks where only the result matters', 'Complex work requiring discussion'],
-        ['Token cost', 'Lower — results summarised back', 'Higher — each teammate is a separate instance'],
+        [
+          'Context',
+          'Own window; results return to caller',
+          'Own window; fully independent',
+        ],
+        [
+          'Communication',
+          'Reports results back to main agent only',
+          'Teammates message each other directly',
+        ],
+        [
+          'Coordination',
+          'Main agent manages all work',
+          'Shared task list with self-coordination',
+        ],
+        [
+          'Best for',
+          'Focused tasks where only the result matters',
+          'Complex work requiring discussion',
+        ],
+        [
+          'Token cost',
+          'Lower — results summarised back',
+          'Higher — each teammate is a separate instance',
+        ],
       ],
     },
   },
@@ -596,27 +718,32 @@ const combinationPatterns: CombinationPattern[] = [
   {
     name: 'Skill + MCP',
     how: 'MCP provides the connection; a skill teaches Claude how to use it well',
-    example: 'MCP connects to your database; a skill documents your data model and query patterns',
+    example:
+      'MCP connects to your database; a skill documents your data model and query patterns',
   },
   {
     name: 'Skill + Subagent',
     how: 'A skill spawns subagents for parallel work',
-    example: '/review skill kicks off security, performance, and style subagents working in isolated context',
+    example:
+      '/review skill kicks off security, performance, and style subagents working in isolated context',
   },
   {
     name: 'CLAUDE.md + Skills',
     how: 'CLAUDE.md holds always-on rules; skills hold reference material loaded on demand',
-    example: 'CLAUDE.md says "follow our API conventions"; a skill contains the full API style guide',
+    example:
+      'CLAUDE.md says "follow our API conventions"; a skill contains the full API style guide',
   },
   {
     name: 'Hook + MCP',
     how: 'A hook triggers external actions through MCP',
-    example: 'Post-edit hook sends a Slack notification when Claude modifies critical files',
+    example:
+      'Post-edit hook sends a Slack notification when Claude modifies critical files',
   },
   {
     name: 'Skill + Subagent Memory',
     how: 'A subagent with persistent memory builds institutional knowledge over time',
-    example: 'A code review subagent remembers patterns from previous reviews and improves its suggestions',
+    example:
+      'A code review subagent remembers patterns from previous reviews and improves its suggestions',
   },
 ];
 
@@ -687,17 +814,20 @@ const layeringRules = [
 
 function PlatformBadge({ platform }: { platform: Platform }) {
   const colours: Record<Platform, string> = {
-    'claude.ai': 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
-    Desktop: 'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300',
+    'claude.ai':
+      'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
+    Desktop:
+      'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300',
     Code: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
-    CoWork: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+    CoWork:
+      'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
   };
 
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium',
-        colours[platform]
+        colours[platform],
       )}
     >
       {platform}
@@ -712,7 +842,10 @@ function AvailabilityCell({ value }: { value: string }) {
   if (!isAvailable) {
     return (
       <td className="px-3 py-2.5 text-center">
-        <Minus className="mx-auto h-4 w-4 text-muted-foreground/40" aria-label="Not available" />
+        <Minus
+          className="mx-auto h-4 w-4 text-muted-foreground/40"
+          aria-label="Not available"
+        />
       </td>
     );
   }
@@ -726,7 +859,13 @@ function AvailabilityCell({ value }: { value: string }) {
               <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400">
                 <Check className="h-3.5 w-3.5" aria-hidden="true" />
                 <span className="sr-only">Available: </span>
-                <span className="max-w-[6rem] truncate">{value.replace('Yes', '').replace('(', '').replace(')', '').trim() || 'Yes'}</span>
+                <span className="max-w-[6rem] truncate">
+                  {value
+                    .replace('Yes', '')
+                    .replace('(', '')
+                    .replace(')', '')
+                    .trim() || 'Yes'}
+                </span>
               </span>
             </td>
           </TooltipTrigger>
@@ -740,22 +879,45 @@ function AvailabilityCell({ value }: { value: string }) {
 
   return (
     <td className="px-3 py-2.5 text-center">
-      <Check className="mx-auto h-4 w-4 text-emerald-600 dark:text-emerald-400" aria-label="Available" />
+      <Check
+        className="mx-auto h-4 w-4 text-emerald-600 dark:text-emerald-400"
+        aria-label="Available"
+      />
     </td>
   );
 }
 
 function CostIndicator({ cost }: { cost: ContextCostRow['cost'] }) {
   const config = {
-    zero: { label: 'Zero', className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300' },
-    low: { label: 'Low', className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300' },
-    moderate: { label: 'Moderate', className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300' },
-    high: { label: 'High', className: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300' },
+    zero: {
+      label: 'Zero',
+      className:
+        'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+    },
+    low: {
+      label: 'Low',
+      className:
+        'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+    },
+    moderate: {
+      label: 'Moderate',
+      className:
+        'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+    },
+    high: {
+      label: 'High',
+      className: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+    },
   };
 
   const c = config[cost];
   return (
-    <span className={cn('inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium', c.className)}>
+    <span
+      className={cn(
+        'inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium',
+        c.className,
+      )}
+    >
       {c.label}
     </span>
   );
@@ -771,68 +933,87 @@ export function SkillsExtensionsSection() {
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const filteredEntries = decisionTreeEntries.filter((e) =>
-    e.tracks.includes(track)
+    e.tracks.includes(track),
   );
   const filteredRefCards = referenceCards.filter((c) =>
-    c.tracks.includes(track)
+    c.tracks.includes(track),
   );
   const filteredAvailability = isGeneral
-    ? availabilityMatrix.filter((r) =>
-        !['Subagents', 'Agent Teams', 'Hooks', 'Plugins', 'LSP servers'].includes(r.feature)
+    ? availabilityMatrix.filter(
+        (r) =>
+          ![
+            'Subagents',
+            'Agent Teams',
+            'Hooks',
+            'Plugins',
+            'LSP servers',
+          ].includes(r.feature),
       )
     : availabilityMatrix;
   const filteredCostTable = isGeneral
-    ? contextCostTable.filter((r) =>
-        !['Subagents', 'Hooks (command)', 'Hooks (prompt/agent)', 'Agent Teams'].includes(r.feature)
+    ? contextCostTable.filter(
+        (r) =>
+          ![
+            'Subagents',
+            'Hooks (command)',
+            'Hooks (prompt/agent)',
+            'Agent Teams',
+          ].includes(r.feature),
       )
     : contextCostTable;
   const filteredCombinations = isGeneral
-    ? combinationPatterns.filter((p) =>
-        !['Skill + Subagent', 'Hook + MCP', 'Skill + Subagent Memory'].includes(p.name)
+    ? combinationPatterns.filter(
+        (p) =>
+          ![
+            'Skill + Subagent',
+            'Hook + MCP',
+            'Skill + Subagent Memory',
+          ].includes(p.name),
       )
     : combinationPatterns;
 
-  const scrollToCard = useCallback(
-    (cardId: string) => {
-      setOpenRefCard(cardId);
-      // Small delay to let accordion open
-      setTimeout(() => {
-        const el = document.getElementById(`ref-card-${cardId}`);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
-    },
-    []
-  );
+  const scrollToCard = useCallback((cardId: string) => {
+    setOpenRefCard(cardId);
+    // Small delay to let accordion open
+    setTimeout(() => {
+      const el = document.getElementById(`ref-card-${cardId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }, []);
 
   return (
     <div className="space-y-12">
       {/* A. Introduction */}
       <section aria-labelledby="intro-heading">
         <p className="max-w-prose text-base leading-relaxed text-foreground">
-          Claude comes with powerful built-in tools for conversation, writing, analysis, and
-          code. But its real power emerges when you extend it — teaching it your company's
-          conventions, connecting it to your tools, or giving it specialised knowledge. This
-          section helps you find the right extension mechanism for what you want to achieve.
+          Claude comes with powerful built-in tools for conversation, writing,
+          analysis, and code. But its real power emerges when you extend it —
+          teaching it your company's conventions, connecting it to your tools,
+          or giving it specialised knowledge. This section helps you find the
+          right extension mechanism for what you want to achieve.
         </p>
         <div className="mt-6 space-y-3">
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-            Extensions range from <strong>always-on context</strong> (things Claude knows every
-            session) to <strong>on-demand capabilities</strong> (things you or Claude can invoke
-            when needed) to <strong>background automation</strong> (things that happen automatically
-            on specific events).
+            Extensions range from <strong>always-on context</strong> (things
+            Claude knows every session) to{' '}
+            <strong>on-demand capabilities</strong> (things you or Claude can
+            invoke when needed) to <strong>background automation</strong>{' '}
+            (things that happen automatically on specific events).
           </p>
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-            Not every mechanism is available on every platform — the decision tree and
-            availability matrix below show what works where. Phew! has Claude Teams licences
-            for all staff and Claude Code access for developers.
+            Not every mechanism is available on every platform — the decision
+            tree and availability matrix below show what works where. Phew! has
+            Claude Teams licences for all staff and Claude Code access for
+            developers.
           </p>
           {isGeneral && (
             <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-              You may see references to <strong>CoWork</strong> below — this is Anthropic's
-              browser automation environment. It lets Claude control a web browser to complete
-              tasks on websites, such as filling forms, extracting data, or monitoring pages.
+              You may see references to <strong>CoWork</strong> below — this is
+              Anthropic's browser automation environment. It lets Claude control
+              a web browser to complete tasks on websites, such as filling
+              forms, extracting data, or monitoring pages.
             </p>
           )}
         </div>
@@ -843,10 +1024,11 @@ export function SkillsExtensionsSection() {
       {/* Natural language callout for general users */}
       {isGeneral && (
         <CalloutCard variant="tip" title="You don't need to type a command">
-          On claude.ai and Claude Desktop, you trigger skills by describing what you
-          want in natural language. Simply say what you need — &ldquo;I need to hand this
-          session off to Sarah&rdquo; — and Claude automatically matches it to the right
-          skill. No slash commands or technical syntax required.
+          On claude.ai and Claude Desktop, you trigger skills by describing what
+          you want in natural language. Simply say what you need — &ldquo;I need
+          to hand this session off to Sarah&rdquo; — and Claude automatically
+          matches it to the right skill. No slash commands or technical syntax
+          required.
         </CalloutCard>
       )}
 
@@ -856,11 +1038,12 @@ export function SkillsExtensionsSection() {
           id="decision-tree-heading"
           className="mb-1 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          {isGeneral ? "What do you want Claude to do?" : "I want to..."}
+          {isGeneral ? 'What do you want Claude to do?' : 'I want to...'}
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Select the goal that best describes what you are trying to achieve. Each option
-          shows the recommended approach and which platforms support it.
+          Select the goal that best describes what you are trying to achieve.
+          Each option shows the recommended approach and which platforms support
+          it.
         </p>
 
         <Accordion type="single" collapsible className="space-y-1">
@@ -903,12 +1086,16 @@ export function SkillsExtensionsSection() {
                       <span className="text-xs font-medium text-muted-foreground">
                         Example for Phew!
                       </span>
-                      <p className="mt-1 text-sm text-foreground">{entry.example}</p>
+                      <p className="mt-1 text-sm text-foreground">
+                        {entry.example}
+                      </p>
                     </div>
 
                     {/* Platform badges */}
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-muted-foreground">Available on:</span>
+                      <span className="text-xs text-muted-foreground">
+                        Available on:
+                      </span>
                       {entry.platforms.map((p) => (
                         <PlatformBadge key={p} platform={p} />
                       ))}
@@ -954,7 +1141,8 @@ export function SkillsExtensionsSection() {
           Platform Availability
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Not every extension is available on every platform. This matrix shows what works where.
+          Not every extension is available on every platform. This matrix shows
+          what works where.
         </p>
 
         <ScrollArea className="w-full rounded-lg border border-border">
@@ -968,16 +1156,28 @@ export function SkillsExtensionsSection() {
                   >
                     Feature
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     claude.ai
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Desktop
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Code
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     CoWork
                   </th>
                 </tr>
@@ -988,7 +1188,7 @@ export function SkillsExtensionsSection() {
                     key={row.feature}
                     className={cn(
                       'border-b border-border last:border-b-0',
-                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
                     )}
                   >
                     <td className="px-3 py-2.5 text-left font-medium text-foreground">
@@ -1009,18 +1209,25 @@ export function SkillsExtensionsSection() {
         {/* Matrix notes */}
         <div className="mt-4 space-y-1.5 text-xs text-muted-foreground">
           <p>
-            <Check className="mr-1 inline h-3 w-3 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+            <Check
+              className="mr-1 inline h-3 w-3 text-emerald-600 dark:text-emerald-400"
+              aria-hidden="true"
+            />
             = Available and functional on that platform.{' '}
-            <Minus className="mr-1 inline h-3 w-3 text-muted-foreground/40" aria-hidden="true" />
+            <Minus
+              className="mr-1 inline h-3 w-3 text-muted-foreground/40"
+              aria-hidden="true"
+            />
             = Not available.
           </p>
           <p>
-            &ldquo;Connectors (managed)&rdquo; means claude.ai uses a managed, admin-configured version of
-            MCP rather than direct server configuration.
+            &ldquo;Connectors (managed)&rdquo; means claude.ai uses a managed,
+            admin-configured version of MCP rather than direct server
+            configuration.
           </p>
           <p>
-            Claude Desktop and claude.ai share the same skill system — skills uploaded on one are
-            available on the other.
+            Claude Desktop and claude.ai share the same skill system — skills
+            uploaded on one are available on the other.
           </p>
         </div>
 
@@ -1037,7 +1244,7 @@ export function SkillsExtensionsSection() {
                   <ChevronDown
                     className={cn(
                       'h-4 w-4 text-muted-foreground transition-transform duration-200',
-                      advancedOpen && 'rotate-180'
+                      advancedOpen && 'rotate-180',
                     )}
                     aria-hidden="true"
                   />
@@ -1046,35 +1253,71 @@ export function SkillsExtensionsSection() {
               <CollapsibleContent>
                 <div className="mt-2 rounded-md border border-border bg-muted/20 px-4 py-4">
                   <p className="mb-3 text-sm text-muted-foreground">
-                    These features are available only in Claude Code and are primarily relevant to
-                    developers. They are included here for completeness.
+                    These features are available only in Claude Code and are
+                    primarily relevant to developers. They are included here for
+                    completeness.
                   </p>
                   <ScrollArea className="w-full">
                     <div className="min-w-[540px]">
                       <table className="w-full text-sm" role="table">
                         <thead>
                           <tr className="border-b border-border bg-muted/40">
-                            <th scope="col" className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Feature</th>
-                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">claude.ai</th>
-                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Desktop</th>
-                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Code</th>
-                            <th scope="col" className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">CoWork</th>
+                            <th
+                              scope="col"
+                              className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                            >
+                              Feature
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                            >
+                              claude.ai
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                            >
+                              Desktop
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                            >
+                              Code
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-3 py-2 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                            >
+                              CoWork
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           {availabilityMatrix
                             .filter((r) =>
-                              ['Subagents', 'Agent Teams', 'Hooks', 'Plugins', 'LSP servers'].includes(r.feature)
+                              [
+                                'Subagents',
+                                'Agent Teams',
+                                'Hooks',
+                                'Plugins',
+                                'LSP servers',
+                              ].includes(r.feature),
                             )
                             .map((row, i) => (
                               <tr
                                 key={row.feature}
                                 className={cn(
                                   'border-b border-border last:border-b-0',
-                                  i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                                  i % 2 === 0
+                                    ? 'bg-transparent'
+                                    : 'bg-muted/20',
                                 )}
                               >
-                                <td className="px-3 py-2 text-left font-medium text-foreground">{row.feature}</td>
+                                <td className="px-3 py-2 text-left font-medium text-foreground">
+                                  {row.feature}
+                                </td>
                                 <AvailabilityCell value={row.claudeAi} />
                                 <AvailabilityCell value={row.desktop} />
                                 <AvailabilityCell value={row.code} />
@@ -1104,8 +1347,8 @@ export function SkillsExtensionsSection() {
           Extension Reference
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Detailed information on each extension mechanism — what it is, when to use it,
-          what it costs, and how to set it up.
+          Detailed information on each extension mechanism — what it is, when to
+          use it, what it costs, and how to set it up.
         </p>
 
         <Accordion
@@ -1136,10 +1379,16 @@ export function SkillsExtensionsSection() {
                   <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     When to use
                   </h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground" role="list">
+                  <ul
+                    className="space-y-1 text-sm text-muted-foreground"
+                    role="list"
+                  >
                     {card.whenToUse.map((item, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30" aria-hidden="true" />
+                        <span
+                          className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30"
+                          aria-hidden="true"
+                        />
                         {item}
                       </li>
                     ))}
@@ -1152,10 +1401,16 @@ export function SkillsExtensionsSection() {
                     <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                       When not to use
                     </h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground" role="list">
+                    <ul
+                      className="space-y-1 text-sm text-muted-foreground"
+                      role="list"
+                    >
                       {card.whenNotToUse.map((item, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30" aria-hidden="true" />
+                          <span
+                            className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30"
+                            aria-hidden="true"
+                          />
                           {item}
                         </li>
                       ))}
@@ -1181,7 +1436,10 @@ export function SkillsExtensionsSection() {
                     <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                       How to set up
                     </h4>
-                    <ol className="space-y-2 text-sm text-muted-foreground" role="list">
+                    <ol
+                      className="space-y-2 text-sm text-muted-foreground"
+                      role="list"
+                    >
                       {card.setupSteps.map((step, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
@@ -1197,9 +1455,13 @@ export function SkillsExtensionsSection() {
                 {/* Context cost */}
                 <div className="rounded-md bg-muted/30 px-4 py-3">
                   <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    {isGeneral ? "Impact on Claude's working memory" : 'Context cost'}
+                    {isGeneral
+                      ? "Impact on Claude's working memory"
+                      : 'Context cost'}
                   </span>
-                  <p className="mt-1 text-sm text-foreground">{card.contextCost}</p>
+                  <p className="mt-1 text-sm text-foreground">
+                    {card.contextCost}
+                  </p>
                 </div>
 
                 {/* Warning */}
@@ -1228,13 +1490,18 @@ export function SkillsExtensionsSection() {
                       </thead>
                       <tbody>
                         {card.comparison.rows.map((row, i) => (
-                          <tr key={i} className="border-b border-border last:border-b-0">
+                          <tr
+                            key={i}
+                            className="border-b border-border last:border-b-0"
+                          >
                             {row.map((cell, j) => (
                               <td
                                 key={j}
                                 className={cn(
                                   'px-3 py-2 text-sm',
-                                  j === 0 ? 'font-medium text-foreground' : 'text-muted-foreground'
+                                  j === 0
+                                    ? 'font-medium text-foreground'
+                                    : 'text-muted-foreground',
                                 )}
                               >
                                 {cell}
@@ -1274,8 +1541,8 @@ export function SkillsExtensionsSection() {
               Using Skills with Natural Language
             </h2>
             <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-              On claude.ai and Claude Desktop, you trigger skills by describing what you want. No
-              commands needed.
+              On claude.ai and Claude Desktop, you trigger skills by describing
+              what you want. No commands needed.
             </p>
             <CodeBlock
               code={naturalLanguageTriggerGuide}
@@ -1293,8 +1560,9 @@ export function SkillsExtensionsSection() {
               Example: UK English Skill
             </h2>
             <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-              This skill ensures Claude uses UK English in all output. Your admin can deploy it
-              to the whole team, or you can upload it yourself.
+              This skill ensures Claude uses UK English in all output. Your
+              admin can deploy it to the whole team, or you can upload it
+              yourself.
             </p>
             <CodeBlock
               code={ukEnglishSkillExample}
@@ -1313,11 +1581,13 @@ export function SkillsExtensionsSection() {
           id="context-cost-heading"
           className="mb-1 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          {isGeneral ? "Impact on Claude's Working Memory" : 'Context Cost Summary'}
+          {isGeneral
+            ? "Impact on Claude's Working Memory"
+            : 'Context Cost Summary'}
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
           {isGeneral
-            ? 'Each extension takes up some of Claude\'s working memory. This table shows the impact of each type.'
+            ? "Each extension takes up some of Claude's working memory. This table shows the impact of each type."
             : 'Every extension has a context cost. Understanding these costs helps you keep your session lean and responsive.'}
         </p>
 
@@ -1326,20 +1596,35 @@ export function SkillsExtensionsSection() {
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Feature
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     When it loads
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     What loads
                   </th>
-                  <th scope="col" className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="px-3 py-2.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                  >
                     Cost
                   </th>
                   {!isGeneral && (
-                    <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <th
+                      scope="col"
+                      className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                    >
                       Mitigation
                     </th>
                   )}
@@ -1351,17 +1636,25 @@ export function SkillsExtensionsSection() {
                     key={row.feature}
                     className={cn(
                       'border-b border-border last:border-b-0',
-                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
                     )}
                   >
-                    <td className="px-3 py-2.5 font-medium text-foreground">{row.feature}</td>
-                    <td className="px-3 py-2.5 text-muted-foreground">{row.whenLoads}</td>
-                    <td className="px-3 py-2.5 text-muted-foreground">{row.whatLoads}</td>
+                    <td className="px-3 py-2.5 font-medium text-foreground">
+                      {row.feature}
+                    </td>
+                    <td className="px-3 py-2.5 text-muted-foreground">
+                      {row.whenLoads}
+                    </td>
+                    <td className="px-3 py-2.5 text-muted-foreground">
+                      {row.whatLoads}
+                    </td>
                     <td className="px-3 py-2.5 text-center">
                       <CostIndicator cost={row.cost} />
                     </td>
                     {!isGeneral && (
-                      <td className="px-3 py-2.5 text-muted-foreground">{row.mitigation}</td>
+                      <td className="px-3 py-2.5 text-muted-foreground">
+                        {row.mitigation}
+                      </td>
                     )}
                   </tr>
                 ))}
@@ -1383,21 +1676,30 @@ export function SkillsExtensionsSection() {
           How Extensions Work Together
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Extensions are designed to complement each other. These patterns show common
-          combinations.
+          Extensions are designed to complement each other. These patterns show
+          common combinations.
         </p>
 
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm" role="table">
             <thead>
               <tr className="border-b border-border bg-muted/40">
-                <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                >
                   Pattern
                 </th>
-                <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                >
                   How it works
                 </th>
-                <th scope="col" className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                >
                   Example
                 </th>
               </tr>
@@ -1408,12 +1710,18 @@ export function SkillsExtensionsSection() {
                   key={pattern.name}
                   className={cn(
                     'border-b border-border last:border-b-0',
-                    i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20'
+                    i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
                   )}
                 >
-                  <td className="px-3 py-2.5 font-medium text-foreground">{pattern.name}</td>
-                  <td className="px-3 py-2.5 text-muted-foreground">{pattern.how}</td>
-                  <td className="px-3 py-2.5 text-muted-foreground">{pattern.example}</td>
+                  <td className="px-3 py-2.5 font-medium text-foreground">
+                    {pattern.name}
+                  </td>
+                  <td className="px-3 py-2.5 text-muted-foreground">
+                    {pattern.how}
+                  </td>
+                  <td className="px-3 py-2.5 text-muted-foreground">
+                    {pattern.example}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1433,15 +1741,22 @@ export function SkillsExtensionsSection() {
               Feature Layering Rules
             </h2>
             <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-              When the same feature exists at multiple levels (user, project, plugin, managed),
-              here is how they interact.
+              When the same feature exists at multiple levels (user, project,
+              plugin, managed), here is how they interact.
             </p>
 
             <div className="space-y-3">
               {layeringRules.map((rule) => (
-                <div key={rule.feature} className="rounded-md border border-border px-4 py-3">
-                  <span className="text-sm font-medium text-foreground">{rule.feature}</span>
-                  <p className="mt-1 text-sm text-muted-foreground">{rule.rule}</p>
+                <div
+                  key={rule.feature}
+                  className="rounded-md border border-border px-4 py-3"
+                >
+                  <span className="text-sm font-medium text-foreground">
+                    {rule.feature}
+                  </span>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {rule.rule}
+                  </p>
                 </div>
               ))}
             </div>
@@ -1461,7 +1776,8 @@ export function SkillsExtensionsSection() {
               Copyable Examples
             </h2>
             <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-              Templates and configuration snippets you can use directly in your projects.
+              Templates and configuration snippets you can use directly in your
+              projects.
             </p>
             <div className="space-y-6">
               <CodeBlock

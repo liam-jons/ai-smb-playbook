@@ -1,10 +1,12 @@
 <purpose>
 Orchestrate parallel codebase mapper agents to analyze codebase and produce structured documents in .planning/codebase/
 
-Each agent has fresh context, explores a specific focus area, and **writes documents directly**. The orchestrator only receives confirmation + line counts, then writes a summary.
+Each agent has fresh context, explores a specific focus area, and **writes
+documents directly**. The orchestrator only receives confirmation + line counts,
+then writes a summary.
 
-Output: .planning/codebase/ folder with 7 structured documents about the codebase state.
-</purpose>
+Output: .planning/codebase/ folder with 7 structured documents about the
+codebase state. </purpose>
 
 <philosophy>
 **Why dedicated mapper agents:**
@@ -13,12 +15,13 @@ Output: .planning/codebase/ folder with 7 structured documents about the codebas
 - Orchestrator only summarizes what was created (minimal context usage)
 - Faster execution (agents run simultaneously)
 
-**Document quality over length:**
-Include enough detail to be useful as reference. Prioritize practical examples (especially code patterns) over arbitrary brevity.
+**Document quality over length:** Include enough detail to be useful as
+reference. Prioritize practical examples (especially code patterns) over
+arbitrary brevity.
 
-**Always include file paths:**
-Documents are reference material for Claude when planning/executing. Always include actual file paths formatted with backticks: `src/services/user.ts`.
-</philosophy>
+**Always include file paths:** Documents are reference material for Claude when
+planning/executing. Always include actual file paths formatted with backticks:
+`src/services/user.ts`. </philosophy>
 
 <process>
 
@@ -33,12 +36,11 @@ Default to "balanced" if not set.
 
 **Model lookup table:**
 
-| Agent | quality | balanced | budget |
-|-------|---------|----------|--------|
-| gsd-codebase-mapper | sonnet | haiku | haiku |
+| Agent               | quality | balanced | budget |
+| ------------------- | ------- | -------- | ------ |
+| gsd-codebase-mapper | sonnet  | haiku    | haiku  |
 
-Store resolved model for use in Task calls below.
-</step>
+Store resolved model for use in Task calls below. </step>
 
 <step name="check_existing">
 Check if .planning/codebase/ already exists:
@@ -61,13 +63,11 @@ What's next?
 
 Wait for user response.
 
-If "Refresh": Delete .planning/codebase/, continue to create_structure
-If "Update": Ask which documents to update, continue to spawn_agents (filtered)
-If "Skip": Exit workflow
+If "Refresh": Delete .planning/codebase/, continue to create_structure If
+"Update": Ask which documents to update, continue to spawn_agents (filtered) If
+"Skip": Exit workflow
 
-**If doesn't exist:**
-Continue to create_structure.
-</step>
+**If doesn't exist:** Continue to create_structure. </step>
 
 <step name="create_structure">
 Create .planning/codebase/ directory:
@@ -77,6 +77,7 @@ mkdir -p .planning/codebase
 ```
 
 **Expected output files:**
+
 - STACK.md (from tech mapper)
 - INTEGRATIONS.md (from tech mapper)
 - ARCHITECTURE.md (from arch mapper)
@@ -85,19 +86,21 @@ mkdir -p .planning/codebase
 - TESTING.md (from quality mapper)
 - CONCERNS.md (from concerns mapper)
 
-Continue to spawn_agents.
-</step>
+Continue to spawn_agents. </step>
 
 <step name="spawn_agents">
 Spawn 4 parallel gsd-codebase-mapper agents.
 
-Use Task tool with `subagent_type="gsd-codebase-mapper"`, `model="{mapper_model}"`, and `run_in_background=true` for parallel execution.
+Use Task tool with `subagent_type="gsd-codebase-mapper"`,
+`model="{mapper_model}"`, and `run_in_background=true` for parallel execution.
 
-**CRITICAL:** Use the dedicated `gsd-codebase-mapper` agent, NOT `Explore`. The mapper agent writes documents directly.
+**CRITICAL:** Use the dedicated `gsd-codebase-mapper` agent, NOT `Explore`. The
+mapper agent writes documents directly.
 
 **Agent 1: Tech Focus**
 
 Task tool parameters:
+
 ```
 subagent_type: "gsd-codebase-mapper"
 model: "{mapper_model}"
@@ -106,6 +109,7 @@ description: "Map codebase tech stack"
 ```
 
 Prompt:
+
 ```
 Focus: tech
 
@@ -121,6 +125,7 @@ Explore thoroughly. Write documents directly using templates. Return confirmatio
 **Agent 2: Architecture Focus**
 
 Task tool parameters:
+
 ```
 subagent_type: "gsd-codebase-mapper"
 model: "{mapper_model}"
@@ -129,6 +134,7 @@ description: "Map codebase architecture"
 ```
 
 Prompt:
+
 ```
 Focus: arch
 
@@ -144,6 +150,7 @@ Explore thoroughly. Write documents directly using templates. Return confirmatio
 **Agent 3: Quality Focus**
 
 Task tool parameters:
+
 ```
 subagent_type: "gsd-codebase-mapper"
 model: "{mapper_model}"
@@ -152,6 +159,7 @@ description: "Map codebase conventions"
 ```
 
 Prompt:
+
 ```
 Focus: quality
 
@@ -167,6 +175,7 @@ Explore thoroughly. Write documents directly using templates. Return confirmatio
 **Agent 4: Concerns Focus**
 
 Task tool parameters:
+
 ```
 subagent_type: "gsd-codebase-mapper"
 model: "{mapper_model}"
@@ -175,6 +184,7 @@ description: "Map codebase concerns"
 ```
 
 Prompt:
+
 ```
 Focus: concerns
 
@@ -186,8 +196,7 @@ Write this document to .planning/codebase/:
 Explore thoroughly. Write document directly using template. Return confirmation only.
 ```
 
-Continue to collect_confirmations.
-</step>
+Continue to collect_confirmations. </step>
 
 <step name="collect_confirmations">
 Wait for all 4 agents to complete.
@@ -195,6 +204,7 @@ Wait for all 4 agents to complete.
 Read each agent's output file to collect confirmations.
 
 **Expected confirmation format from each agent:**
+
 ```
 ## Mapping Complete
 
@@ -210,8 +220,7 @@ Ready for orchestrator summary.
 
 If any agent failed, note the failure and continue with successful documents.
 
-Continue to verify_output.
-</step>
+Continue to verify_output. </step>
 
 <step name="verify_output">
 Verify all documents created successfully:
@@ -222,13 +231,13 @@ wc -l .planning/codebase/*.md
 ```
 
 **Verification checklist:**
+
 - All 7 documents exist
 - No empty documents (each should have >20 lines)
 
 If any documents missing or empty, note which agents may have failed.
 
-Continue to commit_codebase_map.
-</step>
+Continue to commit_codebase_map. </step>
 
 <step name="commit_codebase_map">
 Commit the codebase map:
@@ -260,13 +269,13 @@ EOF
 )"
 ```
 
-Continue to offer_next.
-</step>
+Continue to offer_next. </step>
 
 <step name="offer_next">
 Present completion summary and next steps.
 
 **Get line counts:**
+
 ```bash
 wc -l .planning/codebase/*.md
 ```
@@ -306,17 +315,17 @@ Created .planning/codebase/:
 ---
 ```
 
-End workflow.
-</step>
+End workflow. </step>
 
 </process>
 
 <success_criteria>
+
 - .planning/codebase/ directory created
 - 4 parallel gsd-codebase-mapper agents spawned with run_in_background=true
-- Agents write documents directly (orchestrator doesn't receive document contents)
+- Agents write documents directly (orchestrator doesn't receive document
+  contents)
 - Read agent output files to collect confirmations
 - All 7 codebase documents exist
 - Clear completion summary with line counts
-- User offered clear next steps in GSD style
-</success_criteria>
+- User offered clear next steps in GSD style </success_criteria>
