@@ -81,7 +81,7 @@ No test suite is configured. Current quality checks are `build` (TypeScript), `l
 - **Production:** https://ai-smb-playbook.vercel.app
 - **GitHub:** https://github.com/liam-jons/ai-smb-playbook
 - Auto-deploys on push to `main` via Vercel
-- Vercel root directory is set to the repo root (configured in Vercel dashboard)
+- Vercel root directory is set to `app` (configured in Vercel dashboard, not `vercel.json`)
 - `vercel.json` lives at the repo root with SPA rewrites, security headers, and asset caching
 
 ## Environment Variables
@@ -114,7 +114,7 @@ All build phases (0–5) are complete. Planning artefacts (research, specs, UX r
 
 - **Tailwind v4 — no config file.** This project uses Tailwind v4, which is CSS-based. There is no `tailwind.config.js`. Theme customisation is in `app/src/index.css` via `@theme inline {}`. Don't create a JS config file.
 - **shadcn/ui components are generated.** Files in `components/ui/` are added via `bunx shadcn add <component>`, not hand-written. Don't manually create UI primitives.
-- **Vercel root directory.** Both `vercel.json` and the Vercel dashboard root directory are set to the repo root. The `app/` directory contains the Vite project; the serverless `api/` directory lives under `app/`.
+- **Vercel root directory.** `vercel.json` is at the repo root but Vercel's root directory is set to `app` in the dashboard. This is intentional — the serverless `api/` directory and `package.json` (with dependencies like `resend`) live under `app/`, so Vercel must install and build from there. Do not change the root directory to repo root without also moving the API function and its dependencies.
 
 ## Critical Rules
 
