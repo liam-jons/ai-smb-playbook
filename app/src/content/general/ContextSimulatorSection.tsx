@@ -67,13 +67,17 @@ export function ContextSimulatorSection() {
         {isDev && (
           <CalloutCard
             variant="info"
-            title="Extended thinking tokens"
+            title="Thinking tokens (extended & adaptive)"
             className="mt-4"
           >
             <p>
-              Extended thinking tokens are consumed during a turn but stripped
-              afterwards — they do not permanently reduce your available
-              context.
+              Claude&apos;s extended thinking feature lets the model reason
+              step-by-step before responding. With Opus 4.6, this has evolved
+              into <strong>adaptive thinking</strong> — Claude dynamically
+              decides how deeply to reason based on query complexity, controlled
+              via the <code>effort</code> parameter. Thinking tokens are
+              consumed during a turn but stripped afterwards — they do not
+              permanently reduce your available context.
             </p>
           </CalloutCard>
         )}
