@@ -99,7 +99,7 @@ const PLATFORM_LABELS: Record<
 function PriorityBadge({ priority }: { priority: string }) {
   if (priority === 'high') {
     return (
-      <Badge className="border-emerald-500/30 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
+      <Badge className="border-success/30 bg-success-muted text-success-muted-foreground">
         Recommended
       </Badge>
     );
@@ -172,7 +172,7 @@ function InstallCommandButton({ command }: { command: string }) {
     >
       {copied ? (
         <>
-          <Check className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+          <Check className="h-3.5 w-3.5 text-success-muted-foreground" />
           Copied
         </>
       ) : (
@@ -193,7 +193,7 @@ function FileCard({ file }: { file: StarterKitFile }) {
   const [expanded, setExpanded] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const { track } = useTrack();
-  const reducedMotion = useMemo(getReducedMotion, []);
+  const reducedMotion = useMemo(() => getReducedMotion(), []);
 
   const toggleExpanded = useCallback(() => {
     setExpanded((prev) => !prev);
@@ -389,10 +389,10 @@ function QuickStartSection() {
   });
 
   return (
-    <Card className="border-emerald-500/20 bg-emerald-50/30 dark:bg-emerald-950/10">
+    <Card className="border-success/20 bg-success-muted/30">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <Rocket className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+          <Rocket className="h-5 w-5 text-success-muted-foreground" />
           <CardTitle className="text-lg">Quick Start</CardTitle>
         </div>
         <CardDescription>
@@ -405,7 +405,7 @@ function QuickStartSection() {
           {steps.map((step, index) => (
             <li key={step.fileId} className="flex gap-3">
               <span
-                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400"
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-success-muted text-xs font-semibold text-success-muted-foreground"
                 aria-hidden="true"
               >
                 {index + 1}
@@ -914,7 +914,7 @@ function FileBrowser() {
 export function StarterKitSection() {
   const { track } = useTrack();
   const isDev = track === 'developer';
-  const prefersReducedMotion = useMemo(getReducedMotion, []);
+  const prefersReducedMotion = useMemo(() => getReducedMotion(), []);
 
   const motionProps = prefersReducedMotion ? {} : fadeInUp;
   const motionFadeProps = prefersReducedMotion ? {} : fadeIn;

@@ -264,7 +264,7 @@ export function ContextSimulatorSection() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <p className="mb-2 font-medium text-emerald-700 dark:text-emerald-300">
+                    <p className="mb-2 font-medium text-success-muted-foreground">
                       What is preserved (summarised)
                     </p>
                     <ul className="list-inside list-disc space-y-1 text-muted-foreground">
@@ -275,7 +275,7 @@ export function ContextSimulatorSection() {
                     </ul>
                   </div>
                   <div>
-                    <p className="mb-2 font-medium text-red-700 dark:text-red-300">
+                    <p className="mb-2 font-medium text-danger-muted-foreground">
                       What is lost (dropped)
                     </p>
                     <ul className="list-inside list-disc space-y-1 text-muted-foreground">

@@ -475,8 +475,8 @@ export function DocumentationSection() {
                     ))}
                   </div>
                 </div>
-                <div className="rounded-md border border-emerald-500/30 bg-emerald-50/50 px-3 py-2 dark:bg-emerald-950/20">
-                  <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                <div className="rounded-md border border-success/30 bg-success-muted/50 px-3 py-2">
+                  <p className="text-xs font-medium text-success-muted-foreground">
                     What makes this useful for Claude:
                   </p>
                   <p className="text-xs text-muted-foreground">

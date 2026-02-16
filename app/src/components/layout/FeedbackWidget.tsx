@@ -121,7 +121,7 @@ export function FeedbackWidget() {
 
           {submitState === 'success' ? (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
-              <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
+              <CheckCircle2 className="h-10 w-10 text-success" />
               <div>
                 <p className="font-medium text-foreground">
                   Thanks for your feedback!

@@ -295,8 +295,8 @@ function SliderControls({
                 className={cn(
                   'text-xs transition-colors',
                   toolSearchEnabled
-                    ? 'border-emerald-500/30 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
-                    : 'border-red-500/30 bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300',
+                    ? 'border-success/30 bg-success-muted text-success-muted-foreground'
+                    : 'border-danger/30 bg-danger-muted text-danger-muted-foreground',
                 )}
               >
                 {toolSearchEnabled ? 'On' : 'Off'}

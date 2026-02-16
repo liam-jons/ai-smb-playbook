@@ -627,7 +627,7 @@ function PlaceholderBadge({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="inline-flex cursor-help items-center rounded-md bg-violet-100 px-1.5 py-0.5 text-xs font-medium text-violet-800 dark:bg-violet-900/40 dark:text-violet-300">
+          <span className="inline-flex cursor-help items-center rounded-md bg-important-muted px-1.5 py-0.5 text-xs font-medium text-important-muted-foreground">
             {placeholder}
           </span>
         </TooltipTrigger>
@@ -660,21 +660,19 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
     { bg: string; border: string; badge: string }
   > = {
     emerald: {
-      bg: 'bg-emerald-50/50 dark:bg-emerald-950/20',
-      border: 'border-emerald-200 dark:border-emerald-800/40',
-      badge:
-        'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+      bg: 'bg-success-muted/50',
+      border: 'border-success-muted',
+      badge: 'bg-success-muted text-success-muted-foreground',
     },
     amber: {
-      bg: 'bg-amber-50/50 dark:bg-amber-950/20',
-      border: 'border-amber-200 dark:border-amber-800/40',
-      badge:
-        'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+      bg: 'bg-warning-muted/50',
+      border: 'border-warning-muted',
+      badge: 'bg-warning-muted text-warning-muted-foreground',
     },
     red: {
-      bg: 'bg-red-50/50 dark:bg-red-950/20',
-      border: 'border-red-200 dark:border-red-800/40',
-      badge: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+      bg: 'bg-danger-muted/50',
+      border: 'border-danger-muted',
+      badge: 'bg-danger-muted text-danger-muted-foreground',
     },
   };
   const c = colourMap[tier.colour];

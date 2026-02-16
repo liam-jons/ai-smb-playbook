@@ -53,6 +53,38 @@
   --chart-3: oklch(0.5 0.15 140);
   --chart-4: oklch(0.75 0.2 140);
   --chart-5: oklch(0.45 0.1 140);
+
+  /* Status tokens — monochromatic green phosphor */
+  --success: oklch(0.7 0.25 140);
+  --success-foreground: oklch(0.07 0 0);
+  --success-muted: oklch(0.15 0.06 140);
+  --success-muted-foreground: oklch(0.7 0.2 140);
+  --warning: oklch(0.65 0.22 140);
+  --warning-foreground: oklch(0.07 0 0);
+  --warning-muted: oklch(0.13 0.05 140);
+  --warning-muted-foreground: oklch(0.65 0.18 140);
+  --info: oklch(0.6 0.2 140);
+  --info-foreground: oklch(0.07 0 0);
+  --info-muted: oklch(0.12 0.04 140);
+  --info-muted-foreground: oklch(0.6 0.18 140);
+  --important: oklch(0.55 0.17 140);
+  --important-foreground: oklch(0.07 0 0);
+  --important-muted: oklch(0.11 0.04 140);
+  --important-muted-foreground: oklch(0.55 0.15 140);
+  --danger: oklch(0.6 0.25 25);
+  --danger-foreground: oklch(0.07 0 0);
+  --danger-muted: oklch(0.12 0.04 25);
+  --danger-muted-foreground: oklch(0.6 0.2 25);
+
+  /* Segment tokens — green phosphor brightness scale */
+  --segment-system: oklch(0.7 0.25 140);
+  --segment-tools: oklch(0.6 0.2 140);
+  --segment-instructions: oklch(0.55 0.17 140);
+  --segment-mcp: oklch(0.65 0.22 140);
+  --segment-skills: oklch(0.5 0.15 140);
+  --segment-environment: oklch(0.4 0.1 140);
+  --segment-conversation: oklch(0.75 0.22 140);
+  --segment-buffer: oklch(0.3 0.06 140);
 }
 
 /* Retro Terminal — Scanline overlay */
@@ -124,6 +156,38 @@
   --chart-3: oklch(0.55 0.15 300);
   --chart-4: oklch(0.75 0.18 85);
   --chart-5: oklch(0.65 0.2 40);
+
+  /* Status tokens — neon spectrum */
+  --success: oklch(0.7 0.18 195);
+  --success-foreground: oklch(0.15 0.05 300);
+  --success-muted: oklch(0.25 0.06 195);
+  --success-muted-foreground: oklch(0.8 0.12 195);
+  --warning: oklch(0.8 0.18 85);
+  --warning-foreground: oklch(0.15 0.05 300);
+  --warning-muted: oklch(0.25 0.06 85);
+  --warning-muted-foreground: oklch(0.8 0.14 85);
+  --info: oklch(0.65 0.22 350);
+  --info-foreground: oklch(0.15 0.05 300);
+  --info-muted: oklch(0.25 0.06 350);
+  --info-muted-foreground: oklch(0.75 0.16 350);
+  --important: oklch(0.6 0.2 300);
+  --important-foreground: oklch(0.15 0.05 300);
+  --important-muted: oklch(0.22 0.06 300);
+  --important-muted-foreground: oklch(0.75 0.14 300);
+  --danger: oklch(0.7 0.2 40);
+  --danger-foreground: oklch(0.15 0.05 300);
+  --danger-muted: oklch(0.25 0.06 40);
+  --danger-muted-foreground: oklch(0.75 0.14 40);
+
+  /* Segment tokens — neon spectrum */
+  --segment-system: oklch(0.55 0.2 300);
+  --segment-tools: oklch(0.65 0.2 195);
+  --segment-instructions: oklch(0.7 0.18 195);
+  --segment-mcp: oklch(0.8 0.18 85);
+  --segment-skills: oklch(0.6 0.22 350);
+  --segment-environment: oklch(0.45 0.06 300);
+  --segment-conversation: oklch(0.7 0.18 195);
+  --segment-buffer: oklch(0.35 0.04 300);
 }
 
 /* Synthwave — Glow on cards */
@@ -182,6 +246,38 @@
   --chart-3: oklch(0.3 0 0);
   --chart-4: oklch(0.7 0 0);
   --chart-5: oklch(0.1 0 0);
+
+  /* Status tokens — greyscale + warm red accent */
+  --success: oklch(0.45 0 0);
+  --success-foreground: oklch(1 0 0);
+  --success-muted: oklch(0.95 0 0);
+  --success-muted-foreground: oklch(0.25 0 0);
+  --warning: oklch(0.45 0.15 25);
+  --warning-foreground: oklch(1 0 0);
+  --warning-muted: oklch(0.95 0.02 25);
+  --warning-muted-foreground: oklch(0.35 0.1 25);
+  --info: oklch(0.35 0 0);
+  --info-foreground: oklch(1 0 0);
+  --info-muted: oklch(0.94 0 0);
+  --info-muted-foreground: oklch(0.2 0 0);
+  --important: oklch(0.45 0.18 25);
+  --important-foreground: oklch(1 0 0);
+  --important-muted: oklch(0.95 0.02 25);
+  --important-muted-foreground: oklch(0.35 0.12 25);
+  --danger: oklch(0.45 0.18 25);
+  --danger-foreground: oklch(1 0 0);
+  --danger-muted: oklch(0.95 0.03 25);
+  --danger-muted-foreground: oklch(0.35 0.14 25);
+
+  /* Segment tokens — greyscale + red accent */
+  --segment-system: oklch(0.25 0 0);
+  --segment-tools: oklch(0.35 0 0);
+  --segment-instructions: oklch(0.45 0 0);
+  --segment-mcp: oklch(0.45 0.15 25);
+  --segment-skills: oklch(0.55 0 0);
+  --segment-environment: oklch(0.65 0 0);
+  --segment-conversation: oklch(0.4 0 0);
+  --segment-buffer: oklch(0.75 0 0);
 }
 
 /* Dark variant */
@@ -229,6 +325,38 @@
   --chart-3: oklch(0.8 0 0);
   --chart-4: oklch(0.4 0 0);
   --chart-5: oklch(0.95 0 0);
+
+  /* Status tokens — greyscale + warm red accent */
+  --success: oklch(0.65 0 0);
+  --success-foreground: oklch(0.1 0 0);
+  --success-muted: oklch(0.18 0 0);
+  --success-muted-foreground: oklch(0.8 0 0);
+  --warning: oklch(0.55 0.18 25);
+  --warning-foreground: oklch(1 0 0);
+  --warning-muted: oklch(0.18 0.03 25);
+  --warning-muted-foreground: oklch(0.7 0.1 25);
+  --info: oklch(0.7 0 0);
+  --info-foreground: oklch(0.1 0 0);
+  --info-muted: oklch(0.16 0 0);
+  --info-muted-foreground: oklch(0.8 0 0);
+  --important: oklch(0.55 0.18 25);
+  --important-foreground: oklch(1 0 0);
+  --important-muted: oklch(0.18 0.03 25);
+  --important-muted-foreground: oklch(0.7 0.1 25);
+  --danger: oklch(0.6 0.2 25);
+  --danger-foreground: oklch(1 0 0);
+  --danger-muted: oklch(0.18 0.04 25);
+  --danger-muted-foreground: oklch(0.75 0.12 25);
+
+  /* Segment tokens — greyscale + red accent */
+  --segment-system: oklch(0.8 0 0);
+  --segment-tools: oklch(0.7 0 0);
+  --segment-instructions: oklch(0.6 0 0);
+  --segment-mcp: oklch(0.55 0.18 25);
+  --segment-skills: oklch(0.5 0 0);
+  --segment-environment: oklch(0.4 0 0);
+  --segment-conversation: oklch(0.65 0 0);
+  --segment-buffer: oklch(0.3 0 0);
 }
 
 /* ----------------------------------------------------------

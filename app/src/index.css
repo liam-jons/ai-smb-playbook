@@ -49,6 +49,34 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
+  --color-success-muted-foreground: var(--success-muted-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-muted: var(--warning-muted);
+  --color-warning-muted-foreground: var(--warning-muted-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-muted: var(--info-muted);
+  --color-info-muted-foreground: var(--info-muted-foreground);
+  --color-important: var(--important);
+  --color-important-foreground: var(--important-foreground);
+  --color-important-muted: var(--important-muted);
+  --color-important-muted-foreground: var(--important-muted-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-muted: var(--danger-muted);
+  --color-danger-muted-foreground: var(--danger-muted-foreground);
+  --color-segment-system: var(--segment-system);
+  --color-segment-tools: var(--segment-tools);
+  --color-segment-instructions: var(--segment-instructions);
+  --color-segment-mcp: var(--segment-mcp);
+  --color-segment-skills: var(--segment-skills);
+  --color-segment-environment: var(--segment-environment);
+  --color-segment-conversation: var(--segment-conversation);
+  --color-segment-buffer: var(--segment-buffer);
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
@@ -88,6 +116,38 @@
   --sidebar-accent-foreground: oklch(0.2 0.012 250);
   --sidebar-border: oklch(0.9 0.008 250);
   --sidebar-ring: oklch(0.42 0.12 250);
+
+  /* Status tokens */
+  --success: oklch(0.55 0.17 155);
+  --success-foreground: oklch(0.98 0.004 250);
+  --success-muted: oklch(0.95 0.04 155);
+  --success-muted-foreground: oklch(0.35 0.1 155);
+  --warning: oklch(0.65 0.18 85);
+  --warning-foreground: oklch(0.16 0.012 250);
+  --warning-muted: oklch(0.95 0.04 85);
+  --warning-muted-foreground: oklch(0.4 0.1 85);
+  --info: oklch(0.55 0.17 250);
+  --info-foreground: oklch(0.98 0.004 250);
+  --info-muted: oklch(0.95 0.04 250);
+  --info-muted-foreground: oklch(0.35 0.1 250);
+  --important: oklch(0.55 0.2 300);
+  --important-foreground: oklch(0.98 0.004 250);
+  --important-muted: oklch(0.95 0.04 300);
+  --important-muted-foreground: oklch(0.35 0.12 300);
+  --danger: oklch(0.55 0.22 25);
+  --danger-foreground: oklch(0.98 0.004 250);
+  --danger-muted: oklch(0.95 0.04 25);
+  --danger-muted-foreground: oklch(0.4 0.12 25);
+
+  /* Segment tokens (context simulator) */
+  --segment-system: oklch(0.45 0.2 270);
+  --segment-tools: oklch(0.55 0.18 250);
+  --segment-instructions: oklch(0.55 0.15 180);
+  --segment-mcp: oklch(0.65 0.18 85);
+  --segment-skills: oklch(0.55 0.2 300);
+  --segment-environment: oklch(0.6 0.02 250);
+  --segment-conversation: oklch(0.55 0.17 155);
+  --segment-buffer: oklch(0.7 0.015 250);
 
   /* New token defaults */
   --font-heading: var(--font-sans);
@@ -138,6 +198,38 @@
   --sidebar-accent-foreground: oklch(0.94 0.006 250);
   --sidebar-border: oklch(0.3 0.012 250);
   --sidebar-ring: oklch(0.68 0.1 250);
+
+  /* Status tokens */
+  --success: oklch(0.65 0.19 155);
+  --success-foreground: oklch(0.16 0.012 250);
+  --success-muted: oklch(0.25 0.04 155);
+  --success-muted-foreground: oklch(0.8 0.1 155);
+  --warning: oklch(0.7 0.17 85);
+  --warning-foreground: oklch(0.16 0.012 250);
+  --warning-muted: oklch(0.25 0.04 85);
+  --warning-muted-foreground: oklch(0.8 0.1 85);
+  --info: oklch(0.65 0.15 250);
+  --info-foreground: oklch(0.16 0.012 250);
+  --info-muted: oklch(0.25 0.04 250);
+  --info-muted-foreground: oklch(0.8 0.1 250);
+  --important: oklch(0.65 0.19 300);
+  --important-foreground: oklch(0.16 0.012 250);
+  --important-muted: oklch(0.25 0.04 300);
+  --important-muted-foreground: oklch(0.8 0.1 300);
+  --danger: oklch(0.65 0.2 25);
+  --danger-foreground: oklch(0.16 0.012 250);
+  --danger-muted: oklch(0.25 0.04 25);
+  --danger-muted-foreground: oklch(0.8 0.1 25);
+
+  /* Segment tokens */
+  --segment-system: oklch(0.5 0.18 270);
+  --segment-tools: oklch(0.6 0.16 250);
+  --segment-instructions: oklch(0.6 0.14 180);
+  --segment-mcp: oklch(0.7 0.16 85);
+  --segment-skills: oklch(0.6 0.18 300);
+  --segment-environment: oklch(0.5 0.02 250);
+  --segment-conversation: oklch(0.6 0.17 155);
+  --segment-buffer: oklch(0.45 0.015 250);
 }
 
 @layer base {

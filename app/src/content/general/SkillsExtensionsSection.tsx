@@ -814,13 +814,10 @@ const layeringRules = [
 
 function PlatformBadge({ platform }: { platform: Platform }) {
   const colours: Record<Platform, string> = {
-    'claude.ai':
-      'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
-    Desktop:
-      'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300',
-    Code: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
-    CoWork:
-      'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+    'claude.ai': 'bg-info-muted text-info-muted-foreground',
+    Desktop: 'bg-important-muted text-important-muted-foreground',
+    Code: 'bg-success-muted text-success-muted-foreground',
+    CoWork: 'bg-warning-muted text-warning-muted-foreground',
   };
 
   return (
@@ -856,7 +853,7 @@ function AvailabilityCell({ value }: { value: string }) {
         <Tooltip>
           <TooltipTrigger asChild>
             <td className="px-3 py-2.5 text-center">
-              <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400">
+              <span className="inline-flex items-center gap-1 text-xs text-success-muted-foreground">
                 <Check className="h-3.5 w-3.5" aria-hidden="true" />
                 <span className="sr-only">Available: </span>
                 <span className="max-w-[6rem] truncate">
@@ -879,10 +876,7 @@ function AvailabilityCell({ value }: { value: string }) {
 
   return (
     <td className="px-3 py-2.5 text-center">
-      <Check
-        className="mx-auto h-4 w-4 text-emerald-600 dark:text-emerald-400"
-        aria-label="Available"
-      />
+      <Check className="mx-auto h-4 w-4 text-success" aria-label="Available" />
     </td>
   );
 }
@@ -891,22 +885,19 @@ function CostIndicator({ cost }: { cost: ContextCostRow['cost'] }) {
   const config = {
     zero: {
       label: 'Zero',
-      className:
-        'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+      className: 'bg-success-muted text-success-muted-foreground',
     },
     low: {
       label: 'Low',
-      className:
-        'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+      className: 'bg-success-muted text-success-muted-foreground',
     },
     moderate: {
       label: 'Moderate',
-      className:
-        'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+      className: 'bg-warning-muted text-warning-muted-foreground',
     },
     high: {
       label: 'High',
-      className: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+      className: 'bg-danger-muted text-danger-muted-foreground',
     },
   };
 
@@ -1210,7 +1201,7 @@ export function SkillsExtensionsSection() {
         <div className="mt-4 space-y-1.5 text-xs text-muted-foreground">
           <p>
             <Check
-              className="mr-1 inline h-3 w-3 text-emerald-600 dark:text-emerald-400"
+              className="mr-1 inline h-3 w-3 text-success"
               aria-hidden="true"
             />
             = Available and functional on that platform.{' '}

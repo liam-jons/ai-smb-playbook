@@ -647,8 +647,8 @@ export function CodebaseMappingSection() {
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-lg border border-emerald-500/30 bg-emerald-50/50 p-4 dark:bg-emerald-950/20">
-            <h4 className="mb-2 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+          <div className="rounded-lg border border-success/30 bg-success-muted/50 p-4">
+            <h4 className="mb-2 text-sm font-medium text-success-muted-foreground">
               When to use
             </h4>
             <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">

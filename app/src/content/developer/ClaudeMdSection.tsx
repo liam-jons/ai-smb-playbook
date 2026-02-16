@@ -585,8 +585,8 @@ export function ClaudeMdSection() {
                     the current task.
                   </p>
                 </div>
-                <div className="rounded-lg border border-emerald-500/30 bg-emerald-50/50 p-4 dark:bg-emerald-950/20">
-                  <h4 className="mb-2 font-medium text-emerald-700 dark:text-emerald-400">
+                <div className="rounded-lg border border-success/30 bg-success-muted/50 p-4">
+                  <h4 className="mb-2 font-medium text-success-muted-foreground">
                     After: 150 lines
                   </h4>
                   <p className="text-sm text-muted-foreground">
@@ -840,8 +840,8 @@ export function ClaudeMdSection() {
                       {criterion.description}
                     </p>
                     <div className="grid gap-2 sm:grid-cols-2">
-                      <div className="rounded border border-emerald-500/30 bg-emerald-50/50 px-3 py-2 dark:bg-emerald-950/20">
-                        <p className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                      <div className="rounded border border-success/30 bg-success-muted/50 px-3 py-2">
+                        <p className="text-xs font-medium text-success-muted-foreground">
                           Excellent
                         </p>
                         <p className="text-xs text-muted-foreground">

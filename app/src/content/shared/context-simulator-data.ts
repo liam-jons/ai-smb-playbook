@@ -61,8 +61,8 @@ export const segments: ContextSegmentData[] = [
     id: 'system-prompt',
     label: 'System Prompt',
     defaultTokens: SYSTEM_PROMPT_TOKENS,
-    colour: 'bg-indigo-600',
-    colourDark: 'dark:bg-indigo-500',
+    colour: 'bg-segment-system',
+    colourDark: '',
     description:
       "Claude's core instructions \u2014 personality, behaviour rules, safety guidelines. Present in every request.",
     detailedDescription:
@@ -75,8 +75,8 @@ export const segments: ContextSegmentData[] = [
     id: 'built-in-tools',
     label: 'Built-in Tools',
     defaultTokens: BUILT_IN_TOOL_TOKENS,
-    colour: 'bg-blue-500',
-    colourDark: 'dark:bg-blue-400',
+    colour: 'bg-segment-tools',
+    colourDark: '',
     description:
       'JSON schemas for Read, Write, Edit, Bash, Glob, Grep, and more (~15\u201318 tools).',
     detailedDescription:
@@ -90,8 +90,8 @@ export const segments: ContextSegmentData[] = [
     label: 'CLAUDE.md',
     generalLabel: 'Project Instructions',
     defaultTokens: 4_000,
-    colour: 'bg-teal-500',
-    colourDark: 'dark:bg-teal-400',
+    colour: 'bg-segment-instructions',
+    colourDark: '',
     description:
       'Project custom instructions and conventions. Size depends on content (~20 tokens per line).',
     detailedDescription:
@@ -105,8 +105,8 @@ export const segments: ContextSegmentData[] = [
     label: 'MCP Tools',
     generalLabel: 'Extensions',
     defaultTokens: 12_000,
-    colour: 'bg-amber-500',
-    colourDark: 'dark:bg-amber-400',
+    colour: 'bg-segment-mcp',
+    colourDark: '',
     description:
       'External tool definitions. Highly variable (0\u201360,000+ tokens depending on servers).',
     detailedDescription:
@@ -119,8 +119,8 @@ export const segments: ContextSegmentData[] = [
     id: 'skills',
     label: 'Skills',
     defaultTokens: 1_000,
-    colour: 'bg-purple-500',
-    colourDark: 'dark:bg-purple-400',
+    colour: 'bg-segment-skills',
+    colourDark: '',
     description:
       'Brief skill descriptions. Zero cost if disable-model-invocation: true.',
     detailedDescription:
@@ -133,8 +133,8 @@ export const segments: ContextSegmentData[] = [
     id: 'environment',
     label: 'Environment',
     defaultTokens: ENVIRONMENT_TOKENS,
-    colour: 'bg-slate-400',
-    colourDark: 'dark:bg-slate-500',
+    colour: 'bg-segment-environment',
+    colourDark: '',
     description: 'Git status, working directory, OS information.',
     detailedDescription:
       'Repository state, working directory info, OS details. Approximately 500\u20131,000 tokens. Relatively stable across sessions.',
@@ -146,8 +146,8 @@ export const segments: ContextSegmentData[] = [
     id: 'conversation',
     label: 'Conversation',
     defaultTokens: 0,
-    colour: 'bg-emerald-500',
-    colourDark: 'dark:bg-emerald-400',
+    colour: 'bg-segment-conversation',
+    colourDark: '',
     description:
       'Your messages and Claude\u2019s responses. This is what grows as you work.',
     detailedDescription:
@@ -160,8 +160,8 @@ export const segments: ContextSegmentData[] = [
     id: 'response-buffer',
     label: 'Response Buffer',
     defaultTokens: RESPONSE_BUFFER_TOKENS,
-    colour: 'bg-slate-300',
-    colourDark: 'dark:bg-slate-600',
+    colour: 'bg-segment-buffer',
+    colourDark: '',
     description:
       'Reserved for Claude\u2019s next response. NOT available for conversation.',
     detailedDescription:
@@ -207,10 +207,10 @@ export const degradationStages: DegradationStage[] = [
     id: 'healthy',
     label: 'Full attention',
     threshold: 0,
-    colour: 'bg-emerald-500',
-    colourDark: 'dark:bg-emerald-400',
+    colour: 'bg-success',
+    colourDark: '',
     badgeClass:
-      'border-emerald-500/30 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-400/30',
+      'border-success/30 bg-success-muted text-success-muted-foreground',
     description: 'Claude can recall everything in the conversation accurately.',
     detailedDescription:
       'Full recall of all conversation context. Consistent adherence to CLAUDE.md rules. Accurate file recall and code understanding.',
@@ -220,10 +220,10 @@ export const degradationStages: DegradationStage[] = [
     id: 'early',
     label: 'Slight fade',
     threshold: 50,
-    colour: 'bg-amber-500',
-    colourDark: 'dark:bg-amber-400',
+    colour: 'bg-warning',
+    colourDark: '',
     badgeClass:
-      'border-amber-500/30 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-400/30',
+      'border-warning/30 bg-warning-muted text-warning-muted-foreground',
     description:
       'Instructions from the middle of your conversation start getting less weight. You might need to repeat things.',
     detailedDescription:
@@ -234,10 +234,10 @@ export const degradationStages: DegradationStage[] = [
     id: 'noticeable',
     label: 'Noticeable fade',
     threshold: 70,
-    colour: 'bg-orange-500',
-    colourDark: 'dark:bg-orange-400',
+    colour: 'bg-warning',
+    colourDark: '',
     badgeClass:
-      'border-orange-500/30 bg-orange-50 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-400/30',
+      'border-warning/30 bg-warning-muted text-warning-muted-foreground',
     description:
       'Claude may re-read files it already examined, ask about things previously discussed, or contradict earlier decisions. Responses get slower.',
     detailedDescription:
@@ -248,10 +248,9 @@ export const degradationStages: DegradationStage[] = [
     id: 'critical',
     label: 'Critical \u2014 consider a fresh session',
     threshold: 85,
-    colour: 'bg-red-500',
-    colourDark: 'dark:bg-red-400',
-    badgeClass:
-      'border-red-500/30 bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300 dark:border-red-400/30',
+    colour: 'bg-danger',
+    colourDark: '',
+    badgeClass: 'border-danger/30 bg-danger-muted text-danger-muted-foreground',
     description:
       'Quality has significantly degraded. Earlier context is largely ineffective. Auto-compaction may trigger.',
     detailedDescription:

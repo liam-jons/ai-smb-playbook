@@ -402,7 +402,7 @@ export function PluginsSection() {
 
         <div className="space-y-3">
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
-            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
+            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-success" />
             <div>
               <p className="text-sm font-medium">Skill descriptions</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
@@ -412,7 +412,7 @@ export function PluginsSection() {
             </div>
           </div>
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
-            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
+            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-warning" />
             <div>
               <p className="text-sm font-medium">Full skill content</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
@@ -422,7 +422,7 @@ export function PluginsSection() {
             </div>
           </div>
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
-            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
+            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-warning" />
             <div>
               <p className="text-sm font-medium">MCP servers</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
@@ -432,7 +432,7 @@ export function PluginsSection() {
             </div>
           </div>
           <div className="flex gap-3 rounded-lg border border-border/50 px-4 py-3">
-            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
+            <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-success" />
             <div>
               <p className="text-sm font-medium">Hooks and LSP servers</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
@@ -528,7 +528,7 @@ export function PluginsSection() {
                               </p>
                             )}
                             {plugin.securityNote && (
-                              <p className="mb-2 text-xs text-amber-700 dark:text-amber-400">
+                              <p className="mb-2 text-xs text-warning-muted-foreground">
                                 <strong>Security:</strong> {plugin.securityNote}
                               </p>
                             )}

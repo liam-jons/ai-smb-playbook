@@ -21,23 +21,20 @@ const variantConfig: Record<
 > = {
   info: {
     icon: Info,
-    className:
-      'border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400',
+    className: 'border-info/30 bg-info-muted/50 [&>svg]:text-info',
   },
   warning: {
     icon: AlertTriangle,
-    className:
-      'border-amber-500/30 bg-amber-50/50 dark:bg-amber-950/20 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400',
+    className: 'border-warning/30 bg-warning-muted/50 [&>svg]:text-warning',
   },
   tip: {
     icon: Lightbulb,
-    className:
-      'border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 [&>svg]:text-emerald-600 dark:[&>svg]:text-emerald-400',
+    className: 'border-success/30 bg-success-muted/50 [&>svg]:text-success',
   },
   important: {
     icon: AlertCircle,
     className:
-      'border-purple-500/30 bg-purple-50/50 dark:bg-purple-950/20 [&>svg]:text-purple-600 dark:[&>svg]:text-purple-400',
+      'border-important/30 bg-important-muted/50 [&>svg]:text-important',
   },
 };
 

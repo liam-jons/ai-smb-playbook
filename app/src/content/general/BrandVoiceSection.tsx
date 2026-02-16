@@ -353,7 +353,7 @@ export function BrandVoiceSection() {
             <Badge variant="outline" className="text-xs">
               Part 1
             </Badge>
-            <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-xs">
+            <Badge className="bg-success-muted text-success-muted-foreground text-xs">
               <Clock className="mr-1 h-3 w-3" aria-hidden="true" />2 minutes
             </Badge>
           </div>
@@ -545,7 +545,7 @@ export function BrandVoiceSection() {
             <Badge variant="outline" className="text-xs">
               Part 2
             </Badge>
-            <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-xs">
+            <Badge className="bg-warning-muted text-warning-muted-foreground text-xs">
               <Clock className="mr-1 h-3 w-3" aria-hidden="true" />
               30–60 minutes
             </Badge>
@@ -571,8 +571,8 @@ export function BrandVoiceSection() {
             What to Prepare Before Starting
           </h3>
           <div className="space-y-3">
-            <div className="rounded-md border-l-2 border-emerald-500/40 bg-emerald-50/30 px-4 py-3 dark:bg-emerald-950/10">
-              <span className="text-xs font-medium text-emerald-800 dark:text-emerald-300">
+            <div className="rounded-md border-l-2 border-success/40 bg-success-muted/30 px-4 py-3">
+              <span className="text-xs font-medium text-success-muted-foreground">
                 Minimum required
               </span>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -580,8 +580,8 @@ export function BrandVoiceSection() {
                 communicates. No prior documentation is strictly necessary.
               </p>
             </div>
-            <div className="rounded-md border-l-2 border-blue-500/40 bg-blue-50/30 px-4 py-3 dark:bg-blue-950/10">
-              <span className="text-xs font-medium text-blue-800 dark:text-blue-300">
+            <div className="rounded-md border-l-2 border-info/40 bg-info-muted/30 px-4 py-3">
+              <span className="text-xs font-medium text-info-muted-foreground">
                 Strongly recommended
               </span>
               <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
@@ -595,8 +595,8 @@ export function BrandVoiceSection() {
                 </li>
               </ul>
             </div>
-            <div className="rounded-md border-l-2 border-violet-500/40 bg-violet-50/30 px-4 py-3 dark:bg-violet-950/10">
-              <span className="text-xs font-medium text-violet-800 dark:text-violet-300">
+            <div className="rounded-md border-l-2 border-important/40 bg-important-muted/30 px-4 py-3">
+              <span className="text-xs font-medium text-important-muted-foreground">
                 Nice to have
               </span>
               <ul className="mt-1 space-y-1 text-sm text-muted-foreground">
@@ -887,9 +887,9 @@ export function BrandVoiceSection() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Quick win card */}
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50/30 p-4 dark:border-emerald-800/40 dark:bg-emerald-950/10">
+          <div className="rounded-lg border border-success-muted bg-success-muted/30 p-4">
             <div className="mb-3 flex items-center gap-2">
-              <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-xs">
+              <Badge className="bg-success-muted text-success-muted-foreground text-xs">
                 Quick win
               </Badge>
               <span className="text-xs text-muted-foreground">2 minutes</span>
@@ -900,14 +900,14 @@ export function BrandVoiceSection() {
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-success/50"
                   aria-hidden="true"
                 />
                 Profile preferences
               </li>
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-success/50"
                   aria-hidden="true"
                 />
                 Project instructions
@@ -915,7 +915,7 @@ export function BrandVoiceSection() {
               {!isGeneral && (
                 <li className="flex items-start gap-2">
                   <span
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-success/50"
                     aria-hidden="true"
                   />
                   CLAUDE.md rule
@@ -923,7 +923,7 @@ export function BrandVoiceSection() {
               )}
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-success/50"
                   aria-hidden="true"
                 />
                 UK English skill (belt and braces)
@@ -932,9 +932,9 @@ export function BrandVoiceSection() {
           </div>
 
           {/* Deeper exercise card */}
-          <div className="rounded-lg border border-amber-200 bg-amber-50/30 p-4 dark:border-amber-800/40 dark:bg-amber-950/10">
+          <div className="rounded-lg border border-warning-muted bg-warning-muted/30 p-4">
             <div className="mb-3 flex items-center gap-2">
-              <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-xs">
+              <Badge className="bg-warning-muted text-warning-muted-foreground text-xs">
                 Deeper exercise
               </Badge>
               <span className="text-xs text-muted-foreground">
@@ -947,28 +947,28 @@ export function BrandVoiceSection() {
             <ul className="space-y-1 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-warning/50"
                   aria-hidden="true"
                 />
                 brand-voice skill (framework)
               </li>
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-warning/50"
                   aria-hidden="true"
                 />
                 Guided conversation
               </li>
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-warning/50"
                   aria-hidden="true"
                 />
                 Brand voice document (output)
               </li>
               <li className="flex items-start gap-2">
                 <span
-                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/50"
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-warning/50"
                   aria-hidden="true"
                 />
                 brand-review (ongoing checks)

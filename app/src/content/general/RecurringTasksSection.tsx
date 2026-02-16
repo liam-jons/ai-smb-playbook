@@ -71,8 +71,7 @@ const automationPatterns: AutomationPattern[] = [
     number: 1,
     name: 'Manual Trigger, Automated Execution',
     audience: 'Everyone',
-    audienceColour:
-      'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+    audienceColour: 'bg-success-muted text-success-muted-foreground',
     description:
       'The simplest and most reliable pattern. You start the task manually (open Claude, paste a prompt or invoke a skill), and Claude handles the complex execution.',
     howItWorks: [
@@ -94,8 +93,7 @@ const automationPatterns: AutomationPattern[] = [
     number: 2,
     name: 'Browser Automation via CoWork',
     audience: 'Everyone',
-    audienceColour:
-      'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+    audienceColour: 'bg-success-muted text-success-muted-foreground',
     description:
       "CoWork is Anthropic's browser automation environment — it lets Claude control a web browser to complete tasks on websites. CoWork can interact with web interfaces, fill forms, extract data, and navigate multi-step processes.",
     howItWorks: [
@@ -129,8 +127,7 @@ const automationPatterns: AutomationPattern[] = [
     number: 3,
     name: 'Self-Updating Skills',
     audience: 'Everyone',
-    audienceColour:
-      'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+    audienceColour: 'bg-success-muted text-success-muted-foreground',
     description:
       'Skills can be designed to update their own content based on new information. This creates a pattern where running a skill produces an improved version of itself.',
     howItWorks: [
@@ -152,8 +149,7 @@ const automationPatterns: AutomationPattern[] = [
     number: 4,
     name: 'External Trigger + Claude Execution',
     audience: 'With dev support',
-    audienceColour:
-      'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300',
+    audienceColour: 'bg-important-muted text-important-muted-foreground',
     description:
       'For teams with some technical capability, external scheduling tools can trigger Claude tasks. The schedule lives outside Claude; the intelligence lives inside Claude.',
     howItWorks: [

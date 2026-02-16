@@ -507,7 +507,7 @@ Here are the items:
           <Badge variant="destructive" className="text-xs">
             P1 — Fix now
           </Badge>
-          <Badge className="bg-amber-500/80 text-xs hover:bg-amber-500/70">
+          <Badge className="bg-warning/80 text-xs hover:bg-warning/70">
             P2 — Fix this sprint
           </Badge>
           <Badge variant="default" className="text-xs">
