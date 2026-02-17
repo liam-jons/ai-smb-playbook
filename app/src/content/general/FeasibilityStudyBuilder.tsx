@@ -286,8 +286,7 @@ function StepIndicator({
               role="listitem"
               aria-current={isCurrent ? 'step' : undefined}
               className={cn(
-                'flex items-center',
-                i < feasibilitySteps.length - 1 && 'flex-1',
+                'flex min-w-0 flex-1 items-center',
               )}
             >
               <button
@@ -296,7 +295,7 @@ function StepIndicator({
                 disabled={!isClickable}
                 aria-label={`Step ${i + 1}: ${step.title}${isCompleted ? ' (completed)' : isCurrent ? ' (current)' : ''}`}
                 className={cn(
-                  'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium leading-tight motion-safe:transition-colors',
+                  'flex min-w-0 items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium leading-tight motion-safe:transition-colors',
                   isCompleted &&
                     'bg-success-muted text-success-muted-foreground',
                   isCurrent && 'ring-2 ring-primary bg-primary/10 text-primary',

@@ -624,6 +624,561 @@ If you have the GSD codebase mapper installed, it can generate initial documenta
 
 Ask Claude to help populate each directory by analysing your codebase.`;
 
+const RAW_SKILL_UK_ENGLISH = `---
+name: uk-english
+description: Enforce UK English spelling, grammar, and conventions in all output. Use when writing, reviewing, or editing any content for UK audiences.
+---
+
+# UK English
+
+All output must use UK English spelling, grammar, and conventions.
+
+## Spelling Rules
+
+Use British English spellings throughout:
+- -ise endings (not -ize): organise, recognise, specialise, optimise
+- -our endings (not -or): colour, behaviour, favour, honour
+- -re endings (not -er): centre, metre, theatre (except for computer-related "center" in CSS/code)
+- -ence endings where applicable: licence (noun), defence, offence
+- Double L: travelling, modelling, labelling, cancelled
+- Other: grey (not gray), programme (not program, unless computer program), cheque (not check, for banking)
+
+## Grammar Conventions
+
+- Collective nouns may take plural verbs: "the team are working on..."
+- "Whilst", "amongst", "towards" are preferred over "while", "among", "toward"
+- Past tense: "learnt", "spelt", "dreamt" are acceptable alongside "learned", "spelled", "dreamed"
+
+## Formatting Conventions
+
+- Dates: DD/MM/YYYY or DD Month YYYY (e.g., 14/02/2026 or 14 February 2026)
+- Currency: GBP, use £ symbol (e.g., £500, not $500)
+- Time: 24-hour format preferred in formal contexts (e.g., 14:00), 12-hour acceptable informally (e.g., 2pm -- no space, no full stops in am/pm)
+- Quotation marks: single quotes for primary quotation, double quotes for quotes within quotes
+- Full stops and commas go outside closing quotation marks unless part of the quoted material
+
+## In Code Contexts
+
+- Use UK English only in comments, documentation, and user-facing strings
+- Never change variable names, function names, CSS properties, or API parameters (these follow their language's conventions, typically US English)
+- Example: write \\\`// Initialise the colour palette\\\` but keep \\\`const color = getColor()\\\``;
+
+const RAW_SKILL_BRAND_VOICE = `---
+name: brand-voice
+description: Apply and enforce brand voice, style guide, and messaging pillars across content. Use when reviewing content for brand consistency, documenting a brand voice, adapting tone for different audiences, or checking terminology and style guide compliance.
+---
+
+# Brand Voice Skill
+
+Frameworks for documenting, applying, and enforcing brand voice and style guidelines across marketing content.
+
+## Brand Voice Documentation Framework
+
+A complete brand voice document should cover these areas:
+
+### 1. Brand Personality
+Define the brand as if it were a person. What are its defining traits?
+
+### 2. Voice Attributes
+Select 3-5 attributes that define how the brand communicates. Each attribute should be defined with:
+- What it means in practice
+- What it does NOT mean
+- An example demonstrating the attribute
+
+### 3. Audience Awareness
+- Who the brand is speaking to
+- What the audience cares about
+- What level of expertise the audience has
+
+### 4. Core Messaging Pillars
+- 3-5 key themes the brand consistently communicates
+- The hierarchy of these messages
+
+### 5. Tone Spectrum
+How the voice adapts across contexts while remaining recognisably the same brand.
+
+### 6. Style Rules
+Specific grammar, formatting, and language rules.
+
+### 7. Terminology
+Preferred and avoided terms.
+
+## Voice Attributes
+
+### Common Voice Attribute Pairs
+
+| Spectrum | One End | Other End |
+|----------|---------|-----------|
+| Formality | Formal, institutional | Casual, conversational |
+| Authority | Expert, authoritative | Peer-level, collaborative |
+| Emotion | Warm, empathetic | Direct, matter-of-fact |
+| Complexity | Technical, precise | Simple, accessible |
+| Energy | Bold, energetic | Calm, measured |
+| Humor | Playful, witty | Serious, earnest |
+
+## Tone Adaptation Across Channels
+
+| Channel | Tone Adaptation |
+|---------|----------------|
+| Blog | Informative, conversational, educational |
+| Social media (LinkedIn) | Professional, thought-provoking, concise |
+| Email marketing | Personal, helpful, action-oriented |
+| Sales collateral | Confident, benefit-driven, specific |
+| Support/Help docs | Clear, patient, step-by-step |
+| Error messages | Empathetic, helpful, blame-free |
+
+## Style Guide Enforcement
+
+Document and enforce grammar, formatting, and language choices consistently — including Oxford comma usage, sentence vs. title case, contractions, number formatting, and date/time formats.
+
+## Terminology Management
+
+Maintain preferred terms, product names, inclusive language guidelines, and industry jargon management.`;
+
+const RAW_SKILL_BRAND_REVIEW = `---
+name: brand-review
+description: >
+  Review content against brand voice, style guidelines, and messaging standards.
+  WHEN the user asks to review, check, or audit content against brand guidelines,
+  or wants feedback on whether content matches their brand voice.
+  WHEN NOT the user is creating new content (use brand-voice skill instead).
+---
+
+# Brand Review
+
+Review marketing content against brand voice, style guidelines, and messaging standards. Flag deviations and provide specific improvement suggestions.
+
+## Inputs
+
+1. **Content to review** — pasted text, file path, URL, or multiple pieces for batch review
+2. **Brand guidelines source** — auto-detected from project, or user provides them
+
+## Review Process
+
+### With Brand Guidelines Configured
+
+Evaluate against:
+- **Voice and Tone** — Does content match defined brand voice attributes?
+- **Terminology and Language** — Are preferred brand terms used correctly?
+- **Messaging Pillars** — Does content align with defined messaging pillars?
+- **Style Guide Compliance** — Grammar, punctuation, UK English, formatting
+
+### Without Brand Guidelines (Generic Review)
+
+Evaluate for clarity, consistency, and professionalism.
+
+### Legal and Compliance Flags (Always Checked)
+
+- Unsubstantiated claims (superlatives without evidence)
+- Missing disclaimers
+- Comparative claims that could be challenged
+- Regulatory language needing compliance review
+- Copyright concerns
+
+## Output Format
+
+### Summary
+Overall assessment with strengths and key improvements.
+
+### Detailed Findings
+
+| Issue | Location | Severity | Suggestion |
+|-------|----------|----------|------------|
+
+Severity: **High** (contradicts brand voice / compliance risk), **Medium** (inconsistent), **Low** (minor style issue)
+
+### Revised Sections
+Before/after for top 3-5 highest-severity issues.`;
+
+const RAW_SKILL_BRAINSTORMING = `---
+name: brainstorming
+description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+---
+
+# Brainstorming Ideas Into Designs
+
+## Overview
+
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
+
+## The Process
+
+**Understanding the idea:**
+- Check out the current project state first
+- Ask questions one at a time to refine the idea
+- Prefer multiple choice questions when possible
+- Only one question per message
+- Focus on understanding: purpose, constraints, success criteria
+
+**Exploring approaches:**
+- Propose 2-3 different approaches with trade-offs
+- Lead with your recommended option and explain why
+
+**Presenting the design:**
+- Present the design in sections of 200-300 words
+- Ask after each section whether it looks right so far
+- Cover: architecture, components, data flow, error handling, testing
+
+## Key Principles
+
+- **One question at a time** — Don't overwhelm with multiple questions
+- **Multiple choice preferred** — Easier to answer than open-ended when possible
+- **YAGNI ruthlessly** — Remove unnecessary features from all designs
+- **Explore alternatives** — Always propose 2-3 approaches before settling
+- **Incremental validation** — Present design in sections, validate each
+- **Be flexible** — Go back and clarify when something doesn't make sense`;
+
+const RAW_SKILL_WRITING_PLANS = `---
+name: writing-plans
+description: Use when you have a spec or requirements for a multi-step task, before touching code
+---
+
+# Writing Plans
+
+## Overview
+
+Write comprehensive implementation plans assuming the engineer has zero context for your codebase. Document everything they need to know: which files to touch, code, testing, docs, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+
+## Bite-Sized Task Granularity
+
+Each step is one action (2-5 minutes):
+- "Write the failing test" — step
+- "Run it to make sure it fails" — step
+- "Implement the minimal code to make the test pass" — step
+- "Run the tests and make sure they pass" — step
+- "Commit" — step
+
+## Task Structure
+
+Each task includes:
+- **Files:** Create, Modify, Test paths
+- **Step 1:** Write the failing test (with code)
+- **Step 2:** Run test to verify it fails (with command and expected output)
+- **Step 3:** Write minimal implementation (with code)
+- **Step 4:** Run test to verify it passes
+- **Step 5:** Commit (with exact git commands)
+
+## Remember
+- Exact file paths always
+- Complete code in plan (not "add validation")
+- Exact commands with expected output
+- DRY, YAGNI, TDD, frequent commits`;
+
+const RAW_SKILL_WRITING_SKILLS = `---
+name: writing-skills
+description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
+---
+
+# Writing Skills
+
+## Overview
+
+Writing skills IS Test-Driven Development applied to process documentation. You write test cases (pressure scenarios with subagents), watch them fail (baseline behaviour), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
+
+## What is a Skill?
+
+A **skill** is a reference guide for proven techniques, patterns, or tools. Skills help future Claude instances find and apply effective approaches.
+
+**Skills are:** Reusable techniques, patterns, tools, reference guides
+**Skills are NOT:** Narratives about how you solved a problem once
+
+## When to Create a Skill
+
+**Create when:**
+- Technique wasn't intuitively obvious
+- You'd reference this again across projects
+- Pattern applies broadly (not project-specific)
+- Others would benefit
+
+## Skill Types
+
+- **Technique** — Concrete method with steps to follow
+- **Pattern** — Way of thinking about problems
+- **Reference** — API docs, syntax guides, tool documentation
+
+## SKILL.md Structure
+
+Frontmatter (YAML): name and description fields only. Description starts with "Use when..." and describes triggering conditions, not what the skill does.
+
+Key sections: Overview, When to Use, Core Pattern, Quick Reference, Implementation, Common Mistakes.
+
+## RED-GREEN-REFACTOR for Skills
+
+1. **RED:** Run pressure scenario WITHOUT the skill — document baseline behaviour
+2. **GREEN:** Write minimal skill addressing those specific failures — verify compliance
+3. **REFACTOR:** Close loopholes — add explicit counters for new rationalisations`;
+
+const RAW_SKILL_PROPOSAL_WRITER = `---
+name: proposal-writer
+description: Expert sales proposal and pricing presentation strategist. Use when writing proposals, executive summaries, ROI business cases, pricing presentations, SOWs, RFP responses, or competitive positioning documents.
+---
+
+# Proposal Writer
+
+Strategic expertise for crafting winning sales proposals, pricing presentations, and RFP responses.
+
+## Philosophy
+
+Great proposals don't describe your product. They describe your buyer's **future success**.
+
+1. **Lead with outcomes, not features**
+2. **Make the decision easy** — Remove friction, objections, and confusion
+3. **Tell a story** — Context → Challenge → Solution → Success
+4. **Respect the reader's time** — Every section earns its place
+
+## The CLOSE Framework
+
+Every proposal section should CLOSE:
+- **C**ontext — Where the buyer is today
+- **L**oss — What it's costing them (pain)
+- **O**utcome — The desired future state
+- **S**olution — How you get them there
+- **E**vidence — Proof it works
+
+## Proposal Types
+
+| Type | Purpose | Length |
+|------|---------|--------|
+| One-Pager | Early qualification | 1 page |
+| Solution Brief | Mid-funnel engagement | 3-5 pages |
+| Full Proposal | Final presentation | 8-15 pages |
+| RFP Response | Formal bid | Variable |
+| SOW | Contract scope | 3-10 pages |
+
+## Anti-Patterns
+
+- Feature dumping — List everything vs. what they need
+- One-size-fits-all — Templates without customisation
+- Price-first — Showing cost before establishing value
+- Missing next steps — No clear action at the end
+- Over-promising — Timelines and outcomes you can't deliver
+
+Detailed guidelines in rules/ files: structure, executive summaries, pricing, SOW, RFP, design, strategy.`;
+
+const RAW_SKILL_FILE_ORGANIZER = `---
+name: file-organizer
+description: Intelligently organises your files and folders by understanding context, finding duplicates, suggesting better structures, and automating cleanup tasks.
+---
+
+# File Organiser
+
+Your personal organisation assistant for maintaining a clean, logical file structure.
+
+## When to Use
+
+- Downloads folder is a chaotic mess
+- Can't find files — scattered everywhere
+- Duplicate files taking up space
+- Folder structure doesn't make sense anymore
+- Starting a new project and need good structure
+- Cleaning up before archiving old projects
+
+## Process
+
+1. **Understand the scope** — Which directory? What's the main problem? Any files to avoid?
+2. **Analyse current state** — File types, sizes, date ranges, organisation issues
+3. **Identify patterns** — Group by type, purpose, or date
+4. **Find duplicates** — Exact duplicates by hash, same-name files, similar-sized files
+5. **Propose organisation plan** — Present clear plan before making changes
+6. **Execute** — After approval, organise systematically with logging
+7. **Summary and maintenance tips** — What changed, new structure, upkeep advice
+
+## Best Practices
+
+### Folder Naming
+- Clear, descriptive names
+- Avoid spaces (use hyphens or underscores)
+- Use prefixes for ordering: "01-current", "02-archive"
+
+### File Naming
+- Include dates: "2024-10-17-meeting-notes.md"
+- Be descriptive: "q3-financial-report.xlsx"
+- Avoid version numbers in names (use version control instead)
+
+### When to Archive
+- Projects not touched in 6+ months
+- Completed work that might be referenced later
+- Files you're hesitant to delete (archive first)`;
+
+const RAW_SKILL_MARKDOWN_CONVERTER = `---
+name: markdown-converter
+description: Convert documents and files to Markdown using markitdown. Use when converting PDF, Word, PowerPoint, Excel, HTML, CSV, JSON, XML, images, audio, ZIP archives, YouTube URLs, or EPubs to Markdown format.
+---
+
+# Markdown Converter
+
+Convert files to Markdown using \\\`uvx markitdown\\\` — no installation required.
+
+## Basic Usage
+
+\\\`\\\`\\\`bash
+# Convert to stdout
+uvx markitdown input.pdf
+
+# Save to file
+uvx markitdown input.pdf -o output.md
+uvx markitdown input.docx > output.md
+
+# From stdin
+cat input.pdf | uvx markitdown
+\\\`\\\`\\\`
+
+## Supported Formats
+
+- **Documents**: PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls)
+- **Web/Data**: HTML, CSV, JSON, XML
+- **Media**: Images (EXIF + OCR), Audio (EXIF + transcription)
+- **Other**: ZIP (iterates contents), YouTube URLs, EPub
+
+## Options
+
+\\\`\\\`\\\`bash
+-o OUTPUT      # Output file
+-x EXTENSION   # Hint file extension (for stdin)
+-d             # Use Azure Document Intelligence
+--use-plugins  # Enable 3rd-party plugins
+\\\`\\\`\\\`
+
+## Notes
+
+- Output preserves document structure: headings, tables, lists, links
+- First run caches dependencies; subsequent runs are faster
+- For complex PDFs with poor extraction, use \\\`-d\\\` with Azure Document Intelligence`;
+
+const RAW_SKILL_MERMAID_DIAGRAMS = `---
+name: mermaid-diagrams
+description: Comprehensive guide for creating software diagrams using Mermaid syntax. Use when users need to create, visualise, or document software through diagrams including class, sequence, flowcharts, ERD, C4 architecture, state diagrams, and more.
+---
+
+# Mermaid Diagramming
+
+Create professional software diagrams using Mermaid's text-based syntax.
+
+## Diagram Type Selection Guide
+
+1. **Class Diagrams** — Domain modelling, OOP design, entity relationships
+2. **Sequence Diagrams** — Temporal interactions, API flows, message flows
+3. **Flowcharts** — Processes, algorithms, decision trees
+4. **ERD** — Database schemas, table relationships
+5. **C4 Diagrams** — Software architecture at multiple levels
+6. **State Diagrams** — State machines, lifecycle states
+7. **Gantt Charts** — Project timelines, scheduling
+
+## Quick Start Examples
+
+Class Diagram, Sequence Diagram, Flowchart, and ERD examples with full Mermaid syntax are included.
+
+## Best Practices
+
+1. **Start Simple** — Begin with core entities, add details incrementally
+2. **Use Meaningful Names** — Clear labels make diagrams self-documenting
+3. **Keep Focused** — One diagram per concept
+4. **Version Control** — Store .mmd files alongside code
+5. **Iterate** — Refine diagrams as understanding evolves
+
+## Configuration
+
+Configure with frontmatter: themes (default, forest, dark, neutral, base), layout options (dagre, elk), and look options (classic, handDrawn).
+
+## Detailed References
+
+See references/ directory for in-depth guidance on class diagrams, sequence diagrams, flowcharts, ERD diagrams, C4 diagrams, and advanced features.`;
+
+const RAW_SKILL_CANVAS_DESIGN = `---
+name: canvas-design
+description: Create beautiful visual art in .png and .pdf documents using design philosophy. Use when the user asks to create a poster, piece of art, design, or other static piece.
+---
+
+# Canvas Design
+
+Create original visual designs by first creating a design philosophy, then expressing it on canvas.
+
+## Process
+
+### 1. Design Philosophy Creation (.md file)
+
+Create a VISUAL PHILOSOPHY that will be interpreted through form, space, colour, composition, images, graphics, shapes, and patterns.
+
+**Name the movement** (1-2 words): e.g. "Brutalist Joy", "Chromatic Silence"
+
+**Articulate the philosophy** (4-6 paragraphs) covering:
+- Space and form
+- Colour and material
+- Scale and rhythm
+- Composition and balance
+- Visual hierarchy
+
+### 2. Canvas Creation (.pdf or .png file)
+
+Express the philosophy visually on canvas:
+- Use the design philosophy as foundation
+- Create museum or magazine quality work
+- Treat as art, not something cartoony
+- Use repeating patterns and perfect shapes
+- Anchor with simple phrase(s) positioned subtly
+- Limited colour palette, intentional and cohesive
+- Text is always minimal and visual-first
+- Use different fonts from the canvas-fonts directory
+- Double-check spacing, alignment, and formatting
+
+## Essential Principles
+
+- **VISUAL PHILOSOPHY** — Create an aesthetic worldview expressed through design
+- **MINIMAL TEXT** — Text is sparse, essential-only, integrated as visual element
+- **SPATIAL EXPRESSION** — Ideas communicate through space, form, colour, composition
+- **PURE DESIGN** — Making ART OBJECTS, not documents with decoration
+- **EXPERT CRAFTSMANSHIP** — Final work must look meticulously crafted`;
+
+const RAW_SKILL_AGENT_BROWSER = `---
+name: agent-browser
+description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
+---
+
+# Browser Automation with agent-browser
+
+## Quick Start
+
+\\\`\\\`\\\`bash
+agent-browser open <url>        # Navigate to page
+agent-browser snapshot -i       # Get interactive elements with refs
+agent-browser click @e1         # Click element by ref
+agent-browser fill @e2 "text"   # Fill input by ref
+agent-browser close             # Close browser
+\\\`\\\`\\\`
+
+## Core Workflow
+
+1. Navigate: \\\`agent-browser open <url>\\\`
+2. Snapshot: \\\`agent-browser snapshot -i\\\` (returns elements with refs like @e1, @e2)
+3. Interact using refs from the snapshot
+4. Re-snapshot after navigation or significant DOM changes
+
+## Key Commands
+
+### Navigation
+\\\`open <url>\\\`, \\\`back\\\`, \\\`forward\\\`, \\\`reload\\\`, \\\`close\\\`
+
+### Snapshot (Page Analysis)
+\\\`snapshot\\\` — Full tree | \\\`snapshot -i\\\` — Interactive only | \\\`snapshot -c\\\` — Compact
+
+### Interactions
+\\\`click @ref\\\`, \\\`fill @ref "text"\\\`, \\\`type @ref "text"\\\`, \\\`press Enter\\\`, \\\`hover @ref\\\`, \\\`check @ref\\\`, \\\`select @ref "value"\\\`, \\\`scroll down 500\\\`, \\\`upload @ref file.pdf\\\`
+
+### Get Information
+\\\`get text @ref\\\`, \\\`get html @ref\\\`, \\\`get value @ref\\\`, \\\`get attr @ref href\\\`, \\\`get title\\\`, \\\`get url\\\`
+
+### Screenshots & Recording
+\\\`screenshot\\\`, \\\`screenshot --full\\\`, \\\`pdf output.pdf\\\`, \\\`record start demo.webm\\\`, \\\`record stop\\\`
+
+### Wait
+\\\`wait @ref\\\`, \\\`wait 2000\\\`, \\\`wait --text "Success"\\\`, \\\`wait --url "**/dashboard"\\\`
+
+## Deep-Dive Documentation
+
+See references/ directory for snapshot refs, session management, authentication, video recording, and proxy support.`;
+
 const RAW_SESSION_HANDOFF_SKILL = `---
 name: session-handoff
 description: |
@@ -864,6 +1419,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('uk-english'),
     installCommand:
       'cp -r starter-kit/skills/uk-english .claude/skills/uk-english',
+    rawContent: RAW_SKILL_UK_ENGLISH,
   },
   {
     id: 'skill-session-handoff',
@@ -895,6 +1451,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('brand-voice'),
     installCommand:
       'cp -r starter-kit/skills/brand-voice .claude/skills/brand-voice',
+    rawContent: RAW_SKILL_BRAND_VOICE,
   },
   {
     id: 'skill-brand-review',
@@ -910,6 +1467,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('brand-review'),
     installCommand:
       'cp -r starter-kit/skills/brand-review .claude/skills/brand-review',
+    rawContent: RAW_SKILL_BRAND_REVIEW,
   },
   {
     id: 'skill-brainstorming',
@@ -925,6 +1483,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('brainstorming'),
     installCommand:
       'cp -r starter-kit/skills/brainstorming .claude/skills/brainstorming',
+    rawContent: RAW_SKILL_BRAINSTORMING,
   },
   {
     id: 'skill-writing-plans',
@@ -940,6 +1499,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('writing-plans'),
     installCommand:
       'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
+    rawContent: RAW_SKILL_WRITING_PLANS,
   },
   {
     id: 'skill-writing-skills',
@@ -955,6 +1515,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('writing-skills'),
     installCommand:
       'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
+    rawContent: RAW_SKILL_WRITING_SKILLS,
   },
   {
     id: 'skill-proposal-writer',
@@ -970,6 +1531,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('proposal-writer'),
     installCommand:
       'cp -r starter-kit/skills/proposal-writer .claude/skills/proposal-writer',
+    rawContent: RAW_SKILL_PROPOSAL_WRITER,
   },
   {
     id: 'skill-file-organizer',
@@ -985,6 +1547,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('file-organizer'),
     installCommand:
       'cp -r starter-kit/skills/file-organizer .claude/skills/file-organizer',
+    rawContent: RAW_SKILL_FILE_ORGANIZER,
   },
   {
     id: 'skill-markdown-converter',
@@ -1000,6 +1563,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('markdown-converter'),
     installCommand:
       'cp -r starter-kit/skills/markdown-converter .claude/skills/markdown-converter',
+    rawContent: RAW_SKILL_MARKDOWN_CONVERTER,
   },
   {
     id: 'skill-mermaid-diagrams',
@@ -1015,6 +1579,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('mermaid-diagrams'),
     installCommand:
       'cp -r starter-kit/skills/mermaid-diagrams .claude/skills/mermaid-diagrams',
+    rawContent: RAW_SKILL_MERMAID_DIAGRAMS,
   },
   {
     id: 'skill-canvas-design',
@@ -1030,6 +1595,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('canvas-design'),
     installCommand:
       'cp -r starter-kit/skills/canvas-design .claude/skills/canvas-design',
+    rawContent: RAW_SKILL_CANVAS_DESIGN,
   },
   {
     id: 'skill-agent-browser',
@@ -1045,6 +1611,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installInstructions: skillInstall('agent-browser'),
     installCommand:
       'cp -r starter-kit/skills/agent-browser .claude/skills/agent-browser',
+    rawContent: RAW_SKILL_AGENT_BROWSER,
   },
 
   // ── Commands ──────────────────────────────────────────────────────

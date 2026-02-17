@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router';
 import {
   Accordion,
@@ -21,7 +21,8 @@ import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
 import { useTrack } from '@/hooks/useTrack';
 import { siteConfig } from '@/config/site';
-import { cn } from '@/lib/utils';
+import { cn, stripMarkdown } from '@/lib/utils';
+import { generateDocx, downloadBlob } from '@/lib/docx-export';
 import {
   Shield,
   ShieldCheck,
@@ -34,6 +35,8 @@ import {
   Clock,
   Lock,
   Download,
+  Copy,
+  Check,
   type LucideIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -746,6 +749,112 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
   );
 }
 
+// ─── Policy Export Buttons ───────────────────────────────────────────────────
+
+function PolicyExportButtons({
+  fullPolicyText,
+}: {
+  fullPolicyText: string;
+}) {
+  const [copiedClaude, setCopiedClaude] = useState(false);
+  const [copiedWord, setCopiedWord] = useState(false);
+
+  const copyForClaude = useCallback(async () => {
+    await navigator.clipboard.writeText(fullPolicyText);
+    setCopiedClaude(true);
+    setTimeout(() => setCopiedClaude(false), 2000);
+  }, [fullPolicyText]);
+
+  const copyForWord = useCallback(async () => {
+    await navigator.clipboard.writeText(stripMarkdown(fullPolicyText));
+    setCopiedWord(true);
+    setTimeout(() => setCopiedWord(false), 2000);
+  }, [fullPolicyText]);
+
+  const downloadMarkdown = useCallback(() => {
+    const blob = new Blob([fullPolicyText], { type: 'text/markdown' });
+    downloadBlob(blob, 'ai-governance-policy.md');
+  }, [fullPolicyText]);
+
+  const downloadDocx = useCallback(async () => {
+    const blob = await generateDocx(fullPolicyText);
+    downloadBlob(blob, 'ai-governance-policy.docx');
+  }, [fullPolicyText]);
+
+  return (
+    <div className="mt-6 space-y-4">
+      {/* Copy buttons */}
+      <div className="flex flex-wrap gap-3">
+        <div className="space-y-1">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={copyForClaude}
+          >
+            {copiedClaude ? (
+              <Check className="h-4 w-4 text-success-muted-foreground" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+            {copiedClaude ? 'Copied' : 'Copy for Claude'}
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            Markdown format — paste into claude.ai and ask Claude to help fill
+            in the placeholders
+          </p>
+        </div>
+
+        <div className="space-y-1">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={copyForWord}
+          >
+            {copiedWord ? (
+              <Check className="h-4 w-4 text-success-muted-foreground" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+            {copiedWord ? 'Copied' : 'Copy for Word'}
+          </Button>
+          <p className="text-xs text-muted-foreground">
+            Plain text — ready to paste into Word or Google Docs
+          </p>
+        </div>
+      </div>
+
+      {/* Download buttons */}
+      <div className="flex flex-wrap gap-3">
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          onClick={downloadMarkdown}
+        >
+          <Download className="h-4 w-4" />
+          Download as Markdown (.md)
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          onClick={downloadDocx}
+        >
+          <Download className="h-4 w-4" />
+          Download as Word (.docx)
+        </Button>
+      </div>
+
+      <p className="text-xs text-muted-foreground">
+        Remember to replace the {'{{placeholder}}'} values before distributing.
+      </p>
+    </div>
+  );
+}
+
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function GovernancePolicySection() {
@@ -790,39 +899,8 @@ export function GovernancePolicySection() {
           </p>
         </div>
 
-        {/* Download / Copy full document */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <CopyButton
-            text={fullPolicyText}
-            className="h-auto gap-2 px-3 py-2 opacity-100"
-          />
-          <span className="text-sm text-muted-foreground">
-            Copy full policy to clipboard
-          </span>
-          <p className="w-full text-xs text-muted-foreground">
-            Remember to replace the {'{{placeholder}}'} values before
-            distributing.
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={() => {
-              const blob = new Blob([fullPolicyText], {
-                type: 'text/markdown',
-              });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'ai-governance-policy.md';
-              a.click();
-              URL.revokeObjectURL(url);
-            }}
-          >
-            <Download className="h-4 w-4" />
-            Download as Markdown
-          </Button>
-        </div>
+        {/* Copy + Download options */}
+        <PolicyExportButtons fullPolicyText={fullPolicyText} />
       </section>
 
       <Separator />
