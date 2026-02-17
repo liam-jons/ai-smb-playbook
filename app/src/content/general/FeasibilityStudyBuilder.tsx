@@ -271,7 +271,7 @@ function StepIndicator({
       <ol
         role="list"
         aria-label="Feasibility study steps"
-        className="hidden sm:flex items-center gap-1"
+        className="hidden sm:flex items-center gap-1 overflow-x-auto"
       >
         {feasibilitySteps.map((step, i) => {
           const Icon = stepIcons[i];
@@ -284,7 +284,10 @@ function StepIndicator({
               key={step.id}
               role="listitem"
               aria-current={isCurrent ? 'step' : undefined}
-              className="flex items-center"
+              className={cn(
+                'flex items-center',
+                i < feasibilitySteps.length - 1 && 'flex-1',
+              )}
             >
               <button
                 type="button"
@@ -305,13 +308,12 @@ function StepIndicator({
                 ) : (
                   <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                 )}
-                <span className="hidden lg:inline">{step.title}</span>
-                <span className="lg:hidden">{i + 1}</span>
+                <span>{i + 1}</span>
               </button>
               {i < feasibilitySteps.length - 1 && (
                 <div
                   className={cn(
-                    'mx-1 h-px w-4',
+                    'mx-1 h-px flex-1 min-w-2',
                     i < highestStep ? 'bg-success' : 'bg-border',
                   )}
                   aria-hidden="true"

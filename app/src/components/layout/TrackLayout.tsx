@@ -136,7 +136,7 @@ export function TrackLayout() {
 
         {/* Page content */}
         <main id="main-content" className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[65ch]">
+          <div className="mx-auto max-w-[75ch]">
             <Outlet />
           </div>
         </main>
