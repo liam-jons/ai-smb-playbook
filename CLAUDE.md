@@ -139,3 +139,32 @@ The application is parameterised for per-client deployment. All client-specific 
 **Target audience profile:** UK-based SMBs familiar with Claude for general tasks but not yet experienced with sessions, context windows, skills, or structured AI workflows.
 
 **Tone:** Practical, non-condescending, SMB-appropriate (not enterprise jargon).
+
+## Design Context
+
+### Users
+UK-based SMB employees (primarily Phew Design Limited staff) who are familiar with Claude for general tasks but have not yet used sessions, context windows, skills, or structured AI workflows. They access this playbook during or after a training session to learn practical Claude techniques for their role. Two distinct audiences within the same organisation: general team members (content, admin, project management) and developers (Claude Code, CLAUDE.md, testing workflows). The job to be done is "learn to use Claude effectively and confidently, without feeling overwhelmed by AI complexity."
+
+### Brand Personality
+**Practical, clear, approachable.** The voice is that of a knowledgeable colleague who explains things plainly — never condescending, never jargon-heavy, never hyping AI capabilities beyond what's real. UK English throughout.
+
+**Emotional goals:** Confidence + trust. The interface should communicate "I can do this" (removing AI intimidation) while also feeling serious and well-made (establishing B2B credibility). Users should feel guided, not sold to.
+
+### Aesthetic Direction
+**Visual tone:** Clean, structured, quietly confident. Information hierarchy does the heavy lifting — not decoration.
+
+**References:** Stripe Docs and Linear (clean, technical but approachable, excellent information hierarchy), Notion and Tailwind Docs (friendly, well-organised, good balance of depth and scannability).
+
+**Anti-references — the design must NOT look like:**
+- Enterprise SaaS dashboards (Salesforce/HubSpot complexity — too many panels, metrics, jargon)
+- AI startup landing pages (gradient text, dark mode neon, "powered by AI" badges, hype over substance)
+- Generic documentation sites (bland, text-heavy, no personality — feels like reading a manual)
+
+**Theme:** Light mode default with full dark mode support. OKLCH colour space throughout. Warm-slate neutrals (hue 250) with subtle brand tinting. Three optional creative themes (retro-terminal, synthwave, minimal-ink) as personality layer. Semantic colour tokens for all status/callout variants.
+
+### Design Principles
+1. **Clarity over cleverness.** Every design choice should make information easier to find and understand. If a visual element doesn't aid comprehension, remove it.
+2. **Hierarchy through restraint.** Use typography weight, size, and spacing to create clear visual levels. Avoid decoration, gradients, and effects that compete with content. One well-designed interaction beats five mediocre ones.
+3. **Interactive tools feel distinct.** Calculators, simulators, and step wizards must be visually differentiated from surrounding prose — they are the product's key differentiator, not afterthoughts.
+4. **Accessibility is architecture, not a layer.** The three a11y modes (dyslexia, high-contrast, large-text), reduced motion support, keyboard navigation, and semantic HTML are structural decisions, not bolt-ons. They must work seamlessly with creative themes.
+5. **Respect the audience.** This is a B2B tool for a UK SMB, not a showcase. No AI slop (glassmorphism, neon gradients, sparklines-as-decoration, identical card grids). The design should feel like it was made by a human who cares about the reader's time.

@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { motion } from 'motion/react';
 import {
   Accordion,
   AccordionContent,
@@ -12,6 +13,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CodeBlock } from '@/components/content/CodeBlock';
@@ -37,17 +39,28 @@ export function SessionManagementSection() {
   return (
     <div className="space-y-12">
       {/* Key takeaway */}
-      <CalloutCard variant="important">
-        <p className="font-medium">
-          A fresh session with a good handoff beats a long degrading session
-          every time.
-        </p>
-      </CalloutCard>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <CalloutCard variant="important">
+          <p className="font-medium">
+            A fresh session with a good handoff beats a long degrading session
+            every time.
+          </p>
+        </CalloutCard>
+      </motion.div>
 
       {/* ─────────────────────────────────────────────
           Part 1: When to Stop a Session
           ───────────────────────────────────────────── */}
-      <section aria-labelledby="when-to-stop-heading">
+      <motion.section
+        aria-labelledby="when-to-stop-heading"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+      >
         <h2
           id="when-to-stop-heading"
           className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
@@ -174,7 +187,9 @@ export function SessionManagementSection() {
             .
           </p>
         </div>
-      </section>
+      </motion.section>
+
+      <Separator className="my-2" />
 
       {/* ─────────────────────────────────────────────
           Part 2: The Handoff Workflow
@@ -335,6 +350,8 @@ export function SessionManagementSection() {
         )}
       </section>
 
+      <Separator className="my-2" />
+
       {/* ─────────────────────────────────────────────
           Part 3: Breaking Tasks into Subtasks
           ───────────────────────────────────────────── */}
@@ -422,6 +439,8 @@ export function SessionManagementSection() {
         )}
       </section>
 
+      <Separator className="my-2" />
+
       {/* ─────────────────────────────────────────────
           Part 4: Platform-Specific Guidance
           ───────────────────────────────────────────── */}
@@ -499,6 +518,8 @@ export function SessionManagementSection() {
           </table>
         </div>
       </section>
+
+      <Separator className="my-2" />
 
       {/* ─────────────────────────────────────────────
           Part 5: Claude's Memory Feature
@@ -656,6 +677,7 @@ export function SessionManagementSection() {
       {/* ─────────────────────────────────────────────
           Developer-only extras
           ───────────────────────────────────────────── */}
+      {isDev && <Separator className="my-2" />}
       {isDev && (
         <section aria-labelledby="dev-extras-heading">
           <h2
@@ -784,6 +806,8 @@ Session 06: Brainstorming — SME routing + auth decision
         </section>
       )}
 
+      <Separator className="my-2" />
+
       {/* ─────────────────────────────────────────────
           Copyable Templates Section
           ───────────────────────────────────────────── */}
@@ -809,6 +833,7 @@ Session 06: Brainstorming — SME routing + auth decision
                 description={prompt.description}
                 prompt={prompt.content}
                 whenToUse={prompt.whenToUse}
+                copyAriaLabel={`Copy ${prompt.label} prompt`}
               />
             ))}
         </div>

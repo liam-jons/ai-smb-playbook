@@ -135,7 +135,7 @@ export function TrackLayout() {
         </div>
 
         {/* Page content */}
-        <main id="main-content" className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <main id="main-content" className="flex-1 px-4 py-6 pb-20 sm:px-6 md:pb-6 lg:px-8">
           <div className="mx-auto max-w-[75ch]">
             <Outlet />
           </div>
@@ -147,7 +147,7 @@ export function TrackLayout() {
             className="border-t border-border px-4 py-4 sm:px-6 lg:px-8"
             aria-label="Section pagination"
           >
-            <div className="mx-auto flex max-w-[65ch] items-center justify-between gap-4">
+            <div className="mx-auto flex max-w-[75ch] items-center justify-between gap-4">
               {prev ? (
                 <Link
                   to={`/${track}/${prev.slug}`}

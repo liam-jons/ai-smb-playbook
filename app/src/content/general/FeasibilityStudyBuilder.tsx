@@ -309,6 +309,9 @@ function StepIndicator({
                   <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                 )}
                 <span>{i + 1}</span>
+                <span className="hidden lg:inline truncate">
+                  {step.title}
+                </span>
               </button>
               {i < feasibilitySteps.length - 1 && (
                 <div

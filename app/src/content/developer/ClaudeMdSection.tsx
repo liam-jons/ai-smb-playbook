@@ -1,4 +1,6 @@
 import { Link } from 'react-router';
+import { X, Check } from 'lucide-react';
+import { motion } from 'motion/react';
 import {
   Accordion,
   AccordionContent,
@@ -460,7 +462,12 @@ export function ClaudeMdSection() {
   return (
     <div className="flex flex-col gap-12">
       {/* 1. What CLAUDE.md Files Are */}
-      <section aria-labelledby="what-are-claude-md">
+      <motion.section
+        aria-labelledby="what-are-claude-md"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      >
         <h2
           id="what-are-claude-md"
           className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
@@ -536,7 +543,7 @@ export function ClaudeMdSection() {
             monorepo structures work automatically.
           </p>
         </div>
-      </section>
+      </motion.section>
 
       <Separator />
 
@@ -589,7 +596,8 @@ export function ClaudeMdSection() {
             <AccordionContent>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-                  <h4 className="mb-2 font-medium text-destructive">
+                  <h4 className="mb-2 flex items-center gap-1.5 font-medium text-destructive">
+                    <X className="h-4 w-4" aria-hidden="true" />
                     Before: 1,200 lines
                   </h4>
                   <p className="text-sm text-muted-foreground">
@@ -600,7 +608,8 @@ export function ClaudeMdSection() {
                   </p>
                 </div>
                 <div className="rounded-lg border border-success/30 bg-success-muted/50 p-4">
-                  <h4 className="mb-2 font-medium text-success-muted-foreground">
+                  <h4 className="mb-2 flex items-center gap-1.5 font-medium text-success-muted-foreground">
+                    <Check className="h-4 w-4" aria-hidden="true" />
                     After: 150 lines
                   </h4>
                   <p className="text-sm text-muted-foreground">

@@ -81,7 +81,7 @@ function generateExportText(
     `  Monthly net savings:      ${formatGBP(monthlyNet)}`,
     `  Annual net savings:       ${formatGBP(annualNet)}`,
     `  ROI:                      ${formatPercent(roiPercent)}`,
-    `  Payback period:           ${paybackDays} days`,
+    `  Payback period:           ${paybackDays} ${paybackDays === 1 ? 'day' : 'days'}`,
     '',
     `Generated with the ${siteConfig.appTitle} ROI Calculator`,
   ].join('\n');
@@ -125,7 +125,7 @@ function RoiCalculator() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rounded-xl border-2 border-primary/10 bg-card p-5 sm:p-6">
       {/* Inputs */}
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
@@ -144,6 +144,7 @@ function RoiCalculator() {
             step={1}
             value={hoursSaved}
             onChange={(e) => setHoursSaved(Number(e.target.value))}
+            aria-valuetext={`${hoursSaved} hours per week`}
             className="w-full accent-primary"
           />
           <div className="mt-1 flex justify-between text-xs text-muted-foreground">
@@ -213,6 +214,7 @@ function RoiCalculator() {
             step={1}
             value={teamSize}
             onChange={(e) => setTeamSize(Number(e.target.value))}
+            aria-valuetext={`${teamSize} team ${teamSize === 1 ? 'member' : 'members'}`}
             className="w-full accent-primary"
           />
           <div className="mt-1 flex justify-between text-xs text-muted-foreground">
@@ -272,7 +274,7 @@ function RoiCalculator() {
             Monthly breakeven
           </span>
           <p className="mt-1 text-2xl font-bold tabular-nums text-foreground">
-            {paybackDays} days
+            {paybackDays} {paybackDays === 1 ? 'day' : 'days'}
           </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             Cost covered within each month
@@ -562,7 +564,7 @@ export function RoiMeasurementSection() {
           onValueChange={(v) => setActiveCategory(v as TaskCategory | 'all')}
           className="mb-6"
         >
-          <TabsList className="flex-wrap h-auto gap-1">
+          <TabsList className="flex-wrap h-auto gap-1 mb-2">
             {categoryFilters.map((filter) => (
               <TabsTrigger key={filter.value} value={filter.value}>
                 {filter.label}

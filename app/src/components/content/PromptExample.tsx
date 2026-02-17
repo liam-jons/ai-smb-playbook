@@ -16,6 +16,7 @@ interface PromptExampleProps {
   context?: string;
   whenToUse?: string;
   className?: string;
+  copyAriaLabel?: string;
 }
 
 export function PromptExample({
@@ -25,6 +26,7 @@ export function PromptExample({
   context,
   whenToUse,
   className,
+  copyAriaLabel,
 }: PromptExampleProps) {
   return (
     <Card className={cn('overflow-hidden', className)}>
@@ -47,6 +49,7 @@ export function PromptExample({
           <CopyButton
             text={prompt}
             className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
+            ariaLabel={copyAriaLabel}
           />
           <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">
             {prompt}

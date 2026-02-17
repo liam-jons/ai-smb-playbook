@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CopyButton } from './CopyButton';
+import { ScrollHint } from './ScrollHint';
 import { useTheme } from '@/hooks/useTheme';
 import { getShikiTheme } from '@/themes';
 
@@ -20,7 +21,7 @@ interface CodeBlockProps {
 
 function CodeFallback({ code }: { code: string }) {
   return (
-    <pre className="overflow-x-auto p-4 text-sm leading-relaxed">
+    <pre className="p-4 text-sm leading-relaxed">
       <code>{code}</code>
     </pre>
   );
@@ -61,14 +62,16 @@ export function CodeBlock({
             className="absolute right-2 top-2 z-10 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
           />
         )}
-        <Suspense fallback={<CodeFallback code={code} />}>
-          <ShikiHighlighter
-            code={code}
-            language={language}
-            theme={getShikiTheme(resolvedTheme, creativeTheme)}
-            showLineNumbers={showLineNumbers}
-          />
-        </Suspense>
+        <ScrollHint className="scroll-hint-code">
+          <Suspense fallback={<CodeFallback code={code} />}>
+            <ShikiHighlighter
+              code={code}
+              language={language}
+              theme={getShikiTheme(resolvedTheme, creativeTheme)}
+              showLineNumbers={showLineNumbers}
+            />
+          </Suspense>
+        </ScrollHint>
       </div>
     </Card>
   );

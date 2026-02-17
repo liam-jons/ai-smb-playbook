@@ -17,24 +17,29 @@ const variantConfig: Record<
   {
     icon: typeof Info;
     className: string;
+    role: React.AriaRole | undefined;
   }
 > = {
   info: {
     icon: Info,
     className: 'border-info/30 bg-info-muted/50 [&>svg]:text-info',
+    role: 'note',
   },
   warning: {
     icon: AlertTriangle,
     className: 'border-warning/30 bg-warning-muted/50 [&>svg]:text-warning',
+    role: 'alert',
   },
   tip: {
     icon: Lightbulb,
     className: 'border-success/30 bg-success-muted/50 [&>svg]:text-success',
+    role: 'note',
   },
   important: {
     icon: AlertCircle,
     className:
       'border-important/30 bg-important-muted/50 [&>svg]:text-important',
+    role: 'alert',
   },
 };
 
@@ -48,7 +53,7 @@ export function CalloutCard({
   const Icon = config.icon;
 
   return (
-    <Alert className={cn(config.className, className)}>
+    <Alert role={config.role} className={cn(config.className, className)}>
       <Icon className="h-4 w-4" />
       {title && <AlertTitle>{title}</AlertTitle>}
       <AlertDescription>{children}</AlertDescription>

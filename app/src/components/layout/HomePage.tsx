@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
-import { Users, Code, ArrowRight } from 'lucide-react';
+import { BookOpen, Terminal, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import {
   Card,
   CardContent,
@@ -11,65 +12,105 @@ import { Badge } from '@/components/ui/badge';
 import { getSectionsForTrack } from '@/content/shared/sections';
 import { siteConfig } from '@/config/site';
 
+/** Slugs that best represent each track's unique value */
+const GENERAL_HIGHLIGHTS = [
+  'brand-voice',
+  'governance',
+  'recurring-tasks',
+  'roi-measurement',
+];
+const DEVELOPER_HIGHLIGHTS = [
+  'claude-md',
+  'codebase-mapping',
+  'regression-testing',
+  'plugins',
+];
+
 export function HomePage() {
   const generalSections = getSectionsForTrack('general');
   const developerSections = getSectionsForTrack('developer');
 
+  const generalHighlights = generalSections.filter((s) =>
+    GENERAL_HIGHLIGHTS.includes(s.slug),
+  );
+  const developerHighlights = developerSections.filter((s) =>
+    DEVELOPER_HIGHLIGHTS.includes(s.slug),
+  );
+
   return (
-    <main
-      id="main-content"
-      className="flex min-h-[calc(100dvh-3.5rem)] flex-1 items-start"
-    >
+    <main id="main-content" className="flex flex-1 items-start">
       <div className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-        {/* Hero */}
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {siteConfig.appTitle}
+        {/* Hero — left-aligned, warm, action-oriented */}
+        <motion.div
+          className="mb-12"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="mb-2 text-sm font-medium text-primary">
+            Prepared by {siteConfig.consultantName} &middot;{' '}
+            {siteConfig.trainingDate}
+          </p>
+          <h1
+            className="mb-4 font-bold tracking-tight text-foreground"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+          >
+            Your practical guide to working with Claude AI
           </h1>
-          <p className="mx-auto max-w-xl text-lg text-muted-foreground">
+          <p className="max-w-xl text-lg text-muted-foreground">
             {siteConfig.metaDescription} at{' '}
             {siteConfig.companyName.replace(' Limited', '')}. Choose your track
-            to get started.
+            below.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Track cards */}
-        <div className="grid gap-6 sm:grid-cols-2">
+        {/* Track cards — differentiated with accent colours and unique previews */}
+        <motion.div
+          className="grid gap-6 md:grid-cols-2"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           {/* General Users track */}
-          <Link to="/general" className="group block">
-            <Card className="h-full transition-colors hover:border-primary/40">
+          <Link
+            to="/general"
+            className="group block"
+            aria-label="General Users track — for all team members"
+          >
+            <Card className="h-full border-l-4 border-l-blue-500 transition-all hover:shadow-md dark:border-l-blue-400">
               <CardHeader>
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Users className="h-5 w-5" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+                    <BookOpen className="h-5 w-5" />
                   </div>
                   <Badge variant="secondary" className="text-xs">
                     {generalSections.length} sections
                   </Badge>
                 </div>
-                <CardTitle className="text-xl">General Users</CardTitle>
+                <CardTitle>
+                  <h2 className="text-2xl font-semibold">General Users</h2>
+                </CardTitle>
                 <CardDescription>
-                  For all team members. Learn how to use Claude effectively for
+                  For all team members. Learn to use Claude effectively for
                   everyday tasks, content creation, and business workflows.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="mb-4 space-y-1 text-sm text-muted-foreground">
-                  {generalSections.slice(0, 4).map((s) => (
+                  {generalHighlights.map((s) => (
                     <li key={s.id} className="flex items-center gap-1.5">
                       <span className="text-xs text-muted-foreground/60">
                         {s.id}
                       </span>
-                      {s.title}
+                      {s.sidebarTitle || s.title}
                     </li>
                   ))}
-                  {generalSections.length > 4 && (
-                    <li className="text-xs text-muted-foreground/60">
-                      + {generalSections.length - 4} more sections
-                    </li>
-                  )}
+                  <li className="text-xs text-muted-foreground/60">
+                    + {generalSections.length - generalHighlights.length} more
+                    sections
+                  </li>
                 </ul>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all">
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-600 transition-all group-hover:gap-2.5 dark:text-blue-400">
                   Get started
                   <ArrowRight className="h-4 w-4" />
                 </span>
@@ -78,47 +119,52 @@ export function HomePage() {
           </Link>
 
           {/* Developer track */}
-          <Link to="/developer" className="group block">
-            <Card className="h-full transition-colors hover:border-primary/40">
+          <Link
+            to="/developer"
+            className="group block"
+            aria-label="Developer track — for the development team"
+          >
+            <Card className="h-full border-l-4 border-l-violet-500 transition-all hover:shadow-md dark:border-l-violet-400">
               <CardHeader>
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Code className="h-5 w-5" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400">
+                    <Terminal className="h-5 w-5" />
                   </div>
                   <Badge variant="secondary" className="text-xs">
                     {developerSections.length} sections
                   </Badge>
                 </div>
-                <CardTitle className="text-xl">Developers</CardTitle>
+                <CardTitle>
+                  <h2 className="text-2xl font-semibold">Developers</h2>
+                </CardTitle>
                 <CardDescription>
-                  For the development team. Covers Claude Code, CLAUDE.md files,
+                  For the development team. Claude Code, CLAUDE.md files,
                   codebase mapping, testing, and technical workflows.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="mb-4 space-y-1 text-sm text-muted-foreground">
-                  {developerSections.slice(0, 4).map((s) => (
+                  {developerHighlights.map((s) => (
                     <li key={s.id} className="flex items-center gap-1.5">
                       <span className="text-xs text-muted-foreground/60">
                         {s.id}
                       </span>
-                      {s.title}
+                      {s.sidebarTitle || s.title}
                     </li>
                   ))}
-                  {developerSections.length > 4 && (
-                    <li className="text-xs text-muted-foreground/60">
-                      + {developerSections.length - 4} more sections
-                    </li>
-                  )}
+                  <li className="text-xs text-muted-foreground/60">
+                    + {developerSections.length - developerHighlights.length}{' '}
+                    more sections including all general content
+                  </li>
                 </ul>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all">
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-violet-500/10 px-3 py-1.5 text-sm font-medium text-violet-600 transition-all group-hover:gap-2.5 dark:text-violet-400">
                   Get started
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </CardContent>
             </Card>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </main>
   );

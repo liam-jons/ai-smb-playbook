@@ -119,7 +119,7 @@ export function ShikiHighlighter({
   return (
     <div
       className={cn(
-        'overflow-x-auto [&_pre]:p-4 [&_pre]:text-sm [&_pre]:leading-relaxed [&_pre]:!bg-transparent',
+        '[&_pre]:p-4 [&_pre]:text-sm [&_pre]:leading-relaxed [&_pre]:!bg-transparent',
         showLineNumbers &&
           '[&_.line]:before:mr-4 [&_.line]:before:text-muted-foreground/40',
       )}

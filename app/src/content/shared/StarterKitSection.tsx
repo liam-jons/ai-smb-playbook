@@ -79,6 +79,19 @@ const CATEGORY_ICONS: Record<StarterKitCategory, typeof Sparkles> = {
 };
 
 /* ------------------------------------------------------------------ */
+/*  Mobile-friendly short labels for file browser tabs                 */
+/* ------------------------------------------------------------------ */
+
+const CATEGORY_SHORT_LABELS: Record<StarterKitCategory, string> = {
+  skill: 'Skills',
+  command: 'Cmds',
+  template: 'Templates',
+  prompt: 'Prompts',
+  plugin: 'Plugins',
+  'gsd-mapper': 'GSD',
+};
+
+/* ------------------------------------------------------------------ */
 /*  Platform label mapping (module-scope constant)                     */
 /* ------------------------------------------------------------------ */
 
@@ -248,6 +261,7 @@ function FileCard({ file }: { file: StarterKitFile }) {
         )}
         aria-expanded={expanded}
         aria-controls={`file-detail-${file.id}`}
+        aria-label={`${expanded ? 'Collapse' : 'View'} ${file.name} details`}
       >
         <div className="mt-0.5 shrink-0 text-muted-foreground">
           {expanded ? (
@@ -874,7 +888,7 @@ function FileBrowser() {
                   {CATEGORY_LABELS[category]}
                 </span>
                 <span className="sm:hidden">
-                  {CATEGORY_LABELS[category].slice(0, 4)}
+                  {CATEGORY_SHORT_LABELS[category]}
                 </span>
                 <Badge variant="secondary" className="ml-1 text-xs">
                   {files.length}
@@ -925,7 +939,7 @@ export function StarterKitSection() {
       <motion.section {...motionProps} aria-labelledby="starter-kit-intro">
         <h2
           id="starter-kit-intro"
-          className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl"
+          className="mb-4 text-xl font-bold tracking-tight sm:text-2xl"
           style={{ lineHeight: 1.2 }}
         >
           Starter Kit

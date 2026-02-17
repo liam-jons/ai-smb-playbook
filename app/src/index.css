@@ -169,9 +169,9 @@
 .dark {
   --background: oklch(0.16 0.012 250);
   --foreground: oklch(0.94 0.006 250);
-  --card: oklch(0.21 0.012 250);
+  --card: oklch(0.23 0.012 250);
   --card-foreground: oklch(0.94 0.006 250);
-  --popover: oklch(0.21 0.012 250);
+  --popover: oklch(0.23 0.012 250);
   --popover-foreground: oklch(0.94 0.006 250);
   --primary: oklch(0.68 0.1 250);
   --primary-foreground: oklch(0.16 0.012 250);
@@ -202,20 +202,20 @@
   /* Status tokens */
   --success: oklch(0.65 0.19 155);
   --success-foreground: oklch(0.16 0.012 250);
-  --success-muted: oklch(0.25 0.04 155);
-  --success-muted-foreground: oklch(0.8 0.1 155);
+  --success-muted: oklch(0.30 0.04 155);
+  --success-muted-foreground: oklch(0.85 0.1 155);
   --warning: oklch(0.7 0.17 85);
   --warning-foreground: oklch(0.16 0.012 250);
-  --warning-muted: oklch(0.25 0.04 85);
-  --warning-muted-foreground: oklch(0.8 0.1 85);
+  --warning-muted: oklch(0.30 0.04 85);
+  --warning-muted-foreground: oklch(0.85 0.1 85);
   --info: oklch(0.65 0.15 250);
   --info-foreground: oklch(0.16 0.012 250);
-  --info-muted: oklch(0.25 0.04 250);
-  --info-muted-foreground: oklch(0.8 0.1 250);
+  --info-muted: oklch(0.30 0.04 250);
+  --info-muted-foreground: oklch(0.85 0.1 250);
   --important: oklch(0.65 0.19 300);
   --important-foreground: oklch(0.16 0.012 250);
-  --important-muted: oklch(0.25 0.04 300);
-  --important-muted-foreground: oklch(0.8 0.1 300);
+  --important-muted: oklch(0.30 0.04 300);
+  --important-muted-foreground: oklch(0.85 0.1 300);
   --danger: oklch(0.65 0.2 25);
   --danger-foreground: oklch(0.16 0.012 250);
   --danger-muted: oklch(0.25 0.04 25);
@@ -301,4 +301,67 @@
 }
 .skip-link:focus {
   @apply top-4;
+}
+
+/* Scroll hint — JS-driven gradient for ScrollHint React component.
+   Used for code blocks and any container that needs precise scroll-state detection.
+   On iOS and mobile browsers, native scrollbars are invisible. The gradient fade is the
+   only visual cue that more content exists beyond the visible edge. */
+.scroll-hint-wrapper {
+  position: relative;
+}
+
+.scroll-hint-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 150ms ease;
+}
+
+.scroll-hint-fade-right {
+  right: 0;
+  background: linear-gradient(to right, transparent, var(--color-card));
+}
+
+.scroll-hint-fade-left {
+  left: 0;
+  background: linear-gradient(to left, transparent, var(--color-card));
+}
+
+/* When the scroll hint is inside a muted/40 background (e.g. CodeBlock card),
+   match the slightly tinted surface colour instead of pure card. */
+.scroll-hint-code .scroll-hint-fade-right {
+  background: linear-gradient(to right, transparent, var(--color-muted));
+}
+
+.scroll-hint-code .scroll-hint-fade-left {
+  background: linear-gradient(to left, transparent, var(--color-muted));
+}
+
+/* CSS-only scroll shadows for overflow-x-auto containers with tables.
+   Uses the background-attachment: local/scroll trick to show shadows
+   only when content overflows in that direction. No JavaScript needed.
+   Scoped via :has(table) to avoid affecting non-table overflow containers.
+   Excluded inside .scroll-hint-wrapper which uses JS-driven gradient overlays. */
+.overflow-x-auto:has(table):not(.scroll-hint-wrapper .overflow-x-auto) {
+  background:
+    /* Left shadow cover (moves with scroll — hides left shadow at start) */
+    linear-gradient(to right, var(--color-background), var(--color-background)) left center / 2rem 100% no-repeat local,
+    /* Right shadow cover (moves with scroll — hides right shadow at end) */
+    linear-gradient(to left, var(--color-background), var(--color-background)) right center / 2rem 100% no-repeat local,
+    /* Left shadow (fixed in viewport — visible when scrolled right) */
+    linear-gradient(to right, oklch(0 0 0 / 0.08), transparent) left center / 1.5rem 100% no-repeat scroll,
+    /* Right shadow (fixed in viewport — visible when content overflows right) */
+    linear-gradient(to left, oklch(0 0 0 / 0.08), transparent) right center / 1.5rem 100% no-repeat scroll;
+}
+
+.dark .overflow-x-auto:has(table):not(.scroll-hint-wrapper .overflow-x-auto) {
+  background:
+    linear-gradient(to right, var(--color-background), var(--color-background)) left center / 2rem 100% no-repeat local,
+    linear-gradient(to left, var(--color-background), var(--color-background)) right center / 2rem 100% no-repeat local,
+    linear-gradient(to right, oklch(0 0 0 / 0.25), transparent) left center / 1.5rem 100% no-repeat scroll,
+    linear-gradient(to left, oklch(0 0 0 / 0.25), transparent) right center / 1.5rem 100% no-repeat scroll;
 }

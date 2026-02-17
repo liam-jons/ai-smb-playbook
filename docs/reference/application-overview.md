@@ -2,24 +2,21 @@
 
 ## What This Is
 
-The AI SMB Playbook is a hosted React web application that serves as an interactive reference guide for small and medium-sized businesses adopting Claude AI. It is designed to be deployed as a post-training follow-up deliverable, giving teams a living, explorable resource they can return to after an initial AI training engagement.
+The AI SMB Playbook is a hosted React web application that serves as an interactive reference guide for small and medium-sized businesses adopting AI. It is designed to be deployed as a post-training follow-up deliverable, giving teams a living, explorable resource they can return to after an initial AI training engagement.
 
-The application is paired with two companion outputs:
-
-1. **Starter Kit** — Drop-in skill files, command files, templates, and a governance policy that the client can use in their Claude environment immediately.
-2. **Repeatable Workflow Process Doc** — An internal document capturing the end-to-end process for producing this deliverable, so it can be replicated for future clients.
-
-The playbook itself was built using the same AI tools and workflows it teaches, which forms a reinforcing meta-narrative throughout the content.
+The application includes a **Starter Kit** — Drop-in skill files, command files, templates, and a governance policy that the client can use immediately.
 
 ---
 
 ## Who It Is For
 
-- **Primary audience:** UK-based SMBs with Claude Teams licences and a mix of general users and developers.
-- **Assumed AI maturity:** Familiar with Claude for general tasks, but not yet comfortable with sessions, context windows, skills, or structured AI workflows.
+- **Primary audience:** UK-based SMBs who will have received training or consultancy services from AI Solution Hub. The application accounts for there being a mix of general users and developers/technical users.
+- **Assumed AI maturity:** Clients are on a spectrum - some may have used AI personally, and possibly for smaller work tasks. Others are familiar with Claude (and other LLMs) for general tasks, but not yet comfortable with sessions, context windows, skills, or structured AI workflows.
 - **Tone:** Practical, non-condescending, SMB-appropriate. No enterprise jargon.
 
 The application accommodates two distinct audience tracks (see "Content Model" below), so non-technical staff and developers each get content pitched at the right level.
+
+Important - We (AI Solution Hub) use Claude, and advocate for others to do so too, which is in part why the application is heavily Claude-focused. We do however need to be aware that some users won't yet be using Claude, and some may not have even heard of Anthropic.
 
 ---
 
@@ -40,7 +37,7 @@ The track is selected by the user at the home page or welcome section. The sideb
 
 | ID | Slug | Title | Summary |
 |----|------|-------|---------|
-| 1.1 | `welcome` | Welcome & Orientation | Introduction, track selector, quick wins, meta-narrative |
+| 1.1 | `welcome` | Welcome & Orientation | Introduction, track selector, quick wins |
 | 1.2 | `context` | How Context Works | Interactive context window simulator — the hero piece |
 | 1.3 | `sessions` | Session Management | When to start new sessions, handoff prompts, atomic tasks |
 | 1.4 | `skills-extensions` | Skills, Extensions & Decision Tree | Interactive decision tree for choosing the right extension mechanism |
@@ -140,47 +137,45 @@ Files in `starter-kit/` are client-deliverable assets. Most are generic by desig
 ### Repository Structure
 
 ```
-app/                              # React playbook application
+app/                          # React playbook app (Vite + React + Tailwind v4 + TypeScript)
   ├── api/
-  │   └── feedback.ts             # Vercel serverless function (Resend email)
+  │   └── feedback.ts         # Vercel serverless function (Resend email)
   ├── src/
   │   ├── components/
-  │   │   ├── content/            # Content display (CodeBlock, CalloutCard, CopyButton, PromptExample, SectionPage, ShikiHighlighter)
-  │   │   ├── interactive/        # Context window simulator and sub-components
-  │   │   ├── layout/             # App shell (AppLayout, Header, Sidebar, Footer, HomePage, TrackLayout, FeedbackWidget, ThemeSettings, NotFoundPage)
-  │   │   └── ui/                 # shadcn/ui primitives (added via `bunx shadcn add`)
+  │   │   ├── content/        # Content display (CodeBlock, CalloutCard, CopyButton, PromptExample, SectionPage, ShikiHighlighter)
+  │   │   ├── interactive/    # Context window simulator (ContextWindowSimulator + sub-components)
+  │   │   ├── layout/         # App shell (AppLayout, Header, Sidebar, Footer, HomePage, TrackLayout, FeedbackWidget, ThemeSettings, NotFoundPage)
+  │   │   └── ui/             # shadcn/ui primitives (18 components — added via `bunx shadcn add`)
   │   ├── content/
-  │   │   ├── general/            # General track section components
-  │   │   ├── developer/          # Developer track section components
-  │   │   └── shared/             # Section registry, types, data files, StarterKit, Welcome & ProcessDoc pages
-  │   ├── routes/                 # React Router config (router.tsx)
-  │   ├── hooks/                  # Custom hooks (useAccessibility, useCopyToClipboard, useTheme, useTrack)
-  │   ├── themes/                 # Accessibility modes & font definitions
-  │   ├── config/                 # Site config (site.ts) — client parameterisation point
-  │   ├── lib/                    # Utilities (utils.ts — cn() helper)
+  │   │   ├── general/        # General track sections (7 section components)
+  │   │   ├── developer/      # Developer track sections (8 section components)
+  │   │   └── shared/         # Section registry, types, data files, StarterKit, Welcome & ProcessDoc pages
+  │   ├── routes/             # React Router config (router.tsx)
+  │   ├── hooks/              # Custom hooks (useAccessibility, useCopyToClipboard, useTheme, useTrack)
+  │   ├── themes/             # Accessibility modes & font definitions (index.ts)
+  │   ├── config/             # Site config (site.ts)
+  │   ├── lib/                # Utilities (utils.ts — cn() helper)
   │   └── assets/
-  └── dist/                       # Production build output (gitignored)
-.planning/                        # Planning artefacts (retained for reference)
-  ├── client-specific/            # Per-client source materials
-  │   ├── 00-phew/                # Original client (Phew Design Limited)
-  │   └── 01-amd/                 # Subsequent clients
-  ├── reference/                  # Generic application reference docs
-  ├── research/                   # Research findings from Phase 0
-  ├── specs/                      # Section-level build specs from Phase 1
-  ├── plan-files/                 # Execution plans
-  ├── audit-findings/             # Audit reports
-  └── continuation-prompts/       # Session continuation prompts
-starter-kit/                      # Deliverable files for clients
-  ├── skills/                     # .md skill files
-  ├── commands/                   # .md command files
-  ├── gsd-mapper/                 # Codebase mapper agent, command, templates, workflow
+  └── dist/                   # Production build output (gitignored)
+.planning/                    # Planning artefacts
+  ├── client-specific/        # Per-client context, specs, and history (00-phew/, 01-amd/, …)
+  ├── research/               # Reusable research (market-research/, accessibility, capabilities)
+  └── plan-files/             # Execution plans
+starter-kit/                  # Deliverable files for client
+  ├── skills/                 # .md skill files (13 provided)
+  ├── commands/               # .md command files
+  ├── gsd-mapper/             # Codebase mapper agent, command, templates, workflow
   ├── plugins/
-  │   └── claude-plugins-official/ # Reference copies of plugins (not functional in-repo)
-  ├── templates/                  # Governance policy, doc structure, CLAUDE.md templates
-  └── prompts/                    # Session handoff prompts, example prompts
+  │   └── claude-plugins-official/  # Reference copies of 14 plugins (not functional in-repo)
+  ├── templates/              # Governance policy, doc structure, CLAUDE.md templates
+  └── prompts/                # Session handoff prompts, example prompts
 docs/
-  └── repeatable-workflow.md      # Internal process documentation
-vercel.json                       # Vercel deployment (region: lhr1, SPA rewrites, security headers)
+  ├── reference/              # Active reference docs (application-overview, frontend-skills-review, templates)
+  ├── audit-findings/         # Audit reports (date-stamped: YYYYMMDD-type/)
+  ├── continuation-prompts/   # Reusable continuation prompt templates
+  └── repeatable-workflow.md  # Internal process doc
+package.json                  # Repo-root package (workspace config)
+vercel.json                   # Vercel deployment config (region: lhr1, SPA rewrites, security headers)
 ```
 
 ### Tech Stack
@@ -335,9 +330,14 @@ The `.planning/` directory retains all artefacts from the original build process
 | Directory | Contents |
 |-----------|----------|
 | `client-specific/` | Per-client source materials (training summaries, feedback, site scrapes) |
-| `reference/` | Generic application reference documents (including this file) |
 | `research/` | Phase 0 research outputs (context mechanics, tech stack, capabilities audit, etc.) |
 | `specs/` | Phase 1 section-level build specs |
 | `plan-files/` | Execution plans for specific implementation tasks |
+
+## Documentation is saved under /docs
+
+| Directory | Contents |
+|-----------|----------|
+| `reference/` | Generic application reference documents (including this file) |
 | `audit-findings/` | Content and design audit reports |
 | `continuation-prompts/` | Session handoff prompts used during the build |

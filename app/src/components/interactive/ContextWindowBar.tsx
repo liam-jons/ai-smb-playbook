@@ -200,9 +200,9 @@ export function ContextWindowBar({
         )}
       </div>
 
-      {/* Mobile legend */}
+      {/* Segment legend */}
       <div
-        className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:hidden"
+        className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3"
         aria-label="Segment colour legend"
         id={`${barId}-legend`}
       >
