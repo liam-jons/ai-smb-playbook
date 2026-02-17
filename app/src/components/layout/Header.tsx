@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { Menu, X, MessageSquareHeart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeSettings } from './ThemeSettings';
@@ -9,18 +9,12 @@ import { siteConfig } from '@/config/site';
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const currentTrack = location.pathname.startsWith('/general')
     ? 'general'
     : location.pathname.startsWith('/developer')
       ? 'developer'
       : null;
-
-  const handleTrackSwitch = (track: string) => {
-    navigate(`/${track}`);
-    setMobileMenuOpen(false);
-  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -38,8 +32,8 @@ export function Header() {
           className="hidden items-center gap-1 md:flex"
           aria-label="Track navigation"
         >
-          <button
-            onClick={() => handleTrackSwitch('general')}
+          <Link
+            to="/general"
             className={cn(
               'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
               currentTrack === 'general'
@@ -49,9 +43,9 @@ export function Header() {
             aria-current={currentTrack === 'general' ? 'page' : undefined}
           >
             General Users
-          </button>
-          <button
-            onClick={() => handleTrackSwitch('developer')}
+          </Link>
+          <Link
+            to="/developer"
             className={cn(
               'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
               currentTrack === 'developer'
@@ -61,7 +55,7 @@ export function Header() {
             aria-current={currentTrack === 'developer' ? 'page' : undefined}
           >
             Developers
-          </button>
+          </Link>
         </nav>
 
         {/* Desktop actions */}
@@ -108,8 +102,9 @@ export function Header() {
           aria-label="Mobile navigation"
         >
           <div className="flex flex-col gap-2">
-            <button
-              onClick={() => handleTrackSwitch('general')}
+            <Link
+              to="/general"
+              onClick={() => setMobileMenuOpen(false)}
               className={cn(
                 'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
                 currentTrack === 'general'
@@ -118,9 +113,10 @@ export function Header() {
               )}
             >
               General Users
-            </button>
-            <button
-              onClick={() => handleTrackSwitch('developer')}
+            </Link>
+            <Link
+              to="/developer"
+              onClick={() => setMobileMenuOpen(false)}
               className={cn(
                 'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
                 currentTrack === 'developer'
@@ -129,7 +125,7 @@ export function Header() {
               )}
             >
               Developers
-            </button>
+            </Link>
             <Button
               variant="ghost"
               className="justify-start"

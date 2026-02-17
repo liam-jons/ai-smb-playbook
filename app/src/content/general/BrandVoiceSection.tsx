@@ -398,7 +398,7 @@ export function BrandVoiceSection() {
                     <div className="group relative mt-3 rounded-md border border-border bg-muted/40 p-3">
                       <CopyButton
                         text={step.copyableText}
-                        className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100"
+                        className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
                       />
                       <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">
                         {step.copyableText}
@@ -442,7 +442,7 @@ export function BrandVoiceSection() {
                       <div className="group relative mt-3 rounded-md border border-border bg-muted/40 p-3">
                         <CopyButton
                           text={step.copyableText}
-                          className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100"
+                          className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
                         />
                         <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">
                           {step.copyableText}

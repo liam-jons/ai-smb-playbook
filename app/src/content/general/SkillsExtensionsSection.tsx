@@ -22,6 +22,7 @@ import {
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import {
   Check,
@@ -416,7 +417,7 @@ const referenceCards: ReferenceCard[] = [
     setupSteps: [
       'Open claude.ai and create or open a Project',
       'Go to Project Settings > Custom Instructions',
-      'Add your rules and context (e.g., "Always use UK English. Our company is Phew Design Limited.")',
+      `Add your rules and context (e.g., "Always use UK English. Our company is ${siteConfig.companyName}.")`,
       'Every conversation in this project now inherits those instructions',
     ],
   },
@@ -965,19 +966,28 @@ export function SkillsExtensionsSection() {
 
   const scrollToCard = useCallback((cardId: string) => {
     setOpenRefCard(cardId);
-    // Small delay to let accordion open
-    setTimeout(() => {
-      const el = document.getElementById(`ref-card-${cardId}`);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+    // Wait for React to commit the state update and the browser to paint
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(`ref-card-${cardId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Focus the accordion trigger for keyboard accessibility
+          const trigger = el.querySelector<HTMLButtonElement>(
+            '[data-slot="accordion-trigger"]',
+          );
+          if (trigger) {
+            trigger.focus({ preventScroll: true });
+          }
+        }
+      });
+    });
   }, []);
 
   return (
     <div className="space-y-12">
       {/* A. Introduction */}
-      <section aria-labelledby="intro-heading">
+      <section>
         <p className="max-w-prose text-base leading-relaxed text-foreground">
           Claude comes with powerful built-in tools for conversation, writing,
           analysis, and code. But its real power emerges when you extend it —
@@ -995,9 +1005,9 @@ export function SkillsExtensionsSection() {
           </p>
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
             Not every mechanism is available on every platform — the decision
-            tree and availability matrix below show what works where. Phew! has
-            Claude Teams licences for all staff and Claude Code access for
-            developers.
+            tree and availability matrix below show what works where.{' '}
+            {siteConfig.companyName} has Claude Teams licences for all staff and
+            Claude Code access for developers.
           </p>
           {isGeneral && (
             <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
@@ -1075,7 +1085,7 @@ export function SkillsExtensionsSection() {
                     {/* Example */}
                     <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
                       <span className="text-xs font-medium text-muted-foreground">
-                        Example for Phew!
+                        Example for {siteConfig.companyName}
                       </span>
                       <p className="mt-1 text-sm text-foreground">
                         {entry.example}

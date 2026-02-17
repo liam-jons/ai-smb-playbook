@@ -230,7 +230,7 @@ function RoiCalculator() {
         aria-atomic="true"
         className="grid gap-3 sm:grid-cols-2"
       >
-        <div className="rounded-lg border border-border bg-card p-4">
+        <div className="rounded-lg border border-border bg-muted/50 p-4">
           <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Monthly net savings
           </span>
@@ -243,7 +243,7 @@ function RoiCalculator() {
             {formatGBP(monthlyNet)}
           </p>
         </div>
-        <div className="rounded-lg border border-border bg-card p-4">
+        <div className="rounded-lg border border-border bg-muted/50 p-4">
           <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Annual net savings
           </span>
@@ -256,7 +256,7 @@ function RoiCalculator() {
             {formatGBP(annualNet)}
           </p>
         </div>
-        <div className="rounded-lg border border-border bg-card p-4">
+        <div className="rounded-lg border border-border bg-muted/50 p-4">
           <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Return on investment
           </span>
@@ -269,7 +269,7 @@ function RoiCalculator() {
             {formatPercent(roiPercent)}
           </p>
         </div>
-        <div className="rounded-lg border border-border bg-card p-4">
+        <div className="rounded-lg border border-border bg-muted/50 p-4">
           <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Monthly breakeven
           </span>

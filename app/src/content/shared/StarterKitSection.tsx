@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Link } from 'react-router';
 import {
   ChevronDown,
@@ -46,12 +46,25 @@ import {
 } from '@/content/shared/starter-kit-data';
 
 /* ------------------------------------------------------------------ */
-/*  Reduced-motion helpers                                             */
+/*  Reduced-motion hook                                                */
 /* ------------------------------------------------------------------ */
 
-const getReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function useReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false,
+  );
+
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  return reduced;
+}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 12 },
@@ -206,7 +219,7 @@ function FileCard({ file }: { file: StarterKitFile }) {
   const [expanded, setExpanded] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const { track } = useTrack();
-  const reducedMotion = useMemo(() => getReducedMotion(), []);
+  const reducedMotion = useReducedMotion();
 
   const toggleExpanded = useCallback(() => {
     setExpanded((prev) => !prev);
@@ -928,7 +941,7 @@ function FileBrowser() {
 export function StarterKitSection() {
   const { track } = useTrack();
   const isDev = track === 'developer';
-  const prefersReducedMotion = useMemo(() => getReducedMotion(), []);
+  const prefersReducedMotion = useReducedMotion();
 
   const motionProps = prefersReducedMotion ? {} : fadeInUp;
   const motionFadeProps = prefersReducedMotion ? {} : fadeIn;

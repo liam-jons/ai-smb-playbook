@@ -1,10 +1,10 @@
 # Design Audit Synthesis
 
 > **Produced:** 17 February 2026
-> **Updated:** 17 February 2026 (comprehensive cross-reference of all 6 individual critique files)
-> **Source files:** `agent-outputs/design-critique-{home,roi-measurement,context,session-management,starter-kit,claude-md}.md`
-> **Pages audited:** 6 full critiques + 12 triaged of 20 total
-> **Total findings:** 127 (5 Critical, 37 Important, 85 Nice-to-Have)
+> **Updated:** 17 February 2026 (Session 23 — Wave 4 fixes + 2 additional full critiques)
+> **Source files:** `agent-outputs/design-critique-{home,roi-measurement,context,session-management,starter-kit,claude-md,skills-extensions,brand-voice}.md`
+> **Pages audited:** 8 full critiques + 12 triaged of 20 total
+> **Total findings:** 127 original + new findings from Skills/Extensions and Brand Voice critiques
 
 ---
 
@@ -18,7 +18,7 @@ Across 6 pages, the AI SMB Playbook demonstrates **strong content quality, excel
 
 ## Audit Coverage
 
-### Audited pages (6)
+### Audited pages (8)
 
 | # | Page | Route | Score |
 |---|------|-------|-------|
@@ -28,6 +28,8 @@ Across 6 pages, the AI SMB Playbook demonstrates **strong content quality, excel
 | 4 | Session Management | `/general/sessions` | 7.0/10 |
 | 5 | Starter Kit | `/general/starter-kit` | 6.8/10 |
 | 6 | CLAUDE.md Files | `/developer/claude-md` | 7.0/10 |
+| 7 | Skills, Extensions & Decision Tree | `/general/skills-extensions` | 6.6/10 |
+| 8 | Brand Voice & UK English | `/general/brand-voice` | 7.4/10 |
 
 **Average: 6.9/10**
 
@@ -36,9 +38,9 @@ Across 6 pages, the AI SMB Playbook demonstrates **strong content quality, excel
 | # | Page | Route | Track | Verdict | Report |
 |---|------|-------|-------|---------|--------|
 | 1 | Welcome & Orientation | `/general/welcome` | Both | Cross-page fixes sufficient | `design-triage-welcome.md` |
-| 2 | Skills, Extensions & Decision Tree | `/general/skills-extensions` | Both | **Full critique needed** | `design-triage-skills-extensions.md` |
+| 2 | Skills, Extensions & Decision Tree | `/general/skills-extensions` | Both | **Full critique done** (Session 23) | `design-critique-skills-extensions.md` |
 | 3 | AI Governance Policy | `/general/governance` | Both | Cross-page fixes sufficient + parameterisation | `design-triage-governance.md` |
-| 4 | Brand Voice & UK English | `/general/brand-voice` | Both | **Full critique needed** | `design-triage-brand-voice.md` |
+| 4 | Brand Voice & UK English | `/general/brand-voice` | Both | **Full critique done** (Session 23) | `design-critique-brand-voice.md` |
 | 5 | Recurring & Scheduled Tasks | `/general/recurring-tasks` | Both | Cross-page fixes sufficient + parameterisation | `design-triage-recurring-tasks.md` |
 | 6 | Documentation Structure | `/developer/documentation` | Developer | Cross-page fixes sufficient | `design-triage-developer-track.md` |
 | 7 | Codebase Mapping | `/developer/codebase-mapping` | Developer | Cross-page fixes sufficient | `design-triage-developer-track.md` |
@@ -98,7 +100,7 @@ These 2 remaining pages do not need auditing -- one is scheduled for removal and
 
 | # | Issue | Pages | Fix Location |
 |---|-------|-------|-------------|
-| I1 | **Content area too narrow at 1440px.** `max-w-[75ch]` constrains all content pages. Interactive tools (calculator, simulator, file browser, tables) feel cramped on wide viewports. | All 5 content pages | `TrackLayout.tsx:139` |
+| I1 | **Content area too narrow at 1440px.** `max-w-[75ch]` constrains all content pages. (DONE — changed to `max-w-3xl` / 768px) | All 5 content pages | `TrackLayout.tsx:139` |
 | I2 | **Interactive tools not visually distinct from prose.** The ROI calculator, context simulator, and copyable templates lack bordered containers that separate them from surrounding text. Design principle "interactive tools feel distinct" is only partially met. | ROI, Context, Sessions | Individual section components |
 | I3 | **No page entrance animations on most pages.** Home, Sessions, and CLAUDE.md pages load with no entrance choreography. ROI and Starter Kit have some Motion usage. | Home, Sessions, CLAUDE.md | Individual section components |
 | I4 | **Dark mode card/surface contrast insufficient.** Cards blend into page backgrounds in dark mode across multiple pages. The 5-point lightness difference (`oklch(0.21)` card vs `oklch(0.16)` background) is too subtle. | Home, Starter Kit, Context | `index.css` dark mode tokens |
@@ -108,7 +110,7 @@ These 2 remaining pages do not need auditing -- one is scheduled for removal and
 | I8 | **Home page h1 duplicates the header logo text.** Header already says "Phew! AI Playbook" -- the h1 repeats it, wasting the most valuable screen real estate. | Home | `HomePage.tsx:26-28` |
 | I9 | **Excessive empty space below home page cards.** `min-h-[calc(100dvh-3.5rem)]` pushes footer to viewport bottom, creating ~300-400px of blank space between cards and footer. | Home | `HomePage.tsx:21` |
 | I10 | **Excessive vertical space between collapsed accordion items.** The 10-section structure accordion on CLAUDE.md spans ~600px with all items collapsed. | CLAUDE.md | `ClaudeMdSection.tsx` accordion sections |
-| I11 | **Content width narrow at 1440px relative to available space.** With sidebar at `w-72` and content at `max-w-[75ch]`, significant unused space exists on the right. Tables, code blocks, and interactive tools would benefit from more room. | CLAUDE.md, Sessions, Context | `TrackLayout.tsx:139` |
+| I11 | **Content width narrow at 1440px relative to available space.** (DONE — widened to `max-w-3xl`) | CLAUDE.md, Sessions, Context | `TrackLayout.tsx:139` |
 
 #### Interactive Tools
 
@@ -163,7 +165,7 @@ These 2 remaining pages do not need auditing -- one is scheduled for removal and
 | I38 | **Brand Voice page has 7 hardcoded `phewExample` blocks.** Client-specific brand voice content embedded directly in component data — reusability blocker. Needs extraction to client-configurable data layer. | Brand Voice | `BrandVoiceSection.tsx` |
 | I39 | **Recurring Tasks page has 14 client-specific references.** "Phew!" name, LMS, safeguarding terminology hardcoded in data arrays and JSX. | Recurring Tasks | `RecurringTasksSection.tsx` |
 | I40 | **Governance page has Phew-specific content in register template and risk tier examples.** Descriptive text references "Phew! starter kit", register template entries are Phew extensions, risk tiers reference safeguarding domain. | Governance | `GovernancePolicySection.tsx` |
-| I41 | **Skills/Extensions page has 3 hardcoded "Phew!" references.** "Example for Phew!" labels, "Phew! has Claude Teams licences" intro text. | Skills/Extensions | `SkillsExtensionsSection.tsx` |
+| I41 | **Skills/Extensions page has 3 hardcoded "Phew!" references.** (DONE — parameterised with `siteConfig.companyName`) | Skills/Extensions | `SkillsExtensionsSection.tsx` |
 
 ### Nice-to-Have (polish)
 
@@ -234,7 +236,7 @@ Organised by theme. Items marked with **[T]** are particularly relevant to fix b
 
 | # | Issue | Pages | Notes |
 |---|-------|-------|-------|
-| N42 | Home: track navigation buttons should be `<Link>` not `<button>` (enables right-click/middle-click) **[T]** | Home | `Header.tsx:41-64` |
+| N42 | Home: track navigation buttons should be `<Link>` not `<button>` (enables right-click/middle-click) **[T]** (DONE) | Home | `Header.tsx:41-64` |
 | N43 | Home: card titles should be `<h2>` elements (CardTitle renders as `<div>`) **[T]** | Home | Heading hierarchy gap |
 | N44 | ROI: collapsible triggers for task template "Related section" -- verify `aria-expanded` | ROI | Radix should handle, needs verification |
 | N45 | ROI: Before/After panels lack `role="group"` and `aria-label` for semantic distinction | ROI | |
@@ -268,7 +270,7 @@ Organised by theme. Items marked with **[T]** are particularly relevant to fix b
 | N68 | Mobile proportional bar segments illegible at 375px | Context | Consider vertical/stacked bar |
 | N69 | System Prompt and Skills segment colours too similar (hue 270 vs 300) | Context | Shift Skills to distinct hue |
 | N70 | PromptExample cards visually similar to static content cards | Sessions, CLAUDE.md | Need stronger differentiation |
-| N71 | `getReducedMotion()` doesn't react to live media query changes | Starter Kit | Needs `matchMedia` listener |
+| N71 | `getReducedMotion()` doesn't react to live media query changes (DONE) | Starter Kit | Needs `matchMedia` listener |
 | N72 | Default ROI calculator values may seem too optimistic (3,689% ROI) | ROI | Add contextual note |
 | N73 | Starter Kit: "Common Install Commands" section feels thin for General track | Starter Kit | Only 1 code block |
 | N74 | Starter Kit: warning variant used for gentle "Keeping your starter kit current" advice | Starter Kit | Info variant more appropriate |
@@ -281,7 +283,7 @@ Organised by theme. Items marked with **[T]** are particularly relevant to fix b
 | N81 | ROI: no validation or progress indication per feasibility step | ROI | Highlight which steps have content |
 | N82 | ROI: feasibility document preview uses raw `<pre>` block | ROI | Consider rendered Markdown |
 | N83 | Context: simulator status text not visually styled as part of interactive tool | Context | Add `font-mono tabular-nums` or background |
-| N84 | ROI: calculator output cards lack visual distinction in light mode (white-on-white) | ROI | Add `bg-muted/50` background tint |
+| N84 | ROI: calculator output cards lack visual distinction in light mode (white-on-white) (DONE) | ROI | Add `bg-muted/50` background tint |
 | N85 | ROI: Getting Started numbered circles (`bg-primary/10`) too subtle | ROI | Increase opacity or use filled variant |
 
 ---
@@ -294,9 +296,9 @@ These issues appear on **3+ pages** -- fixing them has the highest ROI because a
 
 The most impactful cross-page issue. Viewport resize crossing the `lg` breakpoint causes React Router to lose the current section slug, triggering a redirect. **Fix:** Investigate `TrackLayout.tsx` lines 62-72 -- the `!sectionSlug` check likely fires during a re-render caused by layout transitions.
 
-### 2. Content area too narrow at wide viewports (all 5 content pages) [Shared Component]
+### 2. Content area too narrow at wide viewports (all 5 content pages) [Shared Component] — DONE
 
-`TrackLayout.tsx:139` uses `max-w-[75ch]`. While correct for prose reading width, it constrains interactive tools, tables, and code blocks. **Fix:** Allow interactive sections to break out of the `75ch` constraint, or increase to `max-w-[85ch]` for pages with substantial interactive content.
+`TrackLayout.tsx:139` widened from `max-w-[75ch]` to `max-w-3xl` (768px). Pagination nav also updated to match.
 
 ### 3. Interactive tools not visually distinct from prose (ROI, Context, Sessions)
 
@@ -390,18 +392,18 @@ These elevate quality from good to great. Most are individual component refineme
 
 | # | Fix | Effort | Location |
 |---|-----|--------|----------|
-| 24 | Consider widening `max-w-[75ch]` or allowing interactive sections to break out | Medium | `TrackLayout.tsx` |
+| 24 | Consider widening `max-w-[75ch]` or allowing interactive sections to break out (DONE — changed to `max-w-3xl`) | Medium | `TrackLayout.tsx` |
 | 25 | Add "on this page" anchor navigation for pages with 5+ sections | Medium | New component, ROI/Sessions/StarterKit/CLAUDE.md |
 | 26 | Add icons to section H2 headings for visual anchoring | Medium | Sessions, CLAUDE.md |
 | 27 | Use semantic list elements (`<ol>`, `<ul>`) for numbered steps and best practices | Small | CLAUDE.md, Sessions |
 | 28 | Fix home page card grid breakpoint (`sm:` -> `md:`) | Trivial | `HomePage.tsx` |
-| 29 | Convert header track navigation buttons to `<Link>` elements | Small | `Header.tsx` |
+| 29 | Convert header track navigation buttons to `<Link>` elements (DONE) | Small | `Header.tsx` |
 | 30 | Make card titles `<h2>` elements on home page | Trivial | `HomePage.tsx` |
 | 31 | Add feedback FAB padding on mobile (`pb-16`) (DONE) | Trivial | Layout component |
-| 32 | Improve accordion trigger hover states | Small | Accordion usage across pages |
-| 33 | Fix `getReducedMotion()` to use `matchMedia` listener | Small | `StarterKitSection.tsx` |
+| 32 | Improve accordion trigger hover states (DONE — `hover:underline` → `hover:bg-accent/50`) | Small | Accordion usage across pages |
+| 33 | Fix `getReducedMotion()` to use `matchMedia` listener (DONE — replaced with `useReducedMotion` hook) | Small | `StarterKitSection.tsx` |
 | 34 | Add context-specific `aria-label` to session copy buttons | Small | `SessionManagementSection.tsx` |
-| 35 | Improve ROI calculator output card backgrounds in light mode | Trivial | `RoiMeasurementSection.tsx` |
+| 35 | Improve ROI calculator output card backgrounds in light mode (DONE — `bg-card` → `bg-muted/50`) | Trivial | `RoiMeasurementSection.tsx` |
 
 ### Wave 5: Component-level refinements (can be done during or after templatisation)
 
@@ -497,9 +499,9 @@ All 12 previously unaudited content pages have been triaged (see individual repo
 - AI Governance Policy — ~13 hardcoded references, governance template placeholder system is excellent
 - Recurring & Scheduled Tasks — ~14 hardcoded references, page structure follows established patterns
 
-### Pages needing full design critique
-- **Skills, Extensions & Decision Tree** — decision tree (centrepiece interactive) violates Design Principle 3, invalid HTML from TooltipTrigger, 6+ tables creating cognitive overload, cross-accordion linking fragile (100ms setTimeout)
-- **Brand Voice & UK English** — 7 hardcoded `phewExample` blocks, Phew-specific callout, extensive industry terminology — all need extraction to client-configurable data layer before templatisation
+### Pages with full design critiques completed (Session 23)
+- **Skills, Extensions & Decision Tree** (6.6/10) — decision tree violates Design Principle 3 (needs distinct visual container), broken aria-labelledby fixed, scrollToCard focus management fixed, 3 hardcoded Phew references parameterised. See `design-critique-skills-extensions.md`.
+- **Brand Voice & UK English** (7.4/10) — 7 hardcoded `phewExample` blocks need extraction to configurable data layer, CopyButton mobile/focus visibility fixed. See `design-critique-brand-voice.md`.
 
 ### Remaining unaudited (not worth auditing)
 - Process Document — scheduled for removal

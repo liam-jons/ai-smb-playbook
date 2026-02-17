@@ -1,4 +1,10 @@
-import { useRef, useState, useEffect, useCallback, type ReactNode } from 'react';
+import {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from 'react';
 import { cn } from '@/lib/utils';
 
 interface ScrollHintProps {
@@ -56,10 +62,7 @@ export function ScrollHint({ children, className }: ScrollHintProps) {
 
   return (
     <div className={cn('scroll-hint-wrapper', className)}>
-      <div
-        ref={scrollRef}
-        className="overflow-x-auto"
-      >
+      <div ref={scrollRef} className="overflow-x-auto">
         {children}
       </div>
 
