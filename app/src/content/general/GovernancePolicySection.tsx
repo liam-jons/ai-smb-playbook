@@ -215,7 +215,7 @@ const policySections: PolicySection[] = [
 
 The goal is not to slow adoption down but to ensure that new AI capabilities are introduced thoughtfully \u2014 with consideration for data security, reliability, and long-term maintainability. For a team of {{TEAM_SIZE}} people, this means lightweight processes, clear ownership, and sensible defaults rather than bureaucratic approval chains.`,
     annotation:
-      'This sets the tone for the whole policy: proportionate, not bureaucratic. The key message is that governance exists to enable confident adoption, not to create red tape.',
+      'The goal here is proportionate governance, not bureaucracy. Having a clear process means your team can adopt new AI tools confidently without second-guessing whether they need permission first.',
     tracks: ['general', 'developer'],
     icon: FileText,
   },
@@ -231,7 +231,7 @@ The goal is not to slow adoption down but to ensure that new AI capabilities are
 
 Extension types covered: MCP servers (connectors), official marketplace plugins, third-party marketplace plugins, internally developed skills, third-party skills, commands, hooks, and subagents/agent teams.`,
     annotation:
-      'Covers everything across all Claude surfaces. The scope is deliberately broad so nothing slips through the cracks, but the risk tiers (Section 4) ensure the process is proportionate to the actual risk.',
+      'This covers all Claude surfaces and extension types. The broad scope means nothing gets overlooked, but you will not be doing a full review for every low-risk extension \u2014 the risk tiers in Section 4 keep the process proportionate.',
     tracks: ['general', 'developer'],
     icon: Shield,
   },
@@ -327,7 +327,7 @@ Code review:
 Version control:
 - All internal extensions stored in Git with clear commit messages`,
     annotation:
-      'These standards ensure internal extensions are reliable and reusable. The key principle: another team member should understand the extension without explanation from the author.',
+      'The practical test for any internal extension: could another team member pick it up and understand it without the author explaining it? If yes, it meets the standard.',
     tracks: ['developer'],
     icon: FileText,
   },
@@ -379,7 +379,7 @@ Deprecation: Confirm with users, remove from all environments, update register (
 
 Safeguarding data: No AI extension should ever access safeguarding case data, child protection information, or vulnerable person records without a formal Tier 3 assessment, MD approval, and a Data Protection Impact Assessment (DPIA) if applicable.`,
     annotation:
-      'This section is critical for Phew! given the safeguarding context. The safeguarding data clause is a hard line \u2014 no exceptions without the full Tier 3 process.',
+      'Data protection is especially important if your organisation handles sensitive information. The key rule: any extension that could access sensitive or personal data must go through the full Tier 3 review process, no exceptions.',
     tracks: ['general', 'developer'],
     icon: ShieldCheck,
   },
@@ -769,10 +769,10 @@ export function GovernancePolicySection() {
         </p>
         <div className="mt-4 space-y-3">
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-            The policy below is a fill-in-the-blanks template — Phew! can use it
-            as-is by filling in a few details, and it can be adapted for other
-            organisations by changing the highlighted variables. Each variable
-            is shown as a{' '}
+            The policy below is a fill-in-the-blanks template for your
+            organisation&apos;s AI governance. Fill in the highlighted variables
+            with your details and you will have a complete, practical policy
+            ready to share with your team. Each variable is shown as a{' '}
             <PlaceholderBadge
               placeholder="{{EXAMPLE}}"
               description="A placeholder variable"

@@ -26,13 +26,6 @@ export interface CalculatorDefaults {
   teamSizeMax: number;
 }
 
-export interface ClientContext {
-  companyName: string;
-  teamSize: number;
-  tools: string[];
-  useCases: string[];
-}
-
 export interface TaskTemplate {
   id: string;
   title: string;
@@ -104,24 +97,11 @@ export const calculatorDefaults: CalculatorDefaults = {
   hourlyRateStep: 5,
   toolCostMin: 0,
   toolCostMax: 1000,
-  toolCostStep: 10,
+  toolCostStep: 5,
   hoursSavedMin: 1,
   hoursSavedMax: 40,
   teamSizeMin: 1,
   teamSizeMax: 50,
-};
-
-export const clientContext: ClientContext = {
-  companyName: 'Phew Design Limited',
-  teamSize: 10,
-  tools: ['Claude Teams (all staff)', 'Claude Code (developers)'],
-  useCases: [
-    'Bid/proposal writing for public sector tenders',
-    'Regression testing (Ghost Inspector replacement)',
-    'ISO compliance documentation',
-    'Developer productivity (code review, documentation)',
-    'Content production (blog, marketing)',
-  ],
 };
 
 export const taskTemplates: TaskTemplate[] = [
@@ -454,8 +434,7 @@ export const valueFrameworks: ValueFramework[] = [
       'Work out roughly what each hour of someone\u2019s time costs the business \u2014 take their annual salary, add about 30% for National Insurance and overheads, then divide by roughly 1,950 working hours per year.',
       'Multiply by hours saved per month \u2014 this is your gross value.',
       'Subtract tool costs (subscriptions, API usage) for net value.',
-      'At \u00a335/hr average, the breakeven on a \u00a320/month licence is roughly 1 hour saved per month. Most teams cross this within the first day of structured use.',
-      'Anything above that threshold is pure return. Most teams cross this within the first week of structured use.',
+      'At \u00a335/hr average, the breakeven on a \u00a320/month licence is roughly 1 hour saved per month. Most teams cross this within the first week of structured use \u2014 anything above that threshold is pure return.',
     ],
   },
   {
@@ -514,6 +493,20 @@ export const measurementMistakes: MeasurementMistake[] = [
     problem:
       'Using only "hours saved" and missing other value dimensions (quality, capacity, speed-to-market, employee satisfaction).',
     fix: 'Track 2\u20133 metrics per use case. Time saved is the easiest, but throughput increase and error reduction often tell a better story.',
+  },
+  {
+    id: 'ignoring-learning-curve',
+    title: 'Not accounting for the learning curve',
+    problem:
+      'ROI calculations that ignore the initial adoption period where productivity may dip before improving, leading to premature conclusions that AI isn\u2019t delivering value.',
+    fix: 'Budget 2\u20134 weeks for ramp-up. Measure ROI from the point where workflows stabilise, but include the learning period in your annual cost\u2013benefit analysis.',
+  },
+  {
+    id: 'wrong-baseline',
+    title: 'Comparing AI costs against the wrong baseline',
+    problem:
+      'Using junior staff rates in the calculation when the task is actually performed by senior staff at much higher effective rates, which understates the true saving.',
+    fix: 'Use the actual hourly cost of the person doing the work, including overheads. A senior designer at \u00a355/hr saving 3 hours is worth more than a junior at \u00a325/hr saving the same time.',
   },
 ];
 
@@ -593,7 +586,6 @@ export const kpiFramework: KpiLayer[] = [
 ];
 
 export const categoryFilters: CategoryFilter[] = [
-  { value: 'all', label: 'All', colour: '' },
   {
     value: 'time-savings',
     label: 'Time Savings',
@@ -619,6 +611,7 @@ export const categoryFilters: CategoryFilter[] = [
     label: 'Research & Analysis',
     colour: 'bg-important-muted text-important-muted-foreground',
   },
+  { value: 'all', label: 'All', colour: '' },
 ];
 
 /** Get the category badge colour classes for a given category. */

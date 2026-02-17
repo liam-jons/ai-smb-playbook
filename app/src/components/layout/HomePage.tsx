@@ -119,12 +119,6 @@ export function HomePage() {
             </Card>
           </Link>
         </div>
-
-        {/* Meta-narrative note */}
-        <p className="mt-8 text-center text-xs text-muted-foreground/70">
-          This playbook was itself built using Claude and the workflows it
-          describes.
-        </p>
       </div>
     </main>
   );

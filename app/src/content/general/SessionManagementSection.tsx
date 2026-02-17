@@ -420,15 +420,6 @@ export function SessionManagementSection() {
             </p>
           </CalloutCard>
         )}
-
-        {/* Meta-narrative */}
-        <CalloutCard variant="info" className="mt-4">
-          <p className="text-xs">
-            This playbook itself was built using the atomic task principle —
-            each section was a separate session with its own handoff prompt and
-            fresh context window.
-          </p>
-        </CalloutCard>
       </section>
 
       {/* ─────────────────────────────────────────────

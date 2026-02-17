@@ -15,6 +15,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
+import { siteConfig } from '@/config/site';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import {
@@ -80,7 +81,7 @@ function generateExportText(
     `  ROI:                      ${formatPercent(roiPercent)}`,
     `  Payback period:           ${paybackDays} days`,
     '',
-    `Generated with the Phew! AI Playbook ROI Calculator`,
+    `Generated with the ${siteConfig.appTitle} ROI Calculator`,
   ].join('\n');
 }
 
@@ -341,6 +342,9 @@ function TaskTemplateCard({
           <p className="mt-0.5 text-sm font-medium tabular-nums text-foreground">
             {template.beforeScenario.time}
           </p>
+          <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+            {template.beforeScenario.cost}
+          </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             {template.beforeScenario.process}
           </p>
@@ -351,6 +355,9 @@ function TaskTemplateCard({
           </span>
           <p className="mt-0.5 text-sm font-medium tabular-nums text-foreground">
             {template.afterScenario.time}
+          </p>
+          <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+            {template.afterScenario.cost}
           </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             {template.afterScenario.process}
@@ -374,7 +381,7 @@ function TaskTemplateCard({
               aria-hidden="true"
             />
             {template.clientExample
-              ? 'Phew! example & related section'
+              ? `${siteConfig.companyName} example & related section`
               : 'Related section'}
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -440,24 +447,60 @@ export function RoiMeasurementSection() {
           id="why-measure-heading"
           className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          Why Measure AI ROI?
+          Measuring What AI Actually Saves You
         </h2>
         <div className="space-y-3 max-w-prose">
           <p className="text-base leading-relaxed text-foreground">
-            Now that you're using Claude, it's worth tracking where it actually
-            saves you time &mdash; so you can double down on what works, drop
-            what doesn't, and make the case for keeping the subscription.
+            Most teams know AI is saving them time, but struggle to put a number
+            on it. Without that number, it is harder to justify renewing
+            licences, expanding to new team members, or knowing which tasks
+            benefit most from AI.
           </p>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Every licence needs to earn its keep. This section gives you
-            practical frameworks, a live calculator, and task-level templates to
-            measure what matters.
+            This section gives you three practical tools to fix that:
           </p>
+          <ul className="space-y-1.5 text-sm text-muted-foreground list-none">
+            <li className="flex items-start gap-2">
+              <Calculator
+                className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <span>
+                <strong className="text-foreground">ROI Calculator</strong>{' '}
+                &mdash; plug in your hours saved and team size to see projected
+                annual savings in pounds.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <Target
+                className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <span>
+                <strong className="text-foreground">Task Templates</strong>{' '}
+                &mdash; before/after comparisons for common SMB tasks, with
+                copy-ready summaries for your business case.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <TrendingUp
+                className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              />
+              <span>
+                <strong className="text-foreground">
+                  Measurement Frameworks
+                </strong>{' '}
+                &mdash; three approaches to valuing AI adoption, from quick
+                breakeven checks to long-term strategic value.
+              </span>
+            </li>
+          </ul>
         </div>
 
         <CalloutCard variant="tip" title="Start with one task" className="mt-6">
-          You don't need to measure everything at once. Pick one task you do
-          every week &mdash; email drafting, meeting notes, whatever's most
+          You do not need to measure everything at once. Pick one task you do
+          every week &mdash; email drafting, meeting notes, whatever is most
           repetitive &mdash; and track the time difference for a fortnight. That
           single number is usually enough to make the case.
         </CalloutCard>
@@ -497,8 +540,8 @@ export function RoiMeasurementSection() {
           </h2>
         </div>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          15 common SMB tasks with before/after comparisons. Filter by category
-          to find the most relevant ones for your team.
+          Common SMB tasks with before/after comparisons. Filter by category to
+          find the most relevant ones for your team.
         </p>
 
         <Tabs

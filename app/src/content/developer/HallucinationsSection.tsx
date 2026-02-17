@@ -252,6 +252,48 @@ export function HallucinationsSection() {
   const { track } = useTrack();
   return (
     <div className="flex flex-col gap-12">
+      {/* Introduction */}
+      <section aria-labelledby="intro">
+        <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
+          <p>
+            Hallucinations in a coding context are not the obvious nonsense you
+            might expect. They are lines of code that look perfectly reasonable
+            &mdash; a function call with the right signature, an API endpoint
+            that follows the naming convention, a library method that feels
+            familiar &mdash; but that do not actually exist. Claude can
+            confidently generate code that references fabricated methods,
+            invents configuration options, or introduces subtly wrong logic, all
+            while formatting it cleanly and explaining it clearly.
+          </p>
+          <p>
+            This is a particular risk for developers because code hallucinations
+            are harder to catch than prose hallucinations. A made-up fact in a
+            paragraph usually stands out on reading, but a hallucinated API call
+            can pass code review, compile without errors, and fail silently at
+            runtime. The danger increases when you are working with less common
+            libraries, unfamiliar APIs, or complex business logic &mdash;
+            exactly the situations where you are most likely to trust
+            Claude&rsquo;s output because you cannot easily verify it from
+            memory.
+          </p>
+          <p>
+            This section provides seven specific, practical patterns for
+            preventing and catching hallucinations before they reach production.
+            Each pattern includes a prompt template you can copy and use
+            immediately. The final part brings all seven patterns together into
+            a combined verification harness for complex development work.
+          </p>
+        </div>
+
+        <CalloutCard variant="important" className="mt-6">
+          You do not need to use all seven patterns on every task. For routine
+          work, one or two may be enough. The key is recognising <em>when</em>{' '}
+          hallucination risk is high &mdash; unfamiliar APIs, complex
+          integrations, code you cannot easily verify &mdash; and reaching for
+          the right pattern before Claude starts generating.
+        </CalloutCard>
+      </section>
+
       {/* Mini-nav */}
       <nav
         aria-label="Section navigation"
