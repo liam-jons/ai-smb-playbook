@@ -222,8 +222,7 @@ export function WelcomeSection() {
           <p>
             Following the AI training sessions with your team on{' '}
             {siteConfig.trainingDate}, we put together this interactive playbook
-            as a practical reference — the kind of take-away material you asked
-            for.
+            as a practical reference.
           </p>
           <p>
             It covers the core topics from the training — context management,
