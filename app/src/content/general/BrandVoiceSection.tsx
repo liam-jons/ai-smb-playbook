@@ -20,6 +20,7 @@ import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import {
   Clock,
@@ -48,7 +49,7 @@ interface FrameworkSection {
   number: number;
   title: string;
   description: string;
-  phewExample: string;
+  clientExample: string;
   icon: typeof Palette;
 }
 
@@ -253,8 +254,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Brand Personality',
     description:
       'Define the brand as if it were a person. What are its defining traits? This creates the foundation everything else builds on.',
-    phewExample:
-      'If Phew! were a person, they would be the knowledgeable colleague who explains safeguarding technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.',
+    clientExample: `If ${siteConfig.companyName} were a person, they would be the knowledgeable colleague who explains safeguarding technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
     icon: Palette,
   },
   {
@@ -262,7 +262,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Voice Attributes',
     description:
       'Select 3\u20135 attributes that define how the brand communicates. Each should have a "we are / we are not / sounds like" definition to prevent misinterpretation.',
-    phewExample:
+    clientExample:
       'Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: "Here\'s how to get started \u2014 it takes about five minutes."',
     icon: MessageCircle,
   },
@@ -271,7 +271,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Audience Awareness',
     description:
       'Who the brand speaks to, what they care about, what level of expertise they have, and how they expect to be addressed.',
-    phewExample:
+    clientExample:
       'Primary: safeguarding leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in safeguarding but not necessarily in software.',
     icon: Users,
   },
@@ -280,7 +280,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Core Messaging Pillars',
     description:
       '3\u20135 key themes the brand consistently communicates. The hierarchy of these messages and how each connects to audience needs.',
-    phewExample:
+    clientExample:
       'Pillar 1: Safeguarding made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).',
     icon: Megaphone,
   },
@@ -289,8 +289,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Tone Spectrum',
     description:
       'How the voice adapts across channels and situations whilst remaining recognisably the same brand. The voice stays constant; the tone dials attributes up or down.',
-    phewExample:
-      'Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The Phew! voice is always present, but the emphasis shifts.',
+    clientExample: `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${siteConfig.companyName} voice is always present, but the emphasis shifts.`,
     icon: Globe2,
   },
   {
@@ -298,7 +297,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Style Rules',
     description:
       'Specific grammar, formatting, and language decisions: Oxford comma, sentence case vs title case, contractions, date formats. This is where UK English enforcement lives within the broader brand framework.',
-    phewExample:
+    clientExample:
       'UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.',
     icon: Type,
   },
@@ -307,7 +306,7 @@ const frameworkSections: FrameworkSection[] = [
     title: 'Terminology',
     description:
       'Preferred and avoided terms, product names, inclusive language guidelines. Maintaining consistency across all communications.',
-    phewExample:
+    clientExample:
       'Use "safeguarding partnership" (not "LSCP"). Use "learning management system" on first mention, then "LMS". Never use "users" when you mean "safeguarding professionals" or "partners".',
     icon: ListChecks,
   },
@@ -609,12 +608,12 @@ export function BrandVoiceSection() {
 
           <CalloutCard
             variant="tip"
-            title="Head start for Phew!"
+            title={`Head start for ${siteConfig.companyName}`}
             className="mt-4"
           >
-            The website scrape has already captured brand-relevant content —
-            IMPACT values, tone observations, and sector terminology. Bring
-            these to the setup conversation as a starting point.
+            The website scrape has already captured brand-relevant content — key
+            values, tone observations, and sector terminology. Bring these to
+            the setup conversation as a starting point.
           </CalloutCard>
         </div>
 
@@ -654,10 +653,10 @@ export function BrandVoiceSection() {
                     </p>
                     <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
                       <span className="text-xs font-medium text-muted-foreground">
-                        Phew! example
+                        {siteConfig.companyName} example
                       </span>
                       <p className="mt-1 text-sm text-foreground">
-                        {section.phewExample}
+                        {section.clientExample}
                       </p>
                     </div>
                   </AccordionContent>

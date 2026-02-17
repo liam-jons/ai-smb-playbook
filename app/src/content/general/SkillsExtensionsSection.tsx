@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/tooltip';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { ScrollHint } from '@/components/content/ScrollHint';
 import { useTrack } from '@/hooks/useTrack';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
@@ -38,6 +39,7 @@ import {
   Package,
   Code2,
   GitBranch,
+  Compass,
 } from 'lucide-react';
 import type { Track } from '@/content/shared/types';
 
@@ -813,19 +815,19 @@ const layeringRules = [
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-function PlatformBadge({ platform }: { platform: Platform }) {
-  const colours: Record<Platform, string> = {
-    'claude.ai': 'bg-info-muted text-info-muted-foreground',
-    Desktop: 'bg-important-muted text-important-muted-foreground',
-    Code: 'bg-success-muted text-success-muted-foreground',
-    CoWork: 'bg-warning-muted text-warning-muted-foreground',
-  };
+const platformColours: Record<Platform, string> = {
+  'claude.ai': 'bg-info-muted text-info-muted-foreground',
+  Desktop: 'bg-important-muted text-important-muted-foreground',
+  Code: 'bg-success-muted text-success-muted-foreground',
+  CoWork: 'bg-warning-muted text-warning-muted-foreground',
+};
 
+function PlatformBadge({ platform }: { platform: Platform }) {
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium',
-        colours[platform],
+        platformColours[platform],
       )}
     >
       {platform}
@@ -1035,100 +1037,112 @@ export function SkillsExtensionsSection() {
 
       {/* B. Decision Tree */}
       <section aria-labelledby="decision-tree-heading">
-        <h2
-          id="decision-tree-heading"
-          className="mb-1 text-xl font-semibold tracking-tight sm:text-2xl"
-        >
-          {isGeneral ? 'What do you want Claude to do?' : 'I want to...'}
-        </h2>
-        <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Select the goal that best describes what you are trying to achieve.
-          Each option shows the recommended approach and which platforms support
-          it.
-        </p>
-
-        <Accordion type="single" collapsible className="space-y-1">
-          {filteredEntries.map((entry) => {
-            const Icon = entry.icon;
-            return (
-              <AccordionItem
-                key={entry.id}
-                value={entry.id}
-                className="rounded-lg border border-border px-4"
+        <div className="rounded-xl border-2 border-primary/10 bg-primary/[0.03] p-4 sm:p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
+              <Compass className="h-5 w-5 text-primary" aria-hidden="true" />
+            </div>
+            <div>
+              <h2
+                id="decision-tree-heading"
+                className="text-xl font-semibold tracking-tight sm:text-2xl"
               >
-                <AccordionTrigger className="text-sm font-medium hover:no-underline sm:text-base [&[data-state=open]]:text-foreground">
-                  <span className="flex items-center gap-3">
-                    <Icon
-                      className="h-4 w-4 shrink-0 text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                    <span>{entry.goal}</span>
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="pb-4 pt-1">
-                  <div className="space-y-4">
-                    {/* Recommended mechanism */}
-                    <div>
-                      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                        Recommended
-                      </span>
-                      <p className="mt-1 font-medium text-foreground">
-                        {entry.recommended}
+                {isGeneral ? 'What do you want Claude to do?' : 'I want to...'}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Find the right extension for your goal
+              </p>
+            </div>
+          </div>
+          <p className="mb-6 max-w-prose text-sm text-muted-foreground">
+            Select the goal that best describes what you are trying to achieve.
+            Each option shows the recommended approach and which platforms
+            support it.
+          </p>
+
+          <Accordion type="single" collapsible className="space-y-1">
+            {filteredEntries.map((entry) => {
+              const Icon = entry.icon;
+              return (
+                <AccordionItem
+                  key={entry.id}
+                  value={entry.id}
+                  className="rounded-lg border border-border bg-card px-4"
+                >
+                  <AccordionTrigger className="text-sm font-medium hover:no-underline sm:text-base [&[data-state=open]]:text-foreground">
+                    <span className="flex items-center gap-3">
+                      <Icon
+                        className="h-4 w-4 shrink-0 text-muted-foreground"
+                        aria-hidden="true"
+                      />
+                      <span>{entry.goal}</span>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-4 pt-1">
+                    <div className="space-y-4">
+                      {/* Recommended mechanism */}
+                      <div>
+                        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                          Recommended
+                        </span>
+                        <p className="mt-1 font-medium text-foreground">
+                          {entry.recommended}
+                        </p>
+                      </div>
+
+                      {/* Explanation */}
+                      <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
+                        {entry.explanation}
                       </p>
+
+                      {/* Example */}
+                      <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Example for {siteConfig.companyName}
+                        </span>
+                        <p className="mt-1 text-sm text-foreground">
+                          {entry.example}
+                        </p>
+                      </div>
+
+                      {/* Platform badges */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          Available on:
+                        </span>
+                        {entry.platforms.map((p) => (
+                          <PlatformBadge key={p} platform={p} />
+                        ))}
+                      </div>
+
+                      {/* Track-specific notes */}
+                      {isGeneral && entry.generalNote && (
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          {entry.generalNote}
+                        </p>
+                      )}
+                      {!isGeneral && entry.devNote && (
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          {entry.devNote}
+                        </p>
+                      )}
+
+                      {/* Link to reference card */}
+                      <button
+                        type="button"
+                        onClick={() => scrollToCard(entry.referenceCardId)}
+                        className="inline-flex min-h-[44px] items-center gap-1.5 rounded px-1 text-sm font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      >
+                        <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
+                        Learn more in the reference card
+                      </button>
                     </div>
-
-                    {/* Explanation */}
-                    <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
-                      {entry.explanation}
-                    </p>
-
-                    {/* Example */}
-                    <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
-                      <span className="text-xs font-medium text-muted-foreground">
-                        Example for {siteConfig.companyName}
-                      </span>
-                      <p className="mt-1 text-sm text-foreground">
-                        {entry.example}
-                      </p>
-                    </div>
-
-                    {/* Platform badges */}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-muted-foreground">
-                        Available on:
-                      </span>
-                      {entry.platforms.map((p) => (
-                        <PlatformBadge key={p} platform={p} />
-                      ))}
-                    </div>
-
-                    {/* Track-specific notes */}
-                    {isGeneral && entry.generalNote && (
-                      <p className="text-sm leading-relaxed text-muted-foreground">
-                        {entry.generalNote}
-                      </p>
-                    )}
-                    {!isGeneral && entry.devNote && (
-                      <p className="text-sm leading-relaxed text-muted-foreground">
-                        {entry.devNote}
-                      </p>
-                    )}
-
-                    {/* Link to reference card */}
-                    <button
-                      type="button"
-                      onClick={() => scrollToCard(entry.referenceCardId)}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
-                    >
-                      <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
-                      Learn more in the reference card
-                    </button>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            );
-          })}
-        </Accordion>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </div>
       </section>
 
       <Separator />
@@ -1474,8 +1488,11 @@ export function SkillsExtensionsSection() {
 
                 {/* Comparison table */}
                 {card.comparison && (
-                  <div className="overflow-x-auto rounded-lg border border-border">
-                    <table className="w-full text-sm" role="table">
+                  <ScrollHint className="rounded-lg border border-border">
+                    <table
+                      className="w-full min-w-[400px] text-sm"
+                      role="table"
+                    >
                       <thead>
                         <tr className="border-b border-border bg-muted/40">
                           {card.comparison.headers.map((h) => (
@@ -1512,7 +1529,7 @@ export function SkillsExtensionsSection() {
                         ))}
                       </tbody>
                     </table>
-                  </div>
+                  </ScrollHint>
                 )}
 
                 {/* Code example */}
@@ -1685,8 +1702,8 @@ export function SkillsExtensionsSection() {
           common combinations.
         </p>
 
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm" role="table">
+        <ScrollHint className="rounded-lg border border-border">
+          <table className="w-full min-w-[540px] text-sm" role="table">
             <thead>
               <tr className="border-b border-border bg-muted/40">
                 <th
@@ -1731,7 +1748,7 @@ export function SkillsExtensionsSection() {
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollHint>
       </section>
 
       {/* G. Feature Layering Rules (Developer only) */}

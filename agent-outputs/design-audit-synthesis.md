@@ -1,7 +1,7 @@
 # Design Audit Synthesis
 
 > **Produced:** 17 February 2026
-> **Updated:** 17 February 2026 (Session 23 — Wave 4 fixes + 2 additional full critiques)
+> **Updated:** 17 February 2026 (Session 24 — Decision tree visual distinction, Brand Voice parameterisation, scroll affordances)
 > **Source files:** `agent-outputs/design-critique-{home,roi-measurement,context,session-management,starter-kit,claude-md,skills-extensions,brand-voice}.md`
 > **Pages audited:** 8 full critiques + 12 triaged of 20 total
 > **Total findings:** 127 original + new findings from Skills/Extensions and Brand Voice critiques
@@ -91,7 +91,7 @@ These 2 remaining pages do not need auditing -- one is scheduled for removal and
 | C3 | **Desktop segment labels not visible on Context Simulator.** On desktop, the only way to identify proportional bar segments is hover. No persistent legend exists (mobile legend is `sm:hidden`). | Context | `ContextWindowBar.tsx` lines 64, 138-142, 204-205 |
 | C4 | **File types table truncated at 375px with no scroll indicator.** The 4-column table clips at mobile with "Purpose" and "Shared?" columns cut off. The horizontal scroll indicator disappears on iOS, leaving users unaware more columns exist. | CLAUDE.md | `ClaudeMdSection.tsx` lines 494-538 |
 | C5 | **Both home page cards share the first 4 section titles.** Sections 1.1-1.4 are identical in both track cards, making the tracks look the same rather than different. The section preview defeats its own purpose. | Home | `HomePage.tsx` lines 58, 100 |
-| C6 | **Decision tree on Skills/Extensions page lacks visual distinction from prose sections.** Both the decision tree and the extension reference accordion use identical styling — violates Design Principle 3. | Skills/Extensions | `SkillsExtensionsSection.tsx` — decision tree needs distinct container treatment |
+| C6 | **Decision tree on Skills/Extensions page lacks visual distinction from prose sections.** (DONE — wrapped in distinct `rounded-xl border-2 border-primary/10 bg-primary/[0.03]` container with Compass icon header, accordion items get `bg-card` background, "Learn more" button touch target increased to 44px) | Skills/Extensions | `SkillsExtensionsSection.tsx` |
 | C7 | **`TooltipTrigger` wrapping `<td>` element creates invalid HTML.** Breaks `table > tbody > tr > td` hierarchy, may cause hydration warnings and accessibility tree issues. | Skills/Extensions | `SkillsExtensionsSection.tsx:854-856` |
 
 ### Important (should fix)
@@ -162,7 +162,7 @@ These 2 remaining pages do not need auditing -- one is scheduled for removal and
 
 | # | Issue | Pages | Fix Location |
 |---|-------|-------|-------------|
-| I38 | **Brand Voice page has 7 hardcoded `phewExample` blocks.** Client-specific brand voice content embedded directly in component data — reusability blocker. Needs extraction to client-configurable data layer. | Brand Voice | `BrandVoiceSection.tsx` |
+| I38 | **Brand Voice page has 7 hardcoded `phewExample` blocks.** (PARTIALLY DONE — `phewExample` renamed to `clientExample` throughout, "Phew! example" labels replaced with `siteConfig.companyName`, "Head start for Phew!" callout parameterised, 2 template literal examples use `siteConfig.companyName`. Remaining: extract examples to client-configurable data layer for full reusability.) | Brand Voice | `BrandVoiceSection.tsx` |
 | I39 | **Recurring Tasks page has 14 client-specific references.** "Phew!" name, LMS, safeguarding terminology hardcoded in data arrays and JSX. | Recurring Tasks | `RecurringTasksSection.tsx` |
 | I40 | **Governance page has Phew-specific content in register template and risk tier examples.** Descriptive text references "Phew! starter kit", register template entries are Phew extensions, risk tiers reference safeguarding domain. | Governance | `GovernancePolicySection.tsx` |
 | I41 | **Skills/Extensions page has 3 hardcoded "Phew!" references.** (DONE — parameterised with `siteConfig.companyName`) | Skills/Extensions | `SkillsExtensionsSection.tsx` |
@@ -300,9 +300,9 @@ The most impactful cross-page issue. Viewport resize crossing the `lg` breakpoin
 
 `TrackLayout.tsx:139` widened from `max-w-[75ch]` to `max-w-3xl` (768px). Pagination nav also updated to match.
 
-### 3. Interactive tools not visually distinct from prose (ROI, Context, Sessions)
+### 3. Interactive tools not visually distinct from prose (ROI, Context, Sessions) — PARTIALLY DONE
 
-The design principle "interactive tools feel distinct" is only partially met. The feasibility builder and task templates on the ROI page are well-differentiated, but the ROI calculator, context simulator, and copyable templates blend into their surrounding content. **Fix:** Wrap each interactive tool in a consistent container pattern: `rounded-xl border-2 border-primary/10 bg-card p-6`.
+The design principle "interactive tools feel distinct" is now addressed for the Skills/Extensions decision tree (Session 24: distinct container with icon header). The ROI calculator was previously wrapped in a visual container (Session 21). Remaining: context simulator and copyable session templates could benefit from similar treatment.
 
 ### 4. Dark mode card/surface contrast (Home, Starter Kit, Context) [Shared Component]
 
@@ -500,8 +500,8 @@ All 12 previously unaudited content pages have been triaged (see individual repo
 - Recurring & Scheduled Tasks — ~14 hardcoded references, page structure follows established patterns
 
 ### Pages with full design critiques completed (Session 23)
-- **Skills, Extensions & Decision Tree** (6.6/10) — decision tree violates Design Principle 3 (needs distinct visual container), broken aria-labelledby fixed, scrollToCard focus management fixed, 3 hardcoded Phew references parameterised. See `design-critique-skills-extensions.md`.
-- **Brand Voice & UK English** (7.4/10) — 7 hardcoded `phewExample` blocks need extraction to configurable data layer, CopyButton mobile/focus visibility fixed. See `design-critique-brand-voice.md`.
+- **Skills, Extensions & Decision Tree** (6.6/10) — decision tree now visually distinct (Session 24: rounded-xl container with Compass icon header, bg-card accordion items), broken aria-labelledby fixed, scrollToCard focus management fixed, 3 hardcoded Phew refs parameterised, scroll affordances added to combination patterns and comparison tables, PlatformBadge colours hoisted to module scope. See `design-critique-skills-extensions.md`.
+- **Brand Voice & UK English** (7.4/10) — `phewExample` renamed to `clientExample`, "Phew! example" labels use `siteConfig.companyName`, "Head start" callout parameterised, 2 example strings use template literals. CopyButton mobile/focus visibility fixed. See `design-critique-brand-voice.md`.
 
 ### Remaining unaudited (not worth auditing)
 - Process Document — scheduled for removal
