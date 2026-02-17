@@ -46,6 +46,11 @@ export const sectionComponents: Record<string, ComponentType> = {
       default: m.RecurringTasksSection,
     })),
   ),
+  'roi-measurement': lazy(() =>
+    import('@/content/general/RoiMeasurementSection').then((m) => ({
+      default: m.RoiMeasurementSection,
+    })),
+  ),
 
   // Shared sections
   'starter-kit': lazy(() =>

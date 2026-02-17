@@ -442,7 +442,7 @@ export function PluginsSection() {
                   to={`/${track}/mcp-usage`}
                   className="text-primary hover:underline"
                 >
-                  Section 1.13
+                  Section 1.14
                 </Link>
                 ).
               </p>
@@ -537,7 +537,7 @@ export function PluginsSection() {
                                     to={`/${track}/mcp-usage`}
                                     className="text-primary hover:underline"
                                   >
-                                    Section 1.13
+                                    Section 1.14
                                   </Link>{' '}
                                   for safety guidance.
                                 </>
@@ -557,7 +557,7 @@ export function PluginsSection() {
                                       to={`/${track}/claude-md`}
                                       className="text-primary hover:underline"
                                     >
-                                      Section 1.8
+                                      Section 1.9
                                     </Link>{' '}
                                     for detailed walkthrough.
                                   </>
@@ -570,7 +570,7 @@ export function PluginsSection() {
                                       to={`/${track}/mcp-usage`}
                                       className="text-primary hover:underline"
                                     >
-                                      Section 1.13
+                                      Section 1.14
                                     </Link>
                                     .
                                   </>
@@ -583,7 +583,7 @@ export function PluginsSection() {
                                       to={`/${track}/regression-testing`}
                                       className="text-primary hover:underline"
                                     >
-                                      Section 1.12
+                                      Section 1.13
                                     </Link>{' '}
                                     for detailed testing approaches.
                                   </>
@@ -704,14 +704,14 @@ export function PluginsSection() {
                 to={`/${track}/documentation`}
                 className="text-primary hover:underline"
               >
-                Section 1.9
+                Section 1.10
               </Link>{' '}
               &mdash; use Mintlify for public-facing API documentation and the{' '}
               <Link
                 to={`/${track}/documentation`}
                 className="text-primary hover:underline"
               >
-                Section 1.9
+                Section 1.10
               </Link>{' '}
               patterns for internal project documentation.
             </p>
@@ -746,7 +746,7 @@ export function PluginsSection() {
                 to={`/${track}/regression-testing`}
                 className="text-primary hover:underline"
               >
-                Section 1.12
+                Section 1.13
               </Link>
               .
             </p>

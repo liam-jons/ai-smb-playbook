@@ -478,7 +478,7 @@ export function McpUsageSection() {
                       to={`/${track}/regression-testing`}
                       className="text-primary hover:underline"
                     >
-                      Section 1.12
+                      Section 1.13
                     </Link>
                     )
                   </>
@@ -513,7 +513,7 @@ export function McpUsageSection() {
                         to={`/${track}/plugins`}
                         className="text-primary hover:underline"
                       >
-                        Section 1.14
+                        Section 1.15
                       </Link>{' '}
                       as a plugin) provides similar documentation lookup
                       functionality. deepwiki is a standalone MCP server;

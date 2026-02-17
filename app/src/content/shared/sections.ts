@@ -75,10 +75,21 @@ export const sections: Section[] = [
       'How to set up recurring prompts and scheduled workflows for routine business tasks.',
     icon: 'Clock',
   },
+  {
+    id: '1.8',
+    slug: 'roi-measurement',
+    title: 'Measuring AI ROI',
+    sidebarTitle: 'Measuring ROI',
+    subtitle: 'Proving the value of AI investment',
+    track: 'both',
+    description:
+      'Practical frameworks, calculators, and task-level templates for measuring and communicating the return on AI tool investment.',
+    icon: 'TrendingUp',
+  },
 
   // Developer Track
   {
-    id: '1.8',
+    id: '1.9',
     slug: 'claude-md',
     title: 'CLAUDE.md Files',
     subtitle: 'Project-level AI configuration',
@@ -88,7 +99,7 @@ export const sections: Section[] = [
     icon: 'FileCode',
   },
   {
-    id: '1.9',
+    id: '1.10',
     slug: 'documentation',
     title: 'Documentation Structure',
     subtitle: 'AI-friendly project documentation',
@@ -98,7 +109,7 @@ export const sections: Section[] = [
     icon: 'FolderTree',
   },
   {
-    id: '1.10',
+    id: '1.11',
     slug: 'codebase-mapping',
     title: 'Codebase Mapping',
     subtitle: 'Helping Claude understand your code',
@@ -108,7 +119,7 @@ export const sections: Section[] = [
     icon: 'Map',
   },
   {
-    id: '1.11',
+    id: '1.12',
     slug: 'hallucinations',
     title: 'Avoiding Hallucinations',
     subtitle: 'Keeping AI output grounded',
@@ -118,7 +129,7 @@ export const sections: Section[] = [
     icon: 'AlertTriangle',
   },
   {
-    id: '1.12',
+    id: '1.13',
     slug: 'regression-testing',
     title: 'AI-Driven Regression Testing',
     subtitle: 'Test generation and maintenance',
@@ -128,7 +139,7 @@ export const sections: Section[] = [
     icon: 'TestTube',
   },
   {
-    id: '1.13',
+    id: '1.14',
     slug: 'mcp-usage',
     title: 'Safe MCP Usage',
     subtitle: 'Model Context Protocol best practices',
@@ -138,7 +149,7 @@ export const sections: Section[] = [
     icon: 'Plug',
   },
   {
-    id: '1.14',
+    id: '1.15',
     slug: 'plugins',
     title: 'Plugin Recommendations',
     subtitle: 'Extending Claude with plugins',
@@ -148,7 +159,7 @@ export const sections: Section[] = [
     icon: 'Puzzle',
   },
   {
-    id: '1.15',
+    id: '1.16',
     slug: 'technical-debt',
     title: 'Codebase Auditing & Technical Debt',
     sidebarTitle: 'Code Auditing & Debt',
@@ -161,7 +172,7 @@ export const sections: Section[] = [
 
   // Shared section (both tracks)
   {
-    id: '1.16',
+    id: '1.17',
     slug: 'starter-kit',
     title: 'Starter Kit Contents',
     subtitle: 'Ready-to-use files for your Claude environment',

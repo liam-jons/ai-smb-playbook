@@ -10,6 +10,7 @@ import {
   Shield,
   PenTool,
   Clock,
+  TrendingUp,
   FileCode,
   FolderTree,
   Map,
@@ -42,6 +43,7 @@ const iconMap: Record<string, IconComponent> = {
   Shield,
   PenTool,
   Clock,
+  TrendingUp,
   FileCode,
   FolderTree,
   Map,
@@ -68,13 +70,13 @@ function getAnnotation(
     return { type: 'group-header', label: 'Core Topics', first: true };
   }
 
-  // Developer track: "Developer Topics" header before 1.8
-  if (track === 'developer' && section.id === '1.8') {
+  // Developer track: "Developer Topics" header before 1.9
+  if (track === 'developer' && section.id === '1.9') {
     return { type: 'group-header', label: 'Developer Topics', first: false };
   }
 
-  // General track: track note between 1.7 and 1.16
-  if (track === 'general' && section.id === '1.16') {
+  // General track: track note between 1.8 and 1.17
+  if (track === 'general' && section.id === '1.17') {
     return { type: 'track-note' };
   }
 

@@ -309,7 +309,7 @@ export function TechnicalDebtSection() {
               to={`/${track}/codebase-mapping`}
               className="text-primary hover:underline"
             >
-              Section 1.10
+              Section 1.11
             </Link>{' '}
             is your starting point &mdash; this section takes you deeper.
           </p>
@@ -352,7 +352,7 @@ export function TechnicalDebtSection() {
                         to={`/${track}/codebase-mapping`}
                         className="text-primary hover:underline"
                       >
-                        Section 1.10
+                        Section 1.11
                       </Link>
                       )
                     </>
@@ -604,7 +604,7 @@ Important constraints:
                         to={`/${track}/codebase-mapping`}
                         className="text-primary hover:underline"
                       >
-                        Section 1.10
+                        Section 1.11
                       </Link>
                       )
                     </>
@@ -695,7 +695,7 @@ Focus on:
           to={`/${track}/codebase-mapping`}
           className="text-primary hover:underline"
         >
-          Section 1.10 (Codebase Mapping)
+          Section 1.11 (Codebase Mapping)
         </Link>{' '}
         &mdash; run the mapper first to generate a baseline CONCERNS.md. The
         remediation approach uses the anti-hallucination patterns from{' '}
@@ -703,21 +703,21 @@ Focus on:
           to={`/${track}/hallucinations`}
           className="text-primary hover:underline"
         >
-          Section 1.11
+          Section 1.12
         </Link>{' '}
         (plan first, wait for approval). After fixing debt, update your{' '}
         <Link
           to={`/${track}/claude-md`}
           className="text-primary hover:underline"
         >
-          CLAUDE.md (Section 1.8)
+          CLAUDE.md (Section 1.9)
         </Link>{' '}
         and{' '}
         <Link
           to={`/${track}/documentation`}
           className="text-primary hover:underline"
         >
-          documentation structure (Section 1.9)
+          documentation structure (Section 1.10)
         </Link>
         .
       </CalloutCard>

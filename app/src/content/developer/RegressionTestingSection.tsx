@@ -302,7 +302,7 @@ export function RegressionTestingSection() {
                               to={`/${track}/hallucinations`}
                               className="text-primary hover:underline"
                             >
-                              Section 1.11
+                              Section 1.12
                             </Link>
                             )
                           </>
@@ -496,7 +496,7 @@ export function RegressionTestingSection() {
                         to={`/${track}/mcp-usage`}
                         className="text-primary hover:underline"
                       >
-                        Section 1.13
+                        Section 1.14
                       </Link>{' '}
                       for installation guidance.
                     </>
@@ -524,7 +524,7 @@ export function RegressionTestingSection() {
                     to={`/${track}/hallucinations`}
                     className="text-primary hover:underline"
                   >
-                    Section 1.11
+                    Section 1.12
                   </Link>
                   )
                 </>
