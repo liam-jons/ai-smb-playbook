@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,14 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
 import { siteConfig } from '@/config/site';
@@ -199,13 +207,62 @@ ${or(data.reviewDate)}
 `;
 }
 
+// ─── localStorage Persistence ────────────────────────────────────────────────
+
+const STORAGE_KEY = `${siteConfig.localStoragePrefix}-feasibility-draft`;
+
+interface FeasibilityDraft {
+  formData: FeasibilityFormData;
+  currentStep: number;
+  lastSaved: string;
+}
+
+function saveDraft(draft: FeasibilityDraft): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+  } catch {
+    // localStorage may be full or unavailable
+  }
+}
+
+function loadDraft(): FeasibilityDraft | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as FeasibilityDraft;
+  } catch {
+    return null;
+  }
+}
+
+function clearDraft(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+function getRelativeTime(isoString: string): string {
+  const diff = Date.now() - new Date(isoString).getTime();
+  const minutes = Math.floor(diff / 60_000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? '' : 's'} ago`;
+}
+
 // ─── Step Indicator ──────────────────────────────────────────────────────────
 
 function StepIndicator({
   currentStep,
+  highestStep,
   onStepClick,
 }: {
   currentStep: number;
+  highestStep: number;
   onStepClick: (step: number) => void;
 }) {
   return (
@@ -218,8 +275,9 @@ function StepIndicator({
       >
         {feasibilitySteps.map((step, i) => {
           const Icon = stepIcons[i];
-          const isCompleted = i < currentStep;
+          const isCompleted = i < highestStep && i !== currentStep;
           const isCurrent = i === currentStep;
+          const isClickable = i <= highestStep;
 
           return (
             <li
@@ -231,15 +289,15 @@ function StepIndicator({
               <button
                 type="button"
                 onClick={() => onStepClick(i)}
-                disabled={i > currentStep}
+                disabled={!isClickable}
                 aria-label={`Step ${i + 1}: ${step.title}${isCompleted ? ' (completed)' : isCurrent ? ' (current)' : ''}`}
                 className={cn(
-                  'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors',
+                  'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium motion-safe:transition-colors',
                   isCompleted &&
                     'bg-success-muted text-success-muted-foreground',
                   isCurrent && 'ring-2 ring-primary bg-primary/10 text-primary',
                   !isCompleted && !isCurrent && 'text-muted-foreground',
-                  i > currentStep && 'opacity-50 cursor-not-allowed',
+                  !isClickable && 'opacity-50 cursor-not-allowed',
                 )}
               >
                 {isCompleted ? (
@@ -254,7 +312,7 @@ function StepIndicator({
                 <div
                   className={cn(
                     'mx-1 h-px w-4',
-                    i < currentStep ? 'bg-success' : 'bg-border',
+                    i < highestStep ? 'bg-success' : 'bg-border',
                   )}
                   aria-hidden="true"
                 />
@@ -272,7 +330,7 @@ function StepIndicator({
         </span>
         <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
           <div
-            className="h-full rounded-full bg-primary transition-all duration-300"
+            className="h-full rounded-full bg-primary motion-safe:transition-all motion-safe:duration-300"
             style={{
               width: `${((currentStep + 1) / feasibilitySteps.length) * 100}%`,
             }}
@@ -1104,17 +1162,60 @@ function Step7RecommendationForm({
 
 export function FeasibilityStudyBuilder() {
   const { track } = useTrack();
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<FeasibilityFormData>(() => ({
-    ...feasibilityDefaults,
-    companyName: siteConfig.companyName,
-    preparedDate: formatDateUK(new Date()),
-  }));
+  const [savedDraft] = useState(loadDraft);
+  const [step, setStep] = useState(savedDraft?.currentStep ?? 0);
+  const [highestStep, setHighestStep] = useState(savedDraft?.currentStep ?? 0);
+  const [formData, setFormData] = useState<FeasibilityFormData>(
+    () =>
+      savedDraft?.formData ?? {
+        ...feasibilityDefaults,
+        companyName: siteConfig.companyName,
+        preparedDate: formatDateUK(new Date()),
+      },
+  );
+  const [isDraftBannerVisible, setIsDraftBannerVisible] =
+    useState(!!savedDraft);
+  const [showDiscardDialog, setShowDiscardDialog] = useState(false);
+  const draftLastSaved = savedDraft?.lastSaved ?? '';
+  const skipSaveRef = useRef(false);
+  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isInitialRender = useRef(true);
 
   const trackFilteredTemplates = useMemo(
     () => taskTemplates.filter((t) => t.track === 'both' || t.track === track),
     [track],
   );
+
+  // Debounced save to localStorage (500ms)
+  useEffect(() => {
+    if (skipSaveRef.current) {
+      skipSaveRef.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      saveDraft({
+        formData,
+        currentStep: step,
+        lastSaved: new Date().toISOString(),
+      });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [formData, step]);
+
+  // Focus step heading on step transitions (skip initial mount)
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    stepHeadingRef.current?.focus();
+  }, [step]);
+
+  // Navigate to a step, tracking the highest visited step
+  const goToStep = (newStep: number) => {
+    setStep(newStep);
+    setHighestStep((prev) => Math.max(prev, newStep));
+  };
 
   const updateField = <K extends keyof FeasibilityFormData>(
     field: K,
@@ -1140,13 +1241,30 @@ export function FeasibilityStudyBuilder() {
     }
   };
 
-  const handleReset = () => {
+  const handleDiscard = () => {
+    clearDraft();
+    skipSaveRef.current = true;
     setFormData({
       ...feasibilityDefaults,
       companyName: siteConfig.companyName,
       preparedDate: formatDateUK(new Date()),
     });
     setStep(0);
+    setHighestStep(0);
+    setIsDraftBannerVisible(false);
+    setShowDiscardDialog(false);
+  };
+
+  const handleReset = () => {
+    clearDraft();
+    skipSaveRef.current = true;
+    setFormData({
+      ...feasibilityDefaults,
+      companyName: siteConfig.companyName,
+      preparedDate: formatDateUK(new Date()),
+    });
+    setStep(0);
+    setHighestStep(0);
   };
 
   const generatedMarkdown = useMemo(
@@ -1156,13 +1274,13 @@ export function FeasibilityStudyBuilder() {
 
   const goNext = () => {
     if (step < feasibilitySteps.length - 1) {
-      setStep((s) => s + 1);
+      goToStep(step + 1);
     }
   };
 
   const goPrev = () => {
     if (step > 0) {
-      setStep((s) => s - 1);
+      goToStep(step - 1);
     }
   };
 
@@ -1170,11 +1288,39 @@ export function FeasibilityStudyBuilder() {
 
   return (
     <div className="space-y-6">
-      <StepIndicator currentStep={step} onStepClick={setStep} />
+      {/* Draft recovery banner */}
+      {isDraftBannerVisible && (
+        <CalloutCard variant="info" title="Saved draft found">
+          You have an unsaved feasibility study draft from{' '}
+          <strong>{getRelativeTime(draftLastSaved)}</strong>.
+          <div className="mt-3 flex gap-3">
+            <Button size="sm" onClick={() => setIsDraftBannerVisible(false)}>
+              Resume
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowDiscardDialog(true)}
+            >
+              Discard
+            </Button>
+          </div>
+        </CalloutCard>
+      )}
+
+      <StepIndicator
+        currentStep={step}
+        highestStep={highestStep}
+        onStepClick={goToStep}
+      />
 
       {/* Step content */}
       <div aria-live="polite" aria-atomic="true">
-        <h3 className="mb-1 text-base font-semibold text-foreground">
+        <h3
+          ref={stepHeadingRef}
+          tabIndex={-1}
+          className="mb-1 text-base font-semibold text-foreground outline-none"
+        >
           {currentStepDef.title}
         </h3>
         <p className="mb-5 text-sm text-muted-foreground">
@@ -1267,6 +1413,30 @@ export function FeasibilityStudyBuilder() {
           )}
         </div>
       </div>
+
+      {/* Discard confirmation dialog */}
+      <Dialog open={showDiscardDialog} onOpenChange={setShowDiscardDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Discard draft?</DialogTitle>
+            <DialogDescription>
+              This will permanently delete your saved feasibility study draft.
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowDiscardDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDiscard}>
+              Discard draft
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

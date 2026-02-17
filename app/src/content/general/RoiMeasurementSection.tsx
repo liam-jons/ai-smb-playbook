@@ -424,6 +424,17 @@ export function RoiMeasurementSection() {
     'all',
   );
 
+  // Auto-expand the feasibility study collapsible when a saved draft exists
+  const hasFeasibilityDraft = useMemo(() => {
+    try {
+      return !!localStorage.getItem(
+        `${siteConfig.localStoragePrefix}-feasibility-draft`,
+      );
+    } catch {
+      return false;
+    }
+  }, []);
+
   const trackFilteredTemplates = useMemo(
     () => taskTemplates.filter((t) => t.track === 'both' || t.track === track),
     [track],
@@ -581,7 +592,7 @@ export function RoiMeasurementSection() {
 
       {/* 3.5. Feasibility Study Builder */}
       <section aria-labelledby="feasibility-heading">
-        <Collapsible>
+        <Collapsible defaultOpen={hasFeasibilityDraft}>
           <CollapsibleTrigger className="group flex w-full items-start gap-3 rounded-lg border border-border p-4 text-left hover:bg-muted/50 transition-colors">
             <FileText
               className="mt-0.5 h-5 w-5 shrink-0 text-primary"
