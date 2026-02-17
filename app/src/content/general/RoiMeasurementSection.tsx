@@ -27,7 +27,9 @@ import {
   Layers,
   ListChecks,
   ArrowRight,
+  FileText,
 } from 'lucide-react';
+import { FeasibilityStudyBuilder } from '@/content/general/FeasibilityStudyBuilder';
 import {
   calculatorDefaults,
   taskTemplates,
@@ -573,6 +575,42 @@ export function RoiMeasurementSection() {
             No templates in this category.
           </p>
         )}
+      </section>
+
+      <Separator />
+
+      {/* 3.5. Feasibility Study Builder */}
+      <section aria-labelledby="feasibility-heading">
+        <Collapsible>
+          <CollapsibleTrigger className="group flex w-full items-start gap-3 rounded-lg border border-border p-4 text-left hover:bg-muted/50 transition-colors">
+            <FileText
+              className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+              aria-hidden="true"
+            />
+            <div className="min-w-0 flex-1">
+              <h2
+                id="feasibility-heading"
+                className="text-lg font-semibold tracking-tight"
+              >
+                Build a Feasibility Study
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Turn a task template into a professional business case document.
+                This tool formalises Step 1 of the Getting Started checklist
+                &mdash; pick a task, build the case, run the pilot.
+              </p>
+            </div>
+            <ChevronDown
+              className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180"
+              aria-hidden="true"
+            />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="mt-4 rounded-lg border border-border p-5">
+              <FeasibilityStudyBuilder />
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       </section>
 
       <Separator />
