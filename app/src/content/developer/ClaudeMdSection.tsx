@@ -1031,15 +1031,6 @@ export function ClaudeMdSection() {
         </div>
       </section>
 
-      {/* Meta-narrative */}
-      <CalloutCard variant="info">
-        <p className="text-xs">
-          This playbook&apos;s own CLAUDE.md file guided the Claude Code agents
-          that built every section you are reading &mdash; the same pattern
-          described above, applied at scale.
-        </p>
-      </CalloutCard>
-
       <div className="my-4" />
 
       {/* Cross-reference */}

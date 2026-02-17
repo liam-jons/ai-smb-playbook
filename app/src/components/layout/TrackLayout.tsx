@@ -22,12 +22,10 @@ export function TrackLayout() {
   const { track, isValidTrack } = useTrack();
   const { section: sectionSlug } = useParams<{ section: string }>();
   const location = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Close mobile sidebar on route change (safety net for Radix Sheet animation race)
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
+  // Track which pathname the sidebar was opened on. When the route changes,
+  // the derived `sidebarOpen` automatically becomes false — no effect needed.
+  const [sidebarOpenFor, setSidebarOpenFor] = useState<string | null>(null);
+  const sidebarOpen = sidebarOpenFor === location.pathname;
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     try {
@@ -105,7 +103,12 @@ export function TrackLayout() {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Mobile sidebar trigger */}
         <div className="flex items-center gap-2 border-b border-border px-4 py-2 lg:hidden">
-          <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <Sheet
+            open={sidebarOpen}
+            onOpenChange={(open) =>
+              setSidebarOpenFor(open ? location.pathname : null)
+            }
+          >
             <SheetTrigger asChild>
               <Button variant="ghost" size="sm" className="gap-2">
                 <Menu className="h-4 w-4" />
@@ -119,7 +122,7 @@ export function TrackLayout() {
               <ScrollArea className="h-full px-2 py-2">
                 <Sidebar
                   track={track}
-                  onNavClick={() => setSidebarOpen(false)}
+                  onNavClick={() => setSidebarOpenFor(null)}
                 />
               </ScrollArea>
             </SheetContent>

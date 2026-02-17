@@ -937,9 +937,8 @@ export function StarterKitSection() {
           <p>
             The starter kit is a collection of ready-to-use skill files,
             templates, prompts, and plugin references that you can drop into
-            your Claude environment straight away. Everything here was built
-            during the training sessions and refined based on Phew&apos;s
-            specific needs.
+            your Claude environment straight away. Everything here is ready to
+            use and start getting value from immediately.
           </p>
           <p>
             {isDev ? (

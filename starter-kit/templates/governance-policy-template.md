@@ -15,8 +15,8 @@
 **Team Size:** {{TEAM_SIZE}}
 **Effective Date:** {{EFFECTIVE_DATE}}
 **Last Reviewed:** {{LAST_REVIEWED}}
-**Policy Owner:** {{ADMIN_CONTACT}}
-**Review Frequency:** {{REVIEW_FREQUENCY}}
+**Policy Owner:** {{POLICY_OWNER}}
+**Next Review:** {{NEXT_REVIEW}}
 
 ---
 
@@ -64,13 +64,13 @@ AI tool extensions can access data, execute code, connect to external services, 
 | Extension Type | Risk Level | Approval Required | Maintenance Owner | Auto-Update |
 |---------------|-----------|-------------------|-------------------|-------------|
 | Official marketplace plugin | Low | Team lead | Plugin maintainer (automatic) | Yes |
-| Third-party marketplace plugin | Medium | {{ADMIN_CONTACT}} | Plugin maintainer (automatic) | Yes |
+| Third-party marketplace plugin | Medium | {{AI_LEAD_NAME}} | Plugin maintainer (automatic) | Yes |
 | Internally developed skill | Low | Peer review | Author + team | No (manual) |
-| Third-party skill (e.g., skills.sh) | Medium | {{ADMIN_CONTACT}} | Installer + team | No (manual) |
-| MCP/Connector integration | Medium-High | {{ADMIN_CONTACT}} | {{ADMIN_CONTACT}} | Varies |
+| Third-party skill (e.g., skills.sh) | Medium | {{AI_LEAD_NAME}} | Installer + team | No (manual) |
+| MCP/Connector integration | Medium-High | {{AI_LEAD_NAME}} | {{AI_LEAD_NAME}} | Varies |
 | Command file | Low | Peer review (Code-only) | Author + team | No (manual) |
 | Agent file | Low | Peer review (Code-only) | Author + team | No (manual) |
-| Hook | High | {{ADMIN_CONTACT}} | Author + {{ADMIN_CONTACT}} | No (manual) |
+| Hook | High | {{AI_LEAD_NAME}} | Author + {{AI_LEAD_NAME}} | No (manual) |
 
 ---
 
@@ -83,7 +83,7 @@ AI tool extensions can access data, execute code, connect to external services, 
 1. Developer or team member identifies a useful plugin in the Claude marketplace
 2. Reviews the plugin description, permissions, and data access
 3. Requests approval from their team lead
-4. Team lead reviews and approves or escalates to {{ADMIN_CONTACT}}
+4. Team lead reviews and approves or escalates to {{AI_LEAD_NAME}}
 5. Installer runs `claude plugin install <plugin-name>`
 6. Plugin is added to the Approved Extensions appendix
 
@@ -94,12 +94,12 @@ AI tool extensions can access data, execute code, connect to external services, 
 **Risk level:** Medium
 **Process:**
 1. Requester identifies the plugin and documents the business need
-2. {{ADMIN_CONTACT}} reviews the plugin's:
+2. {{AI_LEAD_NAME}} reviews the plugin's:
    - Source and publisher reputation
    - Permissions and data access requirements
    - Content of skills, commands, and agents included
    - Privacy policy and terms of service
-3. {{ADMIN_CONTACT}} approves, rejects, or requests modifications
+3. {{AI_LEAD_NAME}} approves, rejects, or requests modifications
 4. If approved, added to the Approved Extensions appendix with any usage restrictions
 
 ### 4.3 Internally Developed Skills
@@ -112,7 +112,7 @@ AI tool extensions can access data, execute code, connect to external services, 
    - Appropriate scope (not overly broad)
    - UK English compliance
    - No embedded credentials or sensitive data
-3. Skill is added to the shared skills repository or provisioned by {{ADMIN_CONTACT}}
+3. Skill is added to the shared skills repository or provisioned by {{AI_LEAD_NAME}}
 4. Added to the Approved Extensions appendix
 
 ### 4.4 Third-Party Skills
@@ -120,7 +120,7 @@ AI tool extensions can access data, execute code, connect to external services, 
 **Risk level:** Medium
 **Process:**
 1. Requester identifies the skill and its source
-2. {{ADMIN_CONTACT}} reviews the full content of the SKILL.md and any reference files
+2. {{AI_LEAD_NAME}} reviews the full content of the SKILL.md and any reference files
 3. Checks for:
    - Unexpected instructions or prompt injection patterns
    - Data exfiltration instructions (e.g., 'send this data to...')
@@ -137,13 +137,13 @@ AI tool extensions can access data, execute code, connect to external services, 
    - What data the connector can read and write
    - Who will have access through the connection
    - Whether client data may be exposed
-2. {{ADMIN_CONTACT}} reviews with consideration for:
+2. {{AI_LEAD_NAME}} reviews with consideration for:
    - Data classification of accessible information
    - GDPR implications (especially for personal data)
    - Service-level agreements with the connected service
    - Least-privilege principle (minimum necessary access)
 3. If approved, document the connection details, data flows, and access controls
-4. Review quarterly (or per {{REVIEW_FREQUENCY}})
+4. Review quarterly (next review: {{NEXT_REVIEW}})
 
 ### 4.6 Hooks
 
@@ -151,7 +151,7 @@ AI tool extensions can access data, execute code, connect to external services, 
 **Process:**
 1. Hooks execute code on the user's machine and require the highest level of scrutiny
 2. Author documents exactly what the hook does, when it triggers, and what data it accesses
-3. {{ADMIN_CONTACT}} reviews the hook code line by line
+3. {{AI_LEAD_NAME}} reviews the hook code line by line
 4. Hook is tested in a controlled environment before deployment
 5. Must be re-reviewed after any modifications
 
@@ -180,14 +180,14 @@ When evaluating any extension, assess the following:
 
 - Installed via `claude plugin install <plugin-name>` (Claude Code) or the marketplace interface
 - **Receive automatic updates** from the plugin maintainer
-- {{ADMIN_CONTACT}} monitors update notifications for breaking changes
+- {{AI_LEAD_NAME}} monitors update notifications for breaking changes
 - If an update introduces concerns, the plugin can be disabled pending review
 
 ### 6.2 Manually Copied Files (Skills, Commands, Agents)
 
 - Copied to `.claude/skills/`, `.claude/commands/`, or equivalent directories
 - **Do not receive automatic updates** — the team is responsible for maintenance
-- {{ADMIN_CONTACT}} schedules a review every {{REVIEW_FREQUENCY}} to:
+- {{AI_LEAD_NAME}} schedules reviews quarterly (next review: {{NEXT_REVIEW}}) to:
   - Check for updated versions from the original source
   - Verify the files still meet policy requirements
   - Remove any that are no longer needed
@@ -203,19 +203,19 @@ When evaluating any extension, assess the following:
 
 ## 7. Roles and Responsibilities
 
-### {{ADMIN_CONTACT}} (AI Tools Administrator)
+### {{AI_LEAD_NAME}} ({{AI_LEAD_ROLE}})
 
 - Provisions organisation-wide skills via the Teams admin console
 - Reviews and approves medium-risk and high-risk extensions
 - Maintains the Approved Extensions list
-- Conducts periodic reviews per {{REVIEW_FREQUENCY}}
+- Conducts quarterly reviews (next review: {{NEXT_REVIEW}})
 - Responds to security concerns or incidents involving AI tools
 - Stays informed about new extension types and platform changes
 
 ### Team Leads
 
 - Approve low-risk extensions (official marketplace plugins)
-- Escalate medium-risk and high-risk requests to {{ADMIN_CONTACT}}
+- Escalate medium-risk and high-risk requests to {{AI_LEAD_NAME}}
 - Ensure their team follows this policy
 - Report any concerns about extension behaviour
 
@@ -223,7 +223,7 @@ When evaluating any extension, assess the following:
 
 - Follow this policy when installing or using AI tool extensions
 - Do not install extensions that have not been approved
-- Report any unexpected behaviour from extensions to {{ADMIN_CONTACT}}
+- Report any unexpected behaviour from extensions to {{AI_LEAD_NAME}}
 - Participate in periodic reviews when requested
 - Do not share API keys, credentials, or sensitive data via AI tool extensions
 
@@ -263,7 +263,7 @@ As a UK-based organisation, {{COMPANY_NAME}} must ensure that AI tool extensions
 
 ### Regular Reviews
 
-This policy is reviewed every {{REVIEW_FREQUENCY}} by {{ADMIN_CONTACT}}. Reviews cover:
+This policy is reviewed quarterly by {{AI_LEAD_NAME}} (next review: {{NEXT_REVIEW}}). Reviews cover:
 
 - The Approved Extensions list (additions, removals, changes)
 - Any incidents or concerns since the last review
