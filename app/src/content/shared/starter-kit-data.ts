@@ -1,4 +1,5 @@
 import type { Track } from '@/content/shared/types';
+import { siteConfig } from '@/config/site';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -390,7 +391,7 @@ As a UK-based organisation, {{COMPANY_NAME}} must ensure that AI tool extensions
 
 {{COMPANY_NAME}} operates in {{INDUSTRY}}. The following additional considerations apply:
 
-- [ ] **Safeguarding data:** If working with safeguarding-related data, ensure no personal data relating to vulnerable individuals is processed through AI extensions without explicit authorisation and appropriate safeguards
+- [ ] **${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} data:** If working with ${siteConfig.complianceArea}-related data, ensure no personal data relating to vulnerable individuals is processed through AI extensions without explicit authorisation and appropriate safeguards
 - [ ] **Public sector requirements:** If handling public sector data, verify that AI tool usage complies with relevant departmental policies and security classifications
 - [ ] **Professional standards:** Ensure AI tool usage aligns with any professional body requirements relevant to {{INDUSTRY}}
 
@@ -721,9 +722,9 @@ The following is an example of a completed session handoff for a non-technical u
 
 ## What We Were Working On
 
-I am working on a series of three blog posts about how technology is improving safeguarding in the education sector. These are for our company blog and will also be shared on LinkedIn. The target audience is school administrators and safeguarding leads — they are knowledgeable about safeguarding but not particularly technical.
+I am working on a series of three blog posts about how technology is improving ${siteConfig.complianceArea} in the education sector. These are for our company blog and will also be shared on LinkedIn. The target audience is school administrators and ${siteConfig.complianceArea} leads — they are knowledgeable about ${siteConfig.complianceArea} but not particularly technical.
 
-**Project:** Blog series — 'Technology and Safeguarding in Education'
+**Project:** Blog series — 'Technology and ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} in Education'
 **Started:** 10/02/2026
 **Goal:** Three publish-ready blog posts of approximately 800-1,000 words each, with consistent tone and messaging.
 
@@ -732,10 +733,10 @@ I am working on a series of three blog posts about how technology is improving s
 ## What Was Accomplished
 
 - Outlined all three posts and agreed on the structure:
-  1. 'Why Digital Safeguarding Matters More Than Ever' (awareness/problem)
-  2. 'Five Questions to Ask When Choosing a Safeguarding Platform' (evaluation guide)
+  1. 'Why Digital ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Matters More Than Ever' (awareness/problem)
+  2. 'Five Questions to Ask When Choosing a ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Platform' (evaluation guide)
   3. 'Building a Culture of Digital Safety in Your School' (practical implementation)
-- Completed a full draft of Post 1 ('Why Digital Safeguarding Matters More Than Ever')
+- Completed a full draft of Post 1 ('Why Digital ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Matters More Than Ever')
 - Reviewed the draft against our brand voice guidelines — made adjustments to tone (was too formal in places, needed to be more approachable)
 - Agreed on key messaging: lead with the human impact, support with data, avoid fear-mongering
 - Decided not to mention specific competitor products by name
@@ -745,7 +746,7 @@ I am working on a series of three blog posts about how technology is improving s
 
 ## What Needs to Happen Next
 
-- Write the first draft of Post 2 ('Five Questions to Ask When Choosing a Safeguarding Platform')
+- Write the first draft of Post 2 ('Five Questions to Ask When Choosing a ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Platform')
 - The five questions should be practical and vendor-neutral — not a sales pitch for our platform
 - After drafting Post 2, review both Post 1 and Post 2 together for consistency of tone
 - If time allows, begin outlining Post 3 in more detail
@@ -772,10 +773,10 @@ I am working on a series of three blog posts about how technology is improving s
 
 const RAW_EXAMPLE_HANDOFF_TECHNICAL = `# Session 04 Continuation Prompt
 
-**Project:** SafeguardHub — Internal case management dashboard for school safeguarding teams
+**Project:** CaseHub — Internal case management dashboard for school ${siteConfig.complianceArea} teams
 **Previous Session:** Session 03 (API route implementation and database schema refinement)
 **Date Created:** 12/02/2026
-**Repository:** \\\`/home/dev/projects/safeguardhub\\\`
+**Repository:** \\\`/home/dev/projects/casehub\\\`
 
 ---
 
@@ -1129,8 +1130,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     id: 'prompt-handoff-general',
     name: 'Example Handoff (General)',
     description: 'Example session handoff for general users.',
-    longDescription:
-      'A completed example showing what a good session handoff looks like for a non-technical user. Demonstrates the simplified single-block format with a realistic scenario: a marketing team member working on blog posts about safeguarding technology.',
+    longDescription: `A completed example showing what a good session handoff looks like for a non-technical user. Demonstrates the simplified single-block format with a realistic scenario: a marketing team member working on blog posts about ${siteConfig.complianceArea} technology.`,
     category: 'prompt',
     tracks: ['general'],
     priority: 'low',

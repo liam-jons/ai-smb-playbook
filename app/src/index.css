@@ -144,10 +144,10 @@
   --segment-tools: oklch(0.55 0.18 250);
   --segment-instructions: oklch(0.55 0.15 180);
   --segment-mcp: oklch(0.65 0.18 85);
-  --segment-skills: oklch(0.55 0.2 300);
+  --segment-skills: oklch(0.6 0.2 340);
   --segment-environment: oklch(0.6 0.02 250);
   --segment-conversation: oklch(0.55 0.17 155);
-  --segment-buffer: oklch(0.7 0.015 250);
+  --segment-buffer: oklch(0.78 0.04 200);
 
   /* New token defaults */
   --font-heading: var(--font-sans);
@@ -226,10 +226,10 @@
   --segment-tools: oklch(0.6 0.16 250);
   --segment-instructions: oklch(0.6 0.14 180);
   --segment-mcp: oklch(0.7 0.16 85);
-  --segment-skills: oklch(0.6 0.18 300);
+  --segment-skills: oklch(0.65 0.18 340);
   --segment-environment: oklch(0.5 0.02 250);
   --segment-conversation: oklch(0.6 0.17 155);
-  --segment-buffer: oklch(0.45 0.015 250);
+  --segment-buffer: oklch(0.55 0.04 200);
 }
 
 @layer base {

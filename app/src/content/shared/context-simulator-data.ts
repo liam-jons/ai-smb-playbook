@@ -2,6 +2,8 @@
 // All figures are ballpark estimates. Exact token counts vary by Claude version,
 // model, configuration, and content.
 
+import { siteConfig } from '@/config/site';
+
 export interface ContextSegmentData {
   id: string;
   label: string;
@@ -158,14 +160,15 @@ export const segments: ContextSegmentData[] = [
   },
   {
     id: 'response-buffer',
-    label: 'Response Buffer',
+    label: 'Reserved for Response',
+    generalLabel: 'Reserved for Response',
     defaultTokens: RESPONSE_BUFFER_TOKENS,
     colour: 'bg-segment-buffer',
     colourDark: '',
     description:
-      'Reserved for Claude\u2019s next response. NOT available for conversation.',
+      'Space set aside for Claude\u2019s next reply. NOT available for conversation.',
     detailedDescription:
-      'Claude Code reserves approximately 33,000\u201345,000 tokens (~20% of the window) as a buffer for generating responses. This space is NOT available for your conversation history. When the status bar shows 20% remaining, you may only have ~3.5% of true free space before compaction triggers.',
+      'Claude Code reserves approximately 33,000\u201345,000 tokens (~20% of the window) for generating responses. This space is NOT available for your conversation history. When the status bar shows 20% remaining, you may only have ~3.5% of true free space before compaction triggers.',
     isFixed: true,
     isConversation: false,
     isBuffer: true,
@@ -185,7 +188,7 @@ export const presets: PresetData[] = [
   {
     id: 'moderate',
     label: 'Moderate',
-    description: 'Typical Phew! setup',
+    description: `Typical ${siteConfig.companyShortName} setup`,
     mcpServers: 2,
     claudeMdLines: 200,
     skillCount: 3,

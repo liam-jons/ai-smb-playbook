@@ -59,12 +59,25 @@ export function TrackLayout() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [toggleSidebar]);
 
+  // Determine whether we are truly on the bare track path (e.g. /general or
+  // /developer) rather than a section URL whose params haven't hydrated yet.
+  // This prevents a race condition where direct navigation to a section URL
+  // (e.g. /general/starter-kit) would momentarily see sectionSlug as undefined
+  // and redirect to the first section.
+  const pathSegments = location.pathname
+    .replace(/\/+$/, '')
+    .split('/')
+    .filter(Boolean);
+  const isBarePath = pathSegments.length === 1 && pathSegments[0] === track;
+
   if (!isValidTrack) {
     return <Navigate to="/" replace />;
   }
 
-  // If no section is specified, redirect to the first section
-  if (!sectionSlug) {
+  // Only redirect to the first section when the URL is the bare track path.
+  // Do NOT redirect when sectionSlug is merely absent from useParams, as that
+  // can happen transiently during initial hydration of a deep-linked URL.
+  if (isBarePath && !sectionSlug) {
     const firstSection = getSectionsForTrack(track)[0];
     if (firstSection) {
       return <Navigate to={`/${track}/${firstSection.slug}`} replace />;
@@ -78,7 +91,9 @@ export function TrackLayout() {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-1 gap-0">
-      {/* Desktop sidebar */}
+      {/* Desktop sidebar — shown at lg (1024px+) to give content enough room.
+          At md (768px) the sidebar consumed ~280px leaving only ~488px for
+          content which cramped tables and multi-column layouts. */}
       <aside
         className={cn(
           'hidden shrink-0 border-r border-border transition-all duration-300 lg:block',
@@ -101,8 +116,12 @@ export function TrackLayout() {
 
       {/* Main content area */}
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Mobile sidebar trigger */}
-        <div className="flex items-center gap-2 border-b border-border px-4 py-2 lg:hidden">
+        {/* Mobile/tablet sidebar trigger — visible below lg breakpoint */}
+        <div
+          className="flex items-center gap-2 border-b border-border px-4 py-2 lg:hidden"
+          role="navigation"
+          aria-label="Current section"
+        >
           <Sheet
             open={sidebarOpen}
             onOpenChange={(open) =>
@@ -137,7 +156,7 @@ export function TrackLayout() {
         {/* Page content */}
         <main
           id="main-content"
-          className="flex-1 px-4 py-6 pb-20 sm:px-6 md:pb-6 lg:px-8"
+          className="flex-1 px-4 py-6 pb-20 sm:px-6 md:px-8 lg:pb-6"
         >
           <div className="mx-auto max-w-3xl">
             <Outlet />
@@ -147,7 +166,7 @@ export function TrackLayout() {
         {/* Previous / Next navigation */}
         {(prev || next) && (
           <nav
-            className="border-t border-border px-4 py-4 sm:px-6 lg:px-8"
+            className="border-t border-border px-4 py-4 sm:px-6 md:px-8"
             aria-label="Section pagination"
           >
             <div className="mx-auto flex max-w-3xl items-center justify-between gap-4">

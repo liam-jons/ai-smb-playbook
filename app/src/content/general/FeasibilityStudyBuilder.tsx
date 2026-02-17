@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
+import { motion, AnimatePresence } from 'motion/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -267,11 +268,11 @@ function StepIndicator({
 }) {
   return (
     <>
-      {/* Desktop indicator */}
+      {/* Desktop indicator — I13: allow text wrap instead of truncating */}
       <ol
         role="list"
         aria-label="Feasibility study steps"
-        className="hidden sm:flex items-center gap-1 overflow-x-auto"
+        className="hidden sm:flex items-center gap-1"
       >
         {feasibilitySteps.map((step, i) => {
           const Icon = stepIcons[i];
@@ -295,7 +296,7 @@ function StepIndicator({
                 disabled={!isClickable}
                 aria-label={`Step ${i + 1}: ${step.title}${isCompleted ? ' (completed)' : isCurrent ? ' (current)' : ''}`}
                 className={cn(
-                  'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium motion-safe:transition-colors',
+                  'flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium leading-tight motion-safe:transition-colors',
                   isCompleted &&
                     'bg-success-muted text-success-muted-foreground',
                   isCurrent && 'ring-2 ring-primary bg-primary/10 text-primary',
@@ -304,12 +305,15 @@ function StepIndicator({
                 )}
               >
                 {isCompleted ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                  <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                 ) : (
-                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                  <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                 )}
-                <span>{i + 1}</span>
-                <span className="hidden lg:inline truncate">{step.title}</span>
+                <span className="shrink-0">{i + 1}</span>
+                {/* I13: text wraps naturally instead of truncating */}
+                <span className="hidden lg:inline text-[0.65rem] xl:text-xs leading-tight">
+                  {step.title}
+                </span>
               </button>
               {i < feasibilitySteps.length - 1 && (
                 <div
@@ -325,11 +329,10 @@ function StepIndicator({
         })}
       </ol>
 
-      {/* Mobile indicator */}
+      {/* Mobile indicator — N81: step X of 7 + progress bar */}
       <div className="flex sm:hidden items-center gap-3">
-        <span className="text-sm font-medium text-foreground">
-          Step {currentStep + 1} of {feasibilitySteps.length}:{' '}
-          {feasibilitySteps[currentStep].title}
+        <span className="shrink-0 text-sm font-medium text-foreground">
+          Step {currentStep + 1}/{feasibilitySteps.length}
         </span>
         <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
           <div
@@ -339,6 +342,9 @@ function StepIndicator({
             }}
           />
         </div>
+        <span className="shrink-0 text-xs text-muted-foreground">
+          {feasibilitySteps[currentStep].title}
+        </span>
       </div>
     </>
   );
@@ -647,23 +653,24 @@ function Step3ProposedWorkflowForm({
         />
       </FormField>
 
+      {/* N55: allow text wrapping at narrow viewports, reduce gap for 375px */}
       <div>
         <Label className="mb-2 block text-sm font-medium text-foreground">
           Required tools
         </Label>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-x-4 gap-y-2">
           {toolOptions.map((tool) => (
             <label
               key={tool}
-              className="flex items-center gap-2 text-sm text-foreground cursor-pointer"
+              className="flex items-center gap-2 text-sm text-foreground cursor-pointer min-w-0"
             >
               <input
                 type="checkbox"
                 checked={formData.requiredTools.includes(tool)}
                 onChange={() => handleToolToggle(tool)}
-                className="h-4 w-4 rounded border-input accent-primary"
+                className="h-4 w-4 shrink-0 rounded border-input accent-primary"
               />
-              {tool}
+              <span className="break-words">{tool}</span>
             </label>
           ))}
         </div>
@@ -1115,18 +1122,28 @@ function Step7RecommendationForm({
 
       <Separator />
 
-      {/* Preview */}
+      {/* Preview — N82: styled monospace card instead of raw <pre> */}
       <div>
         <Label className="mb-2 block text-sm font-medium text-foreground">
           Document preview
         </Label>
         <div
-          className="max-h-80 overflow-y-auto rounded-lg border border-border bg-muted/30 p-4"
+          className="max-h-80 overflow-y-auto rounded-lg border border-border bg-card shadow-sm"
           aria-label="Generated feasibility study preview"
+          role="region"
         >
-          <pre className="whitespace-pre-wrap text-xs text-foreground font-mono leading-relaxed">
-            {generatedMarkdown}
-          </pre>
+          <div className="flex items-center justify-between border-b border-border px-4 py-2">
+            <span className="text-xs text-muted-foreground">Markdown</span>
+            <CopyButton
+              text={generatedMarkdown}
+              ariaLabel="Copy feasibility study preview"
+            />
+          </div>
+          <div className="p-4">
+            <pre className="whitespace-pre-wrap text-xs text-foreground font-mono leading-relaxed">
+              {generatedMarkdown}
+            </pre>
+          </div>
         </div>
       </div>
 
@@ -1317,7 +1334,7 @@ export function FeasibilityStudyBuilder() {
         onStepClick={goToStep}
       />
 
-      {/* Step content */}
+      {/* Step content with entrance animation on step transitions */}
       <div aria-live="polite" aria-atomic="true">
         <h3
           ref={stepHeadingRef}
@@ -1330,53 +1347,66 @@ export function FeasibilityStudyBuilder() {
           {currentStepDef.description}
         </p>
 
-        {step === 0 && (
-          <Step1UseCaseForm
-            formData={formData}
-            updateField={updateField}
-            onTemplateSelect={handleTemplateSelect}
-            trackFilteredTemplates={trackFilteredTemplates}
-          />
-        )}
-        {step === 1 && (
-          <Step2CurrentStateForm
-            formData={formData}
-            updateField={updateField}
-          />
-        )}
-        {step === 2 && (
-          <Step3ProposedWorkflowForm
-            formData={formData}
-            updateField={updateField}
-          />
-        )}
-        {step === 3 && (
-          <Step4BenefitsForm formData={formData} updateField={updateField} />
-        )}
-        {step === 4 && (
-          <Step5RisksForm
-            formData={formData}
-            updateField={updateField}
-            track={track}
-          />
-        )}
-        {step === 5 && (
-          <Step6SuccessCriteriaForm
-            formData={formData}
-            updateField={updateField}
-          />
-        )}
-        {step === 6 && (
-          <Step7RecommendationForm
-            formData={formData}
-            updateField={updateField}
-            generatedMarkdown={generatedMarkdown}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {step === 0 && (
+              <Step1UseCaseForm
+                formData={formData}
+                updateField={updateField}
+                onTemplateSelect={handleTemplateSelect}
+                trackFilteredTemplates={trackFilteredTemplates}
+              />
+            )}
+            {step === 1 && (
+              <Step2CurrentStateForm
+                formData={formData}
+                updateField={updateField}
+              />
+            )}
+            {step === 2 && (
+              <Step3ProposedWorkflowForm
+                formData={formData}
+                updateField={updateField}
+              />
+            )}
+            {step === 3 && (
+              <Step4BenefitsForm
+                formData={formData}
+                updateField={updateField}
+              />
+            )}
+            {step === 4 && (
+              <Step5RisksForm
+                formData={formData}
+                updateField={updateField}
+                track={track}
+              />
+            )}
+            {step === 5 && (
+              <Step6SuccessCriteriaForm
+                formData={formData}
+                updateField={updateField}
+              />
+            )}
+            {step === 6 && (
+              <Step7RecommendationForm
+                formData={formData}
+                updateField={updateField}
+                generatedMarkdown={generatedMarkdown}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Navigation */}
-      <div className="flex items-center justify-between pt-2">
+      {/* Navigation — N24: reduced top padding to bring closer to content on mobile */}
+      <div className="flex items-center justify-between pt-1">
         <Button
           variant="outline"
           size="sm"
@@ -1394,6 +1424,18 @@ export function FeasibilityStudyBuilder() {
         </Button>
 
         <div className="flex items-center gap-2">
+          {/* N80: "Start over" available from any step (not just step 7) */}
+          {step > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowDiscardDialog(true)}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Start over
+            </Button>
+          )}
+
           {step === feasibilitySteps.length - 1 ? (
             <Button
               variant="outline"

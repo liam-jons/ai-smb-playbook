@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -351,7 +352,7 @@ const gettingStartedSteps = [
 ];
 
 const whenToUse = [
-  'When onboarding to an unfamiliar codebase (the primary use case for Phew!)',
+  `When onboarding to an unfamiliar codebase (the primary use case for ${siteConfig.companyShortName})`,
   'Before major refactoring (understand current state first)',
   'After significant changes (refresh the codebase understanding)',
   'When existing documentation is outdated or missing',
@@ -402,7 +403,11 @@ export function CodebaseMappingSection() {
           </p>
         </div>
 
-        <CalloutCard variant="info" title="For Phew!" className="mt-6">
+        <CalloutCard
+          variant="info"
+          title={`For ${siteConfig.companyShortName}`}
+          className="mt-6"
+        >
           This is directly relevant to your existing projects. Whether it is a
           WordPress site, an ASP.NET/C# application, or a new project, running
           the mapper creates a comprehensive baseline understanding that

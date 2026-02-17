@@ -11,6 +11,7 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -50,8 +51,7 @@ const recommendedMcps: McpRecommendation[] = [
     name: 'Playwright (chrome-devtools)',
     whatItDoes:
       'Gives Claude Code the ability to control a web browser \u2014 navigate to pages, click elements, fill forms, take screenshots, and run end-to-end tests. The Playwright MCP server from Microsoft is the standard browser automation tool for Claude Code.',
-    whyItMatters:
-      'Phew! builds web applications (LMS, Audit System, PDMS). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing Ghost Inspector workflows.',
+    whyItMatters: `${siteConfig.companyShortName} builds web applications (${siteConfig.webApplications}). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${siteConfig.testingTool} workflows.`,
     configJson: `{
   "mcpServers": {
     "playwright": {
@@ -447,7 +447,7 @@ export function McpUsageSection() {
           id="recommended"
           className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          Recommended MCPs for Phew!
+          Recommended MCPs for {siteConfig.companyShortName}
         </h2>
 
         <div className="space-y-6">
@@ -467,7 +467,7 @@ export function McpUsageSection() {
               </p>
               <p className="mb-4 text-sm text-muted-foreground">
                 <strong className="text-foreground">
-                  Why it matters for Phew!:
+                  Why it matters for {siteConfig.companyShortName}:
                 </strong>{' '}
                 {mcp.whyItMatters}
                 {mcp.name === 'Playwright (chrome-devtools)' && (

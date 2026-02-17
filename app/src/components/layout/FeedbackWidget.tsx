@@ -36,6 +36,23 @@ export function FeedbackWidget() {
   const [message, setMessage] = useState('');
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  // Hide the mobile FAB while the user is actively scrolling so it does not
+  // overlap interactive content, tab labels, or buttons at narrow viewports.
+  useEffect(() => {
+    let scrollTimer: ReturnType<typeof setTimeout>;
+    const handleScroll = () => {
+      setIsScrolling(true);
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => setIsScrolling(false), 800);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimer);
+    };
+  }, []);
 
   // Listen for custom event from header/footer
   useEffect(() => {
@@ -100,10 +117,11 @@ export function FeedbackWidget() {
 
   return (
     <>
-      {/* Floating button — visible on all pages */}
+      {/* Floating button — visible on mobile only, fades out while scrolling
+          to avoid overlapping interactive content at narrow viewports */}
       <Button
         onClick={() => setOpen(true)}
-        className="fixed bottom-20 right-6 z-50 h-12 w-12 rounded-full shadow-lg md:hidden"
+        className={`fixed bottom-20 right-6 z-50 h-12 w-12 rounded-full shadow-lg transition-opacity duration-300 md:hidden ${isScrolling ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
         size="icon"
         aria-label="Send feedback"
       >

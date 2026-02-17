@@ -54,8 +54,9 @@ export function ContextWindowBar({
 
   return (
     <TooltipProvider delayDuration={100}>
+      {/* Horizontal bar — visible on sm+ */}
       <div
-        className="relative flex h-10 w-full overflow-hidden rounded-lg border border-border bg-muted/30 sm:h-12"
+        className="relative hidden h-12 w-full overflow-hidden rounded-lg border border-border bg-muted/30 dark:border-border dark:bg-muted/60 sm:flex"
         role="img"
         aria-label={`Context window visualisation showing ${segments.length} segments totalling ${formatTokens(TOTAL_CONTEXT)} tokens`}
       >
@@ -136,7 +137,7 @@ export function ContextWindowBar({
 
                   {/* Segment label */}
                   {showLabel && !isCompacted && (
-                    <span className="relative z-20 hidden truncate px-1 text-[10px] text-white drop-shadow-sm sm:inline">
+                    <span className="relative z-20 truncate px-1 text-[10px] text-white drop-shadow-sm">
                       {displayLabel}
                     </span>
                   )}
@@ -171,14 +172,14 @@ export function ContextWindowBar({
                     ? { duration: 0 }
                     : { duration: 0.3, ease: [...easeOut] }
                 }
-                className="flex items-center justify-center bg-muted/20 dark:bg-muted/10"
+                className="flex items-center justify-center bg-muted/20 dark:bg-muted/40"
                 style={{
                   width: `${Math.max(availablePercentage, 0.5)}%`,
                 }}
                 aria-label={`Available space: approximately ${formatTokens(availableSpace)} tokens, ${availablePercentage.toFixed(1)}% of context window`}
               >
                 {availablePercentage > 8 && (
-                  <span className="hidden truncate px-1 text-[10px] text-muted-foreground sm:inline">
+                  <span className="truncate px-1 text-[10px] text-muted-foreground">
                     Available
                   </span>
                 )}
@@ -200,9 +201,62 @@ export function ContextWindowBar({
         )}
       </div>
 
-      {/* Segment legend */}
+      {/* Mobile vertical stack — visible below sm */}
       <div
-        className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3"
+        className="space-y-1 sm:hidden"
+        role="img"
+        aria-label={`Context window visualisation showing ${segments.length} segments totalling ${formatTokens(TOTAL_CONTEXT)} tokens`}
+      >
+        {segments
+          .filter((s) => s.tokens > 0)
+          .map((s) => {
+            const displayLabel = getSegmentLabel(s.segment, isDev);
+            return (
+              <div key={s.segment.id} className="flex items-center gap-2">
+                <div
+                  className={cn(
+                    'h-5 rounded',
+                    s.segment.colour,
+                    s.segment.colourDark,
+                    s.segment.isBuffer &&
+                      'bg-[repeating-linear-gradient(45deg,transparent,transparent_3px,rgba(0,0,0,0.06)_3px,rgba(0,0,0,0.06)_6px)]',
+                  )}
+                  style={{
+                    width: `${Math.max(s.percentage, 3)}%`,
+                    minWidth: '12px',
+                  }}
+                />
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {displayLabel}{' '}
+                  <span className="tabular-nums">
+                    ({s.percentage.toFixed(0)}%)
+                  </span>
+                </span>
+              </div>
+            );
+          })}
+        {availablePercentage > 0 && (
+          <div className="flex items-center gap-2">
+            <div
+              className="h-5 rounded bg-muted/30 dark:bg-muted/50"
+              style={{
+                width: `${Math.max(availablePercentage, 3)}%`,
+                minWidth: '12px',
+              }}
+            />
+            <span className="shrink-0 text-xs text-muted-foreground">
+              Available{' '}
+              <span className="tabular-nums">
+                ({availablePercentage.toFixed(0)}%)
+              </span>
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Segment legend — only on sm+ (mobile uses inline labels above) */}
+      <div
+        className="mt-3 hidden grid-cols-2 gap-x-4 gap-y-1.5 sm:grid sm:grid-cols-3"
         aria-label="Segment colour legend"
         id={`${barId}-legend`}
       >
@@ -217,7 +271,7 @@ export function ContextWindowBar({
                   'bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)]',
               )}
             />
-            <span className="text-[11px] text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {getSegmentLabel(s.segment, isDev)}
             </span>
           </div>

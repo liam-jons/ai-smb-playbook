@@ -29,7 +29,12 @@ export function PromptExample({
   copyAriaLabel,
 }: PromptExampleProps) {
   return (
-    <Card className={cn('overflow-hidden', className)}>
+    <Card
+      className={cn(
+        'overflow-hidden border-l-4 border-l-primary/40',
+        className,
+      )}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div>
@@ -48,7 +53,7 @@ export function PromptExample({
         <div className="group relative rounded-md border border-border bg-muted/50 p-4">
           <CopyButton
             text={prompt}
-            className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
+            className="absolute right-2 top-2 opacity-60 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
             ariaLabel={copyAriaLabel}
           />
           <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">

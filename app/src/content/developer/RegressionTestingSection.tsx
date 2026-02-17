@@ -6,6 +6,7 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -92,7 +93,7 @@ const testingApproaches: TestingApproach[] = [
 
 interface ComparisonRow {
   capability: string;
-  ghostInspector: string;
+  existingTool: string;
   aiDriven: string;
   highlight?: boolean;
 }
@@ -100,63 +101,63 @@ interface ComparisonRow {
 const comparisonRows: ComparisonRow[] = [
   {
     capability: 'Recorded test creation',
-    ghostInspector: 'Built-in browser extension recorder',
+    existingTool: 'Built-in browser extension recorder',
     aiDriven:
       'CoWork follows instructions; Playwright MCP generates scripts from descriptions',
   },
   {
     capability: 'Scheduled execution',
-    ghostInspector: 'Yes \u2014 cron-like scheduling, recurring runs',
+    existingTool: 'Yes \u2014 cron-like scheduling, recurring runs',
     aiDriven: 'Not natively available yet. Would require custom orchestration',
   },
   {
     capability: 'CI/CD integration',
-    ghostInspector: 'Built-in (webhooks, API, GitHub Actions)',
+    existingTool: 'Built-in (webhooks, API, GitHub Actions)',
     aiDriven: 'Playwright scripts can run in CI/CD; CoWork/computer use cannot',
   },
   {
     capability: 'Visual regression',
-    ghostInspector: 'Screenshot comparison built-in',
+    existingTool: 'Screenshot comparison built-in',
     aiDriven:
       'Not built-in. Would need Percy, Playwright screenshot comparison, or similar',
   },
   {
     capability: 'Element selectors',
-    ghostInspector: 'CSS selectors (can break on redesign)',
+    existingTool: 'CSS selectors (can break on redesign)',
     aiDriven:
       'AI can adapt to layout changes; Playwright selectors are more robust than CSS',
   },
   {
     capability: 'Authentication handling',
-    ghostInspector: 'Cookie injection, API-based auth',
+    existingTool: 'Cookie injection, API-based auth',
     aiDriven:
       'CoWork can perform actual login flows; Playwright can handle auth state',
   },
   {
     capability: 'Reporting & history',
-    ghostInspector: 'Dashboard with pass/fail history, screenshots',
+    existingTool: 'Dashboard with pass/fail history, screenshots',
     aiDriven: 'No built-in reporting. Would need custom solution',
   },
   {
     capability: 'Team collaboration',
-    ghostInspector: 'Shared tests, team management',
+    existingTool: 'Shared tests, team management',
     aiDriven: 'Tests are code \u2014 version-controlled and reviewable in Git',
   },
   {
     capability: 'Self-healing tests',
-    ghostInspector: 'No (tests break when selectors change)',
+    existingTool: 'No (tests break when selectors change)',
     aiDriven:
       'AI-generated tests can be regenerated from natural-language descriptions',
     highlight: true,
   },
   {
     capability: 'Cost',
-    ghostInspector: 'Subscription-based per test run',
+    existingTool: 'Subscription-based per test run',
     aiDriven: 'API token costs per generation; Playwright execution is free',
   },
   {
     capability: 'Maintenance burden',
-    ghostInspector: 'High \u2014 tests break frequently on redesign',
+    existingTool: 'High \u2014 tests break frequently on redesign',
     aiDriven:
       'Lower for AI-generated tests (regenerate from descriptions); higher for initial setup',
   },
@@ -190,23 +191,21 @@ const gettingStartedSteps = [
   {
     step: 5,
     title: 'Evaluate after 4\u20136 weeks',
-    description:
-      'After running AI-generated Playwright tests alongside Ghost Inspector, assess: which caught more bugs? Which required less maintenance?',
+    description: `After running AI-generated Playwright tests alongside ${siteConfig.testingTool}, assess: which caught more bugs? Which required less maintenance?`,
   },
   {
     step: 6,
-    title: 'Do not cancel Ghost Inspector yet',
-    description:
-      'Keep it running for your critical paths until you have confidence in the replacement. The goal is not to save the subscription cost \u2014 it is to have better tests.',
+    title: `Do not cancel ${siteConfig.testingTool} yet`,
+    description: `Keep it running for your critical paths until you have confidence in the replacement. The goal is not to save the subscription cost \u2014 it is to have better tests.`,
   },
 ];
 
 const limitations = [
   'AI testing is not deterministic. The same prompt can generate slightly different test scripts on different runs.',
   'Hallucinated selectors are a real risk. Claude may generate selectors that look correct but do not match your actual DOM. Always review generated tests manually.',
-  'Scheduling is not solved. Ghost Inspector can run tests on a schedule. AI-driven testing currently requires manual initiation or custom orchestration.',
-  'Reporting is DIY. Ghost Inspector provides dashboards and history. AI-generated Playwright tests require you to build or adopt a reporting layer.',
-  'Cost can be unpredictable. Ghost Inspector has predictable subscription costs. AI token costs depend on test complexity and regeneration frequency.',
+  `Scheduling is not solved. ${siteConfig.testingTool} can run tests on a schedule. AI-driven testing currently requires manual initiation or custom orchestration.`,
+  `Reporting is DIY. ${siteConfig.testingTool} provides dashboards and history. AI-generated Playwright tests require you to build or adopt a reporting layer.`,
+  `Cost can be unpredictable. ${siteConfig.testingTool} has predictable subscription costs. AI token costs depend on test complexity and regeneration frequency.`,
   'This landscape is changing fast. Specific tool capabilities described here may change within months. The principles (AI-assisted generation, self-healing tests) are more durable than the specific tooling.',
 ];
 
@@ -229,9 +228,9 @@ export function RegressionTestingSection() {
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
             Regression testing has traditionally required dedicated tools that
-            record or script browser interactions and replay them. Ghost
-            Inspector is a solid example of this &mdash; and it works well for
-            Phew!&apos;s current needs.
+            record or script browser interactions and replay them.{' '}
+            {siteConfig.testingTool} is a solid example of this &mdash; and it
+            works well for {siteConfig.companyShortName}&apos;s current needs.
           </p>
           <p>
             AI is changing this landscape. Instead of brittle recorded scripts
@@ -241,9 +240,10 @@ export function RegressionTestingSection() {
             caveats.
           </p>
           <p>
-            This section lays out what is currently possible, how it compares to
-            Ghost Inspector, and a practical path for Phew! to start
-            experimenting alongside your existing setup.
+            This section lays out what is currently possible, how it compares to{' '}
+            {siteConfig.testingTool}, and a practical path for{' '}
+            {siteConfig.companyShortName} to start experimenting alongside your
+            existing setup.
           </p>
         </div>
       </section>
@@ -332,7 +332,7 @@ export function RegressionTestingSection() {
           id="comparison"
           className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          Ghost Inspector Comparison
+          {siteConfig.testingTool} Comparison
         </h2>
 
         <div className="overflow-x-auto">
@@ -343,7 +343,7 @@ export function RegressionTestingSection() {
                   Capability
                 </th>
                 <th scope="col" className="pb-2 pr-4 font-medium">
-                  Ghost Inspector
+                  {siteConfig.testingTool}
                 </th>
                 <th scope="col" className="pb-2 font-medium">
                   AI-Driven (Current State)
@@ -368,7 +368,7 @@ export function RegressionTestingSection() {
                     )}
                   </td>
                   <td className="py-2 pr-4 text-muted-foreground">
-                    {row.ghostInspector}
+                    {row.existingTool}
                   </td>
                   <td className="py-2 text-muted-foreground">{row.aiDriven}</td>
                 </tr>
@@ -423,10 +423,10 @@ export function RegressionTestingSection() {
               </li>
             </ol>
             <CalloutCard variant="info">
-              <strong>Phew! starting point:</strong> Pick 3–5 existing Ghost
-              Inspector tests and recreate them as Playwright tests using
-              Claude. Compare reliability and maintenance burden over 2–3
-              months.
+              <strong>{siteConfig.companyShortName} starting point:</strong>{' '}
+              Pick 3–5 existing {siteConfig.testingTool} tests and recreate them
+              as Playwright tests using Claude. Compare reliability and
+              maintenance burden over 2–3 months.
             </CalloutCard>
           </TabsContent>
           <TabsContent value="progressive" className="mt-4 space-y-4">
@@ -435,29 +435,30 @@ export function RegressionTestingSection() {
             </h3>
             <p className="text-sm text-muted-foreground">
               Use CoWork or Playwright MCP for exploratory and ad-hoc testing
-              alongside Ghost Inspector for critical regression paths.
+              alongside {siteConfig.testingTool} for critical regression paths.
             </p>
             <ol className="list-inside list-decimal space-y-1 text-sm text-muted-foreground">
               <li>
-                Ghost Inspector continues handling critical regression suites
+                {siteConfig.testingTool} continues handling critical regression
+                suites
               </li>
               <li>
                 CoWork handles exploratory testing for complex user journeys
               </li>
               <li>
                 For new features, use Claude to generate Playwright tests before
-                they reach Ghost Inspector
+                they reach {siteConfig.testingTool}
               </li>
               <li>
-                Gradually migrate Ghost Inspector tests to Playwright as
-                confidence builds
+                Gradually migrate {siteConfig.testingTool} tests to Playwright
+                as confidence builds
               </li>
             </ol>
             <CalloutCard variant="info">
-              <strong>Phew! starting point:</strong> Start using CoWork for
-              manual QA tasks that are currently done by hand (new feature
-              walkthroughs, cross-browser checks). Document which tasks it
-              handles well and which it struggles with.
+              <strong>{siteConfig.companyShortName} starting point:</strong>{' '}
+              Start using CoWork for manual QA tasks that are currently done by
+              hand (new feature walkthroughs, cross-browser checks). Document
+              which tasks it handles well and which it struggles with.
             </CalloutCard>
           </TabsContent>
         </Tabs>
@@ -548,7 +549,7 @@ export function RegressionTestingSection() {
           <PromptExample
             title="Generate a Playwright Test"
             description="Create a test script from a natural-language user journey description."
-            prompt={`I want to create a Playwright test for the following user journey on our LMS application (ASP.NET/C#, running locally at http://localhost:5000):
+            prompt={`I want to create a Playwright test for the following user journey on our ${siteConfig.primaryProduct} application (${siteConfig.techStack}, running locally at http://localhost:5000):
 
 User journey: "Admin creates a new training module"
 1. Navigate to the login page
@@ -612,21 +613,21 @@ Do not fix anything. Just observe and report.`}
           />
 
           <PromptExample
-            title="Migrate a Ghost Inspector Test"
-            description="Convert an existing Ghost Inspector test into a Playwright test."
-            prompt={`I have an existing Ghost Inspector test that performs the following steps. I want to recreate this as a Playwright test.
+            title={`Migrate a ${siteConfig.testingTool} Test`}
+            description={`Convert an existing ${siteConfig.testingTool} test into a Playwright test.`}
+            prompt={`I have an existing ${siteConfig.testingTool} test that performs the following steps. I want to recreate this as a Playwright test.
 
-Ghost Inspector test name: "[test name]"
+${siteConfig.testingTool} test name: "[test name]"
 What it tests: [describe the user journey in plain English]
-Current selectors used: [list any known CSS selectors from Ghost Inspector, or say "unknown"]
+Current selectors used: [list any known CSS selectors from ${siteConfig.testingTool}, or say "unknown"]
 Authentication: [how the test handles login \u2014 cookie injection, direct login, etc.]
 
-Generate an equivalent Playwright test in TypeScript. Where the Ghost Inspector test relies on fragile CSS selectors, use more robust alternatives (text content, ARIA roles, data-testid). Add comments explaining any significant differences from the Ghost Inspector version.`}
-            whenToUse="When migrating existing tests from Ghost Inspector to Playwright."
+Generate an equivalent Playwright test in TypeScript. Where the ${siteConfig.testingTool} test relies on fragile CSS selectors, use more robust alternatives (text content, ARIA roles, data-testid). Add comments explaining any significant differences from the ${siteConfig.testingTool} version.`}
+            whenToUse={`When migrating existing tests from ${siteConfig.testingTool} to Playwright.`}
           />
 
           <CodeBlock
-            code={`## LMS Admin: Create Training Module
+            code={`## ${siteConfig.primaryProduct} Admin: Create Training Module
 
 **Preconditions:**
 - Admin user exists with valid credentials

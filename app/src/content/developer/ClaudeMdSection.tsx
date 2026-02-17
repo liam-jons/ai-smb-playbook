@@ -1,5 +1,17 @@
 import { Link } from 'react-router';
-import { X, Check } from 'lucide-react';
+import { siteConfig } from '@/config/site';
+import {
+  X,
+  Check,
+  FileText,
+  Map,
+  ListTree,
+  Lightbulb,
+  Puzzle,
+  Rocket,
+  FileCode,
+  MessageSquare,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import {
   Accordion,
@@ -9,10 +21,10 @@ import {
 } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { ScrollHint } from '@/components/content/ScrollHint';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 
@@ -62,6 +74,7 @@ const fileTypes: FileType[] = [
 
 interface ClaudeMdSectionEntry {
   title: string;
+  subtitle: string;
   description: string;
   example: string;
 }
@@ -69,60 +82,70 @@ interface ClaudeMdSectionEntry {
 const claudeMdSections: ClaudeMdSectionEntry[] = [
   {
     title: 'Project Description',
+    subtitle: 'Give Claude the big picture in 1\u20133 lines',
     description:
       '1\u20133 lines explaining what this project is, in plain language.',
-    example: `# My LMS Platform\n\nA learning management system built with ASP.NET Core and React, serving safeguarding training for UK organisations.`,
+    example: `# My ${siteConfig.primaryProduct} Platform\n\nA ${siteConfig.primaryProductDescription} built with ${siteConfig.techStack} and React, serving ${siteConfig.complianceArea} training for UK organisations.`,
   },
   {
     title: 'Commands',
+    subtitle: 'Copy-paste ready build, test, and deploy commands',
     description:
       'The essential build/test/dev/lint/deploy commands. Present as a table for scannability. Every command must be copy-paste ready.',
     example: `## Commands\n\n| Command | Description |\n|---------|-------------|\n| \`dotnet run\` | Start development server |\n| \`dotnet test\` | Run test suite |\n| \`npm run build:css\` | Rebuild Tailwind CSS |`,
   },
   {
     title: 'Architecture',
+    subtitle: 'A tree-style map of key directories',
     description:
       'A tree-style overview of the project structure with one-line descriptions of each directory. Not exhaustive \u2014 just the key directories. Point to /docs/architecture/ for deeper detail.',
     example: `## Architecture\n\n\`\`\`\nsrc/\n  Controllers/   # API endpoints\n  Services/      # Business logic\n  Models/        # Data models and DTOs\n  Views/         # Razor pages\nwwwroot/         # Static assets\ntests/           # Unit and integration tests\n\`\`\``,
   },
   {
     title: 'Key Files',
+    subtitle: 'Entry points and important configuration files',
     description:
       'Entry points, configuration files, and any files a developer needs to know about that are not obvious from the directory structure.',
     example: `## Key Files\n\n- \`src/Program.cs\` \u2014 Application entry point\n- \`src/appsettings.json\` \u2014 Base configuration\n- \`.env.local\` \u2014 Local environment variables (not committed)`,
   },
   {
     title: 'Code Style',
+    subtitle: 'Project-specific conventions only',
     description:
       'Project-specific conventions only. Not "use meaningful variable names" \u2014 things like: "we use camelCase for functions", "all API routes return typed responses".',
     example: `## Code Style\n\n- PascalCase for public members, camelCase for private\n- API responses typed with record classes\n- Error handling uses Result pattern in services\n- Prefer named exports over default exports`,
   },
   {
     title: 'Environment',
+    subtitle: 'Variables, prerequisites, and setup steps',
     description:
       'Required environment variables, setup steps, any prerequisites. Include the "no real users" note for development environments.',
     example: `## Environment\n\nRequired variables (see .env.example):\n\n| Variable | Purpose |\n|----------|--------|\n| \`CONNECTION_STRING\` | SQL Server connection |\n| \`SMTP_HOST\` | Email server |\n\n**Note:** This is a development environment. There are no real users. Test data can be created and deleted freely.`,
   },
   {
     title: 'Testing',
+    subtitle: 'How to run tests and testing conventions',
     description:
       'Test runner, how to run tests, testing conventions, any non-obvious testing patterns.',
     example: `## Testing\n\n- \`dotnet test\` \u2014 Run all tests (xUnit)\n- Tests live in \`tests/\` alongside the source structure\n- Use \`IClassFixture<T>\` for shared test context\n- Integration tests use a test database (see TestDbFixture)`,
   },
   {
     title: 'Gotchas',
+    subtitle: 'Non-obvious traps that save debugging time',
     description:
       'Non-obvious things that cause issues. This is often the most valuable section \u2014 it captures knowledge that is not obvious from reading the code.',
     example: `## Gotchas\n\n- The auth module must be initialised before any API calls \u2014 see src/Services/AuthService.cs\n- Database migrations require manual approval in production\n- Hot reload does not pick up changes to appsettings.local.json \u2014 restart the dev server`,
   },
   {
     title: 'Workflow',
+    subtitle: 'Branching, deployment, and PR conventions',
     description:
       'Development workflow patterns. When to use which branch, how deployments work, PR conventions.',
     example: `## Workflow\n\n- Feature branches from \`develop\`, PRs reviewed before merge\n- Staging deploys automatically on merge to \`develop\`\n- Production deploys require manual approval via Azure DevOps`,
   },
   {
     title: 'Documentation Pointers',
+    subtitle: 'Links to /docs/ for deeper reference',
     description:
       'Links to /docs/ subdirectories for deeper reference. This is the "map" part.',
     example: `## Documentation Pointers\n\nFor deeper reference, see the /docs directory:\n\n- \`docs/architecture/\` \u2014 System architecture, domain model, data flow\n- \`docs/conventions/\` \u2014 Coding standards, naming patterns\n- \`docs/integrations/\` \u2014 Third-party service documentation\n- \`docs/schemas/\` \u2014 Database schemas, API schemas`,
@@ -404,7 +427,7 @@ const bestPractices = [
       'Point to schema files or docs. Include any non-obvious relationships or conventions (e.g., "all tables use soft deletes").',
   },
   {
-    title: '"No real users" note',
+    title: '\u201CNo real users\u201D note',
     description:
       'For development and staging environments, explicitly state: "This is a development environment. There are no real users. Test data can be created and deleted freely." This prevents Claude from being overly cautious with test data.',
   },
@@ -460,8 +483,10 @@ const gettingStartedSteps = [
 export function ClaudeMdSection() {
   const { track } = useTrack();
   return (
-    <div className="flex flex-col gap-12">
-      {/* 1. What CLAUDE.md Files Are */}
+    <div className="flex flex-col gap-16">
+      {/* ------------------------------------------------------------------ */}
+      {/* 1. What CLAUDE.md Files Are                                         */}
+      {/* ------------------------------------------------------------------ */}
       <motion.section
         aria-labelledby="what-are-claude-md"
         initial={{ opacity: 0, y: 16 }}
@@ -470,8 +495,9 @@ export function ClaudeMdSection() {
       >
         <h2
           id="what-are-claude-md"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <FileText className="h-5 w-5 text-primary" aria-hidden="true" />
           What CLAUDE.md Files Are and Why They Matter
         </h2>
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
@@ -492,30 +518,33 @@ export function ClaudeMdSection() {
         <CalloutCard variant="tip" title="The impact" className="mt-6">
           A well-maintained CLAUDE.md is the single most impactful improvement
           you can make to Claude Code&apos;s output quality. It is cheap to
-          create (15–30 minutes for a first version) and cheap to maintain (a
-          few lines added per week). The difference: Claude stops asking
+          create (15&ndash;30 minutes for a first version) and cheap to maintain
+          (a few lines added per week). The difference: Claude stops asking
           &ldquo;how do I run this?&rdquo; and starts knowing.
         </CalloutCard>
 
-        {/* File types table */}
+        {/* File types table — C4/I27: ScrollHint wrapper for mobile overflow */}
         <div className="mt-8">
           <h3 className="mb-3 text-lg font-medium">
             File Types and Where They Live
           </h3>
-          <div className="overflow-x-auto">
+          <ScrollHint>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border text-left">
-                  <th scope="col" className="pb-2 pr-4 font-medium">
+                <tr className="border-b border-border bg-muted/30 text-left">
+                  <th
+                    scope="col"
+                    className="sticky left-0 bg-muted/30 px-3 py-2 pr-4 font-medium"
+                  >
                     Type
                   </th>
-                  <th scope="col" className="pb-2 pr-4 font-medium">
+                  <th scope="col" className="px-3 py-2 pr-4 font-medium">
                     Location
                   </th>
-                  <th scope="col" className="pb-2 pr-4 font-medium">
+                  <th scope="col" className="px-3 py-2 pr-4 font-medium">
                     Purpose
                   </th>
-                  <th scope="col" className="pb-2 font-medium">
+                  <th scope="col" className="px-3 py-2 font-medium">
                     Shared?
                   </th>
                 </tr>
@@ -523,21 +552,25 @@ export function ClaudeMdSection() {
               <tbody>
                 {fileTypes.map((ft) => (
                   <tr key={ft.type} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-medium">{ft.type}</td>
-                    <td className="py-2 pr-4">
+                    <td className="sticky left-0 bg-card px-3 py-2 pr-4 font-medium">
+                      {ft.type}
+                    </td>
+                    <td className="px-3 py-2 pr-4">
                       <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
                         {ft.location}
                       </code>
                     </td>
-                    <td className="py-2 pr-4 text-muted-foreground">
+                    <td className="px-3 py-2 pr-4 text-muted-foreground">
                       {ft.purpose}
                     </td>
-                    <td className="py-2 text-muted-foreground">{ft.shared}</td>
+                    <td className="px-3 py-2 text-muted-foreground">
+                      {ft.shared}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </ScrollHint>
           <p className="mt-3 text-sm text-muted-foreground">
             Claude auto-discovers CLAUDE.md files in parent directories, so
             monorepo structures work automatically.
@@ -545,14 +578,21 @@ export function ClaudeMdSection() {
         </div>
       </motion.section>
 
-      <Separator />
+      {/* Section break — I36 */}
+      <hr className="border-border" />
 
-      {/* 2. Map Not Encyclopedia */}
-      <section aria-labelledby="map-not-encyclopedia">
+      {/* ------------------------------------------------------------------ */}
+      {/* 2. Map Not Encyclopedia                                             */}
+      {/* ------------------------------------------------------------------ */}
+      <section
+        aria-labelledby="map-not-encyclopedia"
+        className="rounded-xl bg-muted/20 dark:bg-muted/40 px-6 py-8"
+      >
         <h2
           id="map-not-encyclopedia"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <Map className="h-5 w-5 text-primary" aria-hidden="true" />
           The &ldquo;Map, Not Encyclopedia&rdquo; Principle
         </h2>
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
@@ -588,9 +628,10 @@ export function ClaudeMdSection() {
           </p>
         </div>
 
+        {/* I20: X/Check icons already present — verified */}
         <Accordion type="single" collapsible className="mt-6">
           <AccordionItem value="before-after">
-            <AccordionTrigger className="text-base font-medium">
+            <AccordionTrigger className="py-3 text-lg font-semibold">
               Before &amp; After: Bloated vs Well-Structured
             </AccordionTrigger>
             <AccordionContent>
@@ -636,24 +677,29 @@ export function ClaudeMdSection() {
         </Accordion>
       </section>
 
-      <CalloutCard variant="info" title="IDE alternatives">
-        Windsurf, Cursor, and Warp are IDE-integrated AI coding tools that also
-        support CLAUDE.md files (or equivalent project context files). This
-        playbook focuses on Claude Code as the primary supported interface for
-        Phew!, but developers should feel free to experiment with alternatives.
-        The principles covered here &mdash; concise documentation, structured
-        context, the &ldquo;map not encyclopedia&rdquo; approach &mdash; apply
-        regardless of the tool.
+      {/* N7: Rewritten from defensive to inclusive */}
+      <CalloutCard variant="info" title="Works everywhere">
+        Whether you prefer the terminal, VS Code, Cursor, Windsurf, or another
+        IDE, Claude works everywhere. CLAUDE.md files (or equivalent project
+        context files) are supported across all major AI coding tools. This
+        playbook focuses on Claude Code as the primary supported interface for{' '}
+        {siteConfig.companyShortName}, but the principles covered here &mdash;
+        concise documentation, structured context, the &ldquo;map not
+        encyclopedia&rdquo; approach &mdash; apply regardless of the tool.
       </CalloutCard>
 
-      <Separator />
+      {/* Section break — I36 */}
+      <hr className="border-border" />
 
-      {/* 3. How to Structure */}
+      {/* ------------------------------------------------------------------ */}
+      {/* 3. How to Structure                                                 */}
+      {/* ------------------------------------------------------------------ */}
       <section aria-labelledby="structure">
         <h2
           id="structure"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <ListTree className="h-5 w-5 text-primary" aria-hidden="true" />
           How to Structure a CLAUDE.md File
         </h2>
 
@@ -682,20 +728,32 @@ export function ClaudeMdSection() {
           </ul>
         </CalloutCard>
 
-        <p className="mb-4 text-sm text-muted-foreground">
-          Include only sections that are relevant to your project &mdash; not
-          all are needed for every project.
-        </p>
+        <div className="mb-4 flex items-center gap-3">
+          <p className="text-sm text-muted-foreground">
+            Include only sections that are relevant to your project &mdash; not
+            all are needed for every project.
+          </p>
+          {/* N40: Section count badge */}
+          <Badge variant="secondary" className="shrink-0 text-xs">
+            {claudeMdSections.length} sections
+          </Badge>
+        </div>
 
-        <Accordion type="single" collapsible className="w-full">
+        {/* I10/I37/N79: Tighter padding, larger trigger text, subtitles */}
+        <Accordion type="single" collapsible className="w-full space-y-0">
           {claudeMdSections.map((section, index) => (
             <AccordionItem key={section.title} value={`section-${index}`}>
-              <AccordionTrigger>
-                <span className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs tabular-nums">
-                    {index + 1}
-                  </Badge>
-                  {section.title}
+              <AccordionTrigger className="py-3">
+                <span className="flex flex-col items-start gap-0.5">
+                  <span className="flex items-center gap-2 text-lg font-semibold">
+                    <Badge variant="outline" className="text-xs tabular-nums">
+                      {index + 1}
+                    </Badge>
+                    {section.title}
+                  </span>
+                  <span className="pl-8 text-xs text-muted-foreground">
+                    {section.subtitle}
+                  </span>
                 </span>
               </AccordionTrigger>
               <AccordionContent>
@@ -713,99 +771,124 @@ export function ClaudeMdSection() {
         </Accordion>
       </section>
 
-      <Separator />
+      {/* N78: Clear section break between accordion and Best Practices */}
+      <div className="border-t border-border pt-8 mt-8">
+        {/* ---------------------------------------------------------------- */}
+        {/* 4. Best Practices — I21: semantic <ul><li>                        */}
+        {/* ---------------------------------------------------------------- */}
+        <section aria-labelledby="best-practices">
+          <h2
+            id="best-practices"
+            className="mb-6 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
+          >
+            <Lightbulb className="h-5 w-5 text-primary" aria-hidden="true" />
+            Best Practices from the Training
+          </h2>
+          <ul className="space-y-3">
+            {bestPractices.map((bp) => (
+              <li
+                key={bp.title}
+                className="flex gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-sm"
+              >
+                <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                <div>
+                  <p className="text-base font-medium">{bp.title}</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    {bp.description}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
 
-      {/* 4. Best Practices */}
-      <section aria-labelledby="best-practices">
-        <h2
-          id="best-practices"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
-        >
-          Best Practices from the Training
-        </h2>
-        <div className="space-y-3">
-          {bestPractices.map((bp) => (
-            <div
-              key={bp.title}
-              className="flex gap-3 rounded-lg border border-border/50 px-4 py-3"
-            >
-              <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
-              <div>
-                <p className="text-sm font-medium">{bp.title}</p>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  {bp.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Section break — I36 */}
+      <hr className="border-border" />
 
-      <Separator />
-
-      {/* 5. Plugin Tools */}
-      <section aria-labelledby="claude-md-plugin">
+      {/* ------------------------------------------------------------------ */}
+      {/* 5. Plugin Tools                                                     */}
+      {/* ------------------------------------------------------------------ */}
+      <section
+        aria-labelledby="claude-md-plugin"
+        className="rounded-xl bg-muted/20 dark:bg-muted/40 px-6 py-8"
+      >
         <h2
           id="claude-md-plugin"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-6 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <Puzzle className="h-5 w-5 text-primary" aria-hidden="true" />
           The claude-md-management Plugin
         </h2>
 
-        <div className="mb-6 overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left">
-                <th scope="col" className="pb-2 pr-4 font-medium" />
-                <th scope="col" className="pb-2 pr-4 font-medium">
-                  claude-md-improver (skill)
-                </th>
-                <th scope="col" className="pb-2 font-medium">
-                  /revise-claude-md (command)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="[&_tr]:border-b [&_tr]:border-border/50">
-              <tr>
-                <td className="py-2 pr-4 font-medium">Purpose</td>
-                <td className="py-2 pr-4 text-muted-foreground">
-                  Keep CLAUDE.md aligned with codebase
-                </td>
-                <td className="py-2 text-muted-foreground">
-                  Capture session learnings
-                </td>
-              </tr>
-              <tr>
-                <td className="py-2 pr-4 font-medium">When to use</td>
-                <td className="py-2 pr-4 text-muted-foreground">
-                  Periodic maintenance / audit
-                </td>
-                <td className="py-2 text-muted-foreground">
-                  End of productive session
-                </td>
-              </tr>
-              <tr>
-                <td className="py-2 pr-4 font-medium">Triggered by</td>
-                <td className="py-2 pr-4 text-muted-foreground">
-                  &ldquo;audit my CLAUDE.md&rdquo; or codebase changes
-                </td>
-                <td className="py-2 text-muted-foreground">
-                  <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                    /revise-claude-md
-                  </code>
-                </td>
-              </tr>
-              <tr>
-                <td className="py-2 pr-4 font-medium">Output</td>
-                <td className="py-2 pr-4 text-muted-foreground">
-                  Quality report with scores + proposed diffs
-                </td>
-                <td className="py-2 text-muted-foreground">
-                  Proposed additions as diffs
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        {/* I27/I33/N51: ScrollHint wrapper, sticky first column, bg-muted/30 header */}
+        <div className="mb-6">
+          <ScrollHint>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/30 text-left">
+                  <th
+                    scope="col"
+                    className="sticky left-0 z-10 bg-muted/30 px-3 py-2 pr-4 font-medium"
+                  />
+                  <th scope="col" className="px-3 py-2 pr-4 font-medium">
+                    claude-md-improver (skill)
+                  </th>
+                  <th scope="col" className="px-3 py-2 font-medium">
+                    /revise-claude-md (command)
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="[&_tr]:border-b [&_tr]:border-border/50">
+                <tr>
+                  <td className="sticky left-0 z-10 bg-card px-3 py-2 pr-4 font-medium">
+                    Purpose
+                  </td>
+                  <td className="px-3 py-2 pr-4 text-muted-foreground">
+                    Keep CLAUDE.md aligned with codebase
+                  </td>
+                  <td className="px-3 py-2 text-muted-foreground">
+                    Capture session learnings
+                  </td>
+                </tr>
+                <tr>
+                  <td className="sticky left-0 z-10 bg-card px-3 py-2 pr-4 font-medium">
+                    When to use
+                  </td>
+                  <td className="px-3 py-2 pr-4 text-muted-foreground">
+                    Periodic maintenance / audit
+                  </td>
+                  <td className="px-3 py-2 text-muted-foreground">
+                    End of productive session
+                  </td>
+                </tr>
+                <tr>
+                  <td className="sticky left-0 z-10 bg-card px-3 py-2 pr-4 font-medium">
+                    Triggered by
+                  </td>
+                  <td className="px-3 py-2 pr-4 text-muted-foreground">
+                    &ldquo;audit my CLAUDE.md&rdquo; or codebase changes
+                  </td>
+                  <td className="px-3 py-2 text-muted-foreground">
+                    <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                      /revise-claude-md
+                    </code>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="sticky left-0 z-10 bg-card px-3 py-2 pr-4 font-medium">
+                    Output
+                  </td>
+                  <td className="px-3 py-2 pr-4 text-muted-foreground">
+                    Quality report with scores + proposed diffs
+                  </td>
+                  <td className="px-3 py-2 text-muted-foreground">
+                    Proposed additions as diffs
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ScrollHint>
         </div>
 
         <Tabs defaultValue="skill">
@@ -814,7 +897,7 @@ export function ClaudeMdSection() {
             <TabsTrigger value="command">/revise-claude-md</TabsTrigger>
           </TabsList>
           <TabsContent value="skill" className="mt-4 space-y-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               The skill runs a five-phase workflow to audit and improve your
               CLAUDE.md files:
             </p>
@@ -843,50 +926,63 @@ export function ClaudeMdSection() {
               </li>
             </ol>
 
-            {/* Quality criteria */}
-            <Accordion type="multiple" className="mt-4">
-              {qualityCriteria.map((criterion) => (
-                <AccordionItem key={criterion.name} value={criterion.name}>
-                  <AccordionTrigger>
-                    <span className="flex items-center gap-2 text-sm">
-                      <Badge
-                        variant="secondary"
-                        className="text-xs tabular-nums"
-                      >
-                        {criterion.points} pts
-                      </Badge>
-                      {criterion.name}
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p className="mb-2 text-sm text-muted-foreground">
-                      {criterion.description}
-                    </p>
-                    <div className="grid gap-2 sm:grid-cols-2">
-                      <div className="rounded border border-success/30 bg-success-muted/50 px-3 py-2">
-                        <p className="text-xs font-medium text-success-muted-foreground">
-                          Excellent
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {criterion.excellent}
-                        </p>
+            {/* I16: Larger quality criteria cards with bg-card, border, shadow-sm, text-sm */}
+            <div className="mt-4">
+              <div className="mb-3 flex items-center gap-3">
+                <h4 className="text-base font-semibold">Quality Criteria</h4>
+                <Badge variant="secondary" className="shrink-0 text-xs">
+                  {qualityCriteria.length} criteria
+                </Badge>
+              </div>
+              {/* I10: Tighter accordion */}
+              <Accordion type="multiple" className="space-y-0">
+                {qualityCriteria.map((criterion) => (
+                  <AccordionItem key={criterion.name} value={criterion.name}>
+                    <AccordionTrigger className="py-3">
+                      <span className="flex flex-col items-start gap-0.5">
+                        <span className="flex items-center gap-2 text-lg font-semibold">
+                          <Badge
+                            variant="secondary"
+                            className="text-xs tabular-nums"
+                          >
+                            {criterion.points} pts
+                          </Badge>
+                          {criterion.name}
+                        </span>
+                        <span className="pl-14 text-xs text-muted-foreground">
+                          {criterion.description}
+                        </span>
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="rounded-lg border border-success/30 bg-card px-4 py-3 shadow-sm">
+                          <p className="flex items-center gap-1.5 text-sm font-medium text-success-muted-foreground">
+                            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                            Excellent
+                          </p>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {criterion.excellent}
+                          </p>
+                        </div>
+                        <div className="rounded-lg border border-destructive/30 bg-card px-4 py-3 shadow-sm">
+                          <p className="flex items-center gap-1.5 text-sm font-medium text-destructive">
+                            <X className="h-3.5 w-3.5" aria-hidden="true" />
+                            Poor
+                          </p>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {criterion.poor}
+                          </p>
+                        </div>
                       </div>
-                      <div className="rounded border border-destructive/30 bg-destructive/5 px-3 py-2">
-                        <p className="text-xs font-medium text-destructive">
-                          Poor
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {criterion.poor}
-                        </p>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
           </TabsContent>
           <TabsContent value="command" className="mt-4 space-y-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               Best used at the end of a productive session. The workflow:
             </p>
             <ol className="list-inside list-decimal space-y-2 text-sm text-muted-foreground">
@@ -937,23 +1033,27 @@ export function ClaudeMdSection() {
         </div>
       </section>
 
-      <Separator />
+      {/* Section break — I36 */}
+      <hr className="border-border" />
 
-      {/* 6. Getting Started */}
+      {/* ------------------------------------------------------------------ */}
+      {/* 6. Getting Started — N30/N52: semantic <ol><li>, aligned flexbox    */}
+      {/* ------------------------------------------------------------------ */}
       <section aria-labelledby="getting-started">
         <h2
           id="getting-started"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <Rocket className="h-5 w-5 text-primary" aria-hidden="true" />
           Getting Started: Your First CLAUDE.md
         </h2>
         <p className="mb-6 max-w-prose text-base text-muted-foreground">
           A clear path from zero to a working CLAUDE.md in 15&ndash;30 minutes.
         </p>
 
-        <div className="space-y-4">
+        <ol className="space-y-4">
           {gettingStartedSteps.map((step) => (
-            <div key={step.step} className="flex gap-4">
+            <li key={step.step} className="flex items-start gap-3">
               <div
                 className={cn(
                   'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
@@ -962,25 +1062,32 @@ export function ClaudeMdSection() {
               >
                 {step.step}
               </div>
-              <div className="pt-1">
-                <p className="text-sm font-medium">{step.title}</p>
+              <div className="pt-0.5">
+                <p className="text-base font-medium">{step.title}</p>
                 <p className="mt-0.5 text-sm text-muted-foreground">
                   {step.description}
                 </p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
-      <Separator />
+      {/* Section break — I36 */}
+      <hr className="border-border" />
 
-      {/* 7. Copyable Templates */}
-      <section aria-labelledby="templates">
+      {/* ------------------------------------------------------------------ */}
+      {/* 7. Copyable Templates                                               */}
+      {/* ------------------------------------------------------------------ */}
+      <section
+        aria-labelledby="templates"
+        className="rounded-xl bg-muted/20 dark:bg-muted/40 px-6 py-8"
+      >
         <h2
           id="templates"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <FileCode className="h-5 w-5 text-primary" aria-hidden="true" />
           Copyable Templates
         </h2>
 
@@ -1014,14 +1121,18 @@ export function ClaudeMdSection() {
         </Tabs>
       </section>
 
-      <Separator />
+      {/* Section break — I36 */}
+      <hr className="border-border" />
 
-      {/* 8. Copyable Prompts */}
+      {/* ------------------------------------------------------------------ */}
+      {/* 8. Copyable Prompts                                                 */}
+      {/* ------------------------------------------------------------------ */}
       <section aria-labelledby="prompts">
         <h2
           id="prompts"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2.5 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <MessageSquare className="h-5 w-5 text-primary" aria-hidden="true" />
           Useful Prompts
         </h2>
         <div className="space-y-4">

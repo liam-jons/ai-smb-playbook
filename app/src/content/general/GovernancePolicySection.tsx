@@ -20,6 +20,7 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import {
   Shield,
@@ -78,12 +79,12 @@ const placeholders: PlaceholderDef[] = [
   {
     placeholder: '{{COMPANY_NAME}}',
     description: 'Organisation name',
-    example: 'Phew Design Limited',
+    example: siteConfig.companyName,
   },
   {
     placeholder: '{{INDUSTRY}}',
     description: 'Primary industry or sector',
-    example: 'Safeguarding and public sector software',
+    example: siteConfig.industry,
   },
   {
     placeholder: '{{TEAM_SIZE}}',
@@ -165,7 +166,7 @@ const riskTiers: RiskTier[] = [
     label: 'High Risk',
     colour: 'red',
     characteristics: [
-      'Access to sensitive data (customer PII, financial records, health data, safeguarding information)',
+      `Access to sensitive data (customer PII, financial records, health data, ${siteConfig.sensitiveDataLabel})`,
       'Access to production systems or live environments',
       'From an unknown, unverified, or new source',
       'Could affect data protection compliance (GDPR, ISO 27001)',
@@ -173,7 +174,7 @@ const riskTiers: RiskTier[] = [
     ],
     examples: [
       'MCP servers connecting to customer databases, CRM, or production environments',
-      'Any extension handling safeguarding data or personal information',
+      `Any extension handling ${siteConfig.sensitiveDataLabel} or personal information`,
       'Browser automation tools operating on live client sites',
       'Agent teams with autonomous decision-making authority',
     ],
@@ -377,7 +378,7 @@ Deprecation: Confirm with users, remove from all environments, update register (
 - UK data residency: Confirm that external integrations do not transfer data outside the UK without safeguards
 - Audit trail: For Tier 3 extensions handling sensitive data, maintain usage logs
 
-Safeguarding data: No AI extension should ever access safeguarding case data, child protection information, or vulnerable person records without a formal Tier 3 assessment, MD approval, and a Data Protection Impact Assessment (DPIA) if applicable.`,
+Sensitive data: No AI extension should ever access ${siteConfig.sensitiveDataDescription} without a formal Tier 3 assessment, MD approval, and a Data Protection Impact Assessment (DPIA) if applicable.`,
     annotation:
       'Data protection is especially important if your organisation handles sensitive information. The key rule: any extension that could access sensitive or personal data must go through the full Tier 3 review process, no exceptions.',
     tracks: ['general', 'developer'],
@@ -505,7 +506,7 @@ Extensions are classified into three risk tiers based on their potential impact.
 ### Tier 3 \u2014 High Risk
 
 **Characteristics:** Sensitive data access, production systems, unknown sources, compliance impact, automated real-world actions.
-**Examples:** Customer database connectors, safeguarding data handlers, browser automation on live sites, autonomous agent teams.
+**Examples:** Customer database connectors, ${siteConfig.sensitiveDataLabel} handlers, browser automation on live sites, autonomous agent teams.
 **Approval:** AI Lead review + MD sign-off with written risk assessment.
 
 ---
@@ -588,8 +589,8 @@ ${registerTemplate}
 - UK data residency confirmation
 - Audit trail for Tier 3 extensions
 
-### Safeguarding Data
-No AI extension may access safeguarding case data without formal Tier 3 assessment, MD approval, and DPIA where applicable.
+### Sensitive Data
+No AI extension may access ${siteConfig.sensitiveDataLabel} without formal Tier 3 assessment, MD approval, and DPIA where applicable.
 
 ---
 
@@ -660,17 +661,17 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
     { bg: string; border: string; badge: string }
   > = {
     emerald: {
-      bg: 'bg-success-muted/50',
+      bg: 'bg-success-muted/50 dark:bg-success-muted/70',
       border: 'border-success-muted',
       badge: 'bg-success-muted text-success-muted-foreground',
     },
     amber: {
-      bg: 'bg-warning-muted/50',
+      bg: 'bg-warning-muted/50 dark:bg-warning-muted/70',
       border: 'border-warning-muted',
       badge: 'bg-warning-muted text-warning-muted-foreground',
     },
     red: {
-      bg: 'bg-danger-muted/50',
+      bg: 'bg-danger-muted/50 dark:bg-danger-muted/70',
       border: 'border-danger-muted',
       badge: 'bg-danger-muted text-danger-muted-foreground',
     },
@@ -930,8 +931,9 @@ export function GovernancePolicySection() {
 
         {viewMode === 'walkthrough' ? (
           <Accordion type="single" collapsible className="space-y-1">
-            {filteredSections.map((section) => {
+            {filteredSections.map((section, index) => {
               const Icon = section.icon;
+              const displayNumber = index + 1;
               return (
                 <AccordionItem
                   key={section.id}
@@ -945,7 +947,7 @@ export function GovernancePolicySection() {
                         aria-hidden="true"
                       />
                       <span>
-                        {section.number}. {section.title}
+                        {displayNumber}. {section.title}
                       </span>
                     </span>
                   </AccordionTrigger>
@@ -972,7 +974,7 @@ export function GovernancePolicySection() {
           </Accordion>
         ) : (
           <div className="space-y-4">
-            <div className="group relative rounded-lg border border-border bg-muted/20 p-6">
+            <div className="group relative rounded-lg border border-border bg-muted/20 dark:bg-muted/40 p-6">
               <CopyButton
                 text={fullPolicyText}
                 className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100"
@@ -1031,7 +1033,9 @@ export function GovernancePolicySection() {
                     key={p.placeholder}
                     className={cn(
                       'border-b border-border last:border-b-0',
-                      i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
+                      i % 2 === 0
+                        ? 'bg-transparent'
+                        : 'bg-muted/20 dark:bg-muted/40',
                     )}
                   >
                     <td className="px-3 py-2.5">
@@ -1063,8 +1067,9 @@ export function GovernancePolicySection() {
           Extension Register Template
         </h2>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          A starting register pre-populated with the extensions from the Phew!
-          starter kit. Copy this into a shared spreadsheet or markdown file.
+          A starting register pre-populated with the extensions from the{' '}
+          {siteConfig.companyShortName} starter kit. Copy this into a shared
+          spreadsheet or markdown file.
         </p>
         <CodeBlock
           code={registerTemplate}

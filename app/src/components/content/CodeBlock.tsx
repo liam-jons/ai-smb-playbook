@@ -59,7 +59,7 @@ export function CodeBlock({
         {!title && language === 'text' && (
           <CopyButton
             text={code}
-            className="absolute right-2 top-2 z-10 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
+            className="absolute right-2 top-2 z-10 opacity-60 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
           />
         )}
         <ScrollHint className="scroll-hint-code">

@@ -12,6 +12,7 @@ import {
 import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { CopyButton } from '@/components/content/CopyButton';
 import { siteConfig } from '@/config/site';
 import { useTrack } from '@/hooks/useTrack';
 
@@ -178,6 +179,17 @@ export function WelcomeSection() {
     [track],
   );
 
+  const quickReferenceText = useMemo(
+    () =>
+      quickReferenceItems
+        .map(
+          (section) =>
+            `${section.heading}\n${section.items.map((item) => `- ${item}`).join('\n')}`,
+        )
+        .join('\n\n'),
+    [quickReferenceItems],
+  );
+
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -297,7 +309,7 @@ export function WelcomeSection() {
       {/* ── Starter Kit Callout ────────────────────────── */}
       <Link
         to={`/${track}/starter-kit`}
-        className="group block rounded-lg border border-primary/20 bg-primary/5 px-5 py-5 transition-colors hover:bg-primary/10"
+        className="group block rounded-lg border border-primary/20 bg-primary/5 px-5 py-5 transition-colors hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/15"
       >
         <div className="flex items-start gap-4">
           <div className="rounded-md bg-primary/10 p-2">
@@ -336,7 +348,7 @@ export function WelcomeSection() {
           {quickWins.map((win) => (
             <div
               key={win.title}
-              className="flex flex-col gap-2 rounded-lg border border-border bg-card px-5 py-4"
+              className="flex flex-col gap-2 rounded-lg border border-border bg-card px-5 py-4 transition-all hover:border-primary/30 hover:shadow-sm"
             >
               <h3 className="text-sm font-semibold text-foreground">
                 {win.title}
@@ -372,15 +384,21 @@ export function WelcomeSection() {
               A printable one-page summary of the key takeaways.
             </p>
           </div>
-          <Button
-            variant="outline"
-            size="default"
-            onClick={handlePrint}
-            className="gap-2 self-start sm:self-auto"
-          >
-            <Download className="h-4 w-4" />
-            Download Quick Reference (PDF)
-          </Button>
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <Button
+              variant="outline"
+              size="default"
+              onClick={handlePrint}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Download Quick Reference (PDF)
+            </Button>
+            <CopyButton
+              text={quickReferenceText}
+              ariaLabel="Copy quick reference to clipboard"
+            />
+          </div>
         </div>
 
         <div className="rounded-lg border border-border bg-card px-5 py-6">

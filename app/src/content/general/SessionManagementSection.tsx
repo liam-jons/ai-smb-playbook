@@ -12,14 +12,25 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { getAtomicTaskTitle } from '@/content/shared/session-management-data';
-import { ChevronDown } from 'lucide-react';
+import {
+  ChevronDown,
+  AlertTriangle,
+  ArrowRightLeft,
+  Scissors,
+  Monitor,
+  Brain,
+  Code2,
+  FileText,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   rulesOfThumb,
@@ -30,14 +41,54 @@ import {
   workedExamples,
   platformComparisons,
   copyablePrompts,
+  promptCategoryLabels,
 } from '@/content/shared/session-management-data';
+import type { PromptCategory } from '@/content/shared/session-management-data';
+
+const sessionTocEntries = [
+  { id: 'when-to-stop-heading', label: 'When to Stop a Session' },
+  { id: 'handoff-workflow-heading', label: 'The Handoff Workflow' },
+  { id: 'subtasks-heading', label: 'Breaking Tasks into Subtasks' },
+  { id: 'platform-heading', label: 'Platform Differences' },
+  { id: 'memory-feature-heading', label: "Claude's Memory Feature" },
+  { id: 'templates-heading', label: 'Copyable Handoff Templates' },
+];
 
 export function SessionManagementSection() {
   const { track } = useTrack();
   const isDev = track === 'developer';
 
+  const filteredPrompts = copyablePrompts.filter((p) =>
+    p.tracks.includes(track),
+  );
+  const promptCategories = [
+    ...new Set(filteredPrompts.map((p) => p.category)),
+  ] as PromptCategory[];
+
   return (
     <div className="space-y-12">
+      {/* S5: Table of Contents */}
+      <nav
+        aria-label="Page contents"
+        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
+      >
+        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          On this page
+        </h2>
+        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
+          {sessionTocEntries.map((entry) => (
+            <li key={entry.id}>
+              <a
+                href={`#${entry.id}`}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {/* Key takeaway */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -63,24 +114,30 @@ export function SessionManagementSection() {
       >
         <h2
           id="when-to-stop-heading"
-          className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-2 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <AlertTriangle className="h-5 w-5 text-primary" />
           When to Stop a Session and Start Fresh
         </h2>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
           Stopping a session is not failure — it is the single most effective
-          way to maintain Claude's quality. A fresh session with a good briefing
-          outperforms a long session every time.
+          way to maintain Claude&apos;s quality. A fresh session with a good
+          briefing outperforms a long session every time.
         </p>
 
         {/* Rules of thumb */}
-        <h3 className="mb-3 text-lg font-medium">Rules of Thumb</h3>
-        <Accordion type="single" collapsible className="w-full">
+        <h3 className="mb-3 text-lg font-semibold">Rules of Thumb</h3>
+        <Accordion
+          type="single"
+          collapsible
+          defaultValue="one-task"
+          className="w-full"
+        >
           {rulesOfThumb
             .filter((r) => r.tracks.includes(track))
             .map((rule) => (
               <AccordionItem key={rule.id} value={rule.id}>
-                <AccordionTrigger className="text-sm font-medium">
+                <AccordionTrigger className="text-base font-semibold">
                   {rule.title}
                 </AccordionTrigger>
                 <AccordionContent>
@@ -98,7 +155,7 @@ export function SessionManagementSection() {
         {/* Developer: Token-awareness bands */}
         {isDev && (
           <div className="mt-6">
-            <h3 className="mb-3 text-lg font-medium">
+            <h3 className="mb-3 text-lg font-semibold">
               Token-Aware Session Management
             </h3>
             <div className="overflow-x-auto">
@@ -174,13 +231,13 @@ export function SessionManagementSection() {
           </div>
         )}
 
-        {/* Cross-reference */}
+        {/* Cross-reference — N37: hover state on cross-reference link */}
         <div className="mt-4 rounded-md border border-border bg-muted/30 px-4 py-3">
           <p className="text-sm text-muted-foreground">
             See how context degradation works visually in the{' '}
             <Link
               to={`/${track}/context`}
-              className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+              className="font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
             >
               Context Simulator
             </Link>
@@ -194,20 +251,24 @@ export function SessionManagementSection() {
       {/* ─────────────────────────────────────────────
           Part 2: The Handoff Workflow
           ───────────────────────────────────────────── */}
-      <section aria-labelledby="handoff-workflow-heading">
+      <section
+        aria-labelledby="handoff-workflow-heading"
+        className="rounded-lg bg-muted/20 dark:bg-muted/40 p-6 sm:p-8"
+      >
         <h2
           id="handoff-workflow-heading"
-          className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-2 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <ArrowRightLeft className="h-5 w-5 text-primary" />
           Getting Claude to Write Its Own Handoff
         </h2>
 
         <CalloutCard variant="info" className="mb-4">
           <p className="text-xs">
             <strong>Terminology:</strong> Throughout this playbook, we use
-            "handoff prompt" as the primary term for the structured summary you
-            create when ending a session. This is also called a "continuation
-            prompt" — they mean the same thing.
+            &ldquo;handoff prompt&rdquo; as the primary term for the structured
+            summary you create when ending a session. This is also called a
+            &ldquo;continuation prompt&rdquo; — they mean the same thing.
           </p>
         </CalloutCard>
 
@@ -217,25 +278,30 @@ export function SessionManagementSection() {
           full conversation and can extract the key information.
         </p>
 
-        {/* Workflow steps */}
+        {/* Workflow steps — N47: replaced absolute positioning with flexbox, N26: flexbox timeline */}
         <div className="mb-8">
-          <h3 className="mb-4 text-lg font-medium">The Handoff Workflow</h3>
-          <ol className="relative space-y-0 border-l-2 border-border pl-6">
+          <h3 className="mb-4 text-lg font-semibold">The Handoff Workflow</h3>
+          <ol className="space-y-0">
             {handoffWorkflowSteps.map((step, i) => (
-              <li
-                key={step.number}
-                className={cn(
-                  'relative pb-6',
-                  i === handoffWorkflowSteps.length - 1 && 'pb-0',
-                )}
-              >
-                {/* Step number dot */}
-                <span className="absolute -left-[calc(1.5rem+5px)] flex h-6 w-6 items-center justify-center rounded-full border-2 border-border bg-background text-xs font-semibold text-muted-foreground">
-                  {step.number}
-                </span>
-                <div>
+              <li key={step.number} className="flex gap-4 sm:gap-5">
+                {/* Timeline column */}
+                <div className="flex flex-col items-center">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-primary/30 bg-background text-xs font-semibold text-primary">
+                    {step.number}
+                  </span>
+                  {i < handoffWorkflowSteps.length - 1 && (
+                    <div className="w-0.5 grow bg-border" />
+                  )}
+                </div>
+                {/* Content column — N27: increased padding for mobile */}
+                <div
+                  className={cn(
+                    'pb-6',
+                    i === handoffWorkflowSteps.length - 1 && 'pb-0',
+                  )}
+                >
                   <p className="font-medium">{step.title}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     {step.description}
                   </p>
                 </div>
@@ -253,7 +319,7 @@ export function SessionManagementSection() {
               consider setting up a{' '}
               <Link
                 to={`/${track}/skills-extensions`}
-                className="font-medium text-primary hover:underline"
+                className="font-medium text-primary transition-colors hover:text-primary/80 hover:underline"
               >
                 Project
               </Link>{' '}
@@ -266,7 +332,9 @@ export function SessionManagementSection() {
         {/* Developer: Scenario types */}
         {isDev && (
           <div className="mt-6">
-            <h3 className="mb-3 text-lg font-medium">Handoff Scenario Types</h3>
+            <h3 className="mb-3 text-lg font-semibold">
+              Handoff Scenario Types
+            </h3>
             <p className="mb-4 max-w-[65ch] text-sm text-muted-foreground">
               Not all handoffs are the same. The right structure depends on why
               you are stopping.
@@ -274,7 +342,7 @@ export function SessionManagementSection() {
             <Accordion type="single" collapsible className="w-full">
               {handoffScenarios.map((scenario) => (
                 <AccordionItem key={scenario.id} value={scenario.id}>
-                  <AccordionTrigger className="text-sm font-medium">
+                  <AccordionTrigger className="text-base font-semibold">
                     <span className="flex items-center gap-2">
                       {scenario.name}
                       <Badge
@@ -358,17 +426,18 @@ export function SessionManagementSection() {
       <section aria-labelledby="subtasks-heading">
         <h2
           id="subtasks-heading"
-          className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-2 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <Scissors className="h-5 w-5 text-primary" />
           Breaking Tasks into Subtasks
         </h2>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
           Large tasks produce better results when broken into focused subtasks,
           each in its own session. This is not just good practice — it is how
-          you get the most from Claude's architecture.
+          you get the most from Claude&apos;s architecture.
         </p>
 
-        <h3 className="mb-3 text-lg font-medium">
+        <h3 className="mb-3 text-lg font-semibold">
           {getAtomicTaskTitle(track)}
         </h3>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
@@ -377,49 +446,62 @@ export function SessionManagementSection() {
           meaning Claude brings its full attention to each piece.
         </p>
 
-        {/* Worked examples */}
+        {/* Worked examples — N6: show preview outside collapsible, use defaultOpen on first */}
         {workedExamples
           .filter((ex) => ex.tracks.includes(track))
-          .map((example) => (
-            <Collapsible key={example.id} className="mb-4">
-              <CollapsibleTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex w-full items-center justify-between gap-2 text-sm"
-                >
-                  <span>Show example: {example.title}</span>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="mt-3 rounded-md border border-border bg-muted/30 p-4">
-                  <p className="mb-3 text-sm italic text-muted-foreground">
-                    {example.context}
-                  </p>
-                  <p className="mb-2 text-sm font-medium">Break it down:</p>
-                  <ol className="space-y-2">
-                    {example.steps.map((step) => (
-                      <li key={step.session} className="text-sm">
-                        <span className="font-medium">
-                          Session {step.session}:
-                        </span>{' '}
-                        <span className="text-muted-foreground">
-                          "{step.description}"
-                        </span>
-                        <span className="block text-xs text-muted-foreground/70">
-                          {step.outcome}
-                        </span>
-                      </li>
-                    ))}
-                  </ol>
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    Each session is focused. Claude does not need to hold the
-                    entire project in memory at once.
-                  </p>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
+          .map((example, idx) => (
+            <div
+              key={example.id}
+              className="mb-4 rounded-md border border-border bg-muted/30 p-4"
+            >
+              {/* Preview always visible */}
+              <p className="mb-1 text-sm font-medium">{example.title}</p>
+              <p className="mb-3 text-sm italic leading-relaxed text-muted-foreground">
+                {example.context}
+              </p>
+              <Collapsible defaultOpen={idx === 0}>
+                <CollapsibleTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex w-full items-center justify-between gap-2 text-sm"
+                  >
+                    <span>
+                      {idx === 0
+                        ? 'Session breakdown'
+                        : 'Show session breakdown'}
+                    </span>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="mt-3">
+                    <p className="mb-2 text-sm font-medium">Break it down:</p>
+                    <ol className="space-y-2">
+                      {example.steps.map((step) => (
+                        <li key={step.session} className="flex gap-3 text-sm">
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                            {step.session}
+                          </span>
+                          <div>
+                            <span className="text-muted-foreground">
+                              &ldquo;{step.description}&rdquo;
+                            </span>
+                            <span className="block text-xs leading-relaxed text-muted-foreground/70">
+                              {step.outcome}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                    <p className="mt-3 text-xs text-muted-foreground">
+                      Each session is focused. Claude does not need to hold the
+                      entire project in memory at once.
+                    </p>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
           ))}
 
         {isDev && (
@@ -444,11 +526,15 @@ export function SessionManagementSection() {
       {/* ─────────────────────────────────────────────
           Part 4: Platform-Specific Guidance
           ───────────────────────────────────────────── */}
-      <section aria-labelledby="platform-heading">
+      <section
+        aria-labelledby="platform-heading"
+        className="rounded-lg bg-muted/20 dark:bg-muted/40 p-6 sm:p-8"
+      >
         <h2
           id="platform-heading"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-4 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <Monitor className="h-5 w-5 text-primary" />
           Platform Differences
         </h2>
 
@@ -457,7 +543,7 @@ export function SessionManagementSection() {
           {platformComparisons.map((row) => (
             <div
               key={row.aspect}
-              className="rounded-md border border-border bg-muted/30 p-3"
+              className="rounded-md border border-border bg-background p-3"
             >
               <p className="mb-2 text-sm font-medium">{row.aspect}</p>
               <div className="space-y-1 text-xs text-muted-foreground">
@@ -527,20 +613,23 @@ export function SessionManagementSection() {
       <section aria-labelledby="memory-feature-heading">
         <h2
           id="memory-feature-heading"
-          className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-2 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <Brain className="h-5 w-5 text-primary" />
           Claude&apos;s Memory Feature
         </h2>
+        {/* N5: transition sentence connecting memory to session theme */}
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-          Claude can remember facts across conversations using its memory
-          feature. Unlike session handoffs (which carry forward a snapshot of a
-          specific task), memories persist indefinitely and apply to all future
-          conversations.
+          Your session context includes memory from previous conversations.
+          Here&apos;s how to manage it: Claude can remember facts across
+          conversations using its memory feature. Unlike session handoffs (which
+          carry forward a snapshot of a specific task), memories persist
+          indefinitely and apply to all future conversations.
         </p>
 
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="what-is-memory">
-            <AccordionTrigger className="text-sm font-medium">
+            <AccordionTrigger className="text-base font-semibold">
               What is Claude&apos;s memory?
             </AccordionTrigger>
             <AccordionContent>
@@ -560,7 +649,7 @@ export function SessionManagementSection() {
           </AccordionItem>
 
           <AccordionItem value="how-to-use">
-            <AccordionTrigger className="text-sm font-medium">
+            <AccordionTrigger className="text-base font-semibold">
               How to add, view, and manage memories
             </AccordionTrigger>
             <AccordionContent>
@@ -591,7 +680,7 @@ export function SessionManagementSection() {
           </AccordionItem>
 
           <AccordionItem value="when-to-use">
-            <AccordionTrigger className="text-sm font-medium">
+            <AccordionTrigger className="text-base font-semibold">
               When to use memory vs projects vs skills
             </AccordionTrigger>
             <AccordionContent>
@@ -633,7 +722,7 @@ export function SessionManagementSection() {
           </AccordionItem>
 
           <AccordionItem value="good-examples">
-            <AccordionTrigger className="text-sm font-medium">
+            <AccordionTrigger className="text-base font-semibold">
               Good uses for memory
             </AccordionTrigger>
             <AccordionContent>
@@ -668,8 +757,9 @@ export function SessionManagementSection() {
         <CalloutCard variant="tip" className="mt-4">
           <p className="text-xs">
             <strong>A good starting point:</strong> Tell Claude your name, your
-            role at Phew!, and that all content should use UK English. These
-            three memories immediately improve every future conversation.
+            role at {siteConfig.companyShortName}, and that all content should
+            use UK English. These three memories immediately improve every
+            future conversation.
           </p>
         </CalloutCard>
       </section>
@@ -679,16 +769,20 @@ export function SessionManagementSection() {
           ───────────────────────────────────────────── */}
       {isDev && <Separator className="my-2" />}
       {isDev && (
-        <section aria-labelledby="dev-extras-heading">
+        <section
+          aria-labelledby="dev-extras-heading"
+          className="rounded-lg bg-muted/20 dark:bg-muted/40 p-6 sm:p-8"
+        >
           <h2
             id="dev-extras-heading"
-            className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+            className="mb-4 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
           >
+            <Code2 className="h-5 w-5 text-primary" />
             Developer Session Practices
           </h2>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="structured-handoffs">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="text-base font-semibold">
                 Structured handoffs as files
               </AccordionTrigger>
               <AccordionContent>
@@ -706,7 +800,7 @@ export function SessionManagementSection() {
             </AccordionItem>
 
             <AccordionItem value="recency-weighted">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="text-base font-semibold">
                 The recency-weighted summary pattern
               </AccordionTrigger>
               <AccordionContent>
@@ -734,7 +828,7 @@ Session 06: Brainstorming — SME routing + auth decision
             </AccordionItem>
 
             <AccordionItem value="claude-md-context">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="text-base font-semibold">
                 CLAUDE.md as persistent context
               </AccordionTrigger>
               <AccordionContent>
@@ -750,7 +844,7 @@ Session 06: Brainstorming — SME routing + auth decision
             </AccordionItem>
 
             <AccordionItem value="subagent-hints">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="text-base font-semibold">
                 Subagent parallelisation hints
               </AccordionTrigger>
               <AccordionContent>
@@ -766,7 +860,7 @@ Session 06: Brainstorming — SME routing + auth decision
             </AccordionItem>
 
             <AccordionItem value="auto-checkpoints">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="text-base font-semibold">
                 Automated checkpoints
               </AccordionTrigger>
               <AccordionContent>
@@ -782,7 +876,7 @@ Session 06: Brainstorming — SME routing + auth decision
             </AccordionItem>
 
             <AccordionItem value="starter-kit">
-              <AccordionTrigger className="text-sm font-medium">
+              <AccordionTrigger className="text-base font-semibold">
                 Starter kit resources
               </AccordionTrigger>
               <AccordionContent>
@@ -809,34 +903,49 @@ Session 06: Brainstorming — SME routing + auth decision
       <Separator className="my-2" />
 
       {/* ─────────────────────────────────────────────
-          Copyable Templates Section
+          Copyable Templates Section — N10/N25: tabs instead of vertical scroll
           ───────────────────────────────────────────── */}
       <section aria-labelledby="templates-heading">
         <h2
           id="templates-heading"
-          className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
+          className="mb-2 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
         >
+          <FileText className="h-5 w-5 text-primary" />
           Copyable Handoff Templates
         </h2>
-        <p className="mb-6 max-w-[65ch] text-sm text-muted-foreground">
+        <p className="mb-6 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
           Copy any of these prompts and paste them into your conversation when
-          you are ready to wrap up.
+          you are ready to wrap up. Use the tabs below to find the right
+          template for your situation.
         </p>
 
-        <div className="space-y-4">
-          {copyablePrompts
-            .filter((p) => p.tracks.includes(track))
-            .map((prompt) => (
-              <PromptExample
-                key={prompt.id}
-                title={prompt.label}
-                description={prompt.description}
-                prompt={prompt.content}
-                whenToUse={prompt.whenToUse}
-                copyAriaLabel={`Copy ${prompt.label} prompt`}
-              />
+        <Tabs defaultValue={promptCategories[0]} className="w-full">
+          <TabsList className="mb-4 w-full sm:w-auto">
+            {promptCategories.map((cat) => (
+              <TabsTrigger key={cat} value={cat}>
+                {promptCategoryLabels[cat]}
+              </TabsTrigger>
             ))}
-        </div>
+          </TabsList>
+          {promptCategories.map((cat) => (
+            <TabsContent key={cat} value={cat}>
+              <div className="space-y-4">
+                {filteredPrompts
+                  .filter((p) => p.category === cat)
+                  .map((prompt) => (
+                    <PromptExample
+                      key={prompt.id}
+                      title={prompt.label}
+                      description={prompt.description}
+                      prompt={prompt.content}
+                      whenToUse={prompt.whenToUse}
+                      copyAriaLabel={`Copy ${prompt.label} prompt`}
+                    />
+                  ))}
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
       </section>
     </div>
   );

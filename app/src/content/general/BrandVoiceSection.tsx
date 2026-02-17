@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { motion } from 'motion/react';
 import {
   Accordion,
   AccordionContent,
@@ -18,322 +19,26 @@ import { Button } from '@/components/ui/button';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
-import { CopyButton } from '@/components/content/CopyButton';
+import { SetupStepCard } from '@/components/content/SetupStepCard';
 import { useTrack } from '@/hooks/useTrack';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
+import { Clock, ChevronDown } from 'lucide-react';
 import {
-  Clock,
-  ChevronDown,
-  Palette,
-  Type,
-  Megaphone,
-  Users,
-  MessageCircle,
-  ListChecks,
-  Globe2,
-} from 'lucide-react';
+  generalSteps,
+  devSteps,
+  frameworkSections,
+  storageOptions,
+  brandVoiceSetupPrompt,
+  ukEnglishSkillContent,
+  brandReviewSkillContent,
+} from '@/content/shared/brand-voice-data';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-interface SetupStep {
-  number: number;
-  title: string;
-  time: string;
-  content: string;
-  copyableText?: string;
-  copyableTitle?: string;
-}
-
-interface FrameworkSection {
-  number: number;
-  title: string;
-  description: string;
-  clientExample: string;
-  icon: typeof Palette;
-}
-
-interface StorageOption {
-  environment: string;
-  where: string;
-  how: string;
-}
-
-// ─── Data ────────────────────────────────────────────────────────────────────
-
-const profilePreferencesText = `Always use UK English spelling and grammar (e.g., colour, organise, behaviour, centre, analyse). Use UK date format (DD/MM/YYYY) and GBP (\u00a3) for currency.`;
-
-const projectInstructionText = `Always use UK English spelling and grammar in all responses.`;
-
-const claudeMdSnippet = `## Style
-
-- **UK English throughout.** All output must use UK English spelling and grammar (e.g., colour, organise, behaviour, centre, analyse). Use UK date format (DD/MM/YYYY) and GBP (\u00a3) for currency.`;
-
-const britfixConfig = `{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/absolute/path/to/britfix/run-hook.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
-}`;
-
-const brandVoiceSetupPrompt = `I'd like to create a comprehensive brand voice document for our company. Please guide me through the process step by step, covering all seven areas:
-
-1. Brand Personality
-2. Voice Attributes (3-5 attributes with "we are / we are not / sounds like" definitions)
-3. Audience Awareness
-4. Core Messaging Pillars
-5. Tone Spectrum (how our voice adapts across channels and situations)
-6. Style Rules (grammar, formatting, punctuation decisions)
-7. Terminology (preferred terms, product names, inclusive language)
-
-Here's what I can share to start:
-
-**Company:** [Company name]
-**What we do:** [Brief description]
-**Who we serve:** [Primary audience]
-
-**Examples of content that sounds like us:**
-[Paste 2-3 examples of on-brand content \u2014 website copy, emails, social posts]
-
-**Examples of content that does NOT sound like us (if available):**
-[Paste any examples that felt off-brand]
-
-**Existing guidelines (if any):**
-[Paste or describe any existing brand/style guidelines]
-
-Please work through each section one at a time, asking me questions and presenting options before moving to the next. When we're done, compile everything into a single brand voice document I can save and reuse.`;
-
-const ukEnglishSkillContent = `---
-name: uk-english
-description: Enforce UK English spelling, grammar, and conventions in all output. Use when writing, reviewing, or editing any content for UK audiences.
----
-
-# UK English
-
-All output must use UK English spelling, grammar, and conventions.
-
-## Spelling Rules
-
-Use British English spellings throughout:
-- -ise endings (not -ize): organise, recognise, specialise, optimise
-- -our endings (not -or): colour, behaviour, favour, honour
-- -re endings (not -er): centre, metre, theatre (except for computer-related "center" in CSS/code)
-- -ence endings where applicable: licence (noun), defence, offence
-- Double L: travelling, modelling, labelling, cancelled
-- Other: grey (not gray), programme (not program, unless computer program), cheque (not check, for banking)
-
-## Grammar Conventions
-
-- Collective nouns may take plural verbs: "the team are working on..."
-- "Whilst", "amongst", "towards" are preferred over "while", "among", "toward"
-- Past tense: "learnt", "spelt", "dreamt" are acceptable alongside "learned", "spelled", "dreamed"
-
-## Formatting Conventions
-
-- Dates: DD/MM/YYYY or DD Month YYYY (e.g., 14/02/2026 or 14 February 2026)
-- Currency: GBP, use \u00a3 symbol (e.g., \u00a3500, not $500)
-- Time: 24-hour format preferred in formal contexts (e.g., 14:00), 12-hour acceptable informally (e.g., 2pm -- no space, no full stops in am/pm)
-- Quotation marks: single quotes for primary quotation, double quotes for quotes within quotes
-- Full stops and commas go outside closing quotation marks unless part of the quoted material
-
-## In Code Contexts
-
-- Use UK English only in comments, documentation, and user-facing strings
-- Never change variable names, function names, CSS properties, or API parameters (these follow their language's conventions, typically US English)
-- Example: write \`// Initialise the colour palette\` but keep \`const color = getColor()\``;
-
-const brandReviewSkillContent = `---
-name: brand-review
-description: >
-  Review content against brand voice, style guidelines, and messaging standards.
-  WHEN the user asks to review, check, or audit content against brand guidelines,
-  or wants feedback on whether content matches their brand voice.
-  WHEN NOT the user is creating new content (use brand-voice skill instead).
----
-
-# Brand Review
-
-Review marketing content against brand voice, style guidelines, and messaging standards. Flag deviations and provide specific improvement suggestions.
-
-## Inputs
-
-1. **Content to review** \u2014 accept content in any of these forms:
-   - Pasted directly into the conversation
-   - A file path or document reference
-   - A URL to a published page
-   - Multiple pieces for batch review
-
-2. **Brand guidelines source** (determined automatically):
-   - If a brand style guide or brand voice document is available in the project/conversation, use it automatically
-   - If not available, ask the user if they have guidelines to share
-
-## Review Process
-
-### With Brand Guidelines Configured
-
-Evaluate content against:
-- **Voice and Tone** \u2014 does it match brand voice attributes?
-- **Terminology and Language** \u2014 are preferred terms used correctly?
-- **Messaging Pillars** \u2014 does it align with key themes?
-- **Style Guide Compliance** \u2014 grammar, UK English, formatting
-- **Legal/Compliance Flags** \u2014 unsubstantiated claims, missing disclaimers
-
-### Without Brand Guidelines (Generic Review)
-
-Evaluate for clarity, consistency, and professionalism.
-
-## Output Format
-
-- Summary: overall assessment, strengths, improvements
-- Detailed Findings: table with issue, location, severity (High/Medium/Low), suggestion
-- Revised Sections: before/after for top issues
-- Legal/Compliance Flags: listed separately with actions`;
-
-const generalSteps: SetupStep[] = [
-  {
-    number: 1,
-    title: 'Set profile preferences',
-    time: '30 seconds',
-    content:
-      'Navigate to claude.ai, click your initials (bottom-left), go to Settings > Profile, and add the following to the preferences text box. This applies to every conversation automatically, on both claude.ai and Claude Desktop.',
-    copyableText: profilePreferencesText,
-    copyableTitle: 'Profile preferences text',
-  },
-  {
-    number: 2,
-    title: 'Add project instruction',
-    time: '30 seconds per project',
-    content:
-      'For any shared claude.ai Project, add this to Custom Instructions. This is the closest thing to an admin-enforced setting \u2014 the project owner sets it once and all team members inherit it.',
-    copyableText: projectInstructionText,
-    copyableTitle: 'Project instruction text',
-  },
-  {
-    number: 3,
-    title: 'Upload the UK English skill (optional belt-and-braces)',
-    time: '2 minutes',
-    content:
-      'The starter kit includes a UK English skill file. Upload it via the Teams admin console (recommended \u2014 provisions to all users automatically), claude.ai Project knowledge, or Claude Desktop Settings > Capabilities > Skills (ZIP format). The skill contains comprehensive rules covering spelling, grammar, formatting, and code contexts.',
-  },
-];
-
-const devSteps: SetupStep[] = [
-  {
-    number: 1,
-    title: 'CLAUDE.md rule',
-    time: '30 seconds',
-    content:
-      'Add this to every project\'s CLAUDE.md under a "Style" or "Critical Rules" heading. This is version-controlled \u2014 it ships with the repo, so all developers get it automatically. If you do nothing else, add this one line.',
-    copyableText: claudeMdSnippet,
-    copyableTitle: 'CLAUDE.md UK English snippet',
-  },
-  {
-    number: 2,
-    title: 'Britfix hook (advanced, if issues persist)',
-    time: '5 minutes',
-    content:
-      'An open-source post-processing hook that automatically converts US English to UK English in files written by Claude Code. Context-aware: only converts comments and docstrings, never identifiers or string literals. The CLAUDE.md rule handles 95% of cases. If you find persistent issues in a particular project, Britfix catches the rest automatically. Note: this is a Tier 2 extension (hook that modifies files automatically) \u2014 follow the approval process in the governance policy.',
-    copyableText: britfixConfig,
-    copyableTitle: 'Britfix hook configuration',
-  },
-];
-
-const frameworkSections: FrameworkSection[] = [
-  {
-    number: 1,
-    title: 'Brand Personality',
-    description:
-      'Define the brand as if it were a person. What are its defining traits? This creates the foundation everything else builds on.',
-    clientExample: `If ${siteConfig.companyName} were a person, they would be the knowledgeable colleague who explains safeguarding technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
-    icon: Palette,
-  },
-  {
-    number: 2,
-    title: 'Voice Attributes',
-    description:
-      'Select 3\u20135 attributes that define how the brand communicates. Each should have a "we are / we are not / sounds like" definition to prevent misinterpretation.',
-    clientExample:
-      'Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: "Here\'s how to get started \u2014 it takes about five minutes."',
-    icon: MessageCircle,
-  },
-  {
-    number: 3,
-    title: 'Audience Awareness',
-    description:
-      'Who the brand speaks to, what they care about, what level of expertise they have, and how they expect to be addressed.',
-    clientExample:
-      'Primary: safeguarding leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in safeguarding but not necessarily in software.',
-    icon: Users,
-  },
-  {
-    number: 4,
-    title: 'Core Messaging Pillars',
-    description:
-      '3\u20135 key themes the brand consistently communicates. The hierarchy of these messages and how each connects to audience needs.',
-    clientExample:
-      'Pillar 1: Safeguarding made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).',
-    icon: Megaphone,
-  },
-  {
-    number: 5,
-    title: 'Tone Spectrum',
-    description:
-      'How the voice adapts across channels and situations whilst remaining recognisably the same brand. The voice stays constant; the tone dials attributes up or down.',
-    clientExample: `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${siteConfig.companyName} voice is always present, but the emphasis shifts.`,
-    icon: Globe2,
-  },
-  {
-    number: 6,
-    title: 'Style Rules',
-    description:
-      'Specific grammar, formatting, and language decisions: Oxford comma, sentence case vs title case, contractions, date formats. This is where UK English enforcement lives within the broader brand framework.',
-    clientExample:
-      'UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.',
-    icon: Type,
-  },
-  {
-    number: 7,
-    title: 'Terminology',
-    description:
-      'Preferred and avoided terms, product names, inclusive language guidelines. Maintaining consistency across all communications.',
-    clientExample:
-      'Use "safeguarding partnership" (not "LSCP"). Use "learning management system" on first mention, then "LMS". Never use "users" when you mean "safeguarding professionals" or "partners".',
-    icon: ListChecks,
-  },
-];
-
-const storageOptions: StorageOption[] = [
-  {
-    environment: 'Claude Desktop / claude.ai',
-    where: 'Project knowledge file',
-    how: "Add the document to a project's knowledge base. Claude loads it automatically for all conversations in that project.",
-  },
-  {
-    environment: 'Claude Code',
-    where: 'Skill file in ~/.claude/skills/ or project skills directory',
-    how: 'Claude loads skill files into context automatically when relevant.',
-  },
-  {
-    environment: 'Claude Code',
-    where: 'Referenced in CLAUDE.md',
-    how: 'Add a reference to the brand voice file location so Claude knows where to find it.',
-  },
-  {
-    environment: 'Any environment',
-    where: 'Pasted into conversation',
-    how: 'Paste the document at the start of any session. Least efficient but always works.',
-  },
-];
+const sectionEntrance = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const },
+};
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 
@@ -343,10 +48,42 @@ export function BrandVoiceSection() {
   const [ukSkillOpen, setUkSkillOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
 
+  const brandTocEntries = [
+    { id: 'brand-voice-uk-english', label: 'Part 1: UK English Enforcement' },
+    { id: 'brand-voice-setup', label: 'Part 2: Brand Voice Setup' },
+    { id: 'brand-voice-summary', label: 'Part 3: How It All Fits Together' },
+  ];
+
   return (
     <div className="space-y-12">
+      {/* S5: Table of Contents */}
+      <nav
+        aria-label="Page contents"
+        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
+      >
+        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          On this page
+        </h2>
+        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
+          {brandTocEntries.map((entry) => (
+            <li key={entry.id}>
+              <a
+                href={`#${entry.id}`}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {/* Part 1: UK English */}
-      <section aria-labelledby="uk-english-heading">
+      <motion.section
+        aria-labelledby="uk-english-heading"
+        id="brand-voice-uk-english"
+        {...sectionEntrance}
+      >
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <Badge variant="outline" className="text-xs">
@@ -374,38 +111,7 @@ export function BrandVoiceSection() {
           /* General track: show claude.ai/Desktop steps only */
           <div className="space-y-4">
             {generalSteps.map((step) => (
-              <div
-                key={step.number}
-                className="flex items-start gap-4 rounded-lg border border-border px-4 py-4"
-              >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                  {step.number}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-foreground">
-                      {step.title}
-                    </span>
-                    <Badge variant="outline" className="text-xs">
-                      {step.time}
-                    </Badge>
-                  </div>
-                  <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">
-                    {step.content}
-                  </p>
-                  {step.copyableText && (
-                    <div className="group relative mt-3 rounded-md border border-border bg-muted/40 p-3">
-                      <CopyButton
-                        text={step.copyableText}
-                        className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
-                      />
-                      <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">
-                        {step.copyableText}
-                      </pre>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <SetupStepCard key={step.number} step={step} />
             ))}
           </div>
         ) : (
@@ -418,73 +124,13 @@ export function BrandVoiceSection() {
 
             <TabsContent value="web" className="mt-4 space-y-4">
               {generalSteps.map((step) => (
-                <div
-                  key={step.number}
-                  className="flex items-start gap-4 rounded-lg border border-border px-4 py-4"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                    {step.number}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-foreground">
-                        {step.title}
-                      </span>
-                      <Badge variant="outline" className="text-xs">
-                        {step.time}
-                      </Badge>
-                    </div>
-                    <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">
-                      {step.content}
-                    </p>
-                    {step.copyableText && (
-                      <div className="group relative mt-3 rounded-md border border-border bg-muted/40 p-3">
-                        <CopyButton
-                          text={step.copyableText}
-                          className="absolute right-2 top-2 sm:opacity-0 transition-opacity sm:group-hover:opacity-100 group-focus-within:opacity-100"
-                        />
-                        <pre className="whitespace-pre-wrap pr-10 text-sm leading-relaxed text-foreground">
-                          {step.copyableText}
-                        </pre>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <SetupStepCard key={step.number} step={step} />
               ))}
             </TabsContent>
 
             <TabsContent value="code" className="mt-4 space-y-4">
               {devSteps.map((step) => (
-                <div
-                  key={step.number}
-                  className="flex items-start gap-4 rounded-lg border border-border px-4 py-4"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                    {step.number}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-foreground">
-                        {step.title}
-                      </span>
-                      <Badge variant="outline" className="text-xs">
-                        {step.time}
-                      </Badge>
-                    </div>
-                    <p className="mt-1 max-w-prose text-sm leading-relaxed text-muted-foreground">
-                      {step.content}
-                    </p>
-                    {step.copyableText && (
-                      <div className="mt-3">
-                        <CodeBlock
-                          code={step.copyableText}
-                          language={step.number === 2 ? 'json' : 'markdown'}
-                          title={step.copyableTitle}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <SetupStepCard key={step.number} step={step} variant="code" />
               ))}
 
               <CalloutCard variant="info" title="Code context rule">
@@ -533,12 +179,17 @@ export function BrandVoiceSection() {
             </CollapsibleContent>
           </Collapsible>
         </div>
-      </section>
+      </motion.section>
 
       <Separator />
 
       {/* Part 2: Brand Voice */}
-      <section aria-labelledby="brand-voice-heading">
+      <motion.section
+        aria-labelledby="brand-voice-heading"
+        id="brand-voice-setup"
+        {...sectionEntrance}
+        transition={{ ...sectionEntrance.transition, delay: 0.1 }}
+      >
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <Badge variant="outline" className="text-xs">
@@ -565,7 +216,7 @@ export function BrandVoiceSection() {
         </div>
 
         {/* What to prepare */}
-        <div className="mb-8">
+        <div className="mb-8" id="brand-voice-preparation">
           <h3 className="mb-3 text-base font-semibold text-foreground">
             What to Prepare Before Starting
           </h3>
@@ -618,7 +269,10 @@ export function BrandVoiceSection() {
         </div>
 
         {/* Seven framework sections */}
-        <div className="mb-8">
+        <div
+          className="mb-8 border-t border-border pt-8"
+          id="brand-voice-framework"
+        >
           <h3 className="mb-3 text-base font-semibold text-foreground">
             The Seven Framework Sections
           </h3>
@@ -667,7 +321,10 @@ export function BrandVoiceSection() {
         </div>
 
         {/* Setup prompt */}
-        <div className="mb-8">
+        <div
+          className="mb-8 border-t border-border pt-8"
+          id="brand-voice-kickoff"
+        >
           <h3 className="mb-3 text-base font-semibold text-foreground">
             Kick Off the Brand Voice Setup
           </h3>
@@ -697,7 +354,10 @@ export function BrandVoiceSection() {
         </div>
 
         {/* Where to save */}
-        <div className="mb-8">
+        <div
+          className="mb-8 border-t border-border pt-8"
+          id="brand-voice-storage"
+        >
           <h3 className="mb-3 text-base font-semibold text-foreground">
             Where to Save the Brand Voice Document
           </h3>
@@ -708,7 +368,38 @@ export function BrandVoiceSection() {
             evolves, messaging changes, or new products launch.
           </p>
 
-          <div className="overflow-x-auto rounded-lg border border-border">
+          {/* Mobile: card layout */}
+          <div className="space-y-3 sm:hidden">
+            {storageOptions
+              .filter((o) =>
+                isGeneral ? o.environment !== 'Claude Code' : true,
+              )
+              .map((option, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border border-border p-4 space-y-2"
+                >
+                  <p className="text-sm font-medium text-foreground">
+                    {option.environment}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
+                      Where:{' '}
+                    </span>
+                    {option.where}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
+                      How:{' '}
+                    </span>
+                    {option.how}
+                  </p>
+                </div>
+              ))}
+          </div>
+
+          {/* Desktop: table layout */}
+          <div className="hidden overflow-x-auto rounded-lg border border-border sm:block">
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
@@ -742,7 +433,9 @@ export function BrandVoiceSection() {
                       key={i}
                       className={cn(
                         'border-b border-border last:border-b-0',
-                        i % 2 === 0 ? 'bg-transparent' : 'bg-muted/20',
+                        i % 2 === 0
+                          ? 'bg-transparent'
+                          : 'bg-muted/20 dark:bg-muted/40',
                       )}
                     >
                       <td className="px-3 py-2.5 font-medium text-foreground">
@@ -762,7 +455,10 @@ export function BrandVoiceSection() {
         </div>
 
         {/* Brand Review */}
-        <div className="mb-8">
+        <div
+          className="mb-8 border-t border-border pt-8"
+          id="brand-voice-review"
+        >
           <h3 className="mb-3 text-base font-semibold text-foreground">
             Using Brand Review for Ongoing Content Checking
           </h3>
@@ -862,12 +558,17 @@ export function BrandVoiceSection() {
             </CalloutCard>
           </div>
         )}
-      </section>
+      </motion.section>
 
       <Separator />
 
       {/* Part 3: How It All Fits Together */}
-      <section aria-labelledby="together-heading">
+      <motion.section
+        aria-labelledby="together-heading"
+        id="brand-voice-summary"
+        {...sectionEntrance}
+        transition={{ ...sectionEntrance.transition, delay: 0.2 }}
+      >
         <div className="mb-2 flex items-center gap-2">
           <Badge variant="outline" className="text-xs">
             Part 3
@@ -976,11 +677,16 @@ export function BrandVoiceSection() {
             </ul>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Cross-references */}
       <Separator />
-      <section aria-labelledby="brand-cross-ref-heading">
+      <motion.section
+        aria-labelledby="brand-cross-ref-heading"
+        id="brand-voice-related"
+        {...sectionEntrance}
+        transition={{ ...sectionEntrance.transition, delay: 0.25 }}
+      >
         <h2
           id="brand-cross-ref-heading"
           className="mb-4 text-lg font-semibold tracking-tight"
@@ -1009,7 +715,7 @@ export function BrandVoiceSection() {
             .
           </p>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }

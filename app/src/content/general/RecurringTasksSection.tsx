@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import {
   Globe2,
@@ -38,7 +39,7 @@ interface AutomationPattern {
   audienceColour: string;
   description: string;
   howItWorks: string[];
-  phewExample: {
+  clientExample: {
     title: string;
     description: string;
   };
@@ -79,10 +80,9 @@ const automationPatterns: AutomationPattern[] = [
       'When you want to run it, open a new Claude session and trigger it',
       'Claude executes the multi-step task: gathering data, analysing, formatting output, and presenting results',
     ],
-    phewExample: {
+    clientExample: {
       title: 'Weekly training report',
-      description:
-        'A skill that reviews the LMS data export, summarises completion rates, flags any overdue training, and formats a report for the safeguarding partnership team. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.',
+      description: `A skill that reviews the ${siteConfig.reportDataSource}, summarises completion rates, flags any overdue training, and formats a report for the ${siteConfig.complianceStakeholders}. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.`,
     },
     whenToUse:
       'Any recurring task where the execution is complex but the trigger can be manual. This covers the majority of current use cases.',
@@ -101,7 +101,7 @@ const automationPatterns: AutomationPattern[] = [
       'Instruct Claude to visit a website, navigate to specific pages, extract data, and compile results',
       'Particularly useful for monitoring tasks where the data lives in a web interface rather than a file',
     ],
-    phewExample: {
+    clientExample: {
       title: 'Website accessibility monitoring',
       description:
         'A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the "Accessibility as a Service" offering \u2014 regular checks on client sites.',
@@ -135,10 +135,9 @@ const automationPatterns: AutomationPattern[] = [
       'Each time you run the skill, it incorporates what it learnt from the last run',
       'This creates a feedback loop: the skill gets better and more tailored over time',
     ],
-    phewExample: {
+    clientExample: {
       title: 'Client onboarding checklist',
-      description:
-        "A skill that walks through the steps for setting up a new LMS client. Each time it is used, the person running it can note any steps that were missing or wrong. The skill's final action is to update the checklist template based on that feedback. Over time, the onboarding process becomes more complete and accurate without anyone maintaining a separate document.",
+      description: `A skill that walks through the steps for setting up a new ${siteConfig.clientOnboardingType}. Each time it is used, the person running it can note any steps that were missing or wrong. The skill's final action is to update the checklist template based on that feedback. Over time, the onboarding process becomes more complete and accurate without anyone maintaining a separate document.`,
     },
     whenToUse:
       'For any process that benefits from incremental improvement. The skill is both the executor and the maintainer.',
@@ -157,7 +156,7 @@ const automationPatterns: AutomationPattern[] = [
       'Claude receives the context and executes the defined workflow',
       'Results can be written to files, sent via email, or posted to a channel',
     ],
-    phewExample: {
+    clientExample: {
       title: 'Automated code quality check',
       description:
         'A GitHub Actions workflow that runs nightly, invoking Claude Code to review recent commits against coding standards and generate a summary. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude.',
@@ -195,8 +194,7 @@ const gettingStartedSteps: GettingStartedStep[] = [
   {
     number: 1,
     title: 'Identify your recurring tasks',
-    description:
-      'What do you do weekly, monthly, or after specific events that involves gathering data, summarising, or formatting? Examples from Phew!: training completion reports, client site accessibility checks, proposal formatting, audit report generation.',
+    description: `What do you do weekly, monthly, or after specific events that involves gathering data, summarising, or formatting? Examples from ${siteConfig.companyShortName}: ${siteConfig.exampleRecurringTasks.join(', ')}.`,
     icon: Search,
   },
   {
@@ -228,7 +226,7 @@ const weeklyReportPrompt = `I'd like you to generate a weekly training report. P
 2. Summarise completion rates by team/department
 3. Flag any overdue or incomplete mandatory training
 4. Highlight trends compared to the previous period (if I provide it)
-5. Format the output as a brief report suitable for sharing with the safeguarding partnership team
+5. Format the output as a brief report suitable for sharing with the ${siteConfig.complianceStakeholders}
 
 Use UK English throughout. Keep the tone professional but accessible.
 
@@ -526,7 +524,7 @@ export function RecurringTasksSection() {
             title="Weekly Training Report"
             description="Generate a structured training completion report from exported data"
             prompt={weeklyReportPrompt}
-            whenToUse="Weekly, when you have new training data to summarise for the safeguarding partnership team"
+            whenToUse={`Weekly, when you have new training data to summarise for the ${siteConfig.complianceStakeholders}`}
           />
 
           <PromptExample
@@ -585,8 +583,8 @@ export function RecurringTasksSection() {
           Getting Started: Recommended First Steps
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Practical, actionable steps for Phew! staff to begin automating
-          recurring work.
+          Practical, actionable steps for {siteConfig.companyShortName} staff to
+          begin automating recurring work.
         </p>
 
         <div className="space-y-4">
@@ -698,10 +696,10 @@ function PatternContent({ pattern }: { pattern: AutomationPattern }) {
 
       <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
         <span className="text-xs font-medium text-muted-foreground">
-          Phew! example: {pattern.phewExample.title}
+          {siteConfig.companyShortName} example: {pattern.clientExample.title}
         </span>
         <p className="mt-1 text-sm text-foreground">
-          {pattern.phewExample.description}
+          {pattern.clientExample.description}
         </p>
       </div>
 
@@ -711,7 +709,7 @@ function PatternContent({ pattern }: { pattern: AutomationPattern }) {
           className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3"
         >
           <span className="text-xs font-medium text-muted-foreground">
-            Phew! example: {example.title}
+            {siteConfig.companyShortName} example: {example.title}
           </span>
           <p className="mt-1 text-sm text-foreground">{example.description}</p>
         </div>
@@ -793,10 +791,10 @@ function PatternCard({ pattern }: { pattern: AutomationPattern }) {
 
         <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
           <span className="text-xs font-medium text-muted-foreground">
-            Phew! example: {pattern.phewExample.title}
+            {siteConfig.companyShortName} example: {pattern.clientExample.title}
           </span>
           <p className="mt-1 text-sm text-foreground">
-            {pattern.phewExample.description}
+            {pattern.clientExample.description}
           </p>
         </div>
 
@@ -806,7 +804,7 @@ function PatternCard({ pattern }: { pattern: AutomationPattern }) {
             className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3"
           >
             <span className="text-xs font-medium text-muted-foreground">
-              Phew! example: {example.title}
+              {siteConfig.companyShortName} example: {example.title}
             </span>
             <p className="mt-1 text-sm text-foreground">
               {example.description}

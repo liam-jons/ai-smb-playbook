@@ -1,27 +1,72 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
+import { motion } from 'motion/react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import { Button } from '@/components/ui/button';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { ContextWindowSimulator } from '@/components/interactive/ContextWindowSimulator';
 import { useTrack } from '@/hooks/useTrack';
+import { ChevronDown } from 'lucide-react';
 import {
   sessionHandoffPrompt,
   compactInstructions,
   contextTipVariants,
 } from '@/content/shared/context-simulator-data';
 
+const tocEntries = [
+  { id: 'narrative-heading', label: 'Understanding Context' },
+  { id: 'simulator-heading', label: 'Context Window Simulator' },
+  { id: 'session-hygiene-heading', label: 'My Session Feels Slow' },
+  { id: 'budget-awareness-heading', label: 'Token Usage and Your Budget' },
+  { id: 'handoff-heading', label: 'Session Handoff Prompt' },
+];
+
 export function ContextSimulatorSection() {
   const { track } = useTrack();
   const isDev = track === 'developer';
+  const [handoffOpen, setHandoffOpen] = useState(false);
 
   return (
-    <div className="space-y-12">
+    <motion.div
+      className="space-y-12"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {/* S5: Table of Contents */}
+      <nav
+        aria-label="Page contents"
+        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
+      >
+        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          On this page
+        </h2>
+        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
+          {tocEntries.map((entry) => (
+            <li key={entry.id}>
+              <a
+                href={`#${entry.id}`}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {/* ─────────────────────────────────────────────
           Area 1: Introduction
           ───────────────────────────────────────────── */}
@@ -42,6 +87,21 @@ export function ContextSimulatorSection() {
             Roughly 0.75 words. 200,000 tokens is about 150,000 words — the
             length of two full novels. That sounds like a lot, but a surprising
             amount is used before you type your first message.
+          </p>
+        </CalloutCard>
+
+        {/* N60: Callout near top mentioning handoff prompt */}
+        <CalloutCard variant="tip" className="mt-4">
+          <p>
+            When your session starts to feel sluggish, you will need a handoff
+            prompt to carry context into a fresh session.{' '}
+            <a
+              href="#handoff-heading"
+              className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+            >
+              Jump to the handoff prompt below
+            </a>{' '}
+            for a ready-made template you can copy.
           </p>
         </CalloutCard>
 
@@ -98,7 +158,10 @@ export function ContextSimulatorSection() {
           settings, add conversation turns, and watch how the window fills up.
         </p>
 
-        <ContextWindowSimulator isDev={isDev} />
+        {/* I2: Distinct bordered container around the simulator */}
+        <div className="rounded-xl border-2 border-dashed border-primary/20 bg-primary/5 p-4 sm:p-6">
+          <ContextWindowSimulator isDev={isDev} />
+        </div>
 
         <CalloutCard variant="info" className="mt-4">
           <p className="text-xs">
@@ -180,6 +243,13 @@ export function ContextSimulatorSection() {
         >
           Understanding Context
         </h2>
+
+        {/* N4: Transition sentence before the accordion */}
+        <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
+          Before diving into the detail, here is what you need to know about
+          context windows — how they degrade, what gets lost, and how to make
+          the most of the space you have.
+        </p>
 
         <Accordion
           type="single"
@@ -477,9 +547,10 @@ export function ContextSimulatorSection() {
           Token Usage and Your Budget
         </h2>
 
+        {/* N3: Rewritten from filler to specific, actionable copy */}
         <CalloutCard
           variant="info"
-          title="Practical cost awareness"
+          title="Understand how different content types consume your context window budget"
           className="mb-4"
         >
           <div className="space-y-2">
@@ -540,12 +611,42 @@ export function ContextSimulatorSection() {
           </p>
         </div>
 
-        <PromptExample
-          title="Session Handoff Prompt"
-          description="Ask Claude to write its own summary before you start a fresh session."
-          prompt={sessionHandoffPrompt}
-          whenToUse="When your session is getting long or you notice Claude repeating itself, forgetting things, or giving less specific answers."
-        />
+        {/* N59: Collapsible handoff prompt to reduce scroll on mobile */}
+        <Collapsible open={handoffOpen} onOpenChange={setHandoffOpen}>
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mb-3 flex w-full items-center justify-between gap-2 sm:hidden"
+            >
+              <span>
+                {handoffOpen ? 'Hide handoff prompt' : 'Show handoff prompt'}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${handoffOpen ? 'rotate-180' : ''}`}
+              />
+            </Button>
+          </CollapsibleTrigger>
+
+          {/* Always visible on desktop, collapsible on mobile */}
+          <div className="hidden sm:block">
+            <PromptExample
+              title="Session Handoff Prompt"
+              description="Ask Claude to write its own summary before you start a fresh session."
+              prompt={sessionHandoffPrompt}
+              whenToUse="When your session is getting long or you notice Claude repeating itself, forgetting things, or giving less specific answers."
+            />
+          </div>
+
+          <CollapsibleContent className="sm:hidden">
+            <PromptExample
+              title="Session Handoff Prompt"
+              description="Ask Claude to write its own summary before you start a fresh session."
+              prompt={sessionHandoffPrompt}
+              whenToUse="When your session is getting long or you notice Claude repeating itself, forgetting things, or giving less specific answers."
+            />
+          </CollapsibleContent>
+        </Collapsible>
 
         <CalloutCard variant="tip" className="mt-4">
           <p className="text-xs">
@@ -591,6 +692,6 @@ export function ContextSimulatorSection() {
           </p>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 }

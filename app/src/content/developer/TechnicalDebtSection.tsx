@@ -12,6 +12,7 @@ import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -287,9 +288,10 @@ export function TechnicalDebtSection() {
           <p>
             Every codebase accumulates issues over time &mdash; shortcuts taken
             under deadline pressure, dependencies that fall behind, patterns
-            that made sense years ago but no longer fit. For a team of
-            Phew!&apos;s size, dedicating time to comprehensive code audits is
-            difficult to justify when there is client work to deliver.
+            that made sense years ago but no longer fit. For a team of{' '}
+            {siteConfig.companyShortName}&apos;s size, dedicating time to
+            comprehensive code audits is difficult to justify when there is
+            client work to deliver.
           </p>
           <p>
             Claude changes this equation. It can analyse an entire codebase in

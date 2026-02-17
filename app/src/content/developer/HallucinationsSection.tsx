@@ -9,6 +9,7 @@ import {
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
@@ -41,7 +42,7 @@ const patterns: AntiHallucinationPattern[] = [
     crossTrack: true,
     crossTrackNote:
       'This works outside coding too \u2014 breaking a long document into sections, handling one email at a time, or tackling one aspect of a problem before moving to the next.',
-    prompt: `I need to migrate the safeguarding audit form from the legacy ASP.NET Web Forms page to a Razor Pages implementation.
+    prompt: `I need to migrate the ${siteConfig.domainSpecificForm} from the legacy ASP.NET Web Forms page to a Razor Pages implementation.
 
 Before writing any code, break this into a numbered list of atomic subtasks. Each subtask should:
 - Change no more than 2-3 files
@@ -62,7 +63,7 @@ List the subtasks in dependency order. Do not implement anything yet.`,
     crossTrack: true,
     crossTrackNote:
       'This works just as well outside of coding \u2014 ask Claude to outline its plan before writing a report, drafting a policy, or preparing meeting notes.',
-    prompt: `I want to add role-based access control to the LMS admin dashboard. Before writing any code, create a plan that covers:
+    prompt: `I want to add role-based access control to the ${siteConfig.primaryProduct} admin dashboard. Before writing any code, create a plan that covers:
 
 1. What changes are needed and where (list specific files)
 2. Your recommended approach and why
@@ -83,7 +84,7 @@ Do not write any code yet. Present the plan and wait for my feedback.`,
     explanation:
       'Instead of asking Claude to implement a solution directly, ask it to present 2\u20133 options with trade-offs. This forces Claude to consider alternatives rather than jumping to the first approach it generates \u2014 which is often a hallucinated \u201cobvious\u201d solution that does not account for the specific codebase.',
     crossTrack: false,
-    prompt: `We need to implement automated email notifications for overdue safeguarding training in the LMS. Our stack is ASP.NET/C# with SQL Server.
+    prompt: `We need to implement automated email notifications for overdue ${siteConfig.complianceArea} training in the ${siteConfig.primaryProduct}. Our stack is ${siteConfig.techStack} with ${siteConfig.database}.
 
 Present 2-3 different approaches for the notification system. For each option, include:
 - How it works (brief technical description)
@@ -99,8 +100,7 @@ Do not recommend one yet \u2014 just present the options so I can evaluate them.
   {
     number: 4,
     title: 'Prioritise Best Practice',
-    whenToUse:
-      'Whenever you are working on production code, especially in areas with compliance implications (safeguarding data, authentication, data protection).',
+    whenToUse: `Whenever you are working on production code, especially in areas with compliance implications (${siteConfig.sensitiveDataLabel}, authentication, data protection).`,
     explanation:
       'Claude will match the quality bar you set. If you accept quick fixes, you get quick fixes. Explicitly stating that you want best-practice solutions \u2014 and naming the specific standards that matter \u2014 steers Claude away from hacky workarounds and towards maintainable code.',
     crossTrack: false,
@@ -126,9 +126,9 @@ If the best-practice approach differs significantly from our current implementat
     crossTrack: true,
     crossTrackNote:
       'This is valuable for general use too \u2014 especially when asking Claude about specific company policies, legal requirements, or factual claims.',
-    prompt: `I need to configure Ghost Inspector to run against our staging environment with SSO authentication enabled.
+    prompt: `I need to configure ${siteConfig.testingTool} to run against our staging environment with SSO authentication enabled.
 
-Important: if you are not confident about specific Ghost Inspector configuration options or API details, say so explicitly rather than guessing. It is better to tell me "I'm not sure about this specific setting \u2014 check the Ghost Inspector docs" than to give me a configuration that might not work.
+Important: if you are not confident about specific ${siteConfig.testingTool} configuration options or API details, say so explicitly rather than guessing. It is better to tell me "I'm not sure about this specific setting \u2014 check ${siteConfig.testingToolDocs}" than to give me a configuration that might not work.
 
 With that caveat, how would you approach this?`,
     promptTitle: 'Explicit "I Don\u2019t Know" Permission',
@@ -165,7 +165,7 @@ Now, based on these confirmed details, outline the implementation approach. If a
     explanation:
       'Claude frequently hallucinates function signatures, import paths, and API patterns that look correct but do not match your actual codebase. Asking it to read and reference the existing code before making changes grounds its output in reality rather than its training data.',
     crossTrack: false,
-    prompt: `I need to add a new endpoint to our API for exporting safeguarding audit reports as PDFs.
+    prompt: `I need to add a new endpoint to our API for exporting ${siteConfig.complianceArea} audit reports as PDFs.
 
 Before writing any new code:
 1. Read the existing controller files in /Controllers/ to understand our current patterns for API endpoints
@@ -321,6 +321,14 @@ export function HallucinationsSection() {
               The Agent Harness
             </a>
           </li>
+          <li>
+            <a
+              href="#takeaways"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Key Takeaways
+            </a>
+          </li>
         </ol>
       </nav>
 
@@ -368,9 +376,7 @@ export function HallucinationsSection() {
               <div className="flex flex-1 items-start gap-2 pt-0.5">
                 <span className="text-sm font-medium">{step.label}</span>
                 {step.pattern !== '\u2014' && (
-                  <Badge variant="outline" className="text-xs">
-                    {step.pattern}
-                  </Badge>
+                  <PatternBadgeLinks patternText={step.pattern} />
                 )}
                 <span className="text-sm text-muted-foreground">
                   &mdash; {step.description}
@@ -434,6 +440,32 @@ export function HallucinationsSection() {
         </div>
       </section>
     </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Pattern Badge Links                                                        */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Renders pattern references (e.g. "Pattern 1", "Patterns 2 + 3") as clickable
+ * badge-styled links that jump to the corresponding pattern heading.
+ */
+function PatternBadgeLinks({ patternText }: { patternText: string }) {
+  // Extract all pattern numbers from the text (e.g. "Patterns 2 + 3" → [2, 3])
+  const numbers = patternText.match(/\d+/g)?.map(Number) ?? [];
+  return (
+    <span className="inline-flex flex-wrap gap-1">
+      {numbers.map((num) => (
+        <a
+          key={num}
+          href={`#pattern-${num}`}
+          className="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground hover:underline"
+        >
+          Pattern {num}
+        </a>
+      ))}
+    </span>
   );
 }
 

@@ -16,6 +16,8 @@ import {
   Check,
   Download,
   ArrowRight,
+  CheckCircle2,
+  Eye,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -77,6 +79,22 @@ const fadeIn = {
   animate: { opacity: 1 },
   transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as number[] },
 };
+
+/* ------------------------------------------------------------------ */
+/*  Tab content fade transition wrapper                                */
+/* ------------------------------------------------------------------ */
+
+function TabFadeWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Category icons                                                     */
@@ -264,19 +282,25 @@ function FileCard({ file }: { file: StarterKitFile }) {
       };
 
   return (
-    <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-sm">
+    <Card
+      className={cn(
+        'overflow-hidden transition-all duration-200',
+        'hover:shadow-md hover:-translate-y-0.5',
+        expanded && 'shadow-sm',
+      )}
+    >
       <button
         onClick={toggleExpanded}
         className={cn(
-          'flex w-full items-start gap-3 p-4 text-left',
+          'flex w-full items-start gap-3 p-4 text-left cursor-pointer',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          'rounded-t-xl',
+          'rounded-t-xl group',
         )}
         aria-expanded={expanded}
         aria-controls={`file-detail-${file.id}`}
         aria-label={`${expanded ? 'Collapse' : 'View'} ${file.name} details`}
       >
-        <div className="mt-0.5 shrink-0 text-muted-foreground">
+        <div className="mt-0.5 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground">
           {expanded ? (
             <ChevronDown className="h-4 w-4" />
           ) : (
@@ -285,7 +309,7 @@ function FileCard({ file }: { file: StarterKitFile }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-medium text-foreground">{file.name}</span>
+            <span className="font-semibold text-foreground">{file.name}</span>
             <TrackBadge tracks={file.tracks} />
             <PriorityBadge priority={file.priority} />
             <PluginBadge recommendation={file.pluginRecommendation} />
@@ -293,6 +317,10 @@ function FileCard({ file }: { file: StarterKitFile }) {
           <p className="mt-1 text-sm text-muted-foreground">
             {file.description}
           </p>
+        </div>
+        {/* Hover affordance icon */}
+        <div className="mt-0.5 shrink-0 text-muted-foreground/0 transition-colors group-hover:text-muted-foreground">
+          <Eye className="h-4 w-4" />
         </div>
       </button>
 
@@ -416,13 +444,13 @@ function QuickStartSection() {
   });
 
   return (
-    <Card className="border-success/20 bg-success-muted/30">
+    <Card className="border-success/20 bg-success-muted/30 dark:bg-success-muted/15 dark:border-success/30">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           <Rocket className="h-5 w-5 text-success-muted-foreground" />
           <CardTitle className="text-lg">Quick Start</CardTitle>
         </div>
-        <CardDescription>
+        <CardDescription className="text-base">
           Recommended adoption order — start with the highest-value,
           lowest-effort items.
         </CardDescription>
@@ -439,17 +467,17 @@ function QuickStartSection() {
               </span>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-baseline gap-2">
-                  <span className="text-sm font-medium text-foreground">
+                  <span className="text-base font-medium text-foreground">
                     {step.week}:
                   </span>
-                  <span className="text-sm font-medium text-foreground">
+                  <span className="text-base font-medium text-foreground">
                     {step.title}
                   </span>
                   <Badge variant="outline" className="text-xs">
                     {step.effort}
                   </Badge>
                 </div>
-                <p className="mt-0.5 text-sm text-muted-foreground">
+                <p className="mt-0.5 text-base text-muted-foreground">
                   {step.description}
                 </p>
               </div>
@@ -508,16 +536,33 @@ function PluginGuidanceCallout() {
 
 function InstallSnippets() {
   const { track } = useTrack();
+  const isDev = track === 'developer';
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Common Install Commands</h3>
+      <div>
+        <h3 className="text-lg font-semibold">Common Install Commands</h3>
+        <p
+          className="mt-1 text-sm text-muted-foreground"
+          style={{ maxWidth: '65ch' }}
+        >
+          {isDev
+            ? 'Copy-paste commands for installing skills, commands, and plugins across all Claude platforms.'
+            : 'These commands help you set up Claude to work the way your team needs. Each one is a one-time setup step — copy the text and paste it into your Claude preferences.'}
+        </p>
+      </div>
 
       <div className="space-y-3">
         <div>
           <p className="mb-1.5 text-sm font-medium text-foreground">
             Set UK English in profile preferences (claude.ai / Claude Desktop)
           </p>
+          {!isDev && (
+            <p className="mb-2 text-sm text-muted-foreground">
+              Paste this into your Claude profile preferences so all
+              conversations default to UK English spelling and formatting.
+            </p>
+          )}
           <CodeBlock
             code="Always use UK English spelling and grammar (e.g., colour, organise, behaviour, centre, analyse). Use UK date format (DD/MM/YYYY) and GBP (£) for currency."
             language="text"
@@ -525,7 +570,7 @@ function InstallSnippets() {
           />
         </div>
 
-        {track === 'developer' && (
+        {isDev && (
           <>
             <div>
               <p className="mb-1.5 text-sm font-medium text-foreground">
@@ -594,6 +639,9 @@ function InstallSnippets() {
 
 function InstallationGuides() {
   const { track } = useTrack();
+  const [activeTab, setActiveTab] = useState(
+    track === 'developer' ? 'code' : 'desktop',
+  );
 
   const defaultTab = track === 'developer' ? 'code' : 'desktop';
 
@@ -601,8 +649,11 @@ function InstallationGuides() {
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">How to Install</h3>
 
-      <Tabs defaultValue={defaultTab}>
-        <TabsList className="w-full justify-start">
+      <Tabs
+        defaultValue={defaultTab}
+        onValueChange={(val) => setActiveTab(val)}
+      >
+        <TabsList className="w-full justify-start bg-muted/40">
           <TabsTrigger value="desktop" className="gap-1.5">
             <Monitor className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Claude Desktop</span>
@@ -628,226 +679,237 @@ function InstallationGuides() {
         </TabsList>
 
         <TabsContent value="desktop" className="mt-4">
-          <Card>
-            <CardContent className="pt-6">
-              <h4 className="mb-3 font-medium">
-                Installing Skills on Claude Desktop
-              </h4>
-              <ol className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    1.
-                  </span>
-                  Download the skill file (or ZIP for multi-file skills)
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    2.
-                  </span>
-                  Open Claude Desktop and go to{' '}
-                  <strong className="text-foreground">Settings</strong>
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    3.
-                  </span>
-                  Navigate to{' '}
-                  <strong className="text-foreground">
-                    Capabilities &gt; Skills
-                  </strong>
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    4.
-                  </span>
-                  Click{' '}
-                  <strong className="text-foreground">
-                    &ldquo;Upload skill&rdquo;
-                  </strong>{' '}
-                  and select the downloaded file
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    5.
-                  </span>
-                  The skill appears in your Skills list and activates
-                  automatically
-                </li>
-              </ol>
-              <CalloutCard
-                variant="tip"
-                title="Automatic invocation"
-                className="mt-4"
-              >
-                Skills are invoked automatically based on your task. You do not
-                need to reference the skill by name — just describe what you
-                need and Claude will use the relevant skill.
-              </CalloutCard>
-            </CardContent>
-          </Card>
+          <TabFadeWrapper key={`desktop-${activeTab}`}>
+            <Card>
+              <CardContent className="pt-6">
+                <h4 className="mb-3 text-base font-medium">
+                  Installing Skills on Claude Desktop
+                </h4>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      1.
+                    </span>
+                    Download the skill file (or ZIP for multi-file skills)
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      2.
+                    </span>
+                    Open Claude Desktop and go to{' '}
+                    <strong className="text-foreground">Settings</strong>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      3.
+                    </span>
+                    Navigate to{' '}
+                    <strong className="text-foreground">
+                      Capabilities &gt; Skills
+                    </strong>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      4.
+                    </span>
+                    Click{' '}
+                    <strong className="text-foreground">
+                      &ldquo;Upload skill&rdquo;
+                    </strong>{' '}
+                    and select the downloaded file
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      5.
+                    </span>
+                    The skill appears in your Skills list and activates
+                    automatically
+                  </li>
+                </ol>
+                <CalloutCard
+                  variant="tip"
+                  title="Automatic invocation"
+                  className="mt-4"
+                >
+                  Skills are invoked automatically based on your task. You do
+                  not need to reference the skill by name — just describe what
+                  you need and Claude will use the relevant skill.
+                </CalloutCard>
+              </CardContent>
+            </Card>
+          </TabFadeWrapper>
         </TabsContent>
 
         <TabsContent value="web" className="mt-4">
-          <Card>
-            <CardContent className="pt-6">
-              <h4 className="mb-3 font-medium">
-                Installing Skills on claude.ai
-              </h4>
-              <ol className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    1.
-                  </span>
-                  Download the skill file (or ZIP for multi-file skills)
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    2.
-                  </span>
-                  Go to <strong className="text-foreground">claude.ai</strong>{' '}
-                  and open <strong className="text-foreground">Settings</strong>
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    3.
-                  </span>
-                  Navigate to{' '}
-                  <strong className="text-foreground">
-                    Capabilities &gt; Skills
-                  </strong>
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    4.
-                  </span>
-                  Click{' '}
-                  <strong className="text-foreground">
-                    &ldquo;Upload skill&rdquo;
-                  </strong>{' '}
-                  and select the downloaded file
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    5.
-                  </span>
-                  The skill activates automatically when your task matches its
-                  description
-                </li>
-              </ol>
-              <CalloutCard
-                variant="tip"
-                title="Alternative: Projects"
-                className="mt-4"
-              >
-                For recurring workflows, consider adding skill files to a
-                Project&apos;s knowledge base instead. This gives every
-                conversation in that project automatic access.
-              </CalloutCard>
-            </CardContent>
-          </Card>
+          <TabFadeWrapper key={`web-${activeTab}`}>
+            <Card>
+              <CardContent className="pt-6">
+                <h4 className="mb-3 text-base font-medium">
+                  Installing Skills on claude.ai
+                </h4>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      1.
+                    </span>
+                    Download the skill file (or ZIP for multi-file skills)
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      2.
+                    </span>
+                    Go to <strong className="text-foreground">claude.ai</strong>{' '}
+                    and open{' '}
+                    <strong className="text-foreground">Settings</strong>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      3.
+                    </span>
+                    Navigate to{' '}
+                    <strong className="text-foreground">
+                      Capabilities &gt; Skills
+                    </strong>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      4.
+                    </span>
+                    Click{' '}
+                    <strong className="text-foreground">
+                      &ldquo;Upload skill&rdquo;
+                    </strong>{' '}
+                    and select the downloaded file
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      5.
+                    </span>
+                    The skill activates automatically when your task matches its
+                    description
+                  </li>
+                </ol>
+                <CalloutCard
+                  variant="tip"
+                  title="Alternative: Projects"
+                  className="mt-4"
+                >
+                  For recurring workflows, consider adding skill files to a
+                  Project&apos;s knowledge base instead. This gives every
+                  conversation in that project automatic access.
+                </CalloutCard>
+              </CardContent>
+            </Card>
+          </TabFadeWrapper>
         </TabsContent>
 
         {track === 'developer' && (
           <TabsContent value="code" className="mt-4">
-            <Card>
-              <CardContent className="pt-6">
-                <h4 className="mb-3 font-medium">Installing on Claude Code</h4>
-                <div className="space-y-4">
-                  <div>
-                    <p className="mb-2 text-sm font-medium text-foreground">
-                      Skills
-                    </p>
-                    <CodeBlock
-                      code="# Project-level (available in this project only)\ncp -r starter-kit/skills/skill-name .claude/skills/skill-name\n\n# Global (available in all projects)\ncp -r starter-kit/skills/skill-name ~/.claude/skills/skill-name"
-                      language="bash"
-                      title="Install a skill"
-                    />
+            <TabFadeWrapper key={`code-${activeTab}`}>
+              <Card>
+                <CardContent className="pt-6">
+                  <h4 className="mb-3 text-base font-medium">
+                    Installing on Claude Code
+                  </h4>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="mb-2 text-sm font-medium text-foreground">
+                        Skills
+                      </p>
+                      <CodeBlock
+                        code="# Project-level (available in this project only)\ncp -r starter-kit/skills/skill-name .claude/skills/skill-name\n\n# Global (available in all projects)\ncp -r starter-kit/skills/skill-name ~/.claude/skills/skill-name"
+                        language="bash"
+                        title="Install a skill"
+                      />
+                    </div>
+                    <div>
+                      <p className="mb-2 text-sm font-medium text-foreground">
+                        Commands
+                      </p>
+                      <CodeBlock
+                        code="cp starter-kit/commands/command-name.md .claude/commands/command-name.md"
+                        language="bash"
+                        title="Install a command"
+                      />
+                    </div>
+                    <div>
+                      <p className="mb-2 text-sm font-medium text-foreground">
+                        Plugins
+                      </p>
+                      <CodeBlock
+                        code="claude plugin install <plugin-name>"
+                        language="bash"
+                        title="Install a plugin"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <p className="mb-2 text-sm font-medium text-foreground">
-                      Commands
-                    </p>
-                    <CodeBlock
-                      code="cp starter-kit/commands/command-name.md .claude/commands/command-name.md"
-                      language="bash"
-                      title="Install a command"
-                    />
-                  </div>
-                  <div>
-                    <p className="mb-2 text-sm font-medium text-foreground">
-                      Plugins
-                    </p>
-                    <CodeBlock
-                      code="claude plugin install <plugin-name>"
-                      language="bash"
-                      title="Install a plugin"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </TabFadeWrapper>
           </TabsContent>
         )}
 
         <TabsContent value="admin" className="mt-4">
-          <Card>
-            <CardContent className="pt-6">
-              <h4 className="mb-3 font-medium">
-                Provisioning Skills Organisation-Wide
-              </h4>
-              <ol className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    1.
-                  </span>
-                  Download the skill ZIP file
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    2.
-                  </span>
-                  Open the{' '}
-                  <strong className="text-foreground">
-                    Teams admin console
-                  </strong>
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    3.
-                  </span>
-                  Navigate to{' '}
-                  <strong className="text-foreground">
-                    Organisation settings &gt; Skills
-                  </strong>
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    4.
-                  </span>
-                  Upload the skill ZIP
-                </li>
-                <li className="flex gap-2">
-                  <span className="shrink-0 font-medium text-foreground">
-                    5.
-                  </span>
-                  Set as{' '}
-                  <strong className="text-foreground">
-                    enabled-by-default
-                  </strong>{' '}
-                  for all users
-                </li>
-              </ol>
-              <CalloutCard
-                variant="info"
-                title="Best for organisations"
-                className="mt-4"
-              >
-                Admin-provisioned skills require zero action from end users —
-                the skills simply appear in their Claude instance. This is the
-                recommended approach for team-wide deployment.
-              </CalloutCard>
-            </CardContent>
-          </Card>
+          <TabFadeWrapper key={`admin-${activeTab}`}>
+            <Card>
+              <CardContent className="pt-6">
+                <h4 className="mb-3 text-base font-medium">
+                  Provisioning Skills Organisation-Wide
+                </h4>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      1.
+                    </span>
+                    Download the skill ZIP file
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      2.
+                    </span>
+                    Open the{' '}
+                    <strong className="text-foreground">
+                      Teams admin console
+                    </strong>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      3.
+                    </span>
+                    Navigate to{' '}
+                    <strong className="text-foreground">
+                      Organisation settings &gt; Skills
+                    </strong>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      4.
+                    </span>
+                    Upload the skill ZIP
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="shrink-0 font-medium text-foreground">
+                      5.
+                    </span>
+                    Set as{' '}
+                    <strong className="text-foreground">
+                      enabled-by-default
+                    </strong>{' '}
+                    for all users
+                  </li>
+                </ol>
+                <CalloutCard
+                  variant="info"
+                  title="Best for organisations"
+                  className="mt-4"
+                >
+                  Admin-provisioned skills require zero action from end users —
+                  the skills simply appear in their Claude instance. This is the
+                  recommended approach for team-wide deployment.
+                </CalloutCard>
+              </CardContent>
+            </Card>
+          </TabFadeWrapper>
         </TabsContent>
       </Tabs>
     </div>
@@ -858,14 +920,23 @@ function InstallationGuides() {
 /*  File browser — main interactive component                          */
 /* ------------------------------------------------------------------ */
 
+/** Default number of cards shown before "Show all" */
+const INITIAL_CARD_COUNT = 5;
+
 function FileBrowser() {
   const { track } = useTrack();
   const categories = getCategoriesForTrack(track);
   const defaultTab = categories[0] || 'skill';
+  const [showAll, setShowAll] = useState<Record<string, boolean>>({});
+  const [activeTab, setActiveTab] = useState<string>(defaultTab);
+
+  const toggleShowAll = useCallback((category: string) => {
+    setShowAll((prev) => ({ ...prev, [category]: !prev[category] }));
+  }, []);
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
         <div>
           <h3 className="text-lg font-semibold">File Browser</h3>
           <p
@@ -879,18 +950,25 @@ function FileBrowser() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-1.5 shrink-0"
+          className="gap-1.5 shrink-0 w-full sm:w-auto whitespace-nowrap"
           asChild
         >
-          <a href="/starter-kit.zip" download>
+          <a
+            href="/starter-kit.zip"
+            download
+            aria-label="Download starter kit as ZIP file"
+          >
             <Download className="h-4 w-4" />
-            Download All as ZIP
+            <span>Download All as ZIP</span>
           </a>
         </Button>
       </div>
 
-      <Tabs defaultValue={defaultTab}>
-        <TabsList className="w-full flex-wrap justify-start">
+      <Tabs
+        defaultValue={defaultTab}
+        onValueChange={(val) => setActiveTab(val)}
+      >
+        <TabsList className="w-full flex-wrap justify-start bg-muted/40">
           {categories.map((category) => {
             const Icon = CATEGORY_ICONS[category];
             const files = getFilesForCategoryAndTrack(category, track);
@@ -913,19 +991,49 @@ function FileBrowser() {
 
         {categories.map((category) => {
           const files = getFilesForCategoryAndTrack(category, track);
+          const isShowingAll = showAll[category] ?? false;
+          const visibleFiles =
+            files.length > INITIAL_CARD_COUNT && !isShowingAll
+              ? files.slice(0, INITIAL_CARD_COUNT)
+              : files;
+          const hiddenCount = files.length - INITIAL_CARD_COUNT;
+
           return (
             <TabsContent key={category} value={category} className="mt-4">
-              {category === 'plugin' && <PluginGuidanceCallout />}
-              <div className="mt-4 space-y-3">
-                {files.map((file) => (
-                  <FileCard key={file.id} file={file} />
-                ))}
-                {files.length === 0 && (
-                  <p className="py-8 text-center text-sm text-muted-foreground">
-                    No files in this category for your current track.
-                  </p>
+              <TabFadeWrapper key={`browser-${activeTab}`}>
+                {category === 'plugin' && <PluginGuidanceCallout />}
+                <div className="mt-4 space-y-3">
+                  {visibleFiles.map((file) => (
+                    <FileCard key={file.id} file={file} />
+                  ))}
+                  {files.length === 0 && (
+                    <p className="py-8 text-center text-sm text-muted-foreground">
+                      No files in this category for your current track.
+                    </p>
+                  )}
+                </div>
+                {files.length > INITIAL_CARD_COUNT && (
+                  <div className="mt-4 flex justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toggleShowAll(category)}
+                      className="gap-1.5"
+                    >
+                      {isShowingAll ? (
+                        <>Show fewer</>
+                      ) : (
+                        <>
+                          Show all {files.length} files
+                          <Badge variant="secondary" className="ml-1 text-xs">
+                            +{hiddenCount}
+                          </Badge>
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 )}
-              </div>
+              </TabFadeWrapper>
             </TabsContent>
           );
         })}
@@ -948,7 +1056,7 @@ export function StarterKitSection() {
 
   return (
     <div className="space-y-12">
-      {/* ── Introduction ───────────────────────────────────── */}
+      {/* -- Introduction ------------------------------------------- */}
       <motion.section {...motionProps} aria-labelledby="starter-kit-intro">
         <h2
           id="starter-kit-intro"
@@ -961,11 +1069,14 @@ export function StarterKitSection() {
           className="space-y-4 text-base leading-relaxed text-muted-foreground"
           style={{ maxWidth: '65ch' }}
         >
+          <p className="text-foreground/80">
+            Your toolkit for getting the most from Claude. Everything here is
+            ready to use — pick what fits your workflow and start straight away.
+          </p>
           <p>
             The starter kit is a collection of ready-to-use skill files,
             templates, prompts, and plugin references that you can drop into
-            your Claude environment straight away. Everything here is ready to
-            use and start getting value from immediately.
+            your Claude environment straight away.
           </p>
           <p>
             {isDev ? (
@@ -996,7 +1107,7 @@ export function StarterKitSection() {
 
       <Separator />
 
-      {/* ── Quick start ────────────────────────────────────── */}
+      {/* -- Quick start -------------------------------------------- */}
       <motion.section
         {...motionFadeProps}
         aria-labelledby="quick-start-heading"
@@ -1006,33 +1117,30 @@ export function StarterKitSection() {
 
       <Separator />
 
-      {/* ── Installation guides ────────────────────────────── */}
+      {/* -- Installation guides ------------------------------------ */}
       <motion.section {...motionFadeProps} aria-labelledby="install-guides">
         <InstallationGuides />
       </motion.section>
 
       <Separator />
 
-      {/* ── File browser ───────────────────────────────────── */}
+      {/* -- File browser ------------------------------------------- */}
       <motion.section {...motionFadeProps} aria-labelledby="file-browser">
         <FileBrowser />
       </motion.section>
 
       <Separator />
 
-      {/* ── Common install snippets ────────────────────────── */}
+      {/* -- Common install snippets -------------------------------- */}
       <motion.section {...motionFadeProps} aria-labelledby="install-snippets">
         <InstallSnippets />
       </motion.section>
 
       <Separator />
 
-      {/* ── Maintenance note ───────────────────────────────── */}
+      {/* -- Maintenance note --------------------------------------- */}
       <motion.section {...motionFadeProps}>
-        <CalloutCard
-          variant="important"
-          title="Keeping your starter kit current"
-        >
+        <CalloutCard variant="info" title="Keeping your starter kit current">
           <div className="space-y-2 text-sm">
             <p>
               Plugins installed from the marketplace update automatically — no
@@ -1054,36 +1162,42 @@ export function StarterKitSection() {
 
       <Separator />
 
-      {/* ── Track completion ─────────────────────────────── */}
+      {/* -- Track completion --------------------------------------- */}
       <motion.section {...motionFadeProps}>
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-primary/20 bg-primary/5 dark:bg-primary/10 dark:border-primary/30">
           <CardContent className="pt-6">
-            <h3 className="mb-2 text-lg font-semibold text-foreground">
-              You&apos;ve completed the {isDev ? 'Developer' : 'General'} track
-            </h3>
-            <p
-              className="mb-4 text-sm leading-relaxed text-muted-foreground"
-              style={{ maxWidth: '65ch' }}
-            >
-              {isDev
-                ? 'You now have everything you need to use Claude Code effectively — from CLAUDE.md setup to testing, plugins, and governance. The starter kit files above will get your projects up and running quickly.'
-                : 'You now have a solid foundation for using Claude effectively — from context management to skills, governance, and brand voice. The starter kit files above will help you put it all into practice.'}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                to="/"
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-              >
-                Back to homepage
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-              <Link
-                to={isDev ? '/general' : '/developer'}
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-              >
-                Explore the {isDev ? 'General' : 'Developer'} track
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-primary" />
+              <div>
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
+                  You&apos;ve completed the {isDev ? 'Developer' : 'General'}{' '}
+                  track
+                </h3>
+                <p
+                  className="mb-4 text-sm leading-relaxed text-muted-foreground"
+                  style={{ maxWidth: '65ch' }}
+                >
+                  {isDev
+                    ? 'You now have everything you need to use Claude Code effectively — from CLAUDE.md setup to testing, plugins, and governance. The starter kit files above will get your projects up and running quickly.'
+                    : 'You now have a solid foundation for using Claude effectively — from context management to skills, governance, and brand voice. The starter kit files above will help you put it all into practice.'}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    to="/"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+                  >
+                    Back to homepage
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                  <Link
+                    to={isDev ? '/general' : '/developer'}
+                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+                  >
+                    Explore the {isDev ? 'General' : 'Developer'} track
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

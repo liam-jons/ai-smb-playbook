@@ -189,11 +189,11 @@ export function SimulatorControls({
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="min-h-[44px] gap-1.5 text-muted-foreground sm:min-h-0"
+          className="min-h-[44px] gap-1.5 text-muted-foreground hover:text-muted-foreground/80 sm:min-h-0"
           aria-label="Reset simulator"
         >
-          <RotateCcw className="h-4 w-4" />
-          Reset
+          <RotateCcw className="h-3.5 w-3.5" />
+          <span className="text-xs">Reset</span>
         </Button>
 
         {showCompactButton && (
@@ -308,7 +308,7 @@ function SliderControls({
                 aria-checked={toolSearchEnabled}
                 onClick={() => onToolSearchChange(!toolSearchEnabled)}
                 className={cn(
-                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring dark:focus-visible:outline-primary/60',
                   toolSearchEnabled ? 'bg-primary' : 'bg-muted',
                 )}
               >

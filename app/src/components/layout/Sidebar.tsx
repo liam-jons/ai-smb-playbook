@@ -192,8 +192,8 @@ export function Sidebar({
                           ? 'bg-primary/10 font-medium text-primary'
                           : 'bg-primary/5 font-medium text-primary hover:bg-primary/10'
                         : isActive
-                          ? 'bg-accent font-medium text-accent-foreground'
-                          : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                          ? 'bg-primary/10 font-medium text-primary'
+                          : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
                     )}
                     aria-current={isActive ? 'page' : undefined}
                   >

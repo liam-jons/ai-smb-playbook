@@ -1,6 +1,8 @@
 // Session Management data — typed TypeScript objects
 // All content uses UK English.
 
+import { siteConfig } from '@/config/site';
+
 export interface RuleOfThumb {
   id: string;
   title: string;
@@ -24,6 +26,8 @@ export interface HandoffScenario {
   templatePromptId: string;
 }
 
+export type PromptCategory = 'session-start' | 'session-end' | 'handoff';
+
 export interface CopyablePrompt {
   id: string;
   label: string;
@@ -31,6 +35,7 @@ export interface CopyablePrompt {
   content: string;
   tracks: ('general' | 'developer')[];
   whenToUse?: string;
+  category: PromptCategory;
 }
 
 export interface WorkedExample {
@@ -375,15 +380,13 @@ export const infoArchElements: InfoArchElement[] = [
 
 export const workedExamples: WorkedExample[] = [
   {
-    id: 'safeguarding',
-    title: 'Writing a safeguarding policy review',
-    context:
-      'Instead of one session: "Review our safeguarding policy, identify gaps, draft updates, and create a summary for the board."',
+    id: 'compliance-review',
+    title: `Writing a ${siteConfig.complianceArea} policy review`,
+    context: `Instead of one session: "Review our ${siteConfig.complianceArea} policy, identify gaps, draft updates, and create a summary for the board."`,
     steps: [
       {
         session: 1,
-        description:
-          'Review our safeguarding policy against current guidance. List all gaps and areas needing updates.',
+        description: `Review our ${siteConfig.complianceArea} policy against current guidance. List all gaps and areas needing updates.`,
         outcome: 'Create handoff with the gap analysis.',
       },
       {
@@ -483,10 +486,17 @@ export const platformComparisons: PlatformComparison[] = [
 // Copyable Prompts
 // ─────────────────────────────────────────────
 
+export const promptCategoryLabels: Record<PromptCategory, string> = {
+  'session-start': 'Planning',
+  'session-end': 'Session End',
+  handoff: 'Handoff',
+};
+
 export const copyablePrompts: CopyablePrompt[] = [
   {
     id: 'general-handoff',
     label: 'Session Handoff \u2014 General',
+    category: 'session-end',
     description:
       'Use this prompt to ask Claude to summarise your session before starting a fresh conversation.',
     content: `Before we finish, I need you to create a handoff summary so I can continue this work in a new conversation.
@@ -507,6 +517,7 @@ Format this as a single block of text I can paste into a new conversation. Start
   {
     id: 'developer-handoff',
     label: 'Session Handoff \u2014 Developer',
+    category: 'session-end',
     description:
       'A structured continuation prompt for Claude Code users. Produces a markdown file with full project context.',
     content: `Create a structured continuation prompt for the next session. Save it as a markdown file.
@@ -551,6 +562,7 @@ Keep the total length under 4,000 words. Reference existing project files rather
   {
     id: 'emergency-general',
     label: 'Emergency Session Save',
+    category: 'handoff',
     description:
       'For when your conversation is getting long and you want to save progress quickly.',
     content: `Our conversation is getting long and I want to save our progress before the quality drops. Please create an emergency handoff summary with:
@@ -569,6 +581,7 @@ Keep it concise. I will paste this into a new conversation to continue.`,
   {
     id: 'emergency-dev',
     label: 'Emergency Session Save \u2014 Developer',
+    category: 'handoff',
     description:
       'For when context is running low in Claude Code. Captures state with maximum efficiency.',
     content: `Context is running low. Create an emergency continuation prompt immediately.
@@ -588,6 +601,7 @@ Skip the preamble. Be maximally concise. Every token counts.`,
   {
     id: 'task-decomposition',
     label: 'Break Down a Large Task',
+    category: 'session-start',
     description:
       'Ask Claude to help you decompose a large task into focused subtasks, each suitable for its own session.',
     content: `I have a task I would like to break into smaller, focused subtasks. Here is the task:
@@ -613,6 +627,7 @@ For each subtask, give me:
   {
     id: 'session-review',
     label: 'Review This Session Before Wrapping Up',
+    category: 'session-end',
     description:
       'Get a quick summary of what was covered in this session before deciding whether to continue or create a handoff.',
     content: `Before we wrap up this session, I would like a brief review of what we have covered. Please summarise:
@@ -631,6 +646,7 @@ This is not a handoff \u2014 I just want to make sure we have not missed anythin
   {
     id: 'delegation',
     label: 'Hand Off to a Colleague',
+    category: 'handoff',
     description:
       'Create a fully self-contained briefing for someone else to continue the work without any prior context.',
     content: `I need to hand this work off to a colleague who will continue in a separate session. They have no context about this project.

@@ -1,7 +1,7 @@
 # Design Audit Synthesis
 
 > **Produced:** 17 February 2026
-> **Updated:** 17 February 2026 (Session 24 — Decision tree visual distinction, Brand Voice parameterisation, scroll affordances)
+> **Updated:** 17 February 2026 (Session 25 — Brand Voice data extraction, SetupStepCard component, light parameterisation sweep)
 > **Source files:** `agent-outputs/design-critique-{home,roi-measurement,context,session-management,starter-kit,claude-md,skills-extensions,brand-voice}.md`
 > **Pages audited:** 8 full critiques + 12 triaged of 20 total
 > **Total findings:** 127 original + new findings from Skills/Extensions and Brand Voice critiques
@@ -162,7 +162,7 @@ These 2 remaining pages do not need auditing -- one is scheduled for removal and
 
 | # | Issue | Pages | Fix Location |
 |---|-------|-------|-------------|
-| I38 | **Brand Voice page has 7 hardcoded `phewExample` blocks.** (PARTIALLY DONE — `phewExample` renamed to `clientExample` throughout, "Phew! example" labels replaced with `siteConfig.companyName`, "Head start for Phew!" callout parameterised, 2 template literal examples use `siteConfig.companyName`. Remaining: extract examples to client-configurable data layer for full reusability.) | Brand Voice | `BrandVoiceSection.tsx` |
+| I38 | **Brand Voice page has 7 hardcoded `phewExample` blocks.** (DONE — Session 24: renamed to `clientExample`, labels/callout parameterised, 2 template literals. Session 25: all data extracted to `brand-voice-data.ts`, step JSX deduplicated into `SetupStepCard` component, `language` field added to `SetupStep` eliminating magic number check. `companyShortName` added to siteConfig for informal brand references.) | Brand Voice | `brand-voice-data.ts`, `SetupStepCard.tsx`, `BrandVoiceSection.tsx` |
 | I39 | **Recurring Tasks page has 14 client-specific references.** "Phew!" name, LMS, safeguarding terminology hardcoded in data arrays and JSX. | Recurring Tasks | `RecurringTasksSection.tsx` |
 | I40 | **Governance page has Phew-specific content in register template and risk tier examples.** Descriptive text references "Phew! starter kit", register template entries are Phew extensions, risk tiers reference safeguarding domain. | Governance | `GovernancePolicySection.tsx` |
 | I41 | **Skills/Extensions page has 3 hardcoded "Phew!" references.** (DONE — parameterised with `siteConfig.companyName`) | Skills/Extensions | `SkillsExtensionsSection.tsx` |
@@ -501,7 +501,7 @@ All 12 previously unaudited content pages have been triaged (see individual repo
 
 ### Pages with full design critiques completed (Session 23)
 - **Skills, Extensions & Decision Tree** (6.6/10) — decision tree now visually distinct (Session 24: rounded-xl container with Compass icon header, bg-card accordion items), broken aria-labelledby fixed, scrollToCard focus management fixed, 3 hardcoded Phew refs parameterised, scroll affordances added to combination patterns and comparison tables, PlatformBadge colours hoisted to module scope. See `design-critique-skills-extensions.md`.
-- **Brand Voice & UK English** (7.4/10) — `phewExample` renamed to `clientExample`, "Phew! example" labels use `siteConfig.companyName`, "Head start" callout parameterised, 2 example strings use template literals. CopyButton mobile/focus visibility fixed. See `design-critique-brand-voice.md`.
+- **Brand Voice & UK English** (7.4/10) — Session 24: `phewExample` renamed to `clientExample`, labels/callout parameterised, 2 template literals, CopyButton mobile/focus fixed. Session 25: all data extracted to `brand-voice-data.ts` (critique I4), duplicated step JSX extracted to `SetupStepCard` component (I1), `language` field added to `SetupStep` removing magic number check (I3), `companyShortName` added to siteConfig. See `design-critique-brand-voice.md`.
 
 ### Remaining unaudited (not worth auditing)
 - Process Document — scheduled for removal

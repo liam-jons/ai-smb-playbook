@@ -12,18 +12,18 @@ import { Badge } from '@/components/ui/badge';
 import { getSectionsForTrack } from '@/content/shared/sections';
 import { siteConfig } from '@/config/site';
 
-/** Slugs that best represent each track's unique value */
+/** First few sections from each track — gives new users a clear starting point */
 const GENERAL_HIGHLIGHTS = [
-  'brand-voice',
-  'governance',
-  'recurring-tasks',
-  'roi-measurement',
+  'welcome',
+  'context',
+  'sessions',
+  'skills-extensions',
 ];
 const DEVELOPER_HIGHLIGHTS = [
   'claude-md',
+  'documentation',
   'codebase-mapping',
-  'regression-testing',
-  'plugins',
+  'hallucinations',
 ];
 
 export function HomePage() {
@@ -39,10 +39,10 @@ export function HomePage() {
 
   return (
     <main id="main-content" className="flex flex-1 items-start">
-      <div className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto w-full max-w-3xl px-4 pt-16 pb-12 sm:px-6 sm:pt-12 sm:py-16">
         {/* Hero — left-aligned, warm, action-oriented */}
         <motion.div
-          className="mb-12"
+          className="mb-8 sm:mb-10 rounded-xl bg-gradient-to-br from-primary/[0.04] via-transparent to-transparent px-1 py-1 sm:px-2 sm:py-2"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -77,10 +77,10 @@ export function HomePage() {
             className="group block"
             aria-label="General Users track — for all team members"
           >
-            <Card className="h-full border-l-4 border-l-blue-500 transition-all hover:shadow-md dark:border-l-blue-400">
+            <Card className="h-full border-l-4 border-l-blue-500 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-blue-400">
               <CardHeader>
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/15 dark:text-blue-400">
                     <BookOpen className="h-5 w-5" />
                   </div>
                   <Badge variant="secondary" className="text-xs">
@@ -110,8 +110,8 @@ export function HomePage() {
                     sections
                   </li>
                 </ul>
-                <span className="inline-flex items-center gap-1.5 rounded-md bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-600 transition-all group-hover:gap-2.5 dark:text-blue-400">
-                  Get started
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 transition-all group-hover:gap-2.5 dark:text-blue-400">
+                  Explore track
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </CardContent>
@@ -124,10 +124,10 @@ export function HomePage() {
             className="group block"
             aria-label="Developer track — for the development team"
           >
-            <Card className="h-full border-l-4 border-l-violet-500 transition-all hover:shadow-md dark:border-l-violet-400">
+            <Card className="h-full border-l-4 border-l-violet-500 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-violet-400">
               <CardHeader>
                 <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600 dark:bg-violet-400/15 dark:text-violet-400">
                     <Terminal className="h-5 w-5" />
                   </div>
                   <Badge variant="secondary" className="text-xs">
@@ -157,8 +157,8 @@ export function HomePage() {
                     more sections including all general content
                   </li>
                 </ul>
-                <span className="inline-flex items-center gap-1.5 rounded-md bg-violet-500/10 px-3 py-1.5 text-sm font-medium text-violet-600 transition-all group-hover:gap-2.5 dark:text-violet-400">
-                  Get started
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 transition-all group-hover:gap-2.5 dark:text-violet-400">
+                  Explore track
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </CardContent>

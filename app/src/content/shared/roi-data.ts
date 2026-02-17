@@ -1,3 +1,5 @@
+import { siteConfig } from '@/config/site';
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type TaskCategory =
@@ -165,9 +167,8 @@ export const taskTemplates: TaskTemplate[] = [
     relatedSection: 'skills-extensions',
     track: 'both',
     clientExample: {
-      title: 'Phew! bid writing',
-      description:
-        'Phew! regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.',
+      title: `${siteConfig.companyShortName} bid writing`,
+      description: `${siteConfig.companyShortName} regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.`,
     },
   },
   {
@@ -231,9 +232,8 @@ export const taskTemplates: TaskTemplate[] = [
     relatedSection: 'governance',
     track: 'both',
     clientExample: {
-      title: 'Phew! ISO documentation',
-      description:
-        'With ISO 9001, 27001, 14001 and Cyber Essentials Plus, Phew! maintains extensive documentation. AI can generate first drafts from existing policies.',
+      title: `${siteConfig.companyShortName} ISO documentation`,
+      description: `With ISO 9001, 27001, 14001 and Cyber Essentials Plus, ${siteConfig.companyShortName} maintains extensive documentation. AI can generate first drafts from existing policies.`,
     },
   },
   {
@@ -337,9 +337,8 @@ export const taskTemplates: TaskTemplate[] = [
     relatedSection: 'regression-testing',
     track: 'developer',
     clientExample: {
-      title: 'Phew! Ghost Inspector replacement',
-      description:
-        "Phew! currently uses Ghost Inspector for regression testing. Claude Code's browser automation can replicate test suites at lower cost.",
+      title: `${siteConfig.companyShortName} ${siteConfig.testingTool} replacement`,
+      description: `${siteConfig.companyShortName} currently uses ${siteConfig.testingTool} for regression testing. Claude Code's browser automation can replicate test suites at lower cost.`,
     },
   },
   {

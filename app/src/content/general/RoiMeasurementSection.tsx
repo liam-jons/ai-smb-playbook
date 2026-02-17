@@ -1,11 +1,13 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router';
+import { motion } from 'motion/react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
   Collapsible,
@@ -28,6 +30,7 @@ import {
   ListChecks,
   ArrowRight,
   FileText,
+  Compass,
 } from 'lucide-react';
 import { FeasibilityStudyBuilder } from '@/content/general/FeasibilityStudyBuilder';
 import {
@@ -65,6 +68,7 @@ function generateExportText(
   roiPercent: number,
   paybackDays: number,
 ): string {
+  const days = Math.round(paybackDays);
   return [
     'AI ROI Estimate',
     '═══════════════',
@@ -81,7 +85,7 @@ function generateExportText(
     `  Monthly net savings:      ${formatGBP(monthlyNet)}`,
     `  Annual net savings:       ${formatGBP(annualNet)}`,
     `  ROI:                      ${formatPercent(roiPercent)}`,
-    `  Payback period:           ${paybackDays} ${paybackDays === 1 ? 'day' : 'days'}`,
+    `  Payback period:           ${days} ${days === 1 ? 'day' : 'days'}`,
     '',
     `Generated with the ${siteConfig.appTitle} ROI Calculator`,
   ].join('\n');
@@ -109,6 +113,7 @@ function RoiCalculator() {
     monthlyCost > 0 ? ((monthlyGross - monthlyCost) / monthlyCost) * 100 : 0;
   const paybackDays =
     monthlyGross > 0 ? Math.round((monthlyCost / monthlyGross) * 30) : 0;
+  const roundedDays = Math.round(paybackDays);
   const isPositive = monthlyNet >= 0;
 
   const exportText = generateExportText(
@@ -224,57 +229,57 @@ function RoiCalculator() {
         </div>
       </div>
 
-      {/* Outputs */}
+      {/* Outputs — N13: text-sm labels, N28: grid-cols-2 always to reduce vertical space */}
       <div
         aria-live="polite"
         aria-atomic="true"
-        className="grid gap-3 sm:grid-cols-2"
+        className="grid grid-cols-2 gap-3"
       >
-        <div className="rounded-lg border border-border bg-muted/50 p-4">
-          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-lg border border-border bg-muted/50 p-3 sm:p-4">
+          <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
             Monthly net savings
           </span>
           <p
             className={cn(
-              'mt-1 text-2xl font-bold tabular-nums',
+              'mt-1 text-xl font-bold tabular-nums sm:text-2xl',
               isPositive ? 'text-success' : 'text-danger',
             )}
           >
             {formatGBP(monthlyNet)}
           </p>
         </div>
-        <div className="rounded-lg border border-border bg-muted/50 p-4">
-          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-lg border border-border bg-muted/50 p-3 sm:p-4">
+          <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
             Annual net savings
           </span>
           <p
             className={cn(
-              'mt-1 text-2xl font-bold tabular-nums',
+              'mt-1 text-xl font-bold tabular-nums sm:text-2xl',
               isPositive ? 'text-success' : 'text-danger',
             )}
           >
             {formatGBP(annualNet)}
           </p>
         </div>
-        <div className="rounded-lg border border-border bg-muted/50 p-4">
-          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-lg border border-border bg-muted/50 p-3 sm:p-4">
+          <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
             Return on investment
           </span>
           <p
             className={cn(
-              'mt-1 text-2xl font-bold tabular-nums',
+              'mt-1 text-xl font-bold tabular-nums sm:text-2xl',
               isPositive ? 'text-success' : 'text-danger',
             )}
           >
             {formatPercent(roiPercent)}
           </p>
         </div>
-        <div className="rounded-lg border border-border bg-muted/50 p-4">
-          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-lg border border-border bg-muted/50 p-3 sm:p-4">
+          <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
             Monthly breakeven
           </span>
-          <p className="mt-1 text-2xl font-bold tabular-nums text-foreground">
-            {paybackDays} {paybackDays === 1 ? 'day' : 'days'}
+          <p className="mt-1 text-xl font-bold tabular-nums text-foreground sm:text-2xl">
+            {roundedDays} {roundedDays === 1 ? 'day' : 'days'}
           </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             Cost covered within each month
@@ -282,15 +287,24 @@ function RoiCalculator() {
         </div>
       </div>
 
-      {/* Export */}
+      {/* N72: contextual note about default values */}
+      <p className="text-xs text-muted-foreground italic">
+        Adjust these values to match your situation &mdash; the defaults are
+        starting points, not guarantees.
+      </p>
+
+      {/* Export — N34: more prominent button, N46: descriptive aria-label */}
       <div className="flex items-center gap-3">
-        <CopyButton
-          text={exportText}
-          className="h-auto gap-2 px-3 py-2 opacity-100"
-        />
-        <span className="text-sm text-muted-foreground">
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          onClick={() => navigator.clipboard.writeText(exportText)}
+          aria-label="Copy ROI calculator results to clipboard for your business case"
+        >
+          <Calculator className="h-4 w-4" aria-hidden="true" />
           Copy for your business case
-        </span>
+        </Button>
       </div>
     </div>
   );
@@ -319,7 +333,7 @@ function TaskTemplateCard({
   ].join('\n');
 
   return (
-    <div className="rounded-lg border border-border p-4">
+    <div className="flex flex-col rounded-lg border border-border p-4">
       <div className="mb-3 flex items-start justify-between gap-2">
         <div className="min-w-0">
           <span
@@ -334,36 +348,47 @@ function TaskTemplateCard({
             {template.title}
           </h4>
         </div>
-        <CopyButton text={summaryText} />
+        <CopyButton
+          text={summaryText}
+          ariaLabel={`Copy ${template.title} summary`}
+        />
       </div>
 
-      {/* Before / After comparison */}
+      {/* Before / After comparison — N45: role="group" + aria-label, N14: leading-relaxed */}
       <div className="grid gap-2 sm:grid-cols-2">
-        <div className="rounded-md bg-danger-muted/30 px-3 py-2">
+        <div
+          role="group"
+          aria-label={`${template.title} before AI`}
+          className="rounded-md bg-danger-muted/30 px-3 py-2.5"
+        >
           <span className="text-xs font-medium text-danger-muted-foreground">
             Before
           </span>
-          <p className="mt-0.5 text-sm font-medium tabular-nums text-foreground">
+          <p className="mt-1 text-sm font-medium leading-relaxed tabular-nums text-foreground">
             {template.beforeScenario.time}
           </p>
-          <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+          <p className="mt-0.5 text-xs leading-relaxed tabular-nums text-muted-foreground">
             {template.beforeScenario.cost}
           </p>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             {template.beforeScenario.process}
           </p>
         </div>
-        <div className="rounded-md bg-success-muted/30 px-3 py-2">
+        <div
+          role="group"
+          aria-label={`${template.title} after AI`}
+          className="rounded-md bg-success-muted/30 px-3 py-2.5"
+        >
           <span className="text-xs font-medium text-success-muted-foreground">
             After
           </span>
-          <p className="mt-0.5 text-sm font-medium tabular-nums text-foreground">
+          <p className="mt-1 text-sm font-medium leading-relaxed tabular-nums text-foreground">
             {template.afterScenario.time}
           </p>
-          <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+          <p className="mt-0.5 text-xs leading-relaxed tabular-nums text-muted-foreground">
             {template.afterScenario.cost}
           </p>
-          <p className="mt-0.5 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
             {template.afterScenario.process}
           </p>
         </div>
@@ -373,10 +398,13 @@ function TaskTemplateCard({
         {template.roiHighlight}
       </p>
 
-      {/* Client example + related section */}
+      {/* Client example + related section — N44: aria-expanded handled by Radix Collapsible */}
       {(template.clientExample || template.relatedSection) && (
         <Collapsible open={open} onOpenChange={setOpen}>
-          <CollapsibleTrigger className="mt-2 flex w-full items-center gap-1.5 text-xs font-medium text-primary hover:underline">
+          <CollapsibleTrigger
+            className="mt-2 flex w-full items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+            aria-expanded={open}
+          >
             <ChevronDown
               className={cn(
                 'h-3.5 w-3.5 transition-transform duration-200',
@@ -395,7 +423,7 @@ function TaskTemplateCard({
                   <span className="text-xs font-medium text-muted-foreground">
                     {template.clientExample.title}
                   </span>
-                  <p className="mt-1 text-sm text-foreground">
+                  <p className="mt-1 text-sm leading-relaxed text-foreground">
                     {template.clientExample.description}
                   </p>
                 </div>
@@ -419,11 +447,19 @@ function TaskTemplateCard({
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 
+// Shared entrance animation props
+const sectionEntrance = {
+  initial: { opacity: 0, y: 16 } as const,
+  animate: { opacity: 1, y: 0 } as const,
+  transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const },
+};
+
 export function RoiMeasurementSection() {
   const { track } = useTrack();
   const isDev = track === 'developer';
+  // N9: default to first category ('time-savings') instead of 'all' to avoid overwhelming the user
   const [activeCategory, setActiveCategory] = useState<TaskCategory | 'all'>(
-    'all',
+    'time-savings',
   );
 
   // Auto-expand the feasibility study collapsible when a saved draft exists
@@ -455,9 +491,12 @@ export function RoiMeasurementSection() {
     .join('\n\n');
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-6">
       {/* 1. Why Measure? */}
-      <section aria-labelledby="why-measure-heading">
+      <motion.section
+        aria-labelledby="why-measure-heading"
+        {...sectionEntrance}
+      >
         <h2
           id="why-measure-heading"
           className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
@@ -472,7 +511,7 @@ export function RoiMeasurementSection() {
             benefit most from AI.
           </p>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            This section gives you three practical tools to fix that:
+            Below are three practical tools to help you build the case:
           </p>
           <ul className="space-y-1.5 text-sm text-muted-foreground list-none">
             <li className="flex items-start gap-2">
@@ -519,12 +558,12 @@ export function RoiMeasurementSection() {
           repetitive &mdash; and track the time difference for a fortnight. That
           single number is usually enough to make the case.
         </CalloutCard>
-      </section>
+      </motion.section>
 
       <Separator />
 
       {/* 2. ROI Calculator */}
-      <section aria-labelledby="calculator-heading">
+      <motion.section aria-labelledby="calculator-heading" {...sectionEntrance}>
         <div className="mb-1 flex items-center gap-2">
           <Calculator className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
@@ -534,17 +573,17 @@ export function RoiMeasurementSection() {
             ROI Calculator
           </h2>
         </div>
-        <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Adjust the inputs to estimate your return on AI investment.
+        <p className="mb-5 max-w-prose text-sm text-muted-foreground">
+          Plug in your numbers to see projected annual savings in pounds.
         </p>
 
         <RoiCalculator />
-      </section>
+      </motion.section>
 
       <Separator />
 
       {/* 3. Task Templates */}
-      <section aria-labelledby="templates-heading">
+      <motion.section aria-labelledby="templates-heading" {...sectionEntrance}>
         <div className="mb-1 flex items-center gap-2">
           <Target className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
@@ -554,26 +593,32 @@ export function RoiMeasurementSection() {
             Task ROI Templates
           </h2>
         </div>
-        <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Common SMB tasks with before/after comparisons. Filter by category to
-          find the most relevant ones for your team.
+        <p className="mb-5 max-w-prose text-sm text-muted-foreground">
+          Real before/after comparisons for common SMB tasks. Pick a category to
+          see the ones most relevant to your team.
         </p>
 
+        {/* I25: flex-wrap + gap ensures tabs don't overlap cards on mobile */}
         <Tabs
           value={activeCategory}
           onValueChange={(v) => setActiveCategory(v as TaskCategory | 'all')}
-          className="mb-6"
+          className="mb-5"
         >
-          <TabsList className="flex-wrap h-auto gap-1 mb-2">
+          <TabsList className="flex h-auto gap-1 overflow-x-auto p-1 pb-2 sm:flex-wrap sm:overflow-visible sm:pb-1">
             {categoryFilters.map((filter) => (
-              <TabsTrigger key={filter.value} value={filter.value}>
+              <TabsTrigger
+                key={filter.value}
+                value={filter.value}
+                className="shrink-0 whitespace-nowrap"
+              >
                 {filter.label}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        {/* N23: auto-rows-fr ensures even card heights within each row */}
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
           {filteredTemplates.map((template) => (
             <TaskTemplateCard
               key={template.id}
@@ -588,12 +633,15 @@ export function RoiMeasurementSection() {
             No templates in this category.
           </p>
         )}
-      </section>
+      </motion.section>
 
       <Separator />
 
-      {/* 3.5. Feasibility Study Builder */}
-      <section aria-labelledby="feasibility-heading">
+      {/* 3.5. Feasibility Study Builder — N22: consistent spacing */}
+      <motion.section
+        aria-labelledby="feasibility-heading"
+        {...sectionEntrance}
+      >
         <Collapsible defaultOpen={hasFeasibilityDraft}>
           <CollapsibleTrigger className="group flex w-full items-start gap-3 rounded-lg border border-border p-4 text-left hover:bg-muted/50 transition-colors">
             <FileText
@@ -624,12 +672,12 @@ export function RoiMeasurementSection() {
             </div>
           </CollapsibleContent>
         </Collapsible>
-      </section>
+      </motion.section>
 
       <Separator />
 
       {/* 4. Measurement Frameworks */}
-      <section aria-labelledby="frameworks-heading">
+      <motion.section aria-labelledby="frameworks-heading" {...sectionEntrance}>
         <div className="mb-1 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
@@ -639,9 +687,9 @@ export function RoiMeasurementSection() {
             Measurement Frameworks
           </h2>
         </div>
-        <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Three complementary approaches to valuing AI adoption &mdash; use the
-          one that fits your audience.
+        <p className="mb-5 max-w-prose text-sm text-muted-foreground">
+          Three complementary approaches to valuing AI adoption &mdash; choose
+          the one that best fits your audience and goals.
         </p>
 
         <Accordion type="single" collapsible className="space-y-1">
@@ -673,12 +721,12 @@ export function RoiMeasurementSection() {
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
+      </motion.section>
 
       <Separator />
 
       {/* 5. Common Mistakes */}
-      <section aria-labelledby="mistakes-heading">
+      <motion.section aria-labelledby="mistakes-heading" {...sectionEntrance}>
         <div className="mb-1 flex items-center gap-2">
           <AlertCircle className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
@@ -688,7 +736,7 @@ export function RoiMeasurementSection() {
             Common Measurement Mistakes
           </h2>
         </div>
-        <p className="mb-6 max-w-prose text-sm text-muted-foreground">
+        <p className="mb-5 max-w-prose text-sm text-muted-foreground">
           Six pitfalls that undermine ROI calculations &mdash; and how to avoid
           them.
         </p>
@@ -722,13 +770,13 @@ export function RoiMeasurementSection() {
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
+      </motion.section>
 
       {/* 6. S-O-T KPI Framework (developer only) */}
       {isDev && (
         <>
           <Separator />
-          <section aria-labelledby="kpi-heading">
+          <motion.section aria-labelledby="kpi-heading" {...sectionEntrance}>
             <div className="mb-1 flex items-center gap-2">
               <Layers className="h-5 w-5 text-primary" aria-hidden="true" />
               <h2
@@ -738,7 +786,7 @@ export function RoiMeasurementSection() {
                 System &ndash; Operational &ndash; Technical KPI Framework
               </h2>
             </div>
-            <p className="mb-6 max-w-prose text-sm text-muted-foreground">
+            <p className="mb-5 max-w-prose text-sm text-muted-foreground">
               A three-layer approach to measuring AI impact at different
               organisational levels. System KPIs justify investment to
               leadership; operational KPIs track team adoption; technical KPIs
@@ -774,14 +822,17 @@ export function RoiMeasurementSection() {
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
         </>
       )}
 
       <Separator />
 
-      {/* 7. Getting Started */}
-      <section aria-labelledby="getting-started-heading">
+      {/* 7. Getting Started — N85: larger, more visible step circles */}
+      <motion.section
+        aria-labelledby="getting-started-heading"
+        {...sectionEntrance}
+      >
         <div className="mb-1 flex items-center gap-2">
           <ListChecks className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
@@ -791,19 +842,20 @@ export function RoiMeasurementSection() {
             Getting Started: Five Steps to Measuring ROI
           </h2>
         </div>
-        <p className="mb-6 max-w-prose text-sm text-muted-foreground">
+        <p className="mb-5 max-w-prose text-sm text-muted-foreground">
           A practical checklist you can start this week &mdash; no special tools
           required.
         </p>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {gettingStartedSteps.map((step) => (
             <div
               key={step.number}
               className="flex items-start gap-4 rounded-lg border border-border px-4 py-4"
             >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                <span className="text-sm font-semibold text-primary">
+              {/* N85: increased size from h-8/w-8 to h-10/w-10, stronger bg */}
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 ring-1 ring-primary/30">
+                <span className="text-base font-bold text-primary">
                   {step.number}
                 </span>
               </div>
@@ -823,20 +875,27 @@ export function RoiMeasurementSection() {
           <CopyButton
             text={checklistText}
             className="h-auto gap-2 px-3 py-2 opacity-100"
+            ariaLabel="Copy getting started checklist to clipboard"
           />
           <span className="text-sm text-muted-foreground">Copy checklist</span>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 8. Cross-references */}
+      {/* 8. Cross-references — N1: add icon to heading */}
       <Separator />
-      <section aria-labelledby="roi-cross-ref-heading">
-        <h2
-          id="roi-cross-ref-heading"
-          className="mb-4 text-lg font-semibold tracking-tight"
-        >
-          Related Sections
-        </h2>
+      <motion.section
+        aria-labelledby="roi-cross-ref-heading"
+        {...sectionEntrance}
+      >
+        <div className="mb-4 flex items-center gap-2">
+          <Compass className="h-5 w-5 text-primary" aria-hidden="true" />
+          <h2
+            id="roi-cross-ref-heading"
+            className="text-lg font-semibold tracking-tight"
+          >
+            Related Sections
+          </h2>
+        </div>
         <div className="space-y-2 text-sm text-muted-foreground">
           <p>
             <Link
@@ -897,7 +956,7 @@ export function RoiMeasurementSection() {
             </>
           )}
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }
