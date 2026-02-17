@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Outlet, Navigate, useParams, Link } from 'react-router';
+import { Outlet, Navigate, useParams, useLocation, Link } from 'react-router';
 import { ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,7 +21,13 @@ import { cn } from '@/lib/utils';
 export function TrackLayout() {
   const { track, isValidTrack } = useTrack();
   const { section: sectionSlug } = useParams<{ section: string }>();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Close mobile sidebar on route change (safety net for Radix Sheet animation race)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     try {
