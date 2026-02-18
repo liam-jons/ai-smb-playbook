@@ -418,13 +418,18 @@ export function HallucinationsSection() {
       </section>
 
       {/* Skill File Tip */}
-      <CalloutCard variant="tip" title="Save patterns as skills">
+      <CalloutCard
+        variant="tip"
+        title="Save your prevention patterns as skills"
+      >
         <p>
-          When you find a prompt pattern that consistently prevents
-          hallucinations in your codebase, save it as a skill file. Skill files
-          are loaded automatically by Claude Code at session start, so your
-          anti-hallucination patterns become part of every session without
-          manual effort — no need to remember or re-paste them.
+          Once you have found hallucination prevention patterns that work for
+          your codebase, save them as Claude Code skill files. Skills are loaded
+          automatically at session start, so every new session begins with your
+          proven verification steps built in &mdash; no need to remember or
+          re-paste them. This is especially valuable across projects: a
+          well-tuned &ldquo;validate against existing code&rdquo; skill works
+          everywhere.
         </p>
         <p className="mt-2 text-xs text-muted-foreground">
           See the{' '}

@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import {
-  Users,
   ArrowRight,
   Zap,
   MessageSquareHeart,
   Download,
   BookOpen,
   Package,
+  RefreshCw,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
@@ -16,34 +16,84 @@ import { CopyButton } from '@/components/content/CopyButton';
 import { useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
 
+/* ------------------------------------------------------------------ */
+/*  Track-specific quick wins                                          */
+/* ------------------------------------------------------------------ */
+
+const QUICK_WINS_GENERAL = [
+  {
+    title: 'Set up UK English enforcement',
+    description:
+      'A one-line instruction that ensures all Claude output uses British spelling and grammar.',
+    linkSlug: 'brand-voice',
+    linkLabel: 'Go to Brand Voice',
+  },
+  {
+    title: 'Review the governance policy',
+    description:
+      'A ready-made, customisable AI governance template \u2014 fill in the blanks and share with your team.',
+    linkSlug: 'governance',
+    linkLabel: 'Go to Governance',
+  },
+  {
+    title: 'Learn session handoff prompts',
+    description:
+      'Copy the one-line prompt that gets Claude to write its own handoff note, so you can pick up where you left off.',
+    linkSlug: 'sessions',
+    linkLabel: 'Go to Sessions',
+  },
+  {
+    title: 'Explore the starter kit',
+    description:
+      'Drop-in skill files, commands, templates, and governance policy \u2014 ready to paste into Claude Desktop.',
+    linkSlug: 'starter-kit',
+    linkLabel: 'Go to Starter Kit',
+  },
+];
+
+const QUICK_WINS_DEVELOPER = [
+  {
+    title: 'Set up your CLAUDE.md file',
+    description:
+      'Create a project-level context file that Claude Code reads on every session \u2014 tech stack, conventions, and gotchas.',
+    linkSlug: 'claude-md',
+    linkLabel: 'Go to CLAUDE.md',
+  },
+  {
+    title: 'Review the governance policy',
+    description:
+      'A ready-made, customisable AI governance template \u2014 fill in the blanks and share with your team.',
+    linkSlug: 'governance',
+    linkLabel: 'Go to Governance',
+  },
+  {
+    title: 'Learn session handoff prompts',
+    description:
+      'Copy the one-line prompt that gets Claude to write its own handoff note, so you can pick up where you left off.',
+    linkSlug: 'sessions',
+    linkLabel: 'Go to Sessions',
+  },
+  {
+    title: 'Explore the starter kit',
+    description:
+      'Drop-in skill files, commands, templates, and a CLAUDE.md reference \u2014 ready to use with Claude Code.',
+    linkSlug: 'starter-kit',
+    linkLabel: 'Go to Starter Kit',
+  },
+];
+
 function getQuickWins(track: string) {
-  return [
-    {
-      title: 'Set up UK English enforcement',
-      description:
-        'A one-line instruction that ensures all Claude output uses British spelling and grammar.',
-      link: { to: `/${track}/brand-voice`, label: 'Go to Brand Voice' },
-    },
-    {
-      title: 'Review the governance policy',
-      description:
-        'A ready-made, customisable AI governance template \u2014 fill in the blanks and share with your team.',
-      link: { to: `/${track}/governance`, label: 'Go to Governance' },
-    },
-    {
-      title: 'Learn session handoff prompts',
-      description:
-        'Copy the one-line prompt that gets Claude to write its own handoff note, so you can pick up where you left off.',
-      link: { to: `/${track}/sessions`, label: 'Go to Sessions' },
-    },
-    {
-      title: 'Explore the starter kit',
-      description:
-        'Drop-in skill files, commands, and templates \u2014 ready to paste into Claude Desktop or Claude Code.',
-      link: { to: `/${track}/starter-kit`, label: 'Go to Starter Kit' },
-    },
-  ];
+  const items =
+    track === 'developer' ? QUICK_WINS_DEVELOPER : QUICK_WINS_GENERAL;
+  return items.map((item) => ({
+    ...item,
+    link: { to: `/${track}/${item.linkSlug}`, label: item.linkLabel },
+  }));
 }
+
+/* ------------------------------------------------------------------ */
+/*  Quick reference data (already track-filtered)                      */
+/* ------------------------------------------------------------------ */
 
 const QUICK_REFERENCE_ITEMS_ALL = [
   {
@@ -120,7 +170,40 @@ const fadeIn = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Print helper — builds document via DOM manipulation                */
+/*  Track display helpers                                              */
+/* ------------------------------------------------------------------ */
+
+const TRACK_LABELS: Record<string, string> = {
+  general: 'General Users Guide',
+  developer: 'Developer Guide',
+};
+
+const TRACK_DESCRIPTIONS: Record<string, { intro: string; scope: string }> = {
+  general: {
+    intro:
+      'This guide covers the core topics from the training \u2014 context management, skills, session handling, brand voice, and governance.',
+    scope:
+      'Everything here is designed for everyday use with Claude via claude.ai or Claude Desktop. Prompts, templates, and examples all have a copy button \u2014 take what you need and use it straight away.',
+  },
+  developer: {
+    intro:
+      'This guide covers developer-specific workflows \u2014 CLAUDE.md files, codebase mapping, testing, MCP usage, and plugins \u2014 alongside the core topics from the training.',
+    scope:
+      'Everything here is designed for use with Claude Code and the developer toolchain. Prompts, templates, and code examples all have a copy button \u2014 take what you need and use it straight away.',
+  },
+};
+
+function getOtherTrack(track: string): {
+  slug: string;
+  label: string;
+} {
+  return track === 'developer'
+    ? { slug: 'general', label: 'General Users Guide' }
+    : { slug: 'developer', label: 'Developer Guide' };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Print helper \u2014 builds document via DOM manipulation                */
 /* ------------------------------------------------------------------ */
 
 function buildPrintDocument(
@@ -142,7 +225,7 @@ function buildPrintDocument(
     '<html lang="en">',
     '<head>',
     '<meta charset="utf-8" />',
-    `<title>${siteConfig.appTitle} — Quick Reference Card</title>`,
+    `<title>${siteConfig.appTitle} \u2014 Quick Reference Card</title>`,
     '<style>',
     '*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }',
     'body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif; font-size: 11pt; line-height: 1.5; color: #1a1a2e; padding: 24pt 32pt; max-width: 700pt; }',
@@ -155,7 +238,7 @@ function buildPrintDocument(
     '</style>',
     '</head>',
     '<body>',
-    `<h1>${siteConfig.appTitle} — Quick Reference</h1>`,
+    `<h1>${siteConfig.appTitle} \u2014 Quick Reference</h1>`,
     `<p class="subtitle">Key takeaways from the AI training sessions (${siteConfig.trainingDate})</p>`,
     sections,
     '</body>',
@@ -220,16 +303,20 @@ export function WelcomeSection() {
     }
   }, [track, siteConfig]);
 
+  const trackLabel = TRACK_LABELS[track] ?? TRACK_LABELS.general;
+  const trackDesc = TRACK_DESCRIPTIONS[track] ?? TRACK_DESCRIPTIONS.general;
+  const otherTrack = getOtherTrack(track);
+
   return (
     <div className="space-y-12">
-      {/* ── Hero / Opening ────────────────────────────────── */}
+      {/* -- Hero / Opening -- */}
       <motion.section {...motionProps} aria-labelledby="welcome-heading">
         <h2
           id="welcome-heading"
           className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl"
           style={{ lineHeight: 1.2 }}
         >
-          Your AI Playbook
+          Welcome to the {trackLabel}
         </h2>
         <div
           className="space-y-4 text-base leading-relaxed text-muted-foreground"
@@ -240,22 +327,29 @@ export function WelcomeSection() {
             {siteConfig.trainingDate}, we put together this interactive playbook
             as a practical reference.
           </p>
-          <p>
-            It covers the core topics from the training — context management,
-            skills, session handling, governance — plus developer-specific
-            guidance for the dev team.
-          </p>
-          <p>
-            Everything here is designed to be immediately usable. Prompts,
-            templates, and code examples all have a copy button — take what you
-            need and use it straight away.
-          </p>
+          <p>{trackDesc.intro}</p>
+          <p>{trackDesc.scope}</p>
         </div>
+
+        {/* Subtle track-switch link — hidden when client has no developer track */}
+        {siteConfig.hasDeveloperTrack && (
+          <p className="mt-4 flex items-center gap-1.5 text-sm text-muted-foreground">
+            <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
+            Looking for the{' '}
+            <Link
+              to={`/${otherTrack.slug}`}
+              className="font-medium text-primary hover:underline focus-visible:underline"
+            >
+              {otherTrack.label}
+            </Link>
+            ?
+          </p>
+        )}
       </motion.section>
 
       <Separator />
 
-      {/* ── How to Use This Playbook ─────────────────────── */}
+      {/* -- How to Use This Playbook -- */}
       <motion.section {...motionFadeProps} aria-labelledby="how-to-use-heading">
         <h2
           id="how-to-use-heading"
@@ -264,18 +358,6 @@ export function WelcomeSection() {
           How to Use This Playbook
         </h2>
         <ul className="space-y-3 text-base leading-relaxed text-muted-foreground">
-          <li className="flex gap-3">
-            <span className="mt-1 shrink-0 text-primary" aria-hidden="true">
-              <Users className="h-4 w-4" />
-            </span>
-            <span>
-              <strong className="text-foreground">Two tracks.</strong> The
-              playbook is organised into a General track (for everyone using
-              Claude via claude.ai or Claude Desktop) and a Developer track (for
-              the dev team using Claude Code). You can switch tracks at any
-              time.
-            </span>
-          </li>
           <li className="flex gap-3">
             <span className="mt-1 shrink-0 text-primary" aria-hidden="true">
               <BookOpen className="h-4 w-4" />
@@ -310,7 +392,7 @@ export function WelcomeSection() {
         </ul>
       </motion.section>
 
-      {/* ── Starter Kit Callout ────────────────────────── */}
+      {/* -- Starter Kit Callout -- */}
       <Link
         to={`/${track}/starter-kit`}
         className="group block rounded-lg border border-primary/20 bg-primary/5 px-5 py-5 transition-colors hover:bg-primary/10 dark:bg-primary/10 dark:hover:bg-primary/15"
@@ -321,11 +403,11 @@ export function WelcomeSection() {
           </div>
           <div className="space-y-1">
             <h3 className="text-base font-semibold text-foreground">
-              Starter Kit — Ready-to-Use Files
+              Starter Kit \u2014 Ready-to-Use Files
             </h3>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Drop-in skill files, commands, templates, and governance policy —
-              everything you need to configure Claude for your team.
+              Drop-in skill files, commands, templates, and governance policy
+              \u2014 everything you need to configure Claude for your team.
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
               Go to Starter Kit
@@ -337,7 +419,7 @@ export function WelcomeSection() {
 
       <Separator />
 
-      {/* ── Quick Wins ───────────────────────────────────── */}
+      {/* -- Quick Wins -- */}
       <section aria-labelledby="quick-wins-heading">
         <h2
           id="quick-wins-heading"
@@ -374,7 +456,7 @@ export function WelcomeSection() {
 
       <Separator />
 
-      {/* ── Quick Reference Card ─────────────────────────── */}
+      {/* -- Quick Reference Card -- */}
       <section aria-labelledby="quick-ref-heading">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -434,7 +516,7 @@ export function WelcomeSection() {
 
       <Separator />
 
-      {/* ── How This Was Built (Meta-narrative) ──────────── */}
+      {/* -- How This Playbook Was Built -- */}
       <section aria-labelledby="how-built-heading">
         <h2
           id="how-built-heading"
@@ -443,24 +525,21 @@ export function WelcomeSection() {
           How This Playbook Was Built
         </h2>
         <p
-          className="mb-4 text-sm leading-relaxed text-muted-foreground"
+          className="text-sm leading-relaxed text-muted-foreground"
           style={{ maxWidth: '65ch' }}
         >
-          This playbook was built using the exact tools and workflows it
-          describes. The content was planned and researched using Claude with
-          structured prompts and session handoffs — the same techniques covered
-          in your training. The app itself was built by parallel Claude Code
-          agents, each working from a detailed spec. Skills, CLAUDE.md files,
-          and the governance principles described here were used throughout.
-          These are not theoretical techniques — they are the same workflows
-          that produced this deliverable, from initial planning through to
-          deployment.
+          This playbook was built using the same tools and workflows it
+          describes. Content was planned with structured prompts and session
+          handoffs; the application was built by Claude Code agents working from
+          detailed specs. The skills, governance principles, and CLAUDE.md
+          patterns covered in the training were used throughout \u2014 from
+          initial planning through to deployment.
         </p>
       </section>
 
       <Separator />
 
-      {/* ── Feedback ─────────────────────────────────────── */}
+      {/* -- Feedback -- */}
       <section aria-labelledby="feedback-heading">
         <h2
           id="feedback-heading"
@@ -473,9 +552,9 @@ export function WelcomeSection() {
           style={{ maxWidth: '65ch' }}
         >
           Spotted something that could be clearer? Want more detail on a
-          specific topic? Use the feedback button — it is available on every
-          page. Your feedback goes directly to {siteConfig.consultantName} and
-          will be used to improve the playbook.
+          specific topic? Use the feedback button \u2014 it is available on
+          every page. Your feedback goes directly to {siteConfig.consultantName}{' '}
+          and will be used to improve the playbook.
         </p>
         <Button
           variant="outline"

@@ -1435,7 +1435,7 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
       id: 'skill-uk-english',
       name: 'UK English',
       description:
-        'Enforce UK English spelling, grammar, and conventions in all output.',
+        'Enforces UK spelling, grammar, dates, and currency — Use on every project to keep output consistently British.',
       longDescription:
         'Ensures Claude uses British English throughout — correct spellings (colour, organise, behaviour), UK date formats (DD/MM/YYYY), GBP currency (£), and British grammar conventions. Works on all platforms.',
       category: 'skill',
@@ -1452,7 +1452,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-session-handoff',
       name: 'Session Handoff',
-      description: 'Create continuation prompts for session handoffs.',
+      description:
+        'Preserves context across sessions — Use before ending a conversation you will need to continue later.',
       longDescription:
         'Guides you through creating structured handoff prompts when you need to preserve context across sessions. Detects five scenario types (planned boundary, context overflow, task delegation, artifact iteration, multi-workstream) and adapts its output for both technical and non-technical users. Includes reference templates and a context awareness guide.',
       category: 'skill',
@@ -1469,7 +1470,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-brand-voice',
       name: 'Brand Voice',
-      description: 'Framework for documenting brand voice and style.',
+      description:
+        'Documents your brand personality, tone, and style rules — Use to create a reusable voice guide for consistent content.',
       longDescription:
         'A comprehensive framework covering seven areas: brand personality, voice attributes, audience awareness, core messaging pillars, tone spectrum, style rules, and terminology. Works conversationally — Claude guides you through each section and compiles a reusable brand voice document.',
       category: 'skill',
@@ -1486,7 +1488,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-brand-review',
       name: 'Brand Review',
-      description: 'Review content against brand guidelines.',
+      description:
+        'Audits content for voice, terminology, and style compliance — Use to check drafts against your brand guidelines.',
       longDescription:
         'Evaluates content across four dimensions: voice and tone, terminology and language, messaging pillar alignment, and style guide compliance. Works best with a brand voice document loaded. Also checks for unsubstantiated claims, missing disclaimers, and regulatory concerns. Includes UK English checks.',
       category: 'skill',
@@ -1503,7 +1506,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-brainstorming',
       name: 'Brainstorming',
-      description: 'Structured brainstorming frameworks.',
+      description:
+        'Turns ideas into designs through guided dialogue — Use when starting any creative or problem-solving task.',
       longDescription:
         'Provides structured brainstorming techniques and frameworks for generating ideas, exploring options, and evaluating solutions. Useful for any creative or problem-solving task.',
       category: 'skill',
@@ -1520,7 +1524,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-writing-plans',
       name: 'Writing Plans',
-      description: 'Writing plan creation.',
+      description:
+        'Creates step-by-step implementation plans with TDD — Use before starting a multi-step feature to avoid rework.',
       longDescription:
         'Helps create structured writing plans for long-form content. Guides you through outlining, structuring arguments, and planning content flow before you start writing.',
       category: 'skill',
@@ -1533,12 +1538,13 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
         'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
       rawContent: RAW_SKILL_WRITING_PLANS,
       tier: 'custom',
-      customCategory: 'developer-tools',
+      customCategory: 'business-development',
     },
     {
       id: 'skill-writing-skills',
       name: 'Writing Skills',
-      description: 'Writing quality improvement.',
+      description:
+        'Creates and tests skill files using TDD — Use when building new skills or verifying existing ones work correctly.',
       longDescription:
         'Enhances writing quality with techniques drawn from Anthropic best practices and persuasion principles. Includes supporting reference files for advanced writing techniques.',
       category: 'skill',
@@ -1551,12 +1557,13 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
         'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
       rawContent: RAW_SKILL_WRITING_SKILLS,
       tier: 'custom',
-      customCategory: 'developer-tools',
+      customCategory: 'business-development',
     },
     {
       id: 'skill-proposal-writer',
       name: 'Proposal Writer',
-      description: 'Proposal and tender writing.',
+      description:
+        'Crafts outcome-focused proposals and tender responses — Use when writing bids, SOWs, or pricing presentations.',
       longDescription:
         'Comprehensive proposal writing skill with 11 rule files covering formatting, executive summaries, pricing, RFP response, statement of work, strategy, and more. Designed for professional proposals and tender responses.',
       category: 'skill',
@@ -1574,7 +1581,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-file-organizer',
       name: 'File Organiser',
-      description: 'File organisation assistance.',
+      description:
+        'Analyses and reorganises messy directories — Use when files are scattered, duplicated, or poorly structured.',
       longDescription:
         'Helps organise and structure files and directories. Useful for tidying up project structures, naming conventions, and folder hierarchies.',
       category: 'skill',
@@ -1591,7 +1599,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-markdown-converter',
       name: 'Markdown Converter',
-      description: 'Content conversion to/from markdown.',
+      description:
+        'Converts PDFs, Word docs, and other files to markdown — Use when you need AI-readable versions of existing documents.',
       longDescription:
         'Converts content between markdown and other formats. Useful for transforming documents, notes, and structured content.',
       category: 'skill',
@@ -1608,7 +1617,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-mermaid-diagrams',
       name: 'Mermaid Diagrams',
-      description: 'Mermaid diagram generation.',
+      description:
+        'Generates flowcharts, sequence diagrams, and ERDs in Mermaid syntax — Use to visualise architecture or data flows.',
       longDescription:
         'Generates Mermaid diagrams with six reference files covering flowcharts, sequence diagrams, class diagrams, ERD diagrams, C4 diagrams, and advanced features. Developer-leaning but accessible to anyone familiar with diagrams.',
       category: 'skill',
@@ -1626,7 +1636,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-canvas-design',
       name: 'Canvas Design',
-      description: 'Canvas/image design skill with font files.',
+      description:
+        'Creates original visual designs from a design philosophy — Use for posters, artwork, or branded visual assets.',
       longDescription:
         'A specialist design skill for canvas-based image generation, bundled with a collection of fonts and their OFL licences. Best suited for users working on visual design tasks.',
       category: 'skill',
@@ -1644,7 +1655,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'skill-agent-browser',
       name: 'Agent Browser',
-      description: 'Browser automation skill.',
+      description:
+        'Automates browser navigation, form filling, and screenshots — Use for web testing or data extraction tasks.',
       longDescription:
         'Comprehensive browser automation skill with five reference files (authentication, proxy support, session management, snapshot references, video recording) and three shell templates. Designed for advanced use cases requiring automated browser interaction.',
       category: 'skill',
@@ -1664,7 +1676,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'command-brand-review',
       name: 'Brand Review (Command)',
-      description: 'Review content against brand guidelines via slash command.',
+      description:
+        'Runs a structured brand audit via /brand-review — Use in Claude Code to check content against your style guide.',
       longDescription:
         'The slash command version of the brand-review skill, for use in Claude Code. Invoke with /brand-review to run a structured review of content against your brand guidelines. Checks voice, terminology, messaging, style, and legal/compliance concerns.',
       category: 'command',
@@ -1685,7 +1698,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'template-governance-policy',
       name: 'Governance Policy',
-      description: 'Customisable AI governance policy for UK SMBs.',
+      description:
+        'Fill-in-the-blanks AI governance policy with GDPR coverage — Use to establish approval workflows and review schedules.',
       longDescription:
         'A comprehensive governance policy template covering all AI extension types (skills, plugins, MCPs, commands, agents, hooks). Uses fill-in-the-blanks {{PLACEHOLDER}} variables for company name, industry, team size, and more. Includes approval workflows, risk assessment criteria, GDPR considerations, and a review schedule. Designed for UK organisations.',
       category: 'template',
@@ -1707,7 +1721,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'template-claude-md',
       name: 'CLAUDE.md Template',
-      description: 'Starter CLAUDE.md file for new projects.',
+      description:
+        'Ready-to-use CLAUDE.md with all key sections — Use when setting up Claude Code on a new project.',
       longDescription:
         'A ready-to-use template for creating CLAUDE.md files — the project-level configuration file that gives Claude Code persistent context about your codebase. Covers project description, tech stack, dev commands, architecture, code style, testing, environment setup, key gotchas, and style rules. Pre-populated with a UK English rule.',
       category: 'template',
@@ -1726,7 +1741,7 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
       id: 'template-docs-structure',
       name: 'Docs Structure',
       description:
-        'Recommended /docs directory layout for AI-readable codebases.',
+        'Recommended /docs directory layout — Use to structure project documentation so Claude can navigate it effectively.',
       longDescription:
         'A guide describing the recommended /docs directory structure based on the progressive disclosure principle: CLAUDE.md as the map, /docs as the system of record. Covers five directories (architecture, conventions, integrations, schemas, references) with example files, maintenance guidance, and instructions for populating with the GSD codebase mapper.',
       category: 'template',
@@ -1746,7 +1761,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'prompt-handoff-general',
       name: 'Example Handoff (General)',
-      description: 'Example session handoff for general users.',
+      description:
+        'Worked example of a non-technical handoff — Use as a reference when creating your own session continuations.',
       longDescription: `A completed example showing what a good session handoff looks like for a non-technical user. Demonstrates the simplified single-block format with a realistic scenario: a marketing team member working on blog posts about ${complianceArea} technology.`,
       category: 'prompt',
       tracks: ['general'],
@@ -1765,7 +1781,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'prompt-handoff-technical',
       name: 'Example Handoff (Developer)',
-      description: 'Example session handoff for developers.',
+      description:
+        'Worked example of a Claude Code handoff with file directives — Use as a reference for structured technical continuations.',
       longDescription:
         'A completed example showing what a good session handoff looks like for a Claude Code user. Demonstrates the full structured format with file directives, work tracker, success criteria, and a realistic development scenario.',
       category: 'prompt',
@@ -1783,7 +1800,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'prompt-brand-voice-setup',
       name: 'Brand Voice Setup Prompt',
-      description: 'Prompt to kick off brand voice documentation.',
+      description:
+        'Copy-paste prompt that guides you through brand voice creation — Use to start a structured voice documentation session.',
       longDescription:
         'A ready-to-use prompt that starts the brand voice documentation process. Copy it into a new Claude conversation, fill in the bracketed sections with your company details and content examples, and Claude will guide you through all seven areas of brand voice definition.',
       category: 'prompt',
@@ -1807,7 +1825,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'gsd-mapper',
       name: 'GSD Codebase Mapper',
-      description: 'Automated codebase documentation generator.',
+      description:
+        'Spawns parallel agents to map your codebase into docs — Use to auto-generate project documentation from source code.',
       longDescription:
         'A comprehensive codebase mapping toolkit that spawns four parallel agents, each analysing a different focus area (technology, architecture, quality, concerns). Generates seven documentation files covering stack, structure, architecture, conventions, integrations, testing, and concerns. Includes an orchestrator command, agent definition, workflow file, and seven document templates.',
       category: 'gsd-mapper',
@@ -1829,7 +1848,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-claude-md-management',
       name: 'claude-md-management',
-      description: 'CLAUDE.md audit and improvement.',
+      description:
+        'Audits and improves your CLAUDE.md file — Use to optimise project context for better Claude Code results.',
       longDescription:
         'Audits your existing CLAUDE.md file and suggests improvements. Includes a skill for analysis and a command for revising. High value for developers who want to optimise their project context.',
       category: 'plugin',
@@ -1848,7 +1868,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-commit-commands',
       name: 'commit-commands',
-      description: 'Git workflow commands (commit, push, PR creation).',
+      description:
+        'Automates git commits with conventional messages — Use after completing a unit of work to streamline your workflow.',
       longDescription:
         'Provides slash commands for common git workflows: creating commits with conventional messages, pushing and creating pull requests, and cleaning up merged branches. Essential for daily development workflow.',
       category: 'plugin',
@@ -1867,7 +1888,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-pr-review-toolkit',
       name: 'pr-review-toolkit',
-      description: 'PR review with specialised agents.',
+      description:
+        'Reviews PRs with six specialised agents — Use for thorough, multi-perspective code reviews before merging.',
       longDescription:
         'A comprehensive PR review toolkit with six specialised agents: code reviewer, code simplifier, comment analyser, PR test analyser, silent failure hunter, and type design analyser. Provides thorough, multi-perspective code reviews.',
       category: 'plugin',
@@ -1886,7 +1908,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-coderabbit',
       name: 'coderabbit',
-      description: 'Code review integration.',
+      description:
+        'Structured code review via CodeRabbit — Use as an alternative review tool alongside your existing workflow.',
       longDescription:
         'Code review integration that provides structured code review capabilities with a dedicated agent, command, and skill.',
       category: 'plugin',
@@ -1905,7 +1928,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-security-guidance',
       name: 'security-guidance',
-      description: 'Security reminder hook.',
+      description:
+        'Triggers security reminders during development — Use to catch common security oversights before they reach production.',
       longDescription:
         'A security-focused plugin that includes a hook running a Python script to provide security reminders during development. Helps ensure security considerations are not overlooked.',
       category: 'plugin',
@@ -1924,7 +1948,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-code-simplifier',
       name: 'code-simplifier',
-      description: 'Code simplification agent.',
+      description:
+        'Simplifies and refactors complex code — Use to reduce complexity and improve readability in existing code.',
       longDescription:
         'Provides a specialised agent focused on simplifying and refactoring code. Useful for reducing complexity and improving readability.',
       category: 'plugin',
@@ -1943,7 +1968,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-context7',
       name: 'context7',
-      description: 'Library documentation lookup (MCP).',
+      description:
+        'Looks up library and framework docs in-session — Use to check API references without leaving Claude Code.',
       longDescription:
         'An MCP connector that provides access to library and framework documentation. Useful for looking up API references and usage patterns without leaving Claude.',
       category: 'plugin',
@@ -1962,7 +1988,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-github',
       name: 'github',
-      description: 'GitHub integration (MCP).',
+      description:
+        'Connects Claude to GitHub repos, issues, and PRs — Use to manage GitHub workflows without switching tools.',
       longDescription:
         'An MCP connector for GitHub that provides access to repositories, issues, pull requests, and other GitHub resources directly within Claude.',
       category: 'plugin',
@@ -1981,7 +2008,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-playwright',
       name: 'playwright',
-      description: 'Browser automation (MCP).',
+      description:
+        'Enables Playwright browser automation in Claude — Use for automated testing and web page interaction.',
       longDescription:
         'An MCP connector for Playwright browser automation. Enables automated browser testing and interaction within Claude sessions.',
       category: 'plugin',
@@ -2000,7 +2028,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-sentry',
       name: 'sentry',
-      description: 'Error tracking integration (MCP).',
+      description:
+        'Connects Claude to Sentry error tracking — Use if your team monitors production errors with Sentry.',
       longDescription:
         'Sentry error tracking integration with an MCP connector, commands, skills, and agent definitions. Install if your team uses Sentry for error monitoring.',
       category: 'plugin',
@@ -2019,7 +2048,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-plugin-dev',
       name: 'plugin-dev',
-      description: 'Plugin development toolkit.',
+      description:
+        'Toolkit for building your own Claude plugins — Use only if you plan to create and publish custom plugins.',
       longDescription:
         'A comprehensive toolkit for building Claude plugins. Includes three agents, one command, and seven skills covering plugin structure, command development, skill development, and plugin settings. Install only if you plan to build your own plugins.',
       category: 'plugin',
@@ -2038,7 +2068,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-example-plugin',
       name: 'example-plugin',
-      description: 'Reference plugin structure.',
+      description:
+        'Shows the anatomy of a Claude plugin — Use as a reference when learning how plugins are structured.',
       longDescription:
         'A reference example showing the structure of a Claude plugin. Includes a plugin manifest, MCP configuration, command, and skill. Do not install — this is for reference only.',
       category: 'plugin',
@@ -2056,7 +2087,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-php-lsp',
       name: 'php-lsp',
-      description: 'PHP Language Server Protocol plugin.',
+      description:
+        'Adds PHP language intelligence to Claude Code — Use only if your team works with PHP codebases.',
       longDescription:
         'PHP Language Server Protocol plugin. Install only if your team works with PHP codebases.',
       category: 'plugin',
@@ -2075,7 +2107,8 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
     {
       id: 'plugin-asana',
       name: 'asana',
-      description: 'Asana integration (MCP).',
+      description:
+        'Connects Claude to Asana project management — Use if your team manages tasks and projects in Asana.',
       longDescription:
         'An MCP connector for Asana project management. Install only if your team uses Asana.',
       category: 'plugin',

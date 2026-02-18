@@ -348,13 +348,15 @@ function FileCard({ file }: { file: StarterKitFile }) {
                 {file.longDescription}
               </p>
 
-              {/* File path */}
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <FolderOpen className="h-3.5 w-3.5 shrink-0" />
-                <code className="rounded bg-muted px-1.5 py-0.5 font-mono">
-                  starter-kit/{file.filePath}
-                </code>
-              </div>
+              {/* File path — only shown for developers (general users receive files as downloads) */}
+              {track === 'developer' && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <FolderOpen className="h-3.5 w-3.5 shrink-0" />
+                  <code className="rounded bg-muted px-1.5 py-0.5 font-mono">
+                    starter-kit/{file.filePath}
+                  </code>
+                </div>
+              )}
 
               {/* Install instructions */}
               {relevantInstructions.length > 0 && (
@@ -566,14 +568,16 @@ function InstallSnippets() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-lg font-semibold">Common Install Commands</h3>
+        <h3 className="text-lg font-semibold">
+          {isDev ? 'Common Install Commands' : 'Setup Snippets'}
+        </h3>
         <p
           className="mt-1 text-sm text-muted-foreground"
           style={{ maxWidth: '65ch' }}
         >
           {isDev
             ? 'Copy-paste commands for installing skills, commands, and plugins across all Claude platforms.'
-            : 'These commands help you set up Claude to work the way your team needs. Each one is a one-time setup step — copy the text and paste it into your Claude preferences.'}
+            : 'These snippets help you set up Claude to work the way your team needs. Each one is a one-time setup step — copy the text and paste it into your Claude preferences.'}
         </p>
       </div>
 
@@ -1127,6 +1131,64 @@ function FileBrowser() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Track completion callout                                           */
+/* ------------------------------------------------------------------ */
+
+function TrackCompletionCallout() {
+  const { track } = useTrack();
+  const isDev = track === 'developer';
+  const siteConfig = useSiteConfig();
+  const showOtherTrack = isDev || siteConfig.hasDeveloperTrack;
+
+  return (
+    <Card className="border-primary/20 bg-primary/5 dark:bg-primary/10 dark:border-primary/30">
+      <CardContent className="pt-6">
+        <div className="flex items-start gap-3">
+          <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-primary" />
+          <div>
+            <h3 className="mb-2 text-lg font-semibold text-foreground">
+              You&apos;ve completed the {isDev ? 'Developer' : 'General Users'}{' '}
+              track
+            </h3>
+            <p
+              className="mb-4 text-sm leading-relaxed text-muted-foreground"
+              style={{ maxWidth: '65ch' }}
+            >
+              {isDev
+                ? 'You now have everything you need to use Claude Code effectively — from CLAUDE.md setup to testing, plugins, and governance. The starter kit files above will get your projects up and running quickly.'
+                : 'You now have a solid foundation for using Claude effectively — from context management to skills, governance, and brand voice. The starter kit files above will help you put it all into practice.'}
+            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+              >
+                Back to homepage
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              {showOtherTrack && (
+                <Link
+                  to={isDev ? '/general' : '/developer'}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+                >
+                  Explore the {isDev ? 'General Users' : 'Developer'} track
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              )}
+            </div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Found this playbook useful — or spotted something that could be
+              better? Use the feedback button in the bottom-right corner to let
+              us know.
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main section component                                             */
 /* ------------------------------------------------------------------ */
 
@@ -1307,43 +1369,7 @@ export function StarterKitSection() {
 
       {/* -- Track completion --------------------------------------- */}
       <motion.section {...motionFadeProps}>
-        <Card className="border-primary/20 bg-primary/5 dark:bg-primary/10 dark:border-primary/30">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-primary" />
-              <div>
-                <h3 className="mb-2 text-lg font-semibold text-foreground">
-                  You&apos;ve completed the {isDev ? 'Developer' : 'General'}{' '}
-                  track
-                </h3>
-                <p
-                  className="mb-4 text-sm leading-relaxed text-muted-foreground"
-                  style={{ maxWidth: '65ch' }}
-                >
-                  {isDev
-                    ? 'You now have everything you need to use Claude Code effectively — from CLAUDE.md setup to testing, plugins, and governance. The starter kit files above will get your projects up and running quickly.'
-                    : 'You now have a solid foundation for using Claude effectively — from context management to skills, governance, and brand voice. The starter kit files above will help you put it all into practice.'}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    to="/"
-                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-                  >
-                    Back to homepage
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                  <Link
-                    to={isDev ? '/general' : '/developer'}
-                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-                  >
-                    Explore the {isDev ? 'General' : 'Developer'} track
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <TrackCompletionCallout />
       </motion.section>
     </div>
   );

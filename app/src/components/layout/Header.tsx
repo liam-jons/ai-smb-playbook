@@ -47,18 +47,20 @@ export function Header() {
           >
             General Users
           </Link>
-          <Link
-            to="/developer"
-            className={cn(
-              'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
-              currentTrack === 'developer'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
-            )}
-            aria-current={currentTrack === 'developer' ? 'page' : undefined}
-          >
-            Developers
-          </Link>
+          {siteConfig.hasDeveloperTrack && (
+            <Link
+              to="/developer"
+              className={cn(
+                'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+                currentTrack === 'developer'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+              )}
+              aria-current={currentTrack === 'developer' ? 'page' : undefined}
+            >
+              Developers
+            </Link>
+          )}
         </nav>
 
         {/* Desktop actions — flex-1 for equal-width balancing with title */}
@@ -117,18 +119,20 @@ export function Header() {
             >
               General Users
             </Link>
-            <Link
-              to="/developer"
-              onClick={() => setMobileMenuOpen(false)}
-              className={cn(
-                'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
-                currentTrack === 'developer'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-foreground hover:bg-accent',
-              )}
-            >
-              Developers
-            </Link>
+            {siteConfig.hasDeveloperTrack && (
+              <Link
+                to="/developer"
+                onClick={() => setMobileMenuOpen(false)}
+                className={cn(
+                  'w-full rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
+                  currentTrack === 'developer'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-foreground hover:bg-accent',
+                )}
+              >
+                Developers
+              </Link>
+            )}
             <Button
               variant="ghost"
               className="justify-start"

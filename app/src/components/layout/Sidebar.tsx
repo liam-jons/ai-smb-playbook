@@ -193,6 +193,7 @@ export function Sidebar({
                   <Link
                     to={`/${track}/${section.slug}`}
                     onClick={onNavClick}
+                    title={section.sidebarTitle ?? section.title}
                     className={cn(
                       'flex rounded-md py-2 text-sm transition-colors',
                       collapsed

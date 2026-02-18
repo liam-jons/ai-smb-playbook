@@ -35,7 +35,7 @@ export const siteConfig = {
   consultantName: 'Liam',
 
   /** Date of the training session(s) */
-  trainingDate: 'your training date',
+  trainingDate: '',
 
   /** Prefix for localStorage keys */
   localStoragePrefix: 'ai-playbook',
@@ -78,9 +78,6 @@ export const siteConfig = {
 
   /** Description of what the primary product does */
   primaryProductDescription: 'primary management system',
-
-  /** Certification or check type relevant to the industry (e.g., 'DBS checks', 'SOC 2 audit') */
-  certificationName: 'your certification requirements',
 
   /** Stakeholder group for compliance reports (e.g., 'safeguarding partnership team', 'board') */
   complianceStakeholders: 'your compliance stakeholders',

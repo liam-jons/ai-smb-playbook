@@ -35,8 +35,6 @@ export interface ClientConfig {
     industry: string;
     industryContext: string;
     teamSize: string;
-    primaryAiTool: string; // default: 'Claude'
-
     // Developer track only
     hasDeveloperTrack: boolean;
     testingTool?: string;
@@ -50,7 +48,6 @@ export interface ClientConfig {
     complianceArea?: string;
     primaryProduct?: string;
     primaryProductDescription?: string;
-    certificationName?: string;
     complianceStakeholders?: string;
     sensitiveDataDescription?: string;
     sensitiveDataLabel?: string;

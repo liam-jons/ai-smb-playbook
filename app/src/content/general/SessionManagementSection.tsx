@@ -129,6 +129,51 @@ export function SessionManagementSection() {
           briefing outperforms a long session every time.
         </p>
 
+        <CalloutCard
+          variant="tip"
+          title="When your session feels sluggish"
+          className="mb-6"
+        >
+          <div className="space-y-2 text-sm">
+            <p>
+              If Claude seems to be forgetting things, repeating itself, or
+              giving less precise answers than when you started, it is time to
+              refresh. Here is what to do:
+            </p>
+            <ul className="list-inside list-disc space-y-1 text-muted-foreground">
+              <li>
+                <strong className="text-foreground">
+                  Start a new session.
+                </strong>{' '}
+                Fresh sessions are a feature, not a failure &mdash; think of it
+                like closing browser tabs that have built up over the day.
+              </li>
+              <li>
+                <strong className="text-foreground">
+                  Use a handoff prompt first.
+                </strong>{' '}
+                Before closing, ask Claude to summarise the key decisions and
+                context, then paste that summary into your new session. See the{' '}
+                <a
+                  href="#handoff-workflow-heading"
+                  className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  handoff workflow below
+                </a>{' '}
+                for a step-by-step guide.
+              </li>
+              <li>
+                <strong className="text-foreground">
+                  Keep each session focused on one topic or task.
+                </strong>{' '}
+                Claude works best when it can give its full attention to a
+                single piece of work, rather than juggling several unrelated
+                things.
+              </li>
+            </ul>
+          </div>
+        </CalloutCard>
+
         {/* Rules of thumb */}
         <h3 className="mb-3 text-lg font-semibold">Rules of Thumb</h3>
         <Accordion

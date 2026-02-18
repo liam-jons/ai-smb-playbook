@@ -7,10 +7,12 @@ import {
   getSectionsForTrack,
 } from '@/content/shared/sections';
 import { useTrack } from '@/hooks/useTrack';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { sectionComponents } from '@/content/shared/registry';
 
 export function SectionPage() {
   const { track } = useTrack();
+  const siteConfig = useSiteConfig();
   const { section: sectionSlug } = useParams<{ section: string }>();
 
   // If no section slug, redirect to first section
@@ -56,8 +58,14 @@ export function SectionPage() {
         <h1 className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl">
           {section.title}
         </h1>
-        {section.subtitle && (
-          <p className="text-lg text-muted-foreground">{section.subtitle}</p>
+        {(section.slug === 'welcome' && siteConfig.welcomeSubtitle
+          ? siteConfig.welcomeSubtitle
+          : section.subtitle) && (
+          <p className="text-lg text-muted-foreground">
+            {section.slug === 'welcome' && siteConfig.welcomeSubtitle
+              ? siteConfig.welcomeSubtitle
+              : section.subtitle}
+          </p>
         )}
         <Separator className="mt-6" />
       </header>

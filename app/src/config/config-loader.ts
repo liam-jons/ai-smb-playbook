@@ -16,7 +16,6 @@ import { extractClientSlugFromHostname, sanitiseSlug } from '../utils/slug';
 export const DEFAULT_CONFIG: ClientConfig = {
   siteConfig: {
     ...(siteConfig as unknown as ClientConfig['siteConfig']),
-    primaryAiTool: 'Claude',
     hasDeveloperTrack: true,
     exampleRecurringTasks: [...siteConfig.exampleRecurringTasks],
   },

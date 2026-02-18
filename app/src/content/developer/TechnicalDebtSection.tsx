@@ -401,6 +401,27 @@ export function TechnicalDebtSection() {
           window.
         </CalloutCard>
 
+        {/* Quick Scan */}
+        <h3 className="mb-4 text-lg font-medium">Quick Scan (5 Minutes)</h3>
+        <p className="mb-4 max-w-prose text-sm text-muted-foreground">
+          Before committing to a full audit, run this short prompt to get a
+          rapid overview. It highlights the most urgent issues without the depth
+          of the focused audits below.
+        </p>
+        <PromptExample
+          title="Quick Codebase Health Check"
+          prompt={`Review this codebase and give me a quick health check:
+1. Top 3 areas of technical debt
+2. Any critical security concerns
+3. Test coverage gaps
+4. Dependencies that need updating
+5. Obvious code duplication
+Keep each point to one sentence. Flag anything that needs immediate attention.`}
+          whenToUse="Start of a sprint, before a feature branch, or as a weekly sanity check."
+        />
+
+        <Separator className="my-8" />
+
         {/* Audit Prompts */}
         <h3 className="mb-4 text-lg font-medium">
           Audit Prompts by Focus Area

@@ -1,8 +1,11 @@
 import { Link } from 'react-router';
 import { ArrowLeft, Users, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 
 export function NotFoundPage() {
+  const siteConfig = useSiteConfig();
+
   return (
     <main
       id="main-content"
@@ -24,12 +27,14 @@ export function NotFoundPage() {
               General Track
             </Link>
           </Button>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/developer" className="gap-2">
-              <Code className="h-4 w-4" />
-              Developer Track
-            </Link>
-          </Button>
+          {siteConfig.hasDeveloperTrack && (
+            <Button asChild variant="outline" size="sm">
+              <Link to="/developer" className="gap-2">
+                <Code className="h-4 w-4" />
+                Developer Track
+              </Link>
+            </Button>
+          )}
         </div>
 
         <Button asChild variant="ghost" size="sm" className="mt-4">

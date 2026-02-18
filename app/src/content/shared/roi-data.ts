@@ -297,6 +297,32 @@ function _buildTaskTemplates(
       track: 'both',
     },
     {
+      id: 'contract-review',
+      title: 'Contract & Document Review',
+      category: 'time-savings',
+      beforeScenario: {
+        time: '2–4 hours per contract',
+        cost: '£70–140 per review',
+        process:
+          'Manually read through contract clauses, flag unusual terms, compare against standard positions, and summarise key risks.',
+      },
+      afterScenario: {
+        time: '30–60 min per contract',
+        cost: '£18–35 per review',
+        process:
+          'AI highlights key clauses, flags deviations from standard terms, and summarises risks; human reviews flagged items and makes decisions.',
+      },
+      roiHighlight:
+        '75% faster initial contract analysis with more consistent risk identification.',
+      relatedSection: 'skills-extensions',
+      track: 'both',
+      clientExample: overlayClientExamples?.['contract-review'] ?? {
+        title: 'Contract review',
+        description:
+          'Your team regularly reviews contracts and legal documents. AI can highlight key clauses, flag unusual terms, and summarise risks — reducing initial review time significantly.',
+      },
+    },
+    {
       id: 'onboarding-docs',
       title: 'Employee & Client Onboarding',
       category: 'capacity',

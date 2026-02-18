@@ -20,7 +20,6 @@
     "industry": "Construction and engineering — MEP building services",
     "industryContext": "MEP services provider",
     "teamSize": "large",
-    "primaryAiTool": "Claude",
     "hasDeveloperTrack": false,
     "complianceArea": "construction health and safety",
     "primaryProduct": "MEP",
@@ -32,7 +31,7 @@
       "PQQ and tender response preparation",
       "weekly client progress reports",
       "compliance certification tracking",
-      "meeting minutes and action extraction"
+      "O&M manual compilation"
     ],
     "reportDataSource": "Sage 200 data export",
     "clientOnboardingType": "project client"
@@ -41,7 +40,7 @@
     "brandVoice": {
       "frameworkExamples": {
         "1": "If AMD Group were a person, they would be a seasoned engineer with over fifty years on the job — technically precise, safety-conscious, and quietly proud of the work. They talk about sustainability with genuine conviction rather than corporate obligation, and they let their track record (repeat business from Lloyds, Wates, HMCTS) speak louder than any sales pitch. There is a family warmth beneath the professional exterior — the kind of company where apprentices become directors.",
-        "2": "Professional and technically assured: We are confident, precise, and grounded in evidence. We are not boastful, jargon-heavy for its own sake, or vague about what we deliver. Sounds like: \"We've delivered MEP installations nationwide for over fifty years — from £100k refurbishments to £10m design-and-build contracts.\"",
+        "2": "Professional and technically assured — We are precise, knowledgeable, and confident in our technical expertise across M&E disciplines. We are not jargon-heavy for its own sake or dismissive of non-technical stakeholders. Sounds like: 'Our design team specified a variable refrigerant flow system to balance energy efficiency with the building's cooling demand profile.'\n\nSafety-rigorous — We are thorough, evidence-based, and uncompromising on compliance. We are not bureaucratic for its own sake or dismissive of safety as box-ticking. Sounds like: 'Every project begins with a comprehensive RAMS review — because safe delivery is the foundation, not an afterthought.'\n\nCollaboration-focused — We are partnership-minded, relationship-driven, and invested in repeat business. We are not transactional, one-project-and-gone, or adversarial with principal contractors. Sounds like: 'We've worked with Wates across multiple projects because we deliver what we promise — and they know our team by name.'\n\nSustainability-committed — We are genuinely invested in low-carbon outcomes, not just compliance. We are not greenwashing or treating sustainability as a marketing exercise. Sounds like: 'Our in-house design team models energy lifecycle costs from day one — heat pumps, photovoltaics, and BMS integration are standard practice, not optional extras.'",
         "3": "Primary: principal contractors, facilities managers, and client-side project managers who need a reliable MEP subcontractor. They want on-time, on-budget delivery, demonstrable safety compliance, and technical depth across mechanical, electrical, and public health disciplines. Secondary: potential employees — apprentices and experienced engineers looking for career progression and stability in a family-founded, nationwide business.",
         "4": "Pillar 1: Over fifty years of proven MEP experience, from a family-founded business to a nationwide group. Pillar 2: In-house design-and-build capability that reduces coordination overhead and delivers better outcomes. Pillar 3: Genuine commitment to sustainable, low-carbon MEP solutions — heat pumps, photovoltaics, energy lifecycle modelling. Pillar 4: Nationwide coverage from three offices (Dartford, Edinburgh, Sheffield) with a track record of repeat business from major clients.",
         "5": "Tender response: dial up precision, evidence, and compliance language — accreditation references, project values, named client testimonials. Internal communications: dial up warmth and directness — the family-business culture where people are known by name. Client progress reports: dial up clarity and structure — factual, status-focused, no waffle. Health and safety documentation: dial up rigour and formality — RAMS, method statements, and regulatory compliance demand zero ambiguity.",
@@ -65,14 +64,14 @@
           "description": "A skill that maintains a register of AMD Group's accreditations and certifications — Gas Safe, NICEIC, CHAS, Constructionline, Safe Contractor, and others — with their renewal dates. Run monthly, it flags anything expiring within 60 days and drafts renewal reminders. Over time, it builds a complete audit trail of renewal actions."
         },
         {
-          "title": "Meeting minutes and action extraction",
-          "description": "A skill that takes meeting notes or a transcript recording and produces structured minutes: key discussion points, decisions made, and a numbered action list with owners and deadlines. Particularly useful for project meetings and board meetings where actions need distributing to attendees promptly."
+          "title": "O&M manual compilation",
+          "description": "A skill that gathers technical data sheets, commissioning records, and as-built drawings for a completed project, then compiles them into a structured Operation and Maintenance manual in AMD Group's standard format. The project engineer reviews for accuracy and completeness before handover. Particularly valuable for design-and-build projects where AMD Group controls the full documentation chain."
         }
       ]
     },
     "roi": {
       "clientExamples": {
-        "pqq-automation": {
+        "proposal-writing": {
           "title": "AMD Group PQQ preparation",
           "description": "AMD Group responds to pre-qualification questionnaires as a core part of winning new work. With an estimated 70% content overlap between submissions, AI can retrieve and adapt previous answers, reducing PQQ preparation time from days to hours per submission. Human review remains essential for accuracy and tender-specific requirements."
         },
@@ -92,6 +91,6 @@
     "disabled": []
   },
   "starterKit": {
-    "enabledCustomCategories": ["business-development", "compliance-security"]
+    "enabledCustomCategories": ["business-development"]
   }
 }

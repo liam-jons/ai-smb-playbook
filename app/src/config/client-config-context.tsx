@@ -79,6 +79,35 @@ export function ClientConfigProvider({ children }: { children: ReactNode }) {
     }
   }, [config.siteConfig.appTitle, config.siteConfig.metaDescription]);
 
+  if (isLoading) {
+    return (
+      <ClientConfigContext.Provider
+        value={{ config, isLoading, clientSlug, error }}
+      >
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      </ClientConfigContext.Provider>
+    );
+  }
+
+  if (error) {
+    return (
+      <ClientConfigContext.Provider
+        value={{ config, isLoading, clientSlug, error }}
+      >
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-center">
+            <p className="text-lg font-medium text-destructive">
+              Failed to load client configuration
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+          </div>
+        </div>
+      </ClientConfigContext.Provider>
+    );
+  }
+
   return (
     <ClientConfigContext.Provider
       value={{ config, isLoading, clientSlug, error }}

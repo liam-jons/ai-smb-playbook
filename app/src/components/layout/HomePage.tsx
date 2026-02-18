@@ -35,7 +35,7 @@ export function HomePage() {
       <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-12 sm:px-6 sm:pt-8 sm:pb-16">
         {/* Cover page hero — centre-aligned, three-zone layout */}
         <motion.div
-          className="mb-10 sm:mb-12"
+          className={cn('mb-10 sm:mb-12', hasClientLogo && 'mb-6 sm:mb-8')}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -54,8 +54,11 @@ export function HomePage() {
 
             {/* Zone 2 — Attribution (consultant + provider branding) */}
             <p className="text-sm text-muted-foreground">
-              Prepared by {siteConfig.consultantName} &middot;{' '}
-              {siteConfig.trainingDate}
+              Prepared by {siteConfig.consultantName}
+              {siteConfig.trainingDate &&
+                siteConfig.trainingDate !== 'your training date' && (
+                  <> &middot; {siteConfig.trainingDate}</>
+                )}
             </p>
             <div className="mt-3">
               <ProviderLogo className="max-w-[140px] sm:max-w-[170px]" />
@@ -63,7 +66,7 @@ export function HomePage() {
 
             {/* Zone 3 — Client branding (conditional) */}
             {hasClientLogo && (
-              <div className="mt-10 flex w-full flex-col items-center sm:mt-12">
+              <div className="mt-6 flex w-full flex-col items-center sm:mt-8">
                 <div className="w-24 border-t border-border" />
                 <p className="mb-3 pt-4 text-sm font-medium tracking-wide uppercase text-muted-foreground">
                   Prepared for
@@ -107,7 +110,7 @@ export function HomePage() {
             className="group block"
             aria-label="General Users track — for all team members"
           >
-            <Card className="h-full border-l-4 border-l-blue-500 bg-blue-50/50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-blue-400 dark:bg-blue-950/20">
+            <Card className="min-h-[13rem] sm:min-h-0 h-full border-l-4 border-l-blue-500 bg-blue-50/50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-blue-400 dark:bg-blue-950/20">
               <CardHeader>
                 <div className="mb-1 flex items-center gap-2">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/15 dark:text-blue-400">
@@ -139,7 +142,7 @@ export function HomePage() {
               className="group block"
               aria-label="Developer track — for the development team"
             >
-              <Card className="h-full border-l-4 border-l-violet-500 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-violet-400">
+              <Card className="min-h-[13rem] sm:min-h-0 h-full border-l-4 border-l-violet-500 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-violet-400">
                 <CardHeader>
                   <div className="mb-1 flex items-center gap-2">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600 dark:bg-violet-400/15 dark:text-violet-400">
