@@ -1,6 +1,6 @@
 ---
 name: client-onboarding
-description: This skill should be used when the user asks to "onboard a new client", "create a client config", "set up a new playbook deployment", "generate a client JSON", or "add a new client to the playbook". Guides the consultant through extracting client details from training transcripts, generating overlay content, and producing a validated JSON config file ready for deployment.
+description: This skill should be used when the user asks to "onboard a new client", "create a client config", "set up a new playbook deployment", "generate a client JSON", "add a new client to the playbook", "configure a new client", "build a config from a transcript", or "deploy the playbook for [company name]". Guides the consultant through extracting client details from training transcripts and website analysis, generating overlay content (brand voice, recurring tasks, ROI examples), and producing a validated JSON config file at app/public/clients/{slug}.json ready for deployment.
 ---
 
 # Client Onboarding Skill
@@ -17,7 +17,19 @@ Gather these three inputs before starting extraction:
 
 **Recommended prerequisite:** Run `/client-research` first to generate a comprehensive research document. The research output provides richer brand voice data, team details, and industry context than a basic website scrape. The document is saved to `.planning/client-specific/{slug}/{name}-site-content.md`.
 
-Optional: explicit overrides for any field, "no developer track" directive, additional context documents.
+Optional: explicit overrides for any field, "no developer track" directive, additional context documents. If the consultant provides an explicit override for a field, use that value directly and skip extraction for that field.
+
+**If no transcript is available:** Rely entirely on the research document and consultant Q&A. Flag that recurring tasks, ROI examples, and domain-specific fields will need heavier consultant input.
+
+## Interaction Model
+
+This skill is a consultant-guided tool, not a fully autonomous pipeline. Follow these principles:
+
+- **Never guess low-confidence fields** — ask the consultant explicitly. The cost of asking is low; the cost of a wrong value in the deployed config is high.
+- **Present extractions with source quotes** — when showing a derived value, cite where it came from (e.g. "From the transcript: 'team of fifteen' → `teamSize: medium`").
+- **Ask for explicit confirmation at each Phase 2 group** — do not proceed to the next group until the consultant confirms or corrects.
+- **Request permission before any git operations** — never commit or push without explicit consultant approval.
+- **Use confidence tiers** — `field-mapping.md` defines three tiers. High-confidence fields: present as statements for confirmation. Medium-confidence fields: present with source quote. Low-confidence fields: ask explicitly rather than inferring.
 
 ## Phase 1: Extraction and Draft Generation
 
@@ -61,7 +73,7 @@ If web fetching is unavailable, note this limitation and request the consultant 
 Apply derivation rules to populate fields that do not require explicit input:
 
 - `appTitle` → `"{companyShortName} AI Playbook"`
-- `companyUrlDisplay` → strip protocol and trailing slash from `companyUrl`
+- `companyUrlDisplay` → strip protocol (`https://`), `www.` subdomain, and trailing slash from `companyUrl`
 - `localStoragePrefix` → `"{slug}-playbook"`
 - `emailSubjectPrefix` → `"{companyShortName} AI Playbook"`
 - `welcomeSubtitle` → `"Getting started with AI at {companyShortName}"`
@@ -98,29 +110,33 @@ Assemble the complete `ClientConfig` JSON. Do not write to disk yet — hold in 
 
 ## Phase 2: Grouped Review
 
-Present the draft in logical groups. After each group, accept corrections before proceeding.
+Present the draft in logical groups. After each group, ask: "Are these correct, or should I change anything?" Do not proceed to the next group until the consultant confirms.
+
+Present company details and derived fields as a key-value list. Present brand voice steps as readable prose (not raw JSON).
 
 ### Group 1 — Company details
-Present: `companyName`, `companyShortName`, `companyUrl`, `companyUrlDisplay`, `appTitle`, slug, `localStoragePrefix`, `emailSubjectPrefix`, `consultantName`, `trainingDate`, `welcomeSubtitle`. Quick confirmation pass.
+Present: `companyName`, `companyShortName`, `companyUrl`, `companyUrlDisplay`, `appTitle`, slug, `localStoragePrefix`, `emailSubjectPrefix`, `consultantName`, `trainingDate`, `welcomeSubtitle`. Ask: "Are these correct?"
 
 ### Group 2 — Industry and domain
-Present: `industry`, `industryContext`, `teamSize`, `complianceArea`, `certificationName`, `sensitiveDataDescription`, `sensitiveDataLabel`, `complianceStakeholders`, `primaryProduct`, `primaryProductDescription`, `reportDataSource`, `clientOnboardingType`, `exampleRecurringTasks`. Allow corrections and additions.
+Present: `industry`, `industryContext`, `teamSize`, `complianceArea`, `certificationName`, `sensitiveDataDescription`, `sensitiveDataLabel`, `complianceStakeholders`, `primaryProduct`, `primaryProductDescription`, `reportDataSource`, `clientOnboardingType`, `exampleRecurringTasks`. Ask: "Are these correct, or should I change anything?"
 
 ### Group 3 — Developer track
-If `hasDeveloperTrack: true`, present: `techStack`, `testingTool`, `testingToolDocs`, `database`, `webApplications`, `domainSpecificForm`. Skip entirely if no developer track.
+If `hasDeveloperTrack: true`, present: `techStack`, `testingTool`, `testingToolDocs`, `database`, `webApplications`, `domainSpecificForm`. Ask: "Are these correct?" Skip entirely if no developer track.
 
 ### Group 4 — Brand voice overlays
-Present all seven framework steps. This is the longest review step. Allow editing individual steps, regenerating specific steps, or approving the block. Also present `headStartContent`.
+Present all seven framework steps as numbered, readable paragraphs. This is the longest review step. Allow editing individual steps, regenerating specific steps, or approving the block. Also present `headStartContent`. If the consultant requests regeneration of a specific step, regenerate only that step using the same source material plus any new guidance provided. Ask: "Would you like to approve, edit, or regenerate any of these?"
 
 ### Group 5 — Recurring tasks and ROI
-Present recurring task examples and ROI examples together. Allow add/remove/edit.
+Present recurring task examples first, then ROI examples, as separate sub-sections. Allow add/remove/edit. Ask: "Are these appropriate for the client?"
 
 ### Group 6 — Sections and starter kit
-Present section configuration and starter kit categories. Confirm or adjust.
+Present section configuration and starter kit categories. Ask: "Are these correct?"
 
 ## Phase 3: Write, Validate, and Deploy
 
 ### Write the file
+
+Before writing, check if `app/public/clients/{slug}.json` already exists. If it does, ask the consultant whether to overwrite or choose a different slug.
 
 Write the final JSON to `app/public/clients/{slug}.json`.
 

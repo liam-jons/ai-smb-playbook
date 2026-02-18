@@ -12,7 +12,7 @@ Complete mapping of every `ClientConfig` field to its source, derivation rule, a
 | `companyName` | Yes | Yes — introductions | None — must be confirmed | Ask explicitly if not found. Full legal name. |
 | `companyShortName` | Yes | Yes — informal usage | First word of `companyName` minus "Limited"/"Ltd" | Always confirm with consultant — brand names can be surprising. Ask explicitly: "Is the brand name written as 'X' or with any punctuation (e.g. 'X!')?" Stylised punctuation (!, ., &) in brand names is common and affects derived fields. |
 | `companyUrl` | Yes | Sometimes | None — must be provided | Ask explicitly. Validate with WebFetch if possible. |
-| `companyUrlDisplay` | Yes | No | Strip protocol + trailing slash from `companyUrl` | Derive automatically. E.g. `"https://www.acme.co.uk/"` → `"acme.co.uk"`. |
+| `companyUrlDisplay` | Yes | No | Strip protocol (`https://`), `www.` subdomain, and trailing slash from `companyUrl` | Derive automatically. E.g. `"https://www.acme.co.uk/"` → `"acme.co.uk"`. |
 | `feedbackEmail` | Yes | No | `"liam@aisolutionhub.co.uk"` | Consultant's email, not the client's. Default without asking. |
 | `feedbackSenderEmail` | Yes | No | `"playbook@feedback.aisolutionhub.co.uk"` | Fixed — tied to Resend verified domain. Never changes. |
 | `consultantName` | Yes | Yes — trainer intro | `"Liam"` | Default to known consultant. |
@@ -21,6 +21,15 @@ Complete mapping of every `ClientConfig` field to its source, derivation rule, a
 | `emailSubjectPrefix` | Yes | No | `"{companyShortName} AI Playbook"` | Derive automatically. Strip trailing punctuation (!, .) from `companyShortName` before inserting. |
 | `metaDescription` | Yes | No | `"Practical guidance for getting the most from Claude AI"` | Generic default works for all clients. |
 | `welcomeSubtitle` | Yes | No | `"Getting started with AI at {companyShortName}"` | Derive automatically. Strip trailing punctuation (!, .) from `companyShortName` before inserting. |
+
+### Logo fields (optional)
+
+| Field | Required | Transcript Extractable | Derivation Rule / Default | Notes |
+|-------|----------|----------------------|---------------------------|-------|
+| `clientLogoUrl` | Optional | No | `""` (empty) | Path to logo file: `/clients/logos/{slug}.webp`. Consultant provides logo files separately. Set during or after config generation. |
+| `clientLogoDarkUrl` | Optional | No | `""` (empty) | Path to dark mode logo variant. Only needed if the logo has poor contrast on dark backgrounds. |
+| `clientLogoAlt` | Optional | No | `"{companyName} logo"` | Alt text for the logo image. Derive automatically from `companyName`. |
+| `clientLogoMaxWidth` | Optional | No | `200` | Maximum width in pixels. Adjust based on logo proportions. Phew uses `160`. |
 
 ### Recommended (most clients)
 
