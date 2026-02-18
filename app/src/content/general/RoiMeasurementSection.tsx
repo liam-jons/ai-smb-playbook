@@ -17,7 +17,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { useOverlays, useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import {
@@ -460,11 +460,12 @@ const sectionEntrance = {
 
 export function RoiMeasurementSection() {
   const siteConfig = useSiteConfig();
+  const overlays = useOverlays();
   const { track } = useTrack();
   const isDev = track === 'developer';
   const taskTemplates = useMemo(
-    () => getTaskTemplates(siteConfig),
-    [siteConfig],
+    () => getTaskTemplates(siteConfig, overlays.roi?.clientExamples),
+    [siteConfig, overlays],
   );
   // N9: default to first category ('time-savings') instead of 'all' to avoid overwhelming the user
   const [activeCategory, setActiveCategory] = useState<TaskCategory | 'all'>(

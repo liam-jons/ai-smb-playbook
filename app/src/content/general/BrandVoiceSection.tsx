@@ -21,7 +21,7 @@ import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { SetupStepCard } from '@/components/content/SetupStepCard';
 import { useTrack } from '@/hooks/useTrack';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { useSiteConfig, useOverlays } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 import { Clock, ChevronDown } from 'lucide-react';
 import {
@@ -44,11 +44,15 @@ const sectionEntrance = {
 
 export function BrandVoiceSection() {
   const siteConfig = useSiteConfig();
+  const overlays = useOverlays();
   const { track } = useTrack();
   const isGeneral = track === 'general';
   const [ukSkillOpen, setUkSkillOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
-  const frameworkSections = getFrameworkSections(siteConfig);
+  const frameworkSections = getFrameworkSections(
+    siteConfig,
+    overlays.brandVoice?.frameworkExamples,
+  );
 
   const brandTocEntries = [
     { id: 'brand-voice-uk-english', label: 'Part 1: UK English Enforcement' },
@@ -264,9 +268,8 @@ export function BrandVoiceSection() {
             title={`Head start for ${siteConfig.companyName}`}
             className="mt-4"
           >
-            The website scrape has already captured brand-relevant content — key
-            values, tone observations, and sector terminology. Bring these to
-            the setup conversation as a starting point.
+            {overlays.brandVoice?.headStartContent ??
+              'The website scrape has already captured brand-relevant content — key values, tone observations, and sector terminology. Bring these to the setup conversation as a starting point.'}
           </CalloutCard>
         </div>
 

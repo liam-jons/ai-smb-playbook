@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dialog';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { useOverlays, useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import {
@@ -1188,6 +1188,7 @@ function Step7RecommendationForm({
 
 export function FeasibilityStudyBuilder() {
   const siteConfig = useSiteConfig();
+  const overlays = useOverlays();
   const { track } = useTrack();
   const STORAGE_KEY = getStorageKey(siteConfig.localStoragePrefix);
   const [savedDraft] = useState(() => loadDraft(STORAGE_KEY));
@@ -1210,8 +1211,8 @@ export function FeasibilityStudyBuilder() {
   const isInitialRender = useRef(true);
 
   const taskTemplates = useMemo(
-    () => getTaskTemplates(siteConfig),
-    [siteConfig],
+    () => getTaskTemplates(siteConfig, overlays.roi?.clientExamples),
+    [siteConfig, overlays],
   );
   const trackFilteredTemplates = useMemo(
     () =>

@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { useOverlays, useSiteConfig } from '@/hooks/useClientConfig';
 import type { SiteConfigData } from '@/config/client-config-schema';
 import { cn } from '@/lib/utils';
 import {
@@ -67,7 +67,10 @@ interface GettingStartedStep {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-function getAutomationPatterns(config: SiteConfigData): AutomationPattern[] {
+function getAutomationPatterns(
+  config: SiteConfigData,
+  overlayExamples?: Array<{ title: string; description: string }>,
+): AutomationPattern[] {
   const reportDataSource = config.reportDataSource ?? 'data source';
   const complianceStakeholders =
     config.complianceStakeholders ?? 'stakeholders';
@@ -86,7 +89,7 @@ function getAutomationPatterns(config: SiteConfigData): AutomationPattern[] {
         'When you want to run it, open a new Claude session and trigger it',
         'Claude executes the multi-step task: gathering data, analysing, formatting output, and presenting results',
       ],
-      clientExample: {
+      clientExample: overlayExamples?.[0] ?? {
         title: 'Weekly training report',
         description: `A skill that reviews the ${reportDataSource}, summarises completion rates, flags any overdue training, and formats a report for the ${complianceStakeholders}. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.`,
       },
@@ -107,7 +110,7 @@ function getAutomationPatterns(config: SiteConfigData): AutomationPattern[] {
         'Instruct Claude to visit a website, navigate to specific pages, extract data, and compile results',
         'Particularly useful for monitoring tasks where the data lives in a web interface rather than a file',
       ],
-      clientExample: {
+      clientExample: overlayExamples?.[1] ?? {
         title: 'Website accessibility monitoring',
         description:
           'A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the "Accessibility as a Service" offering \u2014 regular checks on client sites.',
@@ -141,7 +144,7 @@ function getAutomationPatterns(config: SiteConfigData): AutomationPattern[] {
         'Each time you run the skill, it incorporates what it learnt from the last run',
         'This creates a feedback loop: the skill gets better and more tailored over time',
       ],
-      clientExample: {
+      clientExample: overlayExamples?.[2] ?? {
         title: 'Client onboarding checklist',
         description: `A skill that walks through the steps for setting up a new ${clientOnboardingType}. Each time it is used, the person running it can note any steps that were missing or wrong. The skill's final action is to update the checklist template based on that feedback. Over time, the onboarding process becomes more complete and accurate without anyone maintaining a separate document.`,
       },
@@ -162,7 +165,7 @@ function getAutomationPatterns(config: SiteConfigData): AutomationPattern[] {
         'Claude receives the context and executes the defined workflow',
         'Results can be written to files, sent via email, or posted to a channel',
       ],
-      clientExample: {
+      clientExample: overlayExamples?.[3] ?? {
         title: 'Automated code quality check',
         description:
           'A GitHub Actions workflow that runs nightly, invoking Claude Code to review recent commits against coding standards and generate a summary. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude.',
@@ -336,9 +339,13 @@ Let's start with the first question \u2014 what recurring tasks does your team h
 
 export function RecurringTasksSection() {
   const siteConfig = useSiteConfig();
+  const overlays = useOverlays();
   const { track } = useTrack();
   const [whatsComingOpen, setWhatsComingOpen] = useState(false);
-  const automationPatterns = getAutomationPatterns(siteConfig);
+  const automationPatterns = getAutomationPatterns(
+    siteConfig,
+    overlays.recurringTasks?.examples,
+  );
   const gettingStartedSteps = getGettingStartedStepsGeneral(siteConfig);
   const weeklyReportPrompt = getWeeklyReportPrompt(siteConfig);
 

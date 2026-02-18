@@ -106,12 +106,24 @@ export const calculatorDefaults: CalculatorDefaults = {
   teamSizeMax: 50,
 };
 
-/** Build task templates with client-specific examples from config. */
-export function getTaskTemplates(config: SiteConfigData): TaskTemplate[] {
-  return _buildTaskTemplates(config);
+/** Build task templates with client-specific examples from config, with overlay support. */
+export function getTaskTemplates(
+  config: SiteConfigData,
+  overlayClientExamples?: Record<
+    string,
+    { title: string; description: string }
+  >,
+): TaskTemplate[] {
+  return _buildTaskTemplates(config, overlayClientExamples);
 }
 
-function _buildTaskTemplates(config: SiteConfigData): TaskTemplate[] {
+function _buildTaskTemplates(
+  config: SiteConfigData,
+  overlayClientExamples?: Record<
+    string,
+    { title: string; description: string }
+  >,
+): TaskTemplate[] {
   return [
     {
       id: 'email-drafting',
@@ -172,7 +184,7 @@ function _buildTaskTemplates(config: SiteConfigData): TaskTemplate[] {
       roiHighlight: '60–70% reduction in bid preparation time.',
       relatedSection: 'skills-extensions',
       track: 'both',
-      clientExample: {
+      clientExample: overlayClientExamples?.['proposal-writing'] ?? {
         title: `${config.companyShortName} bid writing`,
         description: `${config.companyShortName} regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.`,
       },
@@ -237,7 +249,7 @@ function _buildTaskTemplates(config: SiteConfigData): TaskTemplate[] {
         '75% reduction in documentation time with improved consistency.',
       relatedSection: 'governance',
       track: 'both',
-      clientExample: {
+      clientExample: overlayClientExamples?.['compliance-docs'] ?? {
         title: `${config.companyShortName} ISO documentation`,
         description: `With ISO 9001, 27001, 14001 and Cyber Essentials Plus, ${config.companyShortName} maintains extensive documentation. AI can generate first drafts from existing policies.`,
       },
@@ -343,7 +355,7 @@ function _buildTaskTemplates(config: SiteConfigData): TaskTemplate[] {
         'Replace dedicated testing tool subscription; faster test authoring.',
       relatedSection: 'regression-testing',
       track: 'developer',
-      clientExample: {
+      clientExample: overlayClientExamples?.['regression-testing'] ?? {
         title: `${config.companyShortName} ${config.testingTool ?? 'testing tool'} replacement`,
         description: `${config.companyShortName} currently uses ${config.testingTool ?? 'their testing tool'} for regression testing. Claude Code's browser automation can replicate test suites at lower cost.`,
       },

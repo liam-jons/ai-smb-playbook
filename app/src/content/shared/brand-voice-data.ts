@@ -230,9 +230,10 @@ export const devSteps: SetupStep[] = [
   },
 ];
 
-/** Build framework sections with client-specific examples from config. */
+/** Build framework sections with client-specific examples from config, with overlay support. */
 export function getFrameworkSections(
   config: SiteConfigData,
+  overlayExamples?: Record<string, string>,
 ): FrameworkSection[] {
   const complianceArea = config.complianceArea ?? 'compliance';
   const complianceAreaCapitalised =
@@ -244,7 +245,9 @@ export function getFrameworkSections(
       title: 'Brand Personality',
       description:
         'Define the brand as if it were a person. What are its defining traits? This creates the foundation everything else builds on.',
-      clientExample: `If ${config.companyName} were a person, they would be the knowledgeable colleague who explains ${complianceArea} technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
+      clientExample:
+        overlayExamples?.['1'] ??
+        `If ${config.companyName} were a person, they would be the knowledgeable colleague who explains ${complianceArea} technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
       icon: Palette,
     },
     {
@@ -253,6 +256,7 @@ export function getFrameworkSections(
       description:
         'Select 3\u20135 attributes that define how the brand communicates. Each should have a "we are / we are not / sounds like" definition to prevent misinterpretation.',
       clientExample:
+        overlayExamples?.['2'] ??
         'Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: "Here\'s how to get started \u2014 it takes about five minutes."',
       icon: MessageCircle,
     },
@@ -261,7 +265,9 @@ export function getFrameworkSections(
       title: 'Audience Awareness',
       description:
         'Who the brand speaks to, what they care about, what level of expertise they have, and how they expect to be addressed.',
-      clientExample: `Primary: ${complianceArea} leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in ${complianceArea} but not necessarily in software.`,
+      clientExample:
+        overlayExamples?.['3'] ??
+        `Primary: ${complianceArea} leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in ${complianceArea} but not necessarily in software.`,
       icon: Users,
     },
     {
@@ -269,7 +275,9 @@ export function getFrameworkSections(
       title: 'Core Messaging Pillars',
       description:
         '3\u20135 key themes the brand consistently communicates. The hierarchy of these messages and how each connects to audience needs.',
-      clientExample: `Pillar 1: ${complianceAreaCapitalised} made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).`,
+      clientExample:
+        overlayExamples?.['4'] ??
+        `Pillar 1: ${complianceAreaCapitalised} made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).`,
       icon: Megaphone,
     },
     {
@@ -277,7 +285,9 @@ export function getFrameworkSections(
       title: 'Tone Spectrum',
       description:
         'How the voice adapts across channels and situations whilst remaining recognisably the same brand. The voice stays constant; the tone dials attributes up or down.',
-      clientExample: `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${config.companyName} voice is always present, but the emphasis shifts.`,
+      clientExample:
+        overlayExamples?.['5'] ??
+        `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${config.companyName} voice is always present, but the emphasis shifts.`,
       icon: Globe2,
     },
     {
@@ -286,6 +296,7 @@ export function getFrameworkSections(
       description:
         'Specific grammar, formatting, and language decisions: Oxford comma, sentence case vs title case, contractions, date formats. This is where UK English enforcement lives within the broader brand framework.',
       clientExample:
+        overlayExamples?.['6'] ??
         'UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.',
       icon: Type,
     },
@@ -294,7 +305,9 @@ export function getFrameworkSections(
       title: 'Terminology',
       description:
         'Preferred and avoided terms, product names, inclusive language guidelines. Maintaining consistency across all communications.',
-      clientExample: `Use "${complianceArea} partnership" (not "LSCP"). Use "${config.primaryProductDescription ?? 'the product'}" on first mention, then "${config.primaryProduct ?? 'the product'}". Never use "users" when you mean "${complianceArea} professionals" or "partners".`,
+      clientExample:
+        overlayExamples?.['7'] ??
+        `Use "${complianceArea} partnership" (not "LSCP"). Use "${config.primaryProductDescription ?? 'the product'}" on first mention, then "${config.primaryProduct ?? 'the product'}". Never use "users" when you mean "${complianceArea} professionals" or "partners".`,
       icon: ListChecks,
     },
   ];
