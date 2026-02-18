@@ -2122,6 +2122,32 @@ export function getFilesForCategoryAndTrack(
   );
 }
 
+/** Filter starter kit files by tier and enabled custom categories. */
+export function filterFilesByTier(
+  files: StarterKitFile[],
+  enabledCustomCategories?: string[],
+): { baseFiles: StarterKitFile[]; customFiles: StarterKitFile[] } {
+  const baseFiles = files.filter((f) => f.tier === 'base');
+  const customFiles = files.filter(
+    (f) =>
+      f.tier === 'custom' &&
+      f.customCategory != null &&
+      (enabledCustomCategories ?? []).includes(f.customCategory),
+  );
+  return { baseFiles, customFiles };
+}
+
+/** Get files for a category and track, split by tier. */
+export function getFilteredFilesForCategoryAndTrack(
+  files: StarterKitFile[],
+  category: StarterKitCategory,
+  track: Track,
+  enabledCustomCategories?: string[],
+): { baseFiles: StarterKitFile[]; customFiles: StarterKitFile[] } {
+  const categoryFiles = getFilesForCategoryAndTrack(files, category, track);
+  return filterFilesByTier(categoryFiles, enabledCustomCategories);
+}
+
 export function getCategoriesForTrack(
   files: StarterKitFile[],
   track: Track,

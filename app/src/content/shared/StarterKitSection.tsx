@@ -36,14 +36,14 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CopyButton } from '@/components/content/CopyButton';
 import { cn } from '@/lib/utils';
 import { useTrack } from '@/hooks/useTrack';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { useSiteConfig, useClientConfig } from '@/hooks/useClientConfig';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 import {
   getStarterKitFiles,
   CATEGORY_LABELS,
   QUICK_START_STEPS,
   getCategoriesForTrack,
-  getFilesForCategoryAndTrack,
+  getFilteredFilesForCategoryAndTrack,
   type StarterKitFile,
   type StarterKitCategory,
 } from '@/content/shared/starter-kit-data';
@@ -951,6 +951,8 @@ const INITIAL_CARD_COUNT = 5;
 function FileBrowser() {
   const { track } = useTrack();
   const siteConfig = useSiteConfig();
+  const { config } = useClientConfig();
+  const enabledCustomCategories = config.starterKit?.enabledCustomCategories;
   const starterKitFiles = useMemo(
     () => getStarterKitFiles(siteConfig),
     [siteConfig],
@@ -1007,11 +1009,14 @@ function FileBrowser() {
         <TabsList className="w-full flex-wrap justify-start bg-muted/40">
           {categories.map((category) => {
             const Icon = CATEGORY_ICONS[category];
-            const files = getFilesForCategoryAndTrack(
-              starterKitFiles,
-              category,
-              track,
-            );
+            const { baseFiles: catBase, customFiles: catCustom } =
+              getFilteredFilesForCategoryAndTrack(
+                starterKitFiles,
+                category,
+                track,
+                enabledCustomCategories,
+              );
+            const totalVisible = catBase.length + catCustom.length;
             return (
               <TabsTrigger key={category} value={category} className="gap-1.5">
                 <Icon className="h-3.5 w-3.5" />
@@ -1022,7 +1027,7 @@ function FileBrowser() {
                   {CATEGORY_SHORT_LABELS[category]}
                 </span>
                 <Badge variant="secondary" className="ml-1 text-xs">
-                  {files.length}
+                  {totalVisible}
                 </Badge>
               </TabsTrigger>
             );
@@ -1030,33 +1035,68 @@ function FileBrowser() {
         </TabsList>
 
         {categories.map((category) => {
-          const files = getFilesForCategoryAndTrack(
-            starterKitFiles,
-            category,
-            track,
-          );
+          const { baseFiles, customFiles } =
+            getFilteredFilesForCategoryAndTrack(
+              starterKitFiles,
+              category,
+              track,
+              enabledCustomCategories,
+            );
           const isShowingAll = showAll[category] ?? false;
-          const visibleFiles =
-            files.length > INITIAL_CARD_COUNT && !isShowingAll
-              ? files.slice(0, INITIAL_CARD_COUNT)
-              : files;
-          const hiddenCount = files.length - INITIAL_CARD_COUNT;
+          const allVisibleFiles = [...baseFiles, ...customFiles];
+
+          // Apply show-more limit across all visible files, prioritising base files
+          let baseFilesVisible = baseFiles;
+          let customFilesVisible = customFiles;
+
+          if (!isShowingAll && allVisibleFiles.length > INITIAL_CARD_COUNT) {
+            if (baseFiles.length >= INITIAL_CARD_COUNT) {
+              baseFilesVisible = baseFiles.slice(0, INITIAL_CARD_COUNT);
+              customFilesVisible = [];
+            } else {
+              baseFilesVisible = baseFiles;
+              customFilesVisible = customFiles.slice(
+                0,
+                INITIAL_CARD_COUNT - baseFiles.length,
+              );
+            }
+          }
 
           return (
             <TabsContent key={category} value={category} className="mt-4">
               <TabFadeWrapper key={`browser-${activeTab}`}>
                 {category === 'plugin' && <PluginGuidanceCallout />}
                 <div className="mt-4 space-y-3">
-                  {visibleFiles.map((file) => (
+                  {/* Base files */}
+                  {baseFilesVisible.map((file) => (
                     <FileCard key={file.id} file={file} />
                   ))}
-                  {files.length === 0 && (
+
+                  {/* Custom files separator */}
+                  {customFilesVisible.length > 0 && (
+                    <div className="flex items-center gap-3 pt-2">
+                      <div className="h-px flex-1 bg-border" />
+                      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
+                        Additional for your organisation
+                      </span>
+                      <div className="h-px flex-1 bg-border" />
+                    </div>
+                  )}
+
+                  {/* Custom files */}
+                  {customFilesVisible.map((file) => (
+                    <FileCard key={file.id} file={file} />
+                  ))}
+
+                  {allVisibleFiles.length === 0 && (
                     <p className="py-8 text-center text-sm text-muted-foreground">
                       No files in this category for your current track.
                     </p>
                   )}
                 </div>
-                {files.length > INITIAL_CARD_COUNT && (
+
+                {/* Show all / show fewer button */}
+                {allVisibleFiles.length > INITIAL_CARD_COUNT && (
                   <div className="mt-4 flex justify-center">
                     <Button
                       variant="outline"
@@ -1068,9 +1108,9 @@ function FileBrowser() {
                         <>Show fewer</>
                       ) : (
                         <>
-                          Show all {files.length} files
+                          Show all {allVisibleFiles.length} files
                           <Badge variant="secondary" className="ml-1 text-xs">
-                            +{hiddenCount}
+                            +{allVisibleFiles.length - INITIAL_CARD_COUNT}
                           </Badge>
                         </>
                       )}
