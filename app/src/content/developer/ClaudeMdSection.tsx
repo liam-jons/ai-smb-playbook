@@ -628,6 +628,21 @@ export function ClaudeMdSection() {
           </p>
         </div>
 
+        <div className="mt-4 rounded-md border border-border bg-muted/30 px-4 py-3">
+          <p className="text-sm text-muted-foreground">
+            For general Claude users (not using Claude Code), the same
+            &ldquo;map not encyclopaedia&rdquo; principle applies to Project
+            custom instructions. See the{' '}
+            <Link
+              to={`/${track === 'developer' ? 'general' : track}/sessions#persistent-context-heading`}
+              className="font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+            >
+              Persistent Context
+            </Link>{' '}
+            subsection in Session Management.
+          </p>
+        </div>
+
         {/* I20: X/Check icons already present — verified */}
         <Accordion type="single" collapsible className="mt-6">
           <AccordionItem value="before-after">

@@ -39,9 +39,7 @@ const patterns: AntiHallucinationPattern[] = [
       'Any task that involves more than one file, more than one logical concern, or more than roughly 100 lines of change.',
     explanation:
       'Claude performs best when given focused, well-scoped tasks. Large, ambiguous requests invite hallucinated approaches because Claude tries to handle too many decisions at once. Breaking work into atomic subtasks means each task gets Claude\u2019s full 200k token context window, and each output is small enough to review meaningfully.',
-    crossTrack: true,
-    crossTrackNote:
-      'This works outside coding too \u2014 breaking a long document into sections, handling one email at a time, or tackling one aspect of a problem before moving to the next.',
+    crossTrack: false,
     prompt: `I need to migrate the ${siteConfig.domainSpecificForm} from the legacy ASP.NET Web Forms page to a Razor Pages implementation.
 
 Before writing any code, break this into a numbered list of atomic subtasks. Each subtask should:
@@ -60,9 +58,7 @@ List the subtasks in dependency order. Do not implement anything yet.`,
     whenToUse: 'Every non-trivial development task. Make it a habit.',
     explanation:
       'Asking Claude to plan before coding forces it to reason about the approach, surface assumptions, and reveal potential issues before any code is written. This is the single most effective pattern for avoiding quick-fix behaviour \u2014 Claude cannot take shortcuts if it has to articulate its strategy first.\n\nFor larger tasks, write the plan as a specification document saved to a dedicated planning directory (e.g., `.planning/`). This gives Claude a concrete reference to work from, and gives you an artefact to review before implementation begins.',
-    crossTrack: true,
-    crossTrackNote:
-      'This works just as well outside of coding \u2014 ask Claude to outline its plan before writing a report, drafting a policy, or preparing meeting notes.',
+    crossTrack: false,
     prompt: `I want to add role-based access control to the ${siteConfig.primaryProduct} admin dashboard. Before writing any code, create a plan that covers:
 
 1. What changes are needed and where (list specific files)
@@ -123,9 +119,7 @@ If the best-practice approach differs significantly from our current implementat
       'Any question about specific API versions, library compatibility, platform-specific behaviour, or configuration details that Claude might not have reliable training data for.',
     explanation:
       'Claude will attempt to answer every question, even when it should not. If you do not explicitly give it permission to say "I don\u2019t know", it will hallucinate an answer rather than admit uncertainty. This is particularly dangerous for version-specific API details, library configurations, and platform-specific behaviour.',
-    crossTrack: true,
-    crossTrackNote:
-      'This is valuable for general use too \u2014 especially when asking Claude about specific company policies, legal requirements, or factual claims.',
+    crossTrack: false,
     prompt: `I need to configure ${siteConfig.testingTool} to run against our staging environment with SSO authentication enabled.
 
 Important: if you are not confident about specific ${siteConfig.testingTool} configuration options or API details, say so explicitly rather than guessing. It is better to tell me "I'm not sure about this specific setting \u2014 check ${siteConfig.testingToolDocs}" than to give me a configuration that might not work.
@@ -285,7 +279,22 @@ export function HallucinationsSection() {
           </p>
         </div>
 
-        <CalloutCard variant="important" className="mt-6">
+        <CalloutCard variant="info" className="mt-6">
+          For general strategies that work across all Claude usage &mdash;
+          breaking tasks into pieces, planning before writing, asking for
+          options, and giving Claude permission to say &ldquo;I don&rsquo;t
+          know&rdquo; &mdash; see the{' '}
+          <Link
+            to={`/${track === 'developer' ? 'general' : track}/reliable-output`}
+            className="text-primary hover:underline"
+          >
+            Getting Reliable Output
+          </Link>{' '}
+          section in the general track. This section focuses on the
+          developer-specific patterns for code work.
+        </CalloutCard>
+
+        <CalloutCard variant="important" className="mt-4">
           You do not need to use all seven patterns on every task. For routine
           work, one or two may be enough. The key is recognising <em>when</em>{' '}
           hallucination risk is high &mdash; unfamiliar APIs, complex

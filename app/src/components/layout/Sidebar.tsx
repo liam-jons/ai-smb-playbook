@@ -20,6 +20,7 @@ import {
   Puzzle,
   Search,
   Package,
+  Target,
   PanelLeftClose,
   PanelLeftOpen,
 } from 'lucide-react';
@@ -53,6 +54,7 @@ const iconMap: Record<string, IconComponent> = {
   Puzzle,
   Search,
   Package,
+  Target,
 };
 
 type Annotation =

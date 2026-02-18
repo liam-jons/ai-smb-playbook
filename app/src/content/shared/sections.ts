@@ -34,6 +34,16 @@ export const sections: Section[] = [
     icon: 'MessageSquare',
   },
   {
+    id: '1.3b',
+    slug: 'reliable-output',
+    title: 'Getting Reliable Output',
+    subtitle: 'Strategies for accurate AI responses',
+    track: 'general',
+    description:
+      'Practical patterns for getting accurate, grounded responses from Claude \u2014 avoiding made-up facts, inconsistencies, and hallucinations.',
+    icon: 'Target',
+  },
+  {
     id: '1.4',
     slug: 'skills-extensions',
     title: 'Skills, Extensions & Decision Tree',

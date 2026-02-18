@@ -424,6 +424,21 @@ export function DocumentationSection() {
           build a lightweight structure that grows incrementally and pays for
           itself through better AI output.
         </CalloutCard>
+
+        <div className="mt-4 rounded-md border border-border bg-muted/30 px-4 py-3">
+          <p className="text-sm text-muted-foreground">
+            For general Claude users, the same principle &mdash; making
+            knowledge visible &mdash; applies to Project custom instructions
+            and persistent context. See the{' '}
+            <Link
+              to={`/${track === 'developer' ? 'general' : track}/sessions#persistent-context-heading`}
+              className="font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+            >
+              Persistent Context
+            </Link>{' '}
+            subsection in Session Management.
+          </p>
+        </div>
       </section>
 
       <Separator />

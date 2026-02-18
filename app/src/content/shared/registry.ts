@@ -26,6 +26,11 @@ export const sectionComponents: Record<string, ComponentType> = {
       default: m.SessionManagementSection,
     })),
   ),
+  'reliable-output': lazy(() =>
+    import('@/content/general/ReliableOutputSection').then((m) => ({
+      default: m.ReliableOutputSection,
+    })),
+  ),
   'skills-extensions': lazy(() =>
     import('@/content/general/SkillsExtensionsSection').then((m) => ({
       default: m.SkillsExtensionsSection,

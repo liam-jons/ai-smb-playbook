@@ -30,6 +30,7 @@ import {
   Brain,
   Code2,
   FileText,
+  Bookmark,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -51,6 +52,7 @@ const sessionTocEntries = [
   { id: 'subtasks-heading', label: 'Breaking Tasks into Subtasks' },
   { id: 'platform-heading', label: 'Platform Differences' },
   { id: 'memory-feature-heading', label: "Claude's Memory Feature" },
+  { id: 'persistent-context-heading', label: 'Setting Up Persistent Context' },
   { id: 'templates-heading', label: 'Copyable Handoff Templates' },
 ];
 
@@ -762,6 +764,162 @@ export function SessionManagementSection() {
             future conversation.
           </p>
         </CalloutCard>
+      </section>
+
+      <Separator className="my-2" />
+
+      {/* ─────────────────────────────────────────────
+          Part 6: Persistent Context
+          ───────────────────────────────────────────── */}
+      <section aria-labelledby="persistent-context-heading">
+        <h2
+          id="persistent-context-heading"
+          className="mb-2 flex items-center gap-2 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
+          <Bookmark className="h-5 w-5 text-primary" />
+          Setting Up Persistent Context
+        </h2>
+        <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
+          Claude does not remember anything between conversations unless you tell
+          it to. Every new chat starts from zero. Persistent context is how you
+          give Claude a head start &mdash; so it already knows who you are, what
+          you work on, and how you like things done.
+        </p>
+
+        <CalloutCard variant="important" className="mb-6">
+          <p>
+            <strong>Knowledge that lives in people&apos;s heads is invisible to
+            Claude.</strong> If your team agreed on a process in a meeting, or a
+            client preference was discussed over email, Claude has no way to know
+            about it unless you write it down somewhere it can see.
+          </p>
+        </CalloutCard>
+
+        <h3 className="mb-3 text-lg font-semibold">Where to Set It Up</h3>
+        <div className="mb-6 space-y-3">
+          <div className="flex gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
+            <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+            <div>
+              <p className="text-sm font-medium">Profile preferences</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                2&ndash;3 sentences that apply to every conversation. Your name,
+                your role, &ldquo;always use UK English&rdquo;, your preferred
+                output format. These are loaded into every chat automatically.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
+            <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+            <div>
+              <p className="text-sm font-medium">Project custom instructions</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                A paragraph or two for each project you work on regularly.
+                Describe the project, the audience, key constraints, and any
+                style requirements. In claude.ai, create a Project and add these
+                as custom instructions.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
+            <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+            <div>
+              <p className="text-sm font-medium">
+                Starting a conversation with context
+              </p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                When you do not have a Project set up, paste a brief context
+                block at the start of the conversation. Two to four sentences
+                describing what you are working on and what you need.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h3 className="mb-3 text-lg font-semibold">
+          Think &ldquo;Map, Not Encyclopaedia&rdquo;
+        </h3>
+        <div className="mb-6 max-w-prose space-y-3 text-sm leading-relaxed text-muted-foreground">
+          <p>
+            The most common mistake is trying to include everything. Your
+            persistent context should be a short, sharp pointer to what matters
+            &mdash; not a complete manual. Think of it as a map that tells Claude
+            where things are, not an encyclopaedia that tries to contain
+            everything.
+          </p>
+          <p>
+            <strong className="text-foreground">Aim for brevity:</strong> a good
+            set of project instructions is a paragraph, not a page. Every line
+            should earn its place. If a piece of information changes weekly, it
+            does not belong in persistent context &mdash; it belongs in the
+            conversation where you need it.
+          </p>
+        </div>
+
+        <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-lg border border-success/30 bg-success-muted/50 p-4">
+            <h4 className="mb-2 text-sm font-medium text-success-muted-foreground">
+              Good things to include
+            </h4>
+            <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
+              <li>Your role and team context</li>
+              <li>Brand voice and tone guidelines</li>
+              <li>Preferred output format (bullet points, formal prose, etc.)</li>
+              <li>Key constraints (&ldquo;always UK English&rdquo;, &ldquo;never
+                include personal data&rdquo;)</li>
+              <li>Project-specific terminology or jargon</li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+            <h4 className="mb-2 text-sm font-medium text-destructive">
+              What NOT to include
+            </h4>
+            <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
+              <li>Sensitive data (passwords, API keys, personal information)</li>
+              <li>Information that changes frequently (current project status, this week&apos;s priorities)</li>
+              <li>Generic instructions Claude already knows (&ldquo;be helpful&rdquo;, &ldquo;write clearly&rdquo;)</li>
+              <li>Long documents or entire style guides &mdash; summarise the key points instead</li>
+            </ul>
+          </div>
+        </div>
+
+        <PromptExample
+          title="Setting Up Project Instructions"
+          description="Paste this into a claude.ai Project\u2019s custom instructions, adapting it for your project."
+          prompt={`You are helping me with [project name]. This is a [brief description of what the project is].
+
+Key context:
+- Target audience: [who will read/use the output]
+- Tone: [e.g. professional but approachable, formal, conversational]
+- Always use UK English spelling and grammar
+- [Any specific constraints, e.g. "must comply with GDPR", "use our brand colours #1B4D3E and #F5F5F0"]
+
+When I ask you to write content for this project, follow these guidelines unless I say otherwise.`}
+          whenToUse="When setting up a new Project in claude.ai for a recurring workstream."
+        />
+
+        {isDev && (
+          <CalloutCard variant="info" className="mt-4">
+            <p className="text-sm">
+              <strong>For developers:</strong> The developer track covers{' '}
+              <Link
+                to={`/${track}/claude-md`}
+                className="text-primary hover:underline"
+              >
+                CLAUDE.md files
+              </Link>{' '}
+              &mdash; the code-level equivalent of persistent context that Claude
+              Code reads automatically at the start of every session. The{' '}
+              <Link
+                to={`/${track}/documentation`}
+                className="text-primary hover:underline"
+              >
+                Documentation Structure
+              </Link>{' '}
+              section covers how to organise project docs so Claude can navigate
+              them.
+            </p>
+          </CalloutCard>
+        )}
       </section>
 
       {/* ─────────────────────────────────────────────
