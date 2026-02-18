@@ -127,7 +127,7 @@ export function FeedbackWidget() {
           to avoid overlapping interactive content at narrow viewports */}
       <Button
         onClick={() => setOpen(true)}
-        className={`fixed bottom-20 right-6 z-50 h-12 w-12 rounded-full shadow-lg transition-opacity duration-300 md:hidden ${isScrolling ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+        className={`fixed bottom-28 right-6 z-50 h-12 w-12 rounded-full shadow-lg transition-opacity duration-300 md:hidden ${isScrolling ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
         size="icon"
         aria-label="Send feedback"
       >
