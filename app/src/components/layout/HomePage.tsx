@@ -11,6 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { getFilteredSectionsForTrack } from '@/content/shared/sections';
 import { useSiteConfig, useSectionsConfig } from '@/hooks/useClientConfig';
+import { ClientLogo } from '@/components/content/ClientLogo';
 import { cn } from '@/lib/utils';
 
 /** First few sections from each track — gives new users a clear starting point */
@@ -62,6 +63,14 @@ export function HomePage() {
             Prepared by {siteConfig.consultantName} &middot;{' '}
             {siteConfig.trainingDate}
           </p>
+          {siteConfig.clientLogoUrl && (
+            <div className="mt-3 mb-5">
+              <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground/70 uppercase">
+                Prepared for
+              </p>
+              <ClientLogo />
+            </div>
+          )}
           <h1
             className="mb-4 font-bold tracking-tight text-foreground"
             style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}

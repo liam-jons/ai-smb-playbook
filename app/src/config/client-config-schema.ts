@@ -25,6 +25,12 @@ export interface ClientConfig {
     metaDescription: string;
     welcomeSubtitle: string;
 
+    // Client branding (optional — text-only fallback when omitted)
+    clientLogoUrl?: string; // Path to logo for light mode (e.g. "/clients/logos/acme-light.png")
+    clientLogoDarkUrl?: string; // Path to logo for dark mode (optional — falls back to clientLogoUrl)
+    clientLogoAlt?: string; // Alt text for the logo (e.g. "Acme Industries logo")
+    clientLogoMaxWidth?: number; // Max width in pixels (default: 200, capped at 280)
+
     // Recommended (most clients)
     industry: string;
     industryContext: string;
