@@ -230,7 +230,7 @@ export function RegressionTestingSection() {
             Regression testing has traditionally required dedicated tools that
             record or script browser interactions and replay them.{' '}
             {siteConfig.testingTool} is a solid example of this &mdash; and it
-            works well for {siteConfig.companyShortName}&apos;s current needs.
+            works well for many teams&apos; current needs.
           </p>
           <p>
             AI is changing this landscape. Instead of brittle recorded scripts
@@ -241,9 +241,8 @@ export function RegressionTestingSection() {
           </p>
           <p>
             This section lays out what is currently possible, how it compares to{' '}
-            {siteConfig.testingTool}, and a practical path for{' '}
-            {siteConfig.companyShortName} to start experimenting alongside your
-            existing setup.
+            {siteConfig.testingTool}, and a practical path for your team to
+            start experimenting alongside your existing setup.
           </p>
         </div>
       </section>
@@ -423,10 +422,10 @@ export function RegressionTestingSection() {
               </li>
             </ol>
             <CalloutCard variant="info">
-              <strong>{siteConfig.companyShortName} starting point:</strong>{' '}
-              Pick 3–5 existing {siteConfig.testingTool} tests and recreate them
-              as Playwright tests using Claude. Compare reliability and
-              maintenance burden over 2–3 months.
+              <strong>Starting point:</strong> Pick 3–5 existing{' '}
+              {siteConfig.testingTool} tests and recreate them as Playwright
+              tests using Claude. Compare reliability and maintenance burden
+              over 2–3 months.
             </CalloutCard>
           </TabsContent>
           <TabsContent value="progressive" className="mt-4 space-y-4">
@@ -455,10 +454,10 @@ export function RegressionTestingSection() {
               </li>
             </ol>
             <CalloutCard variant="info">
-              <strong>{siteConfig.companyShortName} starting point:</strong>{' '}
-              Start using CoWork for manual QA tasks that are currently done by
-              hand (new feature walkthroughs, cross-browser checks). Document
-              which tasks it handles well and which it struggles with.
+              <strong>Starting point:</strong> Start using CoWork for manual QA
+              tasks that are currently done by hand (new feature walkthroughs,
+              cross-browser checks). Document which tasks it handles well and
+              which it struggles with.
             </CalloutCard>
           </TabsContent>
         </Tabs>

@@ -11,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -94,7 +93,8 @@ const plugins: PluginEntry[] = [
     provides: ['Hooks'],
     whatItDoes:
       'Runs a Python script before every file edit, checking for command injection, XSS, and unsafe code patterns. Surfaces warnings before the edit is applied.',
-    whenToUse: `Always-on for projects handling user input, authentication, or sensitive data \u2014 all of ${siteConfig.companyShortName}\u2019s web applications.`,
+    whenToUse:
+      'Always-on for projects handling user input, authentication, or sensitive data \u2014 all of your web applications.',
     installCommand: '/plugin install security-guidance',
     requirements: 'Python 3 must be installed (standard on macOS).',
     securityNote:
@@ -170,7 +170,8 @@ const plugins: PluginEntry[] = [
     provides: ['MCP', 'Commands', 'Skills'],
     whatItDoes:
       '/seer enables natural language queries against your Sentry environment. Setup skills for AI monitoring, structured logging, metrics, and tracing.',
-    whenToUse: `If ${siteConfig.companyShortName} uses or plans to use Sentry for error monitoring and performance tracking.`,
+    whenToUse:
+      'If your team uses or plans to use Sentry for error monitoring and performance tracking.',
     installCommand: '/plugin install sentry',
     requirements:
       'Sentry account. MCP server connects to https://mcp.sentry.dev/mcp.',
@@ -183,7 +184,7 @@ const plugins: PluginEntry[] = [
     provides: ['MCP'],
     whatItDoes:
       'Create and manage tasks, search projects, update assignments, track progress within Claude Code.',
-    whenToUse: `If ${siteConfig.companyShortName} uses Asana for project management.`,
+    whenToUse: 'If your team uses Asana for project management.',
     installCommand: '/plugin install asana',
     requirements: 'Asana account with appropriate permissions.',
     category: 'External Services',
@@ -195,7 +196,8 @@ const plugins: PluginEntry[] = [
     description:
       'PHP language server (Intelephense) for code intelligence and diagnostics.',
     provides: ['LSP'],
-    whatItDoes: `Real-time PHP code intelligence: automatic diagnostics, jump to definition, find references, hover type information. Particularly relevant for ${siteConfig.companyShortName}\u2019s WordPress work.`,
+    whatItDoes:
+      'Real-time PHP code intelligence: automatic diagnostics, jump to definition, find references, hover type information. Particularly relevant for your WordPress work.',
     whenToUse:
       'Any PHP/WordPress project. LSP plugins provide code intelligence that runs in the background.',
     installCommand: '/plugin install php-lsp',
@@ -278,7 +280,7 @@ const marketplaceComparisons: MarketplaceComparison[] = [
   },
 ];
 
-const BATCH_INSTALL = `# Recommended starter set for ${siteConfig.companyShortName} developers
+const BATCH_INSTALL = `# Recommended starter set for your team
 /plugin install commit-commands
 /plugin install pr-review-toolkit
 /plugin install security-guidance

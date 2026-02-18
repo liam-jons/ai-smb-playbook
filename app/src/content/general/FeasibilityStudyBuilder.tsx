@@ -303,7 +303,10 @@ function StepIndicator({
               >
                 <div className="flex items-center gap-1">
                   {isCompleted ? (
-                    <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    <Check
+                      className="h-3.5 w-3.5 shrink-0"
+                      aria-hidden="true"
+                    />
                   ) : (
                     <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   )}

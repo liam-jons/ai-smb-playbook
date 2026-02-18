@@ -48,7 +48,7 @@ Evaluate the content against each of these dimensions:
 
 #### Style Guide Compliance
 - Grammar and punctuation per style guide (e.g., Oxford comma, title case vs. sentence case)
-- UK English spelling and conventions (see uk-english skill for full reference) — all Phew! content must use UK English
+- UK English spelling and conventions (see uk-english skill for full reference) — all content must use UK English
 - Formatting conventions (headers, lists, emphasis)
 - Number formatting, date formatting, currency (£ not $)
 - Acronym usage (defined on first use?)

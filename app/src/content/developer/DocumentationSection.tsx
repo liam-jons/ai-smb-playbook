@@ -13,7 +13,6 @@ import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
-import { siteConfig } from '@/config/site';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -419,11 +418,7 @@ export function DocumentationSection() {
           </p>
         </div>
 
-        <CalloutCard
-          variant="info"
-          title={`For ${siteConfig.companyShortName}`}
-          className="mt-6"
-        >
+        <CalloutCard variant="info" title="For your team" className="mt-6">
           Most teams do not have extensive documentation, and that is normal.
           The goal is not to document everything overnight &mdash; it is to
           build a lightweight structure that grows incrementally and pays for
@@ -636,11 +631,11 @@ export function DocumentationSection() {
         </div>
 
         <CalloutCard variant="tip" className="mt-6">
-          <strong>Recommendation for {siteConfig.companyShortName}:</strong>{' '}
-          Start with Level 1. It costs nothing and provides immediate value.
-          Move to Level 2 when the team is comfortable with the /docs structure.
-          Level 3 is worth considering only when the documentation set is large
-          enough to warrant automated checks.
+          <strong>Recommendation for your team:</strong> Start with Level 1. It
+          costs nothing and provides immediate value. Move to Level 2 when the
+          team is comfortable with the /docs structure. Level 3 is worth
+          considering only when the documentation set is large enough to warrant
+          automated checks.
         </CalloutCard>
       </section>
 

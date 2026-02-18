@@ -583,8 +583,8 @@ export function RecurringTasksSection() {
           Getting Started: Recommended First Steps
         </h2>
         <p className="mb-6 max-w-prose text-sm text-muted-foreground">
-          Practical, actionable steps for {siteConfig.companyShortName} staff to
-          begin automating recurring work.
+          Practical, actionable steps for your team to begin automating
+          recurring work.
         </p>
 
         <div className="space-y-4">

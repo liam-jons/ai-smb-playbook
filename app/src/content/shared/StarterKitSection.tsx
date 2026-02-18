@@ -1156,7 +1156,8 @@ export function StarterKitSection() {
             {isDev ? (
               <>
                 <p>
-                  Skill files and templates use markdown format. In VS Code, press{' '}
+                  Skill files and templates use markdown format. In VS Code,
+                  press{' '}
                   <kbd className="rounded border border-border bg-muted px-1 py-0.5 text-xs font-mono">
                     Cmd+Shift+V
                   </kbd>{' '}
@@ -1182,8 +1183,8 @@ export function StarterKitSection() {
             ) : (
               <>
                 <p>
-                  The skill files and templates below are in markdown format (.md
-                  files). If you are not familiar with markdown, don&apos;t
+                  The skill files and templates below are in markdown format
+                  (.md files). If you are not familiar with markdown, don&apos;t
                   worry — it is just plain text with simple formatting.
                 </p>
                 <p>

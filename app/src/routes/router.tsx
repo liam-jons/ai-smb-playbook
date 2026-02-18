@@ -4,7 +4,6 @@ import { TrackLayout } from '@/components/layout/TrackLayout';
 import { HomePage } from '@/components/layout/HomePage';
 import { NotFoundPage } from '@/components/layout/NotFoundPage';
 import { SectionPage } from '@/components/content/SectionPage';
-import { ProcessDocPage } from '@/content/shared/ProcessDocPage';
 
 export const router = createBrowserRouter([
   {
@@ -13,10 +12,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-      },
-      {
-        path: 'process',
-        element: <ProcessDocPage />,
       },
       {
         path: ':track',

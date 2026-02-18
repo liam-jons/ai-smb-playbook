@@ -51,7 +51,7 @@ const recommendedMcps: McpRecommendation[] = [
     name: 'Playwright (chrome-devtools)',
     whatItDoes:
       'Gives Claude Code the ability to control a web browser \u2014 navigate to pages, click elements, fill forms, take screenshots, and run end-to-end tests. The Playwright MCP server from Microsoft is the standard browser automation tool for Claude Code.',
-    whyItMatters: `${siteConfig.companyShortName} builds web applications (${siteConfig.webApplications}). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${siteConfig.testingTool} workflows.`,
+    whyItMatters: `Your team builds web applications (${siteConfig.webApplications}). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${siteConfig.testingTool} workflows.`,
     configJson: `{
   "mcpServers": {
     "playwright": {
@@ -447,7 +447,7 @@ export function McpUsageSection() {
           id="recommended"
           className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          Recommended MCPs for {siteConfig.companyShortName}
+          Recommended MCPs for Your Team
         </h2>
 
         <div className="space-y-6">
@@ -467,7 +467,7 @@ export function McpUsageSection() {
               </p>
               <p className="mb-4 text-sm text-muted-foreground">
                 <strong className="text-foreground">
-                  Why it matters for {siteConfig.companyShortName}:
+                  Why it matters for your team:
                 </strong>{' '}
                 {mcp.whyItMatters}
                 {mcp.name === 'Playwright (chrome-devtools)' && (

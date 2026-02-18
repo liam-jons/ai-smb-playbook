@@ -750,11 +750,7 @@ function RiskTierCard({ tier }: { tier: RiskTier }) {
 
 // ─── Policy Export Buttons ───────────────────────────────────────────────────
 
-function PolicyExportButtons({
-  fullPolicyText,
-}: {
-  fullPolicyText: string;
-}) {
+function PolicyExportButtons({ fullPolicyText }: { fullPolicyText: string }) {
   const [copiedClaude, setCopiedClaude] = useState(false);
   const [copiedWord, setCopiedWord] = useState(false);
 

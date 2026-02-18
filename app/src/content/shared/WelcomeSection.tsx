@@ -449,23 +449,9 @@ export function WelcomeSection() {
           agents, each working from a detailed spec. Skills, CLAUDE.md files,
           and the governance principles described here were used throughout.
           These are not theoretical techniques — they are the same workflows
-          that produced this deliverable.
+          that produced this deliverable, from initial planning through to
+          deployment.
         </p>
-        <p
-          className="mb-4 text-sm leading-relaxed text-muted-foreground"
-          style={{ maxWidth: '65ch' }}
-        >
-          Interested in the end-to-end process? The repeatable workflow document
-          captures every step — from recording the training sessions to
-          deploying this app — so it can be replicated for future projects.
-        </p>
-        <Link
-          to="/process"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-        >
-          View the process document
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
       </section>
 
       <Separator />

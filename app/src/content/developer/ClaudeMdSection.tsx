@@ -682,9 +682,9 @@ export function ClaudeMdSection() {
         Whether you prefer the terminal, VS Code, Cursor, Windsurf, or another
         IDE, Claude works everywhere. CLAUDE.md files (or equivalent project
         context files) are supported across all major AI coding tools. This
-        playbook focuses on Claude Code as the primary supported interface for{' '}
-        {siteConfig.companyShortName}, but the principles covered here &mdash;
-        concise documentation, structured context, the &ldquo;map not
+        playbook focuses on Claude Code as the primary supported interface for
+        your team, but the principles covered here &mdash; concise
+        documentation, structured context, the &ldquo;map not
         encyclopedia&rdquo; approach &mdash; apply regardless of the tool.
       </CalloutCard>
 
