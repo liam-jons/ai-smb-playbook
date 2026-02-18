@@ -1,3 +1,4 @@
+import type { ClientConfig } from '@/config/client-config-schema';
 import type { Section } from './types';
 
 export const sections: Section[] = [
@@ -213,6 +214,57 @@ export function getAdjacentSections(
   track: 'general' | 'developer',
 ): { prev: Section | undefined; next: Section | undefined } {
   const trackSections = getSectionsForTrack(track);
+  const index = trackSections.findIndex((s) => s.slug === slug);
+
+  return {
+    prev: index > 0 ? trackSections[index - 1] : undefined,
+    next:
+      index < trackSections.length - 1 ? trackSections[index + 1] : undefined,
+  };
+}
+
+/** Get sections filtered by track AND client config (sections.enabled/disabled, hasDeveloperTrack). */
+export function getFilteredSectionsForTrack(
+  track: 'general' | 'developer',
+  sectionsConfig: ClientConfig['sections'],
+  hasDeveloperTrack: boolean,
+): Section[] {
+  // If developer track is disabled and requesting developer, return empty
+  if (track === 'developer' && !hasDeveloperTrack) return [];
+
+  let trackSections = sections.filter(
+    (s) => s.track === track || s.track === 'both',
+  );
+
+  // If an enabled list is specified (non-null), only include those slugs
+  if (sectionsConfig.enabled) {
+    trackSections = trackSections.filter((s) =>
+      sectionsConfig.enabled!.includes(s.slug),
+    );
+  }
+
+  // Remove any explicitly disabled sections
+  if (sectionsConfig.disabled && sectionsConfig.disabled.length > 0) {
+    trackSections = trackSections.filter(
+      (s) => !sectionsConfig.disabled!.includes(s.slug),
+    );
+  }
+
+  return trackSections;
+}
+
+/** Get next and previous sections within a track, respecting client config filtering. */
+export function getFilteredAdjacentSections(
+  slug: string,
+  track: 'general' | 'developer',
+  sectionsConfig: ClientConfig['sections'],
+  hasDeveloperTrack: boolean,
+): { prev: Section | undefined; next: Section | undefined } {
+  const trackSections = getFilteredSectionsForTrack(
+    track,
+    sectionsConfig,
+    hasDeveloperTrack,
+  );
   const index = trackSections.findIndex((s) => s.slug === slug);
 
   return {

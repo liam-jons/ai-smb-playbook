@@ -9,8 +9,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { getSectionsForTrack } from '@/content/shared/sections';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { getFilteredSectionsForTrack } from '@/content/shared/sections';
+import { useSiteConfig, useSectionsConfig } from '@/hooks/useClientConfig';
+import { cn } from '@/lib/utils';
 
 /** First few sections from each track — gives new users a clear starting point */
 const GENERAL_HIGHLIGHTS = [
@@ -28,8 +29,17 @@ const DEVELOPER_HIGHLIGHTS = [
 
 export function HomePage() {
   const siteConfig = useSiteConfig();
-  const generalSections = getSectionsForTrack('general');
-  const developerSections = getSectionsForTrack('developer');
+  const sectionsConfig = useSectionsConfig();
+  const generalSections = getFilteredSectionsForTrack(
+    'general',
+    sectionsConfig,
+    siteConfig.hasDeveloperTrack,
+  );
+  const developerSections = getFilteredSectionsForTrack(
+    'developer',
+    sectionsConfig,
+    siteConfig.hasDeveloperTrack,
+  );
 
   const generalHighlights = generalSections.filter((s) =>
     GENERAL_HIGHLIGHTS.includes(s.slug),
@@ -60,14 +70,21 @@ export function HomePage() {
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">
             {siteConfig.metaDescription} at{' '}
-            {siteConfig.companyName.replace(' Limited', '')}. Choose your track
-            below.
+            {siteConfig.companyName.replace(' Limited', '')}.{' '}
+            {siteConfig.hasDeveloperTrack
+              ? 'Choose your track below.'
+              : 'Get started below.'}
           </p>
         </motion.div>
 
         {/* Track cards — differentiated with accent colours and unique previews */}
         <motion.div
-          className="grid gap-6 md:grid-cols-2"
+          className={cn(
+            'grid gap-6',
+            siteConfig.hasDeveloperTrack
+              ? 'md:grid-cols-2'
+              : 'md:grid-cols-1 max-w-lg',
+          )}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -119,52 +136,54 @@ export function HomePage() {
             </Card>
           </Link>
 
-          {/* Developer track */}
-          <Link
-            to="/developer"
-            className="group block"
-            aria-label="Developer track — for the development team"
-          >
-            <Card className="h-full border-l-4 border-l-violet-500 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-violet-400">
-              <CardHeader>
-                <div className="mb-2 flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600 dark:bg-violet-400/15 dark:text-violet-400">
-                    <Terminal className="h-5 w-5" />
+          {/* Developer track (only when enabled) */}
+          {siteConfig.hasDeveloperTrack && (
+            <Link
+              to="/developer"
+              className="group block"
+              aria-label="Developer track — for the development team"
+            >
+              <Card className="h-full border-l-4 border-l-violet-500 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 dark:border-l-violet-400">
+                <CardHeader>
+                  <div className="mb-2 flex items-center gap-2">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600 dark:bg-violet-400/15 dark:text-violet-400">
+                      <Terminal className="h-5 w-5" />
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {developerSections.length} sections
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {developerSections.length} sections
-                  </Badge>
-                </div>
-                <CardTitle>
-                  <h2 className="text-2xl font-semibold">Developers</h2>
-                </CardTitle>
-                <CardDescription>
-                  For the development team. Claude Code, CLAUDE.md files,
-                  codebase mapping, testing, and technical workflows.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="mb-4 space-y-1 text-sm text-muted-foreground">
-                  {developerHighlights.map((s) => (
-                    <li key={s.id} className="flex items-center gap-1.5">
-                      <span className="text-xs text-muted-foreground/60">
-                        {s.id}
-                      </span>
-                      {s.sidebarTitle || s.title}
+                  <CardTitle>
+                    <h2 className="text-2xl font-semibold">Developers</h2>
+                  </CardTitle>
+                  <CardDescription>
+                    For the development team. Claude Code, CLAUDE.md files,
+                    codebase mapping, testing, and technical workflows.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="mb-4 space-y-1 text-sm text-muted-foreground">
+                    {developerHighlights.map((s) => (
+                      <li key={s.id} className="flex items-center gap-1.5">
+                        <span className="text-xs text-muted-foreground/60">
+                          {s.id}
+                        </span>
+                        {s.sidebarTitle || s.title}
+                      </li>
+                    ))}
+                    <li className="text-xs text-muted-foreground/60">
+                      + {developerSections.length - developerHighlights.length}{' '}
+                      more sections including all general content
                     </li>
-                  ))}
-                  <li className="text-xs text-muted-foreground/60">
-                    + {developerSections.length - developerHighlights.length}{' '}
-                    more sections including all general content
-                  </li>
-                </ul>
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 transition-all group-hover:gap-2.5 dark:text-violet-400">
-                  Explore track
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </CardContent>
-            </Card>
-          </Link>
+                  </ul>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 transition-all group-hover:gap-2.5 dark:text-violet-400">
+                    Explore track
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+          )}
         </motion.div>
       </div>
     </main>

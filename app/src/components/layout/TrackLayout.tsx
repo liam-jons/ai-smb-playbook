@@ -12,10 +12,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sidebar } from './Sidebar';
 import { useTrack } from '@/hooks/useTrack';
 import {
-  getSectionsForTrack,
-  getAdjacentSections,
+  getFilteredSectionsForTrack,
+  getFilteredAdjacentSections,
   getSectionBySlug,
 } from '@/content/shared/sections';
+import { useSiteConfig, useSectionsConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 
 export function TrackLayout() {
@@ -70,15 +71,27 @@ export function TrackLayout() {
     .filter(Boolean);
   const isBarePath = pathSegments.length === 1 && pathSegments[0] === track;
 
+  const siteConfig = useSiteConfig();
+  const sectionsConfig = useSectionsConfig();
+
   if (!isValidTrack) {
     return <Navigate to="/" replace />;
+  }
+
+  // Redirect developer track to general when developer track is disabled
+  if (track === 'developer' && !siteConfig.hasDeveloperTrack) {
+    return <Navigate to="/general" replace />;
   }
 
   // Only redirect to the first section when the URL is the bare track path.
   // Do NOT redirect when sectionSlug is merely absent from useParams, as that
   // can happen transiently during initial hydration of a deep-linked URL.
   if (isBarePath && !sectionSlug) {
-    const firstSection = getSectionsForTrack(track)[0];
+    const firstSection = getFilteredSectionsForTrack(
+      track,
+      sectionsConfig,
+      siteConfig.hasDeveloperTrack,
+    )[0];
     if (firstSection) {
       return <Navigate to={`/${track}/${firstSection.slug}`} replace />;
     }
@@ -86,7 +99,12 @@ export function TrackLayout() {
 
   const currentSection = sectionSlug ? getSectionBySlug(sectionSlug) : null;
   const { prev, next } = sectionSlug
-    ? getAdjacentSections(sectionSlug, track)
+    ? getFilteredAdjacentSections(
+        sectionSlug,
+        track,
+        sectionsConfig,
+        siteConfig.hasDeveloperTrack,
+      )
     : { prev: undefined, next: undefined };
 
   return (

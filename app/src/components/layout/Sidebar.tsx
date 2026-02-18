@@ -1,6 +1,7 @@
 import type { ComponentType, SVGProps } from 'react';
 import { Link, useParams } from 'react-router';
-import { getSectionsForTrack } from '@/content/shared/sections';
+import { getFilteredSectionsForTrack } from '@/content/shared/sections';
+import { useSiteConfig, useSectionsConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 import {
   Compass,
@@ -101,7 +102,13 @@ export function Sidebar({
   onToggleCollapse,
 }: SidebarProps) {
   const { section: activeSlug } = useParams<{ section: string }>();
-  const sections = getSectionsForTrack(track);
+  const siteConfig = useSiteConfig();
+  const sectionsConfig = useSectionsConfig();
+  const sections = getFilteredSectionsForTrack(
+    track,
+    sectionsConfig,
+    siteConfig.hasDeveloperTrack,
+  );
 
   return (
     <TooltipProvider>
@@ -158,21 +165,23 @@ export function Sidebar({
                 </div>
               )}
 
-              {/* General track note between core topics and starter kit */}
-              {!collapsed && annotation?.type === 'track-note' && (
-                <div className="my-2 border-y border-border px-3 py-3">
-                  <p className="text-[11px] leading-snug text-muted-foreground/60 italic">
-                    More topics are available in the Developer Playbook.
-                  </p>
-                  <Link
-                    to="/developer"
-                    onClick={onNavClick}
-                    className="mt-1 inline-block text-[11px] font-medium text-primary hover:underline"
-                  >
-                    Switch to Developer track
-                  </Link>
-                </div>
-              )}
+              {/* General track note between core topics and starter kit (only when developer track is enabled) */}
+              {!collapsed &&
+                annotation?.type === 'track-note' &&
+                siteConfig.hasDeveloperTrack && (
+                  <div className="my-2 border-y border-border px-3 py-3">
+                    <p className="text-[11px] leading-snug text-muted-foreground/60 italic">
+                      More topics are available in the Developer Playbook.
+                    </p>
+                    <Link
+                      to="/developer"
+                      onClick={onNavClick}
+                      className="mt-1 inline-block text-[11px] font-medium text-primary hover:underline"
+                    >
+                      Switch to Developer track
+                    </Link>
+                  </div>
+                )}
 
               {/* Divider before Starter Kit when no annotation already provides one */}
               {!collapsed && needsDivider && (
