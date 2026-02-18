@@ -20,7 +20,8 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
+import type { SiteConfigData } from '@/config/client-config-schema';
 import { cn, stripMarkdown } from '@/lib/utils';
 import { generateDocx, downloadBlob } from '@/lib/docx-export';
 import {
@@ -77,113 +78,118 @@ interface QuickStartStep {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const placeholders: PlaceholderDef[] = [
-  {
-    placeholder: '{{COMPANY_NAME}}',
-    description: 'Organisation name',
-    example: siteConfig.companyName,
-  },
-  {
-    placeholder: '{{INDUSTRY}}',
-    description: 'Primary industry or sector',
-    example: siteConfig.industry,
-  },
-  {
-    placeholder: '{{TEAM_SIZE}}',
-    description: 'Approximate team size',
-    example: '10',
-  },
-  {
-    placeholder: '{{EFFECTIVE_DATE}}',
-    description: 'Date the policy takes effect',
-    example: '01/03/2026',
-  },
-  {
-    placeholder: '{{LAST_REVIEWED}}',
-    description: 'Date of last review',
-    example: '01/03/2026',
-  },
-  {
-    placeholder: '{{POLICY_OWNER}}',
-    description: 'Name or role of the policy owner',
-    example: 'AI Lead',
-  },
-  {
-    placeholder: '{{AI_LEAD_NAME}}',
-    description: 'Name of the designated AI Lead',
-    example: '[To be confirmed]',
-  },
-  {
-    placeholder: '{{AI_LEAD_ROLE}}',
-    description: 'Role/title of the AI Lead',
-    example: '[To be confirmed]',
-  },
-  {
-    placeholder: '{{NEXT_REVIEW}}',
-    description: 'Date of next scheduled review',
-    example: '01/06/2026',
-  },
-];
+function getPlaceholders(config: SiteConfigData): PlaceholderDef[] {
+  return [
+    {
+      placeholder: '{{COMPANY_NAME}}',
+      description: 'Organisation name',
+      example: config.companyName,
+    },
+    {
+      placeholder: '{{INDUSTRY}}',
+      description: 'Primary industry or sector',
+      example: config.industry,
+    },
+    {
+      placeholder: '{{TEAM_SIZE}}',
+      description: 'Approximate team size',
+      example: '10',
+    },
+    {
+      placeholder: '{{EFFECTIVE_DATE}}',
+      description: 'Date the policy takes effect',
+      example: '01/03/2026',
+    },
+    {
+      placeholder: '{{LAST_REVIEWED}}',
+      description: 'Date of last review',
+      example: '01/03/2026',
+    },
+    {
+      placeholder: '{{POLICY_OWNER}}',
+      description: 'Name or role of the policy owner',
+      example: 'AI Lead',
+    },
+    {
+      placeholder: '{{AI_LEAD_NAME}}',
+      description: 'Name of the designated AI Lead',
+      example: '[To be confirmed]',
+    },
+    {
+      placeholder: '{{AI_LEAD_ROLE}}',
+      description: 'Role/title of the AI Lead',
+      example: '[To be confirmed]',
+    },
+    {
+      placeholder: '{{NEXT_REVIEW}}',
+      description: 'Date of next scheduled review',
+      example: '01/06/2026',
+    },
+  ];
+}
 
-const riskTiers: RiskTier[] = [
-  {
-    level: 1,
-    label: 'Low Risk',
-    colour: 'emerald',
-    characteristics: [
-      'Read-only or output-only functionality (no external data access)',
-      'No access to sensitive data, customer information, or production systems',
-      'From a verified/official source (Anthropic marketplace, known publisher)',
-      "Affects only the individual user's workflow",
-    ],
-    examples: [
-      'Official Anthropic plugins (commit-commands, code-simplifier, context7)',
-      'Internal skills that format output or enforce style rules (UK English, brand voice)',
-      'Read-only MCP servers (documentation lookup, public API queries)',
-    ],
-    approval:
-      'Self-approval. Log in the AI Extension Register and notify the AI Lead.',
-  },
-  {
-    level: 2,
-    label: 'Medium Risk',
-    colour: 'amber',
-    characteristics: [
-      'Read/write access to internal systems, files, or repositories',
-      'Accesses non-sensitive company data (project files, internal documentation)',
-      'From a reputable but non-verified source',
-      'Affects team-wide workflows or shared environments',
-    ],
-    examples: [
-      'MCP servers connecting to internal databases or file systems',
-      'Third-party skills from community marketplaces',
-      'Hooks that modify files automatically (Britfix, linting hooks)',
-      'Skills provisioned organisation-wide by admin',
-    ],
-    approval:
-      'AI Lead approval required. Submit a brief request and wait for confirmation before installation.',
-  },
-  {
-    level: 3,
-    label: 'High Risk',
-    colour: 'red',
-    characteristics: [
-      `Access to sensitive data (customer PII, financial records, health data, ${siteConfig.sensitiveDataLabel})`,
-      'Access to production systems or live environments',
-      'From an unknown, unverified, or new source',
-      'Could affect data protection compliance (GDPR, ISO 27001)',
-      'Involves automated actions with real-world consequences',
-    ],
-    examples: [
-      'MCP servers connecting to customer databases, CRM, or production environments',
-      `Any extension handling ${siteConfig.sensitiveDataLabel} or personal information`,
-      'Browser automation tools operating on live client sites',
-      'Agent teams with autonomous decision-making authority',
-    ],
-    approval:
-      'AI Lead review + MD sign-off. A written risk assessment must be completed and retained.',
-  },
-];
+function getRiskTiers(config: SiteConfigData): RiskTier[] {
+  const sensitiveDataLabel = config.sensitiveDataLabel ?? 'sensitive data';
+  return [
+    {
+      level: 1,
+      label: 'Low Risk',
+      colour: 'emerald',
+      characteristics: [
+        'Read-only or output-only functionality (no external data access)',
+        'No access to sensitive data, customer information, or production systems',
+        'From a verified/official source (Anthropic marketplace, known publisher)',
+        "Affects only the individual user's workflow",
+      ],
+      examples: [
+        'Official Anthropic plugins (commit-commands, code-simplifier, context7)',
+        'Internal skills that format output or enforce style rules (UK English, brand voice)',
+        'Read-only MCP servers (documentation lookup, public API queries)',
+      ],
+      approval:
+        'Self-approval. Log in the AI Extension Register and notify the AI Lead.',
+    },
+    {
+      level: 2,
+      label: 'Medium Risk',
+      colour: 'amber',
+      characteristics: [
+        'Read/write access to internal systems, files, or repositories',
+        'Accesses non-sensitive company data (project files, internal documentation)',
+        'From a reputable but non-verified source',
+        'Affects team-wide workflows or shared environments',
+      ],
+      examples: [
+        'MCP servers connecting to internal databases or file systems',
+        'Third-party skills from community marketplaces',
+        'Hooks that modify files automatically (Britfix, linting hooks)',
+        'Skills provisioned organisation-wide by admin',
+      ],
+      approval:
+        'AI Lead approval required. Submit a brief request and wait for confirmation before installation.',
+    },
+    {
+      level: 3,
+      label: 'High Risk',
+      colour: 'red',
+      characteristics: [
+        `Access to sensitive data (customer PII, financial records, health data, ${sensitiveDataLabel})`,
+        'Access to production systems or live environments',
+        'From an unknown, unverified, or new source',
+        'Could affect data protection compliance (GDPR, ISO 27001)',
+        'Involves automated actions with real-world consequences',
+      ],
+      examples: [
+        'MCP servers connecting to customer databases, CRM, or production environments',
+        `Any extension handling ${sensitiveDataLabel} or personal information`,
+        'Browser automation tools operating on live client sites',
+        'Agent teams with autonomous decision-making authority',
+      ],
+      approval:
+        'AI Lead review + MD sign-off. A written risk assessment must be completed and retained.',
+    },
+  ];
+}
 
 const quickStartSteps: QuickStartStep[] = [
   {
@@ -209,40 +215,43 @@ const quickStartSteps: QuickStartStep[] = [
   },
 ];
 
-const policySections: PolicySection[] = [
-  {
-    id: 'purpose',
-    number: '1',
-    title: 'Purpose',
-    content: `This policy establishes a clear, proportionate process for evaluating, approving, deploying, and maintaining AI extensions used with Claude across {{COMPANY_NAME}}. It covers all extension types: MCP servers (connectors), plugins, skills, commands, hooks, and subagents.
+function getPolicySections(config: SiteConfigData): PolicySection[] {
+  const sensitiveDataDescription =
+    config.sensitiveDataDescription ?? 'sensitive data';
+  return [
+    {
+      id: 'purpose',
+      number: '1',
+      title: 'Purpose',
+      content: `This policy establishes a clear, proportionate process for evaluating, approving, deploying, and maintaining AI extensions used with Claude across {{COMPANY_NAME}}. It covers all extension types: MCP servers (connectors), plugins, skills, commands, hooks, and subagents.
 
 The goal is not to slow adoption down but to ensure that new AI capabilities are introduced thoughtfully \u2014 with consideration for data security, reliability, and long-term maintainability. For a team of {{TEAM_SIZE}} people, this means lightweight processes, clear ownership, and sensible defaults rather than bureaucratic approval chains.`,
-    annotation:
-      'The goal here is proportionate governance, not bureaucracy. Having a clear process means your team can adopt new AI tools confidently without second-guessing whether they need permission first.',
-    tracks: ['general', 'developer'],
-    icon: FileText,
-  },
-  {
-    id: 'scope',
-    number: '2',
-    title: 'Scope',
-    content: `This policy applies to:
+      annotation:
+        'The goal here is proportionate governance, not bureaucracy. Having a clear process means your team can adopt new AI tools confidently without second-guessing whether they need permission first.',
+      tracks: ['general', 'developer'],
+      icon: FileText,
+    },
+    {
+      id: 'scope',
+      number: '2',
+      title: 'Scope',
+      content: `This policy applies to:
 
 - All staff at {{COMPANY_NAME}} who use Claude in any form (claude.ai, Claude Desktop, Claude Code, CoWork)
 - All AI extensions installed, uploaded, or configured across any Claude environment
 - Both production and development/testing environments
 
 Extension types covered: MCP servers (connectors), official marketplace plugins, third-party marketplace plugins, internally developed skills, third-party skills, commands, hooks, and subagents/agent teams.`,
-    annotation:
-      'This covers all Claude surfaces and extension types. The broad scope means nothing gets overlooked, but you will not be doing a full review for every low-risk extension \u2014 the risk tiers in Section 4 keep the process proportionate.',
-    tracks: ['general', 'developer'],
-    icon: Shield,
-  },
-  {
-    id: 'roles',
-    number: '3',
-    title: 'Roles and Responsibilities',
-    content: `{{COMPANY_NAME}} designates one person as the AI Lead \u2014 the primary point of contact for all AI extension decisions.
+      annotation:
+        'This covers all Claude surfaces and extension types. The broad scope means nothing gets overlooked, but you will not be doing a full review for every low-risk extension \u2014 the risk tiers in Section 4 keep the process proportionate.',
+      tracks: ['general', 'developer'],
+      icon: Shield,
+    },
+    {
+      id: 'roles',
+      number: '3',
+      title: 'Roles and Responsibilities',
+      content: `{{COMPANY_NAME}} designates one person as the AI Lead \u2014 the primary point of contact for all AI extension decisions.
 
 AI Lead responsibilities:
 - Maintain the AI Extension Register (Section 7)
@@ -255,30 +264,30 @@ AI Lead responsibilities:
 All staff: Do not install, upload, or configure AI extensions without following the approval process. Report any unexpected behaviour to the AI Lead.
 
 Developers (Claude Code users): Follow the technical standards in Section 6 when creating internal extensions. Include AI extension changes in code review processes.`,
-    annotation:
-      'One clear owner (the AI Lead) keeps things simple. This does not need to be a developer \u2014 it needs to be someone who can make informed risk judgements and will actually do the quarterly review.',
-    tracks: ['general', 'developer'],
-    icon: Users,
-  },
-  {
-    id: 'risk-categories',
-    number: '4',
-    title: 'Risk Categories',
-    content: `Extensions are classified into three risk tiers based on their potential impact. The tier determines the approval process.
+      annotation:
+        'One clear owner (the AI Lead) keeps things simple. This does not need to be a developer \u2014 it needs to be someone who can make informed risk judgements and will actually do the quarterly review.',
+      tracks: ['general', 'developer'],
+      icon: Users,
+    },
+    {
+      id: 'risk-categories',
+      number: '4',
+      title: 'Risk Categories',
+      content: `Extensions are classified into three risk tiers based on their potential impact. The tier determines the approval process.
 
 Tier 1 \u2014 Low Risk: Read-only, verified source, individual use. Self-approval with register logging.
 Tier 2 \u2014 Medium Risk: Read/write access, reputable source, team-wide impact. AI Lead approval required.
 Tier 3 \u2014 High Risk: Sensitive data access, production systems, unknown sources. AI Lead + MD sign-off required.`,
-    annotation:
-      'Three tiers keep it simple. Most day-to-day extensions will be Tier 1 (self-approval), so the process does not slow anyone down for low-risk tools. The detail for each tier is shown below.',
-    tracks: ['general', 'developer'],
-    icon: ShieldAlert,
-  },
-  {
-    id: 'approval-process',
-    number: '5',
-    title: 'Approval Process',
-    content: `Tier 1 \u2014 Self-Approval:
+      annotation:
+        'Three tiers keep it simple. Most day-to-day extensions will be Tier 1 (self-approval), so the process does not slow anyone down for low-risk tools. The detail for each tier is shown below.',
+      tracks: ['general', 'developer'],
+      icon: ShieldAlert,
+    },
+    {
+      id: 'approval-process',
+      number: '5',
+      title: 'Approval Process',
+      content: `Tier 1 \u2014 Self-Approval:
 1. Confirm it is Tier 1 (low risk)
 2. Install the extension
 3. Add an entry to the AI Extension Register
@@ -296,16 +305,16 @@ Tier 3 \u2014 AI Lead + MD Approval:
 4. Decision and rationale documented
 
 Emergency Installation: Install with minimum permissions, notify AI Lead within 4 working hours, complete retrospective review within 2 working days.`,
-    annotation:
-      'The process scales with risk. Tier 1 takes 30 seconds (just log it). Tier 2 takes a day or two. Tier 3 is the only one that involves the MD. The emergency clause ensures urgent situations are not blocked.',
-    tracks: ['general', 'developer'],
-    icon: CheckCircle2,
-  },
-  {
-    id: 'technical-standards',
-    number: '6',
-    title: 'Technical Standards for Internal Extensions',
-    content: `When {{COMPANY_NAME}} staff create skills, commands, hooks, or other extensions internally, they must meet these standards:
+      annotation:
+        'The process scales with risk. Tier 1 takes 30 seconds (just log it). Tier 2 takes a day or two. Tier 3 is the only one that involves the MD. The emergency clause ensures urgent situations are not blocked.',
+      tracks: ['general', 'developer'],
+      icon: CheckCircle2,
+    },
+    {
+      id: 'technical-standards',
+      number: '6',
+      title: 'Technical Standards for Internal Extensions',
+      content: `When {{COMPANY_NAME}} staff create skills, commands, hooks, or other extensions internally, they must meet these standards:
 
 Skill files (SKILL.md):
 - Complete YAML frontmatter with name and description fields
@@ -329,28 +338,28 @@ Code review:
 
 Version control:
 - All internal extensions stored in Git with clear commit messages`,
-    annotation:
-      'The practical test for any internal extension: could another team member pick it up and understand it without the author explaining it? If yes, it meets the standard.',
-    tracks: ['developer'],
-    icon: FileText,
-  },
-  {
-    id: 'register',
-    number: '7',
-    title: 'AI Extension Register',
-    content: `Maintain a register of all AI extensions in use across {{COMPANY_NAME}}. This can be a shared spreadsheet, a page in your internal wiki, or a markdown file in a shared repository.
+      annotation:
+        'The practical test for any internal extension: could another team member pick it up and understand it without the author explaining it? If yes, it meets the standard.',
+      tracks: ['developer'],
+      icon: FileText,
+    },
+    {
+      id: 'register',
+      number: '7',
+      title: 'AI Extension Register',
+      content: `Maintain a register of all AI extensions in use across {{COMPANY_NAME}}. This can be a shared spreadsheet, a page in your internal wiki, or a markdown file in a shared repository.
 
 Register fields: Extension name, Type, Source, Risk tier, Approved by, Approval date, Installed by, Environment, What it accesses, Review date, Status, Notes.`,
-    annotation:
-      'The register does not need to be complex \u2014 a shared spreadsheet works well for a team of 10. The important thing is that it exists and gets updated.',
-    tracks: ['general', 'developer'],
-    icon: ClipboardList,
-  },
-  {
-    id: 'maintenance',
-    number: '8',
-    title: 'Maintenance and Review',
-    content: `Quarterly Review:
+      annotation:
+        'The register does not need to be complex \u2014 a shared spreadsheet works well for a team of 10. The important thing is that it exists and gets updated.',
+      tracks: ['general', 'developer'],
+      icon: ClipboardList,
+    },
+    {
+      id: 'maintenance',
+      number: '8',
+      title: 'Maintenance and Review',
+      content: `Quarterly Review:
 1. Register audit: Are all entries current? Any unused extensions to remove?
 2. Update check: Are extensions at latest versions? Any deprecations or security issues?
 3. Usage review: Are installed extensions actually being used?
@@ -364,33 +373,33 @@ Trigger-based reviews when:
 - Team size changes significantly
 
 Deprecation: Confirm with users, remove from all environments, update register (set to "Removed" \u2014 do not delete the row).`,
-    annotation:
-      'The quarterly review is 30 minutes, not a full audit. Trigger-based reviews catch the situations where the scheduled review is not soon enough.',
-    tracks: ['general', 'developer'],
-    icon: Clock,
-  },
-  {
-    id: 'data-protection',
-    number: '9',
-    title: 'Data Protection Considerations',
-    content: `Given {{COMPANY_NAME}}'s work in {{INDUSTRY}} and its obligations under GDPR, ISO 27001, and Cyber Essentials Plus:
+      annotation:
+        'The quarterly review is 30 minutes, not a full audit. Trigger-based reviews catch the situations where the scheduled review is not soon enough.',
+      tracks: ['general', 'developer'],
+      icon: Clock,
+    },
+    {
+      id: 'data-protection',
+      number: '9',
+      title: 'Data Protection Considerations',
+      content: `Given {{COMPANY_NAME}}'s work in {{INDUSTRY}} and its obligations under GDPR, ISO 27001, and Cyber Essentials Plus:
 
 - Minimise data exposure: Only grant extensions access to the data they genuinely need
 - No customer PII in prompts without justification
 - UK data residency: Confirm that external integrations do not transfer data outside the UK without safeguards
 - Audit trail: For Tier 3 extensions handling sensitive data, maintain usage logs
 
-Sensitive data: No AI extension should ever access ${siteConfig.sensitiveDataDescription} without a formal Tier 3 assessment, MD approval, and a Data Protection Impact Assessment (DPIA) if applicable.`,
-    annotation:
-      'Data protection is especially important if your organisation handles sensitive information. The key rule: any extension that could access sensitive or personal data must go through the full Tier 3 review process, no exceptions.',
-    tracks: ['general', 'developer'],
-    icon: ShieldCheck,
-  },
-  {
-    id: 'incident-response',
-    number: '10',
-    title: 'Incident Response',
-    content: `If an AI extension behaves unexpectedly, produces harmful output, or appears compromised:
+Sensitive data: No AI extension should ever access ${sensitiveDataDescription} without a formal Tier 3 assessment, MD approval, and a Data Protection Impact Assessment (DPIA) if applicable.`,
+      annotation:
+        'Data protection is especially important if your organisation handles sensitive information. The key rule: any extension that could access sensitive or personal data must go through the full Tier 3 review process, no exceptions.',
+      tracks: ['general', 'developer'],
+      icon: ShieldCheck,
+    },
+    {
+      id: 'incident-response',
+      number: '10',
+      title: 'Incident Response',
+      content: `If an AI extension behaves unexpectedly, produces harmful output, or appears compromised:
 
 1. Stop using the extension immediately \u2014 disable or remove it
 2. Notify the AI Lead within 1 working hour
@@ -399,12 +408,13 @@ Sensitive data: No AI extension should ever access ${siteConfig.sensitiveDataDes
 5. Report if required \u2014 if personal data involved, follow existing data breach procedure (ICO notification within 72 hours if applicable)
 6. Root cause analysis \u2014 determine why and whether similar extensions are affected
 7. Update the register \u2014 record the incident against the extension entry`,
-    annotation:
-      'Seven clear steps, starting with the most important one: stop using it. The 1-hour notification to the AI Lead ensures nothing festers.',
-    tracks: ['general', 'developer'],
-    icon: AlertTriangle,
-  },
-];
+      annotation:
+        'Seven clear steps, starting with the most important one: stop using it. The 1-hour notification to the AI Lead ensures nothing festers.',
+      tracks: ['general', 'developer'],
+      icon: AlertTriangle,
+    },
+  ];
+}
 
 const registerTemplate = `| Extension | Type | Source | Tier | Approved By | Date | Environment | Review Date | Status |
 |-----------|------|--------|------|-------------|------|-------------|-------------|--------|
@@ -414,7 +424,9 @@ const registerTemplate = `| Extension | Type | Source | Tier | Approved By | Dat
 | context7 | Plugin | Anthropic marketplace | 1 | Self | {{EFFECTIVE_DATE}} | Project | {{NEXT_REVIEW}} | Active |
 | coderabbit | Plugin | Anthropic marketplace | 2 | AI Lead | {{EFFECTIVE_DATE}} | Project | {{NEXT_REVIEW}} | Active |`;
 
-const fullPolicyText = `# AI Extension Governance Policy
+function getFullPolicyText(config: SiteConfigData): string {
+  const sensitiveDataLabel = config.sensitiveDataLabel ?? 'sensitive data';
+  return `# AI Extension Governance Policy
 
 **Organisation:** {{COMPANY_NAME}}
 **Industry:** {{INDUSTRY}}
@@ -508,7 +520,7 @@ Extensions are classified into three risk tiers based on their potential impact.
 ### Tier 3 \u2014 High Risk
 
 **Characteristics:** Sensitive data access, production systems, unknown sources, compliance impact, automated real-world actions.
-**Examples:** Customer database connectors, ${siteConfig.sensitiveDataLabel} handlers, browser automation on live sites, autonomous agent teams.
+**Examples:** Customer database connectors, ${sensitiveDataLabel} handlers, browser automation on live sites, autonomous agent teams.
 **Approval:** AI Lead review + MD sign-off with written risk assessment.
 
 ---
@@ -592,7 +604,7 @@ ${registerTemplate}
 - Audit trail for Tier 3 extensions
 
 ### Sensitive Data
-No AI extension may access ${siteConfig.sensitiveDataLabel} without formal Tier 3 assessment, MD approval, and DPIA where applicable.
+No AI extension may access ${sensitiveDataLabel} without formal Tier 3 assessment, MD approval, and DPIA where applicable.
 
 ---
 
@@ -618,6 +630,7 @@ No AI extension may access ${siteConfig.sensitiveDataLabel} without formal Tier 
 | Commands | Low | Self-serve | Low | Manual updates |
 | Hooks | Medium | AI Lead approval | None | Manual maintenance |
 | Subagents | High | Team + security review | High | Complex maintenance |`;
+}
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
@@ -646,7 +659,10 @@ function PlaceholderBadge({
   );
 }
 
-function renderContentWithPlaceholders(text: string) {
+function renderContentWithPlaceholders(
+  text: string,
+  placeholders: PlaceholderDef[],
+) {
   const parts = text.split(/({{[A-Z_]+}})/g);
   return parts.map((part, i) => {
     const match = placeholders.find((p) => p.placeholder === part);
@@ -870,11 +886,17 @@ function PolicyExportButtons({ fullPolicyText }: { fullPolicyText: string }) {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function GovernancePolicySection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const isGeneral = track === 'general';
   const [viewMode, setViewMode] = useState<'walkthrough' | 'full'>(
     'walkthrough',
   );
+
+  const placeholders = getPlaceholders(siteConfig);
+  const riskTiers = getRiskTiers(siteConfig);
+  const policySections = getPolicySections(siteConfig);
+  const fullPolicyText = getFullPolicyText(siteConfig);
 
   const filteredSections = policySections.filter((s) =>
     s.tracks.includes(track),
@@ -1049,7 +1071,10 @@ export function GovernancePolicySection() {
                         className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100"
                       />
                       <div className="max-w-prose whitespace-pre-line pr-10 text-sm leading-relaxed text-foreground">
-                        {renderContentWithPlaceholders(section.content)}
+                        {renderContentWithPlaceholders(
+                          section.content,
+                          placeholders,
+                        )}
                       </div>
                     </div>
 
@@ -1070,7 +1095,7 @@ export function GovernancePolicySection() {
                 className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100"
               />
               <div className="max-w-prose whitespace-pre-line pr-10 text-sm leading-relaxed text-foreground">
-                {renderContentWithPlaceholders(fullPolicyText)}
+                {renderContentWithPlaceholders(fullPolicyText, placeholders)}
               </div>
             </div>
           </div>

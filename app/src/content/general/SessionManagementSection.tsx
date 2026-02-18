@@ -19,7 +19,7 @@ import { CalloutCard } from '@/components/content/CalloutCard';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { getAtomicTaskTitle } from '@/content/shared/session-management-data';
 import {
   ChevronDown,
@@ -39,7 +39,7 @@ import {
   handoffWorkflowSteps,
   handoffScenarios,
   infoArchElements,
-  workedExamples,
+  getWorkedExamples,
   platformComparisons,
   copyablePrompts,
   promptCategoryLabels,
@@ -57,8 +57,10 @@ const sessionTocEntries = [
 ];
 
 export function SessionManagementSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const isDev = track === 'developer';
+  const workedExamples = getWorkedExamples(siteConfig);
 
   const filteredPrompts = copyablePrompts.filter((p) =>
     p.tracks.includes(track),
@@ -780,18 +782,21 @@ export function SessionManagementSection() {
           Setting Up Persistent Context
         </h2>
         <p className="mb-4 max-w-[65ch] text-sm leading-relaxed text-muted-foreground">
-          Claude does not remember anything between conversations unless you tell
-          it to. Every new chat starts from zero. Persistent context is how you
-          give Claude a head start &mdash; so it already knows who you are, what
-          you work on, and how you like things done.
+          Claude does not remember anything between conversations unless you
+          tell it to. Every new chat starts from zero. Persistent context is how
+          you give Claude a head start &mdash; so it already knows who you are,
+          what you work on, and how you like things done.
         </p>
 
         <CalloutCard variant="important" className="mb-6">
           <p>
-            <strong>Knowledge that lives in people&apos;s heads is invisible to
-            Claude.</strong> If your team agreed on a process in a meeting, or a
-            client preference was discussed over email, Claude has no way to know
-            about it unless you write it down somewhere it can see.
+            <strong>
+              Knowledge that lives in people&apos;s heads is invisible to
+              Claude.
+            </strong>{' '}
+            If your team agreed on a process in a meeting, or a client
+            preference was discussed over email, Claude has no way to know about
+            it unless you write it down somewhere it can see.
           </p>
         </CalloutCard>
 
@@ -842,8 +847,8 @@ export function SessionManagementSection() {
           <p>
             The most common mistake is trying to include everything. Your
             persistent context should be a short, sharp pointer to what matters
-            &mdash; not a complete manual. Think of it as a map that tells Claude
-            where things are, not an encyclopaedia that tries to contain
+            &mdash; not a complete manual. Think of it as a map that tells
+            Claude where things are, not an encyclopaedia that tries to contain
             everything.
           </p>
           <p>
@@ -863,9 +868,13 @@ export function SessionManagementSection() {
             <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
               <li>Your role and team context</li>
               <li>Brand voice and tone guidelines</li>
-              <li>Preferred output format (bullet points, formal prose, etc.)</li>
-              <li>Key constraints (&ldquo;always UK English&rdquo;, &ldquo;never
-                include personal data&rdquo;)</li>
+              <li>
+                Preferred output format (bullet points, formal prose, etc.)
+              </li>
+              <li>
+                Key constraints (&ldquo;always UK English&rdquo;, &ldquo;never
+                include personal data&rdquo;)
+              </li>
               <li>Project-specific terminology or jargon</li>
             </ul>
           </div>
@@ -874,10 +883,21 @@ export function SessionManagementSection() {
               What NOT to include
             </h4>
             <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-              <li>Sensitive data (passwords, API keys, personal information)</li>
-              <li>Information that changes frequently (current project status, this week&apos;s priorities)</li>
-              <li>Generic instructions Claude already knows (&ldquo;be helpful&rdquo;, &ldquo;write clearly&rdquo;)</li>
-              <li>Long documents or entire style guides &mdash; summarise the key points instead</li>
+              <li>
+                Sensitive data (passwords, API keys, personal information)
+              </li>
+              <li>
+                Information that changes frequently (current project status,
+                this week&apos;s priorities)
+              </li>
+              <li>
+                Generic instructions Claude already knows (&ldquo;be
+                helpful&rdquo;, &ldquo;write clearly&rdquo;)
+              </li>
+              <li>
+                Long documents or entire style guides &mdash; summarise the key
+                points instead
+              </li>
             </ul>
           </div>
         </div>
@@ -907,8 +927,8 @@ When I ask you to write content for this project, follow these guidelines unless
               >
                 CLAUDE.md files
               </Link>{' '}
-              &mdash; the code-level equivalent of persistent context that Claude
-              Code reads automatically at the start of every session. The{' '}
+              &mdash; the code-level equivalent of persistent context that
+              Claude Code reads automatically at the start of every session. The{' '}
               <Link
                 to={`/${track}/documentation`}
                 className="text-primary hover:underline"

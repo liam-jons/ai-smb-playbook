@@ -16,7 +16,8 @@ import { Button } from '@/components/ui/button';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
+import type { SiteConfigData } from '@/config/client-config-schema';
 import { cn } from '@/lib/utils';
 import {
   Globe2,
@@ -66,106 +67,112 @@ interface GettingStartedStep {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const automationPatterns: AutomationPattern[] = [
-  {
-    id: 'manual-trigger',
-    number: 1,
-    name: 'Manual Trigger, Automated Execution',
-    audience: 'Everyone',
-    audienceColour: 'bg-success-muted text-success-muted-foreground',
-    description:
-      'The simplest and most reliable pattern. You start the task manually (open Claude, paste a prompt or invoke a skill), and Claude handles the complex execution.',
-    howItWorks: [
-      'Create a detailed skill or prompt that defines the full workflow',
-      'When you want to run it, open a new Claude session and trigger it',
-      'Claude executes the multi-step task: gathering data, analysing, formatting output, and presenting results',
-    ],
-    clientExample: {
-      title: 'Weekly training report',
-      description: `A skill that reviews the ${siteConfig.reportDataSource}, summarises completion rates, flags any overdue training, and formats a report for the ${siteConfig.complianceStakeholders}. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.`,
-    },
-    whenToUse:
-      'Any recurring task where the execution is complex but the trigger can be manual. This covers the majority of current use cases.',
-    icon: PlayCircle,
-  },
-  {
-    id: 'browser-automation',
-    number: 2,
-    name: 'Browser Automation via CoWork',
-    audience: 'Everyone',
-    audienceColour: 'bg-success-muted text-success-muted-foreground',
-    description:
-      "CoWork is Anthropic's browser automation environment — it lets Claude control a web browser to complete tasks on websites. CoWork can interact with web interfaces, fill forms, extract data, and navigate multi-step processes.",
-    howItWorks: [
-      'CoWork operates a browser session that Claude controls \u2014 when the browser is under AI control, the border displays an orange hue',
-      'Instruct Claude to visit a website, navigate to specific pages, extract data, and compile results',
-      'Particularly useful for monitoring tasks where the data lives in a web interface rather than a file',
-    ],
-    clientExample: {
-      title: 'Website accessibility monitoring',
+function getAutomationPatterns(config: SiteConfigData): AutomationPattern[] {
+  const reportDataSource = config.reportDataSource ?? 'data source';
+  const complianceStakeholders =
+    config.complianceStakeholders ?? 'stakeholders';
+  const clientOnboardingType = config.clientOnboardingType ?? 'client project';
+  return [
+    {
+      id: 'manual-trigger',
+      number: 1,
+      name: 'Manual Trigger, Automated Execution',
+      audience: 'Everyone',
+      audienceColour: 'bg-success-muted text-success-muted-foreground',
       description:
-        'A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the "Accessibility as a Service" offering \u2014 regular checks on client sites.',
-    },
-    additionalExamples: [
-      {
-        title: 'Deal / opportunity monitoring',
-        description:
-          'As discussed during the training: a CoWork workflow that checks a pipeline tool or inbox for new opportunities, and flags anything requiring attention. The same pattern applies to any web-based dashboard or inbox where you need regular visibility without logging in manually.',
+        'The simplest and most reliable pattern. You start the task manually (open Claude, paste a prompt or invoke a skill), and Claude handles the complex execution.',
+      howItWorks: [
+        'Create a detailed skill or prompt that defines the full workflow',
+        'When you want to run it, open a new Claude session and trigger it',
+        'Claude executes the multi-step task: gathering data, analysing, formatting output, and presenting results',
+      ],
+      clientExample: {
+        title: 'Weekly training report',
+        description: `A skill that reviews the ${reportDataSource}, summarises completion rates, flags any overdue training, and formats a report for the ${complianceStakeholders}. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.`,
       },
-    ],
-    whenToUse:
-      'When the data you need lives in a web application and there is no API or export. CoWork is the bridge between "I need to check this website regularly" and "Claude can read and process the information".',
-    limitations: [
-      'CoWork sessions are not persistent \u2014 they do not run in the background',
-      'Browser automation can break if the target website changes its layout',
-      'Credentials must be provided carefully (use existing password management practices)',
-    ],
-    icon: Globe2,
-  },
-  {
-    id: 'self-updating',
-    number: 3,
-    name: 'Self-Updating Skills',
-    audience: 'Everyone',
-    audienceColour: 'bg-success-muted text-success-muted-foreground',
-    description:
-      'Skills can be designed to update their own content based on new information. This creates a pattern where running a skill produces an improved version of itself.',
-    howItWorks: [
-      'A skill includes instructions to review its own output and compare against previous runs',
-      'Each time you run the skill, it incorporates what it learnt from the last run',
-      'This creates a feedback loop: the skill gets better and more tailored over time',
-    ],
-    clientExample: {
-      title: 'Client onboarding checklist',
-      description: `A skill that walks through the steps for setting up a new ${siteConfig.clientOnboardingType}. Each time it is used, the person running it can note any steps that were missing or wrong. The skill's final action is to update the checklist template based on that feedback. Over time, the onboarding process becomes more complete and accurate without anyone maintaining a separate document.`,
+      whenToUse:
+        'Any recurring task where the execution is complex but the trigger can be manual. This covers the majority of current use cases.',
+      icon: PlayCircle,
     },
-    whenToUse:
-      'For any process that benefits from incremental improvement. The skill is both the executor and the maintainer.',
-    icon: RefreshCw,
-  },
-  {
-    id: 'external-trigger',
-    number: 4,
-    name: 'External Trigger + Claude Execution',
-    audience: 'With dev support',
-    audienceColour: 'bg-important-muted text-important-muted-foreground',
-    description:
-      'For teams with some technical capability, external scheduling tools can trigger Claude tasks. The schedule lives outside Claude; the intelligence lives inside Claude.',
-    howItWorks: [
-      'An external system (cron job, CI/CD pipeline, task scheduler, or webhook) triggers a Claude Code session or API call at a set time',
-      'Claude receives the context and executes the defined workflow',
-      'Results can be written to files, sent via email, or posted to a channel',
-    ],
-    clientExample: {
-      title: 'Automated code quality check',
+    {
+      id: 'browser-automation',
+      number: 2,
+      name: 'Browser Automation via CoWork',
+      audience: 'Everyone',
+      audienceColour: 'bg-success-muted text-success-muted-foreground',
       description:
-        'A GitHub Actions workflow that runs nightly, invoking Claude Code to review recent commits against coding standards and generate a summary. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude.',
+        "CoWork is Anthropic's browser automation environment — it lets Claude control a web browser to complete tasks on websites. CoWork can interact with web interfaces, fill forms, extract data, and navigate multi-step processes.",
+      howItWorks: [
+        'CoWork operates a browser session that Claude controls \u2014 when the browser is under AI control, the border displays an orange hue',
+        'Instruct Claude to visit a website, navigate to specific pages, extract data, and compile results',
+        'Particularly useful for monitoring tasks where the data lives in a web interface rather than a file',
+      ],
+      clientExample: {
+        title: 'Website accessibility monitoring',
+        description:
+          'A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the "Accessibility as a Service" offering \u2014 regular checks on client sites.',
+      },
+      additionalExamples: [
+        {
+          title: 'Deal / opportunity monitoring',
+          description:
+            'As discussed during the training: a CoWork workflow that checks a pipeline tool or inbox for new opportunities, and flags anything requiring attention. The same pattern applies to any web-based dashboard or inbox where you need regular visibility without logging in manually.',
+        },
+      ],
+      whenToUse:
+        'When the data you need lives in a web application and there is no API or export. CoWork is the bridge between "I need to check this website regularly" and "Claude can read and process the information".',
+      limitations: [
+        'CoWork sessions are not persistent \u2014 they do not run in the background',
+        'Browser automation can break if the target website changes its layout',
+        'Credentials must be provided carefully (use existing password management practices)',
+      ],
+      icon: Globe2,
     },
-    whenToUse:
-      'When you need genuine scheduled execution (not just manual triggering). Requires some developer involvement to set up the external trigger. For implementation details, see the Developer track.',
-    icon: Zap,
-  },
-];
+    {
+      id: 'self-updating',
+      number: 3,
+      name: 'Self-Updating Skills',
+      audience: 'Everyone',
+      audienceColour: 'bg-success-muted text-success-muted-foreground',
+      description:
+        'Skills can be designed to update their own content based on new information. This creates a pattern where running a skill produces an improved version of itself.',
+      howItWorks: [
+        'A skill includes instructions to review its own output and compare against previous runs',
+        'Each time you run the skill, it incorporates what it learnt from the last run',
+        'This creates a feedback loop: the skill gets better and more tailored over time',
+      ],
+      clientExample: {
+        title: 'Client onboarding checklist',
+        description: `A skill that walks through the steps for setting up a new ${clientOnboardingType}. Each time it is used, the person running it can note any steps that were missing or wrong. The skill's final action is to update the checklist template based on that feedback. Over time, the onboarding process becomes more complete and accurate without anyone maintaining a separate document.`,
+      },
+      whenToUse:
+        'For any process that benefits from incremental improvement. The skill is both the executor and the maintainer.',
+      icon: RefreshCw,
+    },
+    {
+      id: 'external-trigger',
+      number: 4,
+      name: 'External Trigger + Claude Execution',
+      audience: 'With dev support',
+      audienceColour: 'bg-important-muted text-important-muted-foreground',
+      description:
+        'For teams with some technical capability, external scheduling tools can trigger Claude tasks. The schedule lives outside Claude; the intelligence lives inside Claude.',
+      howItWorks: [
+        'An external system (cron job, CI/CD pipeline, task scheduler, or webhook) triggers a Claude Code session or API call at a set time',
+        'Claude receives the context and executes the defined workflow',
+        'Results can be written to files, sent via email, or posted to a channel',
+      ],
+      clientExample: {
+        title: 'Automated code quality check',
+        description:
+          'A GitHub Actions workflow that runs nightly, invoking Claude Code to review recent commits against coding standards and generate a summary. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude.',
+      },
+      whenToUse:
+        'When you need genuine scheduled execution (not just manual triggering). Requires some developer involvement to set up the external trigger. For implementation details, see the Developer track.',
+      icon: Zap,
+    },
+  ];
+}
 
 const currentLimitations: Limitation[] = [
   {
@@ -190,48 +197,56 @@ const currentLimitations: Limitation[] = [
   },
 ];
 
-const gettingStartedSteps: GettingStartedStep[] = [
-  {
-    number: 1,
-    title: 'Identify your recurring tasks',
-    description: `What do you do weekly, monthly, or after specific events that involves gathering data, summarising, or formatting? Examples from ${siteConfig.companyShortName}: ${siteConfig.exampleRecurringTasks.join(', ')}.`,
-    icon: Search,
-  },
-  {
-    number: 2,
-    title: 'Build a skill for each one',
-    description:
-      'Write the workflow as a Claude skill (see Section 1.4 for how skills work, see the Starter Kit for examples). Test it manually a few times and refine.',
-    icon: ListChecks,
-  },
-  {
-    number: 3,
-    title: 'Create a "run book" prompt',
-    description:
-      'For each recurring task, write a trigger prompt that you paste into Claude to kick off the workflow. Store these prompts somewhere accessible to the team (a shared document, a Slack channel, or the Skills system itself).',
-    icon: PlayCircle,
-  },
-  {
-    number: 4,
-    title: 'Review monthly',
-    description:
-      'Check whether new capabilities have been released that would allow you to automate the trigger step. The AI landscape moves quickly \u2014 what requires manual triggering today may be fully schedulable in three months.',
-    icon: RefreshCw,
-  },
-];
+function getGettingStartedStepsGeneral(
+  config: SiteConfigData,
+): GettingStartedStep[] {
+  return [
+    {
+      number: 1,
+      title: 'Identify your recurring tasks',
+      description: `What do you do weekly, monthly, or after specific events that involves gathering data, summarising, or formatting? Examples from ${config.companyShortName}: ${config.exampleRecurringTasks.join(', ')}.`,
+      icon: Search,
+    },
+    {
+      number: 2,
+      title: 'Build a skill for each one',
+      description:
+        'Write the workflow as a Claude skill (see Section 1.4 for how skills work, see the Starter Kit for examples). Test it manually a few times and refine.',
+      icon: ListChecks,
+    },
+    {
+      number: 3,
+      title: 'Create a "run book" prompt',
+      description:
+        'For each recurring task, write a trigger prompt that you paste into Claude to kick off the workflow. Store these prompts somewhere accessible to the team (a shared document, a Slack channel, or the Skills system itself).',
+      icon: PlayCircle,
+    },
+    {
+      number: 4,
+      title: 'Review monthly',
+      description:
+        'Check whether new capabilities have been released that would allow you to automate the trigger step. The AI landscape moves quickly \u2014 what requires manual triggering today may be fully schedulable in three months.',
+      icon: RefreshCw,
+    },
+  ];
+}
 
-const weeklyReportPrompt = `I'd like you to generate a weekly training report. Please:
+function getWeeklyReportPrompt(config: SiteConfigData): string {
+  const complianceStakeholders =
+    config.complianceStakeholders ?? 'stakeholders';
+  return `I'd like you to generate a weekly training report. Please:
 
 1. Review the training data I'm about to provide
 2. Summarise completion rates by team/department
 3. Flag any overdue or incomplete mandatory training
 4. Highlight trends compared to the previous period (if I provide it)
-5. Format the output as a brief report suitable for sharing with the ${siteConfig.complianceStakeholders}
+5. Format the output as a brief report suitable for sharing with the ${complianceStakeholders}
 
 Use UK English throughout. Keep the tone professional but accessible.
 
 Here's the data:
 [paste your training data export here]`;
+}
 
 const websiteChangePrompt = `I need you to check a website for changes. Please:
 
@@ -320,8 +335,12 @@ Let's start with the first question \u2014 what recurring tasks does your team h
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function RecurringTasksSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const [whatsComingOpen, setWhatsComingOpen] = useState(false);
+  const automationPatterns = getAutomationPatterns(siteConfig);
+  const gettingStartedSteps = getGettingStartedStepsGeneral(siteConfig);
+  const weeklyReportPrompt = getWeeklyReportPrompt(siteConfig);
 
   return (
     <div className="space-y-12">
@@ -658,6 +677,7 @@ export function RecurringTasksSection() {
 // ─── Pattern sub-components ──────────────────────────────────────────────────
 
 function PatternContent({ pattern }: { pattern: AutomationPattern }) {
+  const siteConfig = useSiteConfig();
   return (
     <>
       <div className="flex items-center gap-2">
@@ -742,6 +762,7 @@ function PatternContent({ pattern }: { pattern: AutomationPattern }) {
 }
 
 function PatternCard({ pattern }: { pattern: AutomationPattern }) {
+  const siteConfig = useSiteConfig();
   const Icon = pattern.icon;
 
   return (

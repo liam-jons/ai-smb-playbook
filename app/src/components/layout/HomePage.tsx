@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getSectionsForTrack } from '@/content/shared/sections';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 
 /** First few sections from each track — gives new users a clear starting point */
 const GENERAL_HIGHLIGHTS = [
@@ -27,6 +27,7 @@ const DEVELOPER_HIGHLIGHTS = [
 ];
 
 export function HomePage() {
+  const siteConfig = useSiteConfig();
   const generalSections = getSectionsForTrack('general');
   const developerSections = getSectionsForTrack('developer');
 

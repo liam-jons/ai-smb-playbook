@@ -10,7 +10,7 @@ import {
   Zap,
   type LucideIcon,
 } from 'lucide-react';
-import { siteConfig } from '@/config/site';
+import type { SiteConfigData } from '@/config/client-config-schema';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -325,51 +325,53 @@ export const availabilityMatrix: AvailabilityRow[] = [
   },
 ];
 
-export const referenceCards: ReferenceCard[] = [
-  {
-    id: 'claudemd',
-    name: 'CLAUDE.md',
-    whatItIs:
-      'A markdown file (named CLAUDE.md) that stores project context, conventions, and instructions. Claude reads it automatically at the start of every session.',
-    devOnly: true,
-    generalOnly: false,
-    whenToUse: [
-      'Project conventions ("always use pnpm, not npm")',
-      'Build commands and test instructions',
-      'Architecture overview and key patterns',
-      '"Never do X" rules',
-      'Tech stack specifications',
-    ],
-    whenNotToUse: [
-      'Reference material Claude only needs sometimes (use a skill instead)',
-      'Workflows triggered on demand (use a skill with slash command)',
-      'Content that exceeds ~500 lines (move detail to skills or /docs)',
-    ],
-    contextCost:
-      'Full content loads at session start and is included in every request. Keep under ~500 lines.',
-    comparison: {
-      headers: ['Aspect', 'CLAUDE.md', 'Skill'],
-      rows: [
-        [
-          'Loads',
-          'Every session, automatically',
-          'On demand (description at start, full content when used)',
-        ],
-        [
-          'Can include files',
-          'Yes, with @path imports',
-          'Yes, with @path imports',
-        ],
-        ['Can trigger workflows', 'No', 'Yes, with /<name>'],
-        [
-          'Best for',
-          '"Always do X" rules',
-          'Reference material, invocable workflows',
-        ],
+/** Build reference cards with client-specific content from config. */
+export function getReferenceCards(config: SiteConfigData): ReferenceCard[] {
+  return [
+    {
+      id: 'claudemd',
+      name: 'CLAUDE.md',
+      whatItIs:
+        'A markdown file (named CLAUDE.md) that stores project context, conventions, and instructions. Claude reads it automatically at the start of every session.',
+      devOnly: true,
+      generalOnly: false,
+      whenToUse: [
+        'Project conventions ("always use pnpm, not npm")',
+        'Build commands and test instructions',
+        'Architecture overview and key patterns',
+        '"Never do X" rules',
+        'Tech stack specifications',
       ],
-    },
-    codeExample: {
-      code: `# Project: [Project Name]
+      whenNotToUse: [
+        'Reference material Claude only needs sometimes (use a skill instead)',
+        'Workflows triggered on demand (use a skill with slash command)',
+        'Content that exceeds ~500 lines (move detail to skills or /docs)',
+      ],
+      contextCost:
+        'Full content loads at session start and is included in every request. Keep under ~500 lines.',
+      comparison: {
+        headers: ['Aspect', 'CLAUDE.md', 'Skill'],
+        rows: [
+          [
+            'Loads',
+            'Every session, automatically',
+            'On demand (description at start, full content when used)',
+          ],
+          [
+            'Can include files',
+            'Yes, with @path imports',
+            'Yes, with @path imports',
+          ],
+          ['Can trigger workflows', 'No', 'Yes, with /<name>'],
+          [
+            'Best for',
+            '"Always do X" rules',
+            'Reference material, invocable workflows',
+          ],
+        ],
+      },
+      codeExample: {
+        code: `# Project: [Project Name]
 
 ## Build Commands
 - \`npm run dev\` — start local dev server
@@ -391,52 +393,52 @@ export const referenceCards: ReferenceCard[] = [
 - Never deploy to production without passing tests
 - Never commit API keys or secrets
 - Always create a new branch for feature work`,
-      language: 'markdown',
-      title: 'CLAUDE.md template',
+        language: 'markdown',
+        title: 'CLAUDE.md template',
+      },
     },
-  },
-  {
-    id: 'projects',
-    name: 'Projects (Custom Instructions)',
-    whatItIs:
-      'Projects on claude.ai and Claude Desktop let you set persistent instructions that apply to every conversation within that project. Think of it as the general-user equivalent of CLAUDE.md.',
-    devOnly: false,
-    generalOnly: true,
-    whenToUse: [
-      'Setting tone and formatting rules for all conversations in a project',
-      'Ensuring every team member follows the same guidelines',
-      'Providing background context Claude should always know',
-    ],
-    contextCost:
-      'Custom instructions load at the start of every conversation within the project. Keep them focused and concise.',
-    setupSteps: [
-      'Open claude.ai and create or open a Project',
-      'Go to Project Settings > Custom Instructions',
-      `Add your rules and context (e.g., "Always use UK English. Our company is ${siteConfig.companyName}.")`,
-      'Every conversation in this project now inherits those instructions',
-    ],
-  },
-  {
-    id: 'skills',
-    name: 'Skills',
-    whatItIs:
-      'A markdown file containing reusable knowledge, instructions, or workflows that Claude can draw on. Skills follow the open Agent Skills standard for cross-tool compatibility.',
-    devOnly: false,
-    generalOnly: false,
-    whenToUse: [
-      'Reusable reference material (brand guidelines, API docs, coding standards)',
-      'Repeatable workflows (deployment, code review, session handoff)',
-      "Specialist knowledge Claude should have access to but doesn't need every session",
-      'Any instruction set you want to share across team members',
-    ],
-    contextCost:
-      'At session start, only skill names and descriptions load (low cost). When used, the full SKILL.md content loads into the conversation.',
-    generalNote:
-      'Skills are invoked automatically via natural language. Simply describe your task naturally and Claude matches it to the relevant skill. Upload skills via Settings > Capabilities, or have your admin deploy them to the whole team.',
-    devDetails:
-      'Skills are filesystem-based, stored in .claude/skills/ as directories containing a SKILL.md file. Invoke explicitly with /skill-name or let Claude auto-load based on task relevance.',
-    codeExample: {
-      code: `---
+    {
+      id: 'projects',
+      name: 'Projects (Custom Instructions)',
+      whatItIs:
+        'Projects on claude.ai and Claude Desktop let you set persistent instructions that apply to every conversation within that project. Think of it as the general-user equivalent of CLAUDE.md.',
+      devOnly: false,
+      generalOnly: true,
+      whenToUse: [
+        'Setting tone and formatting rules for all conversations in a project',
+        'Ensuring every team member follows the same guidelines',
+        'Providing background context Claude should always know',
+      ],
+      contextCost:
+        'Custom instructions load at the start of every conversation within the project. Keep them focused and concise.',
+      setupSteps: [
+        'Open claude.ai and create or open a Project',
+        'Go to Project Settings > Custom Instructions',
+        `Add your rules and context (e.g., "Always use UK English. Our company is ${config.companyName}.")`,
+        'Every conversation in this project now inherits those instructions',
+      ],
+    },
+    {
+      id: 'skills',
+      name: 'Skills',
+      whatItIs:
+        'A markdown file containing reusable knowledge, instructions, or workflows that Claude can draw on. Skills follow the open Agent Skills standard for cross-tool compatibility.',
+      devOnly: false,
+      generalOnly: false,
+      whenToUse: [
+        'Reusable reference material (brand guidelines, API docs, coding standards)',
+        'Repeatable workflows (deployment, code review, session handoff)',
+        "Specialist knowledge Claude should have access to but doesn't need every session",
+        'Any instruction set you want to share across team members',
+      ],
+      contextCost:
+        'At session start, only skill names and descriptions load (low cost). When used, the full SKILL.md content loads into the conversation.',
+      generalNote:
+        'Skills are invoked automatically via natural language. Simply describe your task naturally and Claude matches it to the relevant skill. Upload skills via Settings > Capabilities, or have your admin deploy them to the whole team.',
+      devDetails:
+        'Skills are filesystem-based, stored in .claude/skills/ as directories containing a SKILL.md file. Invoke explicitly with /skill-name or let Claude auto-load based on task relevance.',
+      codeExample: {
+        code: `---
 name: session-handoff
 description: |
   WHEN the user wants to hand off a conversation to another team member,
@@ -466,52 +468,52 @@ Produce a markdown document with:
 - Explain the "why" behind decisions, not just the "what"
 - Flag any risks or concerns for the next person
 - Keep it concise — aim for a document someone can read in 2-3 minutes`,
-      language: 'markdown',
-      title: 'Example skill file (SKILL.md)',
+        language: 'markdown',
+        title: 'Example skill file (SKILL.md)',
+      },
     },
-  },
-  {
-    id: 'mcp',
-    name: 'MCP (Model Context Protocol)',
-    whatItIs:
-      'A protocol for connecting Claude to external services and data sources. MCP servers expose tools that Claude can call — query a database, post to Slack, control a browser.',
-    devOnly: false,
-    generalOnly: false,
-    whenToUse: [
-      'Claude needs to interact with an external system (database, API, browser, project management tool)',
-      "You want Claude to have access to real-time data, not just what's in the conversation",
-      'You need Claude to take actions in external tools (post messages, create tickets, deploy code)',
-    ],
-    contextCost:
-      'All tool definitions and schemas load at session start. Tool search caps at 10% of context, deferring the rest until needed.',
-    generalNote:
-      'On claude.ai, MCP is presented as "Connectors" — pre-built, managed connections to services like Google Drive, Notion, and Slack. Your admin manages which Connectors are available to the team.',
-    devDetails:
-      "Configure MCP servers in .claude/settings.json or .mcp.json. Disconnect servers you're not actively using — run /mcp to see token costs per server.",
-    warning:
-      'MCP connections can fail silently mid-session. If a server disconnects, its tools disappear without warning. Check connection status with /mcp if Claude fails to use a tool it previously could access.',
-    comparison: {
-      headers: ['Aspect', 'MCP', 'Skill'],
-      rows: [
-        [
-          'What it is',
-          'Protocol for connecting to external services',
-          'Knowledge, workflows, reference material',
-        ],
-        [
-          'Provides',
-          'Tools and data access',
-          'Knowledge, workflows, reference material',
-        ],
-        [
-          'Examples',
-          'Slack integration, database queries, browser control',
-          'Code review checklist, deploy workflow, API style guide',
-        ],
+    {
+      id: 'mcp',
+      name: 'MCP (Model Context Protocol)',
+      whatItIs:
+        'A protocol for connecting Claude to external services and data sources. MCP servers expose tools that Claude can call — query a database, post to Slack, control a browser.',
+      devOnly: false,
+      generalOnly: false,
+      whenToUse: [
+        'Claude needs to interact with an external system (database, API, browser, project management tool)',
+        "You want Claude to have access to real-time data, not just what's in the conversation",
+        'You need Claude to take actions in external tools (post messages, create tickets, deploy code)',
       ],
-    },
-    codeExample: {
-      code: `{
+      contextCost:
+        'All tool definitions and schemas load at session start. Tool search caps at 10% of context, deferring the rest until needed.',
+      generalNote:
+        'On claude.ai, MCP is presented as "Connectors" — pre-built, managed connections to services like Google Drive, Notion, and Slack. Your admin manages which Connectors are available to the team.',
+      devDetails:
+        "Configure MCP servers in .claude/settings.json or .mcp.json. Disconnect servers you're not actively using — run /mcp to see token costs per server.",
+      warning:
+        'MCP connections can fail silently mid-session. If a server disconnects, its tools disappear without warning. Check connection status with /mcp if Claude fails to use a tool it previously could access.',
+      comparison: {
+        headers: ['Aspect', 'MCP', 'Skill'],
+        rows: [
+          [
+            'What it is',
+            'Protocol for connecting to external services',
+            'Knowledge, workflows, reference material',
+          ],
+          [
+            'Provides',
+            'Tools and data access',
+            'Knowledge, workflows, reference material',
+          ],
+          [
+            'Examples',
+            'Slack integration, database queries, browser control',
+            'Code review checklist, deploy workflow, API style guide',
+          ],
+        ],
+      },
+      codeExample: {
+        code: `{
   "mcpServers": {
     "deepwiki": {
       "command": "npx",
@@ -519,101 +521,101 @@ Produce a markdown document with:
     }
   }
 }`,
-      language: 'json',
-      title: 'MCP configuration (.claude/settings.json)',
+        language: 'json',
+        title: 'MCP configuration (.claude/settings.json)',
+      },
     },
-  },
-  {
-    id: 'subagents',
-    name: 'Subagents',
-    whatItIs:
-      'An isolated worker that runs in its own context window, does a task, and returns only a summary to your main conversation. Like delegating to a colleague who gives you a brief report rather than showing you all their working.',
-    devOnly: true,
-    generalOnly: false,
-    whenToUse: [
-      'A task requires reading many files but you only need the findings',
-      'Your context window is getting full and you want to offload work',
-      'You need parallel workers on independent tasks',
-      "You want context isolation — the subagent's intermediate work doesn't clutter your session",
-    ],
-    contextCost:
-      'Zero cost on your main context — subagents run in complete isolation.',
-    warning:
-      'Subagents cannot spawn other subagents (no nesting). MCP tools are NOT available in background subagents.',
-    comparison: {
-      headers: ['Scenario', 'Use'],
-      rows: [
-        ['Quick focused task, only result matters', 'Subagent'],
-        ['Workers need to communicate with each other', 'Agent Team'],
-        ['Reusable knowledge or workflow', 'Skill'],
-        ['Deterministic automation', 'Hook'],
+    {
+      id: 'subagents',
+      name: 'Subagents',
+      whatItIs:
+        'An isolated worker that runs in its own context window, does a task, and returns only a summary to your main conversation. Like delegating to a colleague who gives you a brief report rather than showing you all their working.',
+      devOnly: true,
+      generalOnly: false,
+      whenToUse: [
+        'A task requires reading many files but you only need the findings',
+        'Your context window is getting full and you want to offload work',
+        'You need parallel workers on independent tasks',
+        "You want context isolation — the subagent's intermediate work doesn't clutter your session",
       ],
+      contextCost:
+        'Zero cost on your main context — subagents run in complete isolation.',
+      warning:
+        'Subagents cannot spawn other subagents (no nesting). MCP tools are NOT available in background subagents.',
+      comparison: {
+        headers: ['Scenario', 'Use'],
+        rows: [
+          ['Quick focused task, only result matters', 'Subagent'],
+          ['Workers need to communicate with each other', 'Agent Team'],
+          ['Reusable knowledge or workflow', 'Skill'],
+          ['Deterministic automation', 'Hook'],
+        ],
+      },
     },
-  },
-  {
-    id: 'agent-teams',
-    name: 'Agent Teams',
-    whatItIs:
-      'Multiple independent Claude Code sessions that coordinate via a shared task list and peer-to-peer messaging. Each teammate is a separate Claude instance with its own context.',
-    devOnly: true,
-    generalOnly: false,
-    whenToUse: [
-      'Complex work requiring discussion and collaboration between workers',
-      'Research with competing hypotheses',
-      'Parallel code review (security + performance + tests simultaneously)',
-      'New feature development where each teammate owns a separate piece',
-    ],
-    contextCost:
-      'High — each teammate is a separate Claude instance with its own context. Reserve for genuinely parallel work that requires coordination.',
-    warning:
-      'Agent Teams are experimental. Enable with CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1. Known limitations: no session resumption, one team per session, limited terminal support.',
-    comparison: {
-      headers: ['Aspect', 'Subagent', 'Agent Team'],
-      rows: [
-        [
-          'Context',
-          'Own window; results return to caller',
-          'Own window; fully independent',
-        ],
-        [
-          'Communication',
-          'Reports results back to main agent only',
-          'Teammates message each other directly',
-        ],
-        [
-          'Coordination',
-          'Main agent manages all work',
-          'Shared task list with self-coordination',
-        ],
-        [
-          'Best for',
-          'Focused tasks where only the result matters',
-          'Complex work requiring discussion',
-        ],
-        [
-          'Token cost',
-          'Lower — results summarised back',
-          'Higher — each teammate is a separate instance',
-        ],
+    {
+      id: 'agent-teams',
+      name: 'Agent Teams',
+      whatItIs:
+        'Multiple independent Claude Code sessions that coordinate via a shared task list and peer-to-peer messaging. Each teammate is a separate Claude instance with its own context.',
+      devOnly: true,
+      generalOnly: false,
+      whenToUse: [
+        'Complex work requiring discussion and collaboration between workers',
+        'Research with competing hypotheses',
+        'Parallel code review (security + performance + tests simultaneously)',
+        'New feature development where each teammate owns a separate piece',
       ],
+      contextCost:
+        'High — each teammate is a separate Claude instance with its own context. Reserve for genuinely parallel work that requires coordination.',
+      warning:
+        'Agent Teams are experimental. Enable with CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1. Known limitations: no session resumption, one team per session, limited terminal support.',
+      comparison: {
+        headers: ['Aspect', 'Subagent', 'Agent Team'],
+        rows: [
+          [
+            'Context',
+            'Own window; results return to caller',
+            'Own window; fully independent',
+          ],
+          [
+            'Communication',
+            'Reports results back to main agent only',
+            'Teammates message each other directly',
+          ],
+          [
+            'Coordination',
+            'Main agent manages all work',
+            'Shared task list with self-coordination',
+          ],
+          [
+            'Best for',
+            'Focused tasks where only the result matters',
+            'Complex work requiring discussion',
+          ],
+          [
+            'Token cost',
+            'Lower — results summarised back',
+            'Higher — each teammate is a separate instance',
+          ],
+        ],
+      },
     },
-  },
-  {
-    id: 'hooks',
-    name: 'Hooks',
-    whatItIs:
-      'Deterministic scripts that run automatically when specific events occur in Claude Code. No AI involved — purely predictable automation.',
-    devOnly: true,
-    generalOnly: false,
-    whenToUse: [
-      'You want something to happen automatically, every time, with no AI judgement',
-      'Post-edit linting, pre-commit testing, notification sending',
-      'Quality gates that must always run (not optional, not probabilistic)',
-    ],
-    contextCost:
-      'Zero — hooks run as external scripts outside the agentic loop. Exception: if a hook returns output, that output gets added as messages to your conversation.',
-    codeExample: {
-      code: `{
+    {
+      id: 'hooks',
+      name: 'Hooks',
+      whatItIs:
+        'Deterministic scripts that run automatically when specific events occur in Claude Code. No AI involved — purely predictable automation.',
+      devOnly: true,
+      generalOnly: false,
+      whenToUse: [
+        'You want something to happen automatically, every time, with no AI judgement',
+        'Post-edit linting, pre-commit testing, notification sending',
+        'Quality gates that must always run (not optional, not probabilistic)',
+      ],
+      contextCost:
+        'Zero — hooks run as external scripts outside the agentic loop. Exception: if a hook returns output, that output gets added as messages to your conversation.',
+      codeExample: {
+        code: `{
   "hooks": {
     "PostToolUse": [
       {
@@ -628,26 +630,27 @@ Produce a markdown document with:
     ]
   }
 }`,
-      language: 'json',
-      title: 'Hook configuration (.claude/settings.json)',
+        language: 'json',
+        title: 'Hook configuration (.claude/settings.json)',
+      },
     },
-  },
-  {
-    id: 'plugins',
-    name: 'Plugins',
-    whatItIs:
-      'Packaging layer that bundles skills, hooks, subagents, MCP servers, and LSP servers into a single installable unit. Useful when you want to reuse the same setup across multiple repositories or distribute to others.',
-    devOnly: true,
-    generalOnly: false,
-    whenToUse: [
-      'Sharing a set of extensions across multiple projects',
-      'Distributing tools to other developers',
-      'Packaging a complete workflow (skill + hook + MCP config) as a single install',
-    ],
-    contextCost:
-      'Varies — depends on the bundled components. Skill descriptions load at start; hooks run externally; MCP tools add to context.',
-  },
-];
+    {
+      id: 'plugins',
+      name: 'Plugins',
+      whatItIs:
+        'Packaging layer that bundles skills, hooks, subagents, MCP servers, and LSP servers into a single installable unit. Useful when you want to reuse the same setup across multiple repositories or distribute to others.',
+      devOnly: true,
+      generalOnly: false,
+      whenToUse: [
+        'Sharing a set of extensions across multiple projects',
+        'Distributing tools to other developers',
+        'Packaging a complete workflow (skill + hook + MCP config) as a single install',
+      ],
+      contextCost:
+        'Varies — depends on the bundled components. Skill descriptions load at start; hooks run externally; MCP tools add to context.',
+    },
+  ];
+}
 
 export const contextCostTable: ContextCostRow[] = [
   {

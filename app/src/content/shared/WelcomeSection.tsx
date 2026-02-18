@@ -13,7 +13,7 @@ import { motion } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CopyButton } from '@/components/content/CopyButton';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
 
 function getQuickWins(track: string) {
@@ -123,7 +123,10 @@ const fadeIn = {
 /*  Print helper — builds document via DOM manipulation                */
 /* ------------------------------------------------------------------ */
 
-function buildPrintDocument(track: string): string {
+function buildPrintDocument(
+  track: string,
+  siteConfig: { appTitle: string; trainingDate: string },
+): string {
   const referenceItems = getQuickReferenceItems(track);
   const sections = referenceItems
     .map((section) => {
@@ -171,6 +174,7 @@ function escapeHtml(text: string): string {
 /* ------------------------------------------------------------------ */
 
 export function WelcomeSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
 
   const quickWins = useMemo(() => getQuickWins(track), [track]);
@@ -198,7 +202,7 @@ export function WelcomeSection() {
   const motionFadeProps = prefersReducedMotion ? {} : fadeIn;
 
   const handlePrint = useCallback(() => {
-    const html = buildPrintDocument(track);
+    const html = buildPrintDocument(track, siteConfig);
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const printWindow = window.open(url, '_blank');
@@ -214,7 +218,7 @@ export function WelcomeSection() {
     } else {
       URL.revokeObjectURL(url);
     }
-  }, [track]);
+  }, [track, siteConfig]);
 
   return (
     <div className="space-y-12">

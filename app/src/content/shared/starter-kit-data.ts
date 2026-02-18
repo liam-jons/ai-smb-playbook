@@ -1,5 +1,5 @@
 import type { Track } from '@/content/shared/types';
-import { siteConfig } from '@/config/site';
+import type { SiteConfigData } from '@/config/client-config-schema';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -163,7 +163,10 @@ function skillInstall(skillName: string): InstallInstructions {
 /*  Raw file contents (embedded for inline display)                    */
 /* ------------------------------------------------------------------ */
 
-const RAW_GOVERNANCE_POLICY = `# AI Tool Governance Policy
+function getRawGovernancePolicy(complianceArea: string) {
+  const complianceAreaCapitalised =
+    complianceArea.charAt(0).toUpperCase() + complianceArea.slice(1);
+  return `# AI Tool Governance Policy
 
 **Organisation:** {{COMPANY_NAME}}
 **Industry:** {{INDUSTRY}}
@@ -404,7 +407,7 @@ As a UK-based organisation, {{COMPANY_NAME}} must ensure that AI tool extensions
 
 {{COMPANY_NAME}} operates in {{INDUSTRY}}. The following additional considerations apply:
 
-- [ ] **${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} data:** If working with ${siteConfig.complianceArea}-related data, ensure no personal data relating to vulnerable individuals is processed through AI extensions without explicit authorisation and appropriate safeguards
+- [ ] **${complianceAreaCapitalised} data:** If working with ${complianceArea}-related data, ensure no personal data relating to vulnerable individuals is processed through AI extensions without explicit authorisation and appropriate safeguards
 - [ ] **Public sector requirements:** If handling public sector data, verify that AI tool usage complies with relevant departmental policies and security classifications
 - [ ] **Professional standards:** Ensure AI tool usage aligns with any professional body requirements relevant to {{INDUSTRY}}
 
@@ -458,6 +461,7 @@ The following extensions are recommended for initial approval based on the train
 | commit-commands | Plugin (marketplace) | Low | Git workflow commands |
 | pr-review-toolkit | Plugin (marketplace) | Low | PR review with specialised agents |
 | context7 | Plugin (marketplace) | Low | Library documentation lookup |`;
+}
 
 const RAW_CLAUDE_MD_TEMPLATE = `# CLAUDE.md
 
@@ -1278,7 +1282,10 @@ Here's what I can share to start:
 
 Please work through each section one at a time, asking me questions and presenting options before moving to the next. When we're done, compile everything into a single brand voice document I can save and reuse.`;
 
-const RAW_EXAMPLE_HANDOFF_GENERAL = `# Example: General User Session Handoff
+function getRawExampleHandoffGeneral(complianceArea: string) {
+  const complianceAreaCapitalised =
+    complianceArea.charAt(0).toUpperCase() + complianceArea.slice(1);
+  return `# Example: General User Session Handoff
 
 The following is an example of a completed session handoff for a non-technical user. It demonstrates the simplified format — a single text block that can be copied and pasted into a new conversation.
 
@@ -1290,9 +1297,9 @@ The following is an example of a completed session handoff for a non-technical u
 
 ## What We Were Working On
 
-I am working on a series of three blog posts about how technology is improving ${siteConfig.complianceArea} in the education sector. These are for our company blog and will also be shared on LinkedIn. The target audience is school administrators and ${siteConfig.complianceArea} leads — they are knowledgeable about ${siteConfig.complianceArea} but not particularly technical.
+I am working on a series of three blog posts about how technology is improving ${complianceArea} in the education sector. These are for our company blog and will also be shared on LinkedIn. The target audience is school administrators and ${complianceArea} leads — they are knowledgeable about ${complianceArea} but not particularly technical.
 
-**Project:** Blog series — 'Technology and ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} in Education'
+**Project:** Blog series — 'Technology and ${complianceAreaCapitalised} in Education'
 **Started:** 10/02/2026
 **Goal:** Three publish-ready blog posts of approximately 800-1,000 words each, with consistent tone and messaging.
 
@@ -1301,10 +1308,10 @@ I am working on a series of three blog posts about how technology is improving $
 ## What Was Accomplished
 
 - Outlined all three posts and agreed on the structure:
-  1. 'Why Digital ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Matters More Than Ever' (awareness/problem)
-  2. 'Five Questions to Ask When Choosing a ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Platform' (evaluation guide)
+  1. 'Why Digital ${complianceAreaCapitalised} Matters More Than Ever' (awareness/problem)
+  2. 'Five Questions to Ask When Choosing a ${complianceAreaCapitalised} Platform' (evaluation guide)
   3. 'Building a Culture of Digital Safety in Your School' (practical implementation)
-- Completed a full draft of Post 1 ('Why Digital ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Matters More Than Ever')
+- Completed a full draft of Post 1 ('Why Digital ${complianceAreaCapitalised} Matters More Than Ever')
 - Reviewed the draft against our brand voice guidelines — made adjustments to tone (was too formal in places, needed to be more approachable)
 - Agreed on key messaging: lead with the human impact, support with data, avoid fear-mongering
 - Decided not to mention specific competitor products by name
@@ -1314,7 +1321,7 @@ I am working on a series of three blog posts about how technology is improving $
 
 ## What Needs to Happen Next
 
-- Write the first draft of Post 2 ('Five Questions to Ask When Choosing a ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} Platform')
+- Write the first draft of Post 2 ('Five Questions to Ask When Choosing a ${complianceAreaCapitalised} Platform')
 - The five questions should be practical and vendor-neutral — not a sales pitch for our platform
 - After drafting Post 2, review both Post 1 and Post 2 together for consistency of tone
 - If time allows, begin outlining Post 3 in more detail
@@ -1338,10 +1345,12 @@ I am working on a series of three blog posts about how technology is improving $
 - When drafting Post 2, make the five questions genuinely useful
 - Do not make the questions leading towards our product; keep them objective
 - Ask me before making significant changes to the agreed structure`;
+}
 
-const RAW_EXAMPLE_HANDOFF_TECHNICAL = `# Session 04 Continuation Prompt
+function getRawExampleHandoffTechnical(complianceArea: string) {
+  return `# Session 04 Continuation Prompt
 
-**Project:** CaseHub — Internal case management dashboard for school ${siteConfig.complianceArea} teams
+**Project:** CaseHub — Internal case management dashboard for school ${complianceArea} teams
 **Previous Session:** Session 03 (API route implementation and database schema refinement)
 **Date Created:** 12/02/2026
 **Repository:** \\\`/home/dev/projects/casehub\\\`
@@ -1410,701 +1419,715 @@ This session is complete when:
 - [ ] Users can edit an existing note via the UI
 - [ ] All new code has UK English in user-facing strings and comments
 - [ ] All existing tests still pass`;
+}
 
 /* ------------------------------------------------------------------ */
 /*  File data                                                          */
 /* ------------------------------------------------------------------ */
 
-export const STARTER_KIT_FILES: StarterKitFile[] = [
-  // ── Skills ────────────────────────────────────────────────────────
-  {
-    id: 'skill-uk-english',
-    name: 'UK English',
-    description:
-      'Enforce UK English spelling, grammar, and conventions in all output.',
-    longDescription:
-      'Ensures Claude uses British English throughout — correct spellings (colour, organise, behaviour), UK date formats (DD/MM/YYYY), GBP currency (£), and British grammar conventions. Works on all platforms.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'high',
-    filePath: 'skills/uk-english/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('uk-english'),
-    installCommand:
-      'cp -r starter-kit/skills/uk-english .claude/skills/uk-english',
-    rawContent: RAW_SKILL_UK_ENGLISH,
-    tier: 'base',
-  },
-  {
-    id: 'skill-session-handoff',
-    name: 'Session Handoff',
-    description: 'Create continuation prompts for session handoffs.',
-    longDescription:
-      'Guides you through creating structured handoff prompts when you need to preserve context across sessions. Detects five scenario types (planned boundary, context overflow, task delegation, artifact iteration, multi-workstream) and adapts its output for both technical and non-technical users. Includes reference templates and a context awareness guide.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'high',
-    filePath: 'skills/session-handoff/',
-    isMultiFile: true,
-    installInstructions: skillInstall('session-handoff'),
-    installCommand:
-      'cp -r starter-kit/skills/session-handoff .claude/skills/session-handoff',
-    rawContent: RAW_SESSION_HANDOFF_SKILL,
-    tier: 'base',
-  },
-  {
-    id: 'skill-brand-voice',
-    name: 'Brand Voice',
-    description: 'Framework for documenting brand voice and style.',
-    longDescription:
-      'A comprehensive framework covering seven areas: brand personality, voice attributes, audience awareness, core messaging pillars, tone spectrum, style rules, and terminology. Works conversationally — Claude guides you through each section and compiles a reusable brand voice document.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'medium',
-    filePath: 'skills/brand-voice/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('brand-voice'),
-    installCommand:
-      'cp -r starter-kit/skills/brand-voice .claude/skills/brand-voice',
-    rawContent: RAW_SKILL_BRAND_VOICE,
-    tier: 'base',
-  },
-  {
-    id: 'skill-brand-review',
-    name: 'Brand Review',
-    description: 'Review content against brand guidelines.',
-    longDescription:
-      'Evaluates content across four dimensions: voice and tone, terminology and language, messaging pillar alignment, and style guide compliance. Works best with a brand voice document loaded. Also checks for unsubstantiated claims, missing disclaimers, and regulatory concerns. Includes UK English checks.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'medium',
-    filePath: 'skills/brand-review/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('brand-review'),
-    installCommand:
-      'cp -r starter-kit/skills/brand-review .claude/skills/brand-review',
-    rawContent: RAW_SKILL_BRAND_REVIEW,
-    tier: 'base',
-  },
-  {
-    id: 'skill-brainstorming',
-    name: 'Brainstorming',
-    description: 'Structured brainstorming frameworks.',
-    longDescription:
-      'Provides structured brainstorming techniques and frameworks for generating ideas, exploring options, and evaluating solutions. Useful for any creative or problem-solving task.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'low',
-    filePath: 'skills/brainstorming/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('brainstorming'),
-    installCommand:
-      'cp -r starter-kit/skills/brainstorming .claude/skills/brainstorming',
-    rawContent: RAW_SKILL_BRAINSTORMING,
-    tier: 'base',
-  },
-  {
-    id: 'skill-writing-plans',
-    name: 'Writing Plans',
-    description: 'Writing plan creation.',
-    longDescription:
-      'Helps create structured writing plans for long-form content. Guides you through outlining, structuring arguments, and planning content flow before you start writing.',
-    category: 'skill',
-    tracks: ['general'],
-    priority: 'low',
-    filePath: 'skills/writing-plans/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('writing-plans'),
-    installCommand:
-      'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
-    rawContent: RAW_SKILL_WRITING_PLANS,
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'skill-writing-skills',
-    name: 'Writing Skills',
-    description: 'Writing quality improvement.',
-    longDescription:
-      'Enhances writing quality with techniques drawn from Anthropic best practices and persuasion principles. Includes supporting reference files for advanced writing techniques.',
-    category: 'skill',
-    tracks: ['general'],
-    priority: 'low',
-    filePath: 'skills/writing-skills/',
-    isMultiFile: true,
-    installInstructions: skillInstall('writing-skills'),
-    installCommand:
-      'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
-    rawContent: RAW_SKILL_WRITING_SKILLS,
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'skill-proposal-writer',
-    name: 'Proposal Writer',
-    description: 'Proposal and tender writing.',
-    longDescription:
-      'Comprehensive proposal writing skill with 11 rule files covering formatting, executive summaries, pricing, RFP response, statement of work, strategy, and more. Designed for professional proposals and tender responses.',
-    category: 'skill',
-    tracks: ['general'],
-    priority: 'low',
-    filePath: 'skills/proposal-writer/',
-    isMultiFile: true,
-    installInstructions: skillInstall('proposal-writer'),
-    installCommand:
-      'cp -r starter-kit/skills/proposal-writer .claude/skills/proposal-writer',
-    rawContent: RAW_SKILL_PROPOSAL_WRITER,
-    tier: 'custom',
-    customCategory: 'business-development',
-  },
-  {
-    id: 'skill-file-organizer',
-    name: 'File Organiser',
-    description: 'File organisation assistance.',
-    longDescription:
-      'Helps organise and structure files and directories. Useful for tidying up project structures, naming conventions, and folder hierarchies.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'low',
-    filePath: 'skills/file-organizer/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('file-organizer'),
-    installCommand:
-      'cp -r starter-kit/skills/file-organizer .claude/skills/file-organizer',
-    rawContent: RAW_SKILL_FILE_ORGANIZER,
-    tier: 'base',
-  },
-  {
-    id: 'skill-markdown-converter',
-    name: 'Markdown Converter',
-    description: 'Content conversion to/from markdown.',
-    longDescription:
-      'Converts content between markdown and other formats. Useful for transforming documents, notes, and structured content.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'low',
-    filePath: 'skills/markdown-converter/SKILL.md',
-    isMultiFile: false,
-    installInstructions: skillInstall('markdown-converter'),
-    installCommand:
-      'cp -r starter-kit/skills/markdown-converter .claude/skills/markdown-converter',
-    rawContent: RAW_SKILL_MARKDOWN_CONVERTER,
-    tier: 'base',
-  },
-  {
-    id: 'skill-mermaid-diagrams',
-    name: 'Mermaid Diagrams',
-    description: 'Mermaid diagram generation.',
-    longDescription:
-      'Generates Mermaid diagrams with six reference files covering flowcharts, sequence diagrams, class diagrams, ERD diagrams, C4 diagrams, and advanced features. Developer-leaning but accessible to anyone familiar with diagrams.',
-    category: 'skill',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'skills/mermaid-diagrams/',
-    isMultiFile: true,
-    installInstructions: skillInstall('mermaid-diagrams'),
-    installCommand:
-      'cp -r starter-kit/skills/mermaid-diagrams .claude/skills/mermaid-diagrams',
-    rawContent: RAW_SKILL_MERMAID_DIAGRAMS,
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'skill-canvas-design',
-    name: 'Canvas Design',
-    description: 'Canvas/image design skill with font files.',
-    longDescription:
-      'A specialist design skill for canvas-based image generation, bundled with a collection of fonts and their OFL licences. Best suited for users working on visual design tasks.',
-    category: 'skill',
-    tracks: ['general', 'developer'],
-    priority: 'low',
-    filePath: 'skills/canvas-design/',
-    isMultiFile: true,
-    installInstructions: skillInstall('canvas-design'),
-    installCommand:
-      'cp -r starter-kit/skills/canvas-design .claude/skills/canvas-design',
-    rawContent: RAW_SKILL_CANVAS_DESIGN,
-    tier: 'custom',
-    customCategory: 'creative-design',
-  },
-  {
-    id: 'skill-agent-browser',
-    name: 'Agent Browser',
-    description: 'Browser automation skill.',
-    longDescription:
-      'Comprehensive browser automation skill with five reference files (authentication, proxy support, session management, snapshot references, video recording) and three shell templates. Designed for advanced use cases requiring automated browser interaction.',
-    category: 'skill',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'skills/agent-browser/',
-    isMultiFile: true,
-    installInstructions: skillInstall('agent-browser'),
-    installCommand:
-      'cp -r starter-kit/skills/agent-browser .claude/skills/agent-browser',
-    rawContent: RAW_SKILL_AGENT_BROWSER,
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
+/** Build starter kit files with client-specific content from config. */
+export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
+  const complianceArea = config.complianceArea ?? 'compliance';
 
-  // ── Commands ──────────────────────────────────────────────────────
-  {
-    id: 'command-brand-review',
-    name: 'Brand Review (Command)',
-    description: 'Review content against brand guidelines via slash command.',
-    longDescription:
-      'The slash command version of the brand-review skill, for use in Claude Code. Invoke with /brand-review to run a structured review of content against your brand guidelines. Checks voice, terminology, messaging, style, and legal/compliance concerns.',
-    category: 'command',
-    tracks: ['developer'],
-    priority: 'medium',
-    filePath: 'commands/brand-review.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeCode:
-        'Copy the command file to your project:\ncp starter-kit/commands/brand-review.md .claude/commands/brand-review.md\n\nInvoke with: /brand-review',
+  return [
+    // ── Skills ────────────────────────────────────────────────────────
+    {
+      id: 'skill-uk-english',
+      name: 'UK English',
+      description:
+        'Enforce UK English spelling, grammar, and conventions in all output.',
+      longDescription:
+        'Ensures Claude uses British English throughout — correct spellings (colour, organise, behaviour), UK date formats (DD/MM/YYYY), GBP currency (£), and British grammar conventions. Works on all platforms.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'high',
+      filePath: 'skills/uk-english/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('uk-english'),
+      installCommand:
+        'cp -r starter-kit/skills/uk-english .claude/skills/uk-english',
+      rawContent: RAW_SKILL_UK_ENGLISH,
+      tier: 'base',
     },
-    installCommand:
-      'cp starter-kit/commands/brand-review.md .claude/commands/brand-review.md',
-    tier: 'base',
-  },
+    {
+      id: 'skill-session-handoff',
+      name: 'Session Handoff',
+      description: 'Create continuation prompts for session handoffs.',
+      longDescription:
+        'Guides you through creating structured handoff prompts when you need to preserve context across sessions. Detects five scenario types (planned boundary, context overflow, task delegation, artifact iteration, multi-workstream) and adapts its output for both technical and non-technical users. Includes reference templates and a context awareness guide.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'high',
+      filePath: 'skills/session-handoff/',
+      isMultiFile: true,
+      installInstructions: skillInstall('session-handoff'),
+      installCommand:
+        'cp -r starter-kit/skills/session-handoff .claude/skills/session-handoff',
+      rawContent: RAW_SESSION_HANDOFF_SKILL,
+      tier: 'base',
+    },
+    {
+      id: 'skill-brand-voice',
+      name: 'Brand Voice',
+      description: 'Framework for documenting brand voice and style.',
+      longDescription:
+        'A comprehensive framework covering seven areas: brand personality, voice attributes, audience awareness, core messaging pillars, tone spectrum, style rules, and terminology. Works conversationally — Claude guides you through each section and compiles a reusable brand voice document.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'medium',
+      filePath: 'skills/brand-voice/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('brand-voice'),
+      installCommand:
+        'cp -r starter-kit/skills/brand-voice .claude/skills/brand-voice',
+      rawContent: RAW_SKILL_BRAND_VOICE,
+      tier: 'base',
+    },
+    {
+      id: 'skill-brand-review',
+      name: 'Brand Review',
+      description: 'Review content against brand guidelines.',
+      longDescription:
+        'Evaluates content across four dimensions: voice and tone, terminology and language, messaging pillar alignment, and style guide compliance. Works best with a brand voice document loaded. Also checks for unsubstantiated claims, missing disclaimers, and regulatory concerns. Includes UK English checks.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'medium',
+      filePath: 'skills/brand-review/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('brand-review'),
+      installCommand:
+        'cp -r starter-kit/skills/brand-review .claude/skills/brand-review',
+      rawContent: RAW_SKILL_BRAND_REVIEW,
+      tier: 'base',
+    },
+    {
+      id: 'skill-brainstorming',
+      name: 'Brainstorming',
+      description: 'Structured brainstorming frameworks.',
+      longDescription:
+        'Provides structured brainstorming techniques and frameworks for generating ideas, exploring options, and evaluating solutions. Useful for any creative or problem-solving task.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'low',
+      filePath: 'skills/brainstorming/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('brainstorming'),
+      installCommand:
+        'cp -r starter-kit/skills/brainstorming .claude/skills/brainstorming',
+      rawContent: RAW_SKILL_BRAINSTORMING,
+      tier: 'base',
+    },
+    {
+      id: 'skill-writing-plans',
+      name: 'Writing Plans',
+      description: 'Writing plan creation.',
+      longDescription:
+        'Helps create structured writing plans for long-form content. Guides you through outlining, structuring arguments, and planning content flow before you start writing.',
+      category: 'skill',
+      tracks: ['general'],
+      priority: 'low',
+      filePath: 'skills/writing-plans/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('writing-plans'),
+      installCommand:
+        'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
+      rawContent: RAW_SKILL_WRITING_PLANS,
+      tier: 'custom',
+      customCategory: 'developer-tools',
+    },
+    {
+      id: 'skill-writing-skills',
+      name: 'Writing Skills',
+      description: 'Writing quality improvement.',
+      longDescription:
+        'Enhances writing quality with techniques drawn from Anthropic best practices and persuasion principles. Includes supporting reference files for advanced writing techniques.',
+      category: 'skill',
+      tracks: ['general'],
+      priority: 'low',
+      filePath: 'skills/writing-skills/',
+      isMultiFile: true,
+      installInstructions: skillInstall('writing-skills'),
+      installCommand:
+        'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
+      rawContent: RAW_SKILL_WRITING_SKILLS,
+      tier: 'custom',
+      customCategory: 'developer-tools',
+    },
+    {
+      id: 'skill-proposal-writer',
+      name: 'Proposal Writer',
+      description: 'Proposal and tender writing.',
+      longDescription:
+        'Comprehensive proposal writing skill with 11 rule files covering formatting, executive summaries, pricing, RFP response, statement of work, strategy, and more. Designed for professional proposals and tender responses.',
+      category: 'skill',
+      tracks: ['general'],
+      priority: 'low',
+      filePath: 'skills/proposal-writer/',
+      isMultiFile: true,
+      installInstructions: skillInstall('proposal-writer'),
+      installCommand:
+        'cp -r starter-kit/skills/proposal-writer .claude/skills/proposal-writer',
+      rawContent: RAW_SKILL_PROPOSAL_WRITER,
+      tier: 'custom',
+      customCategory: 'business-development',
+    },
+    {
+      id: 'skill-file-organizer',
+      name: 'File Organiser',
+      description: 'File organisation assistance.',
+      longDescription:
+        'Helps organise and structure files and directories. Useful for tidying up project structures, naming conventions, and folder hierarchies.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'low',
+      filePath: 'skills/file-organizer/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('file-organizer'),
+      installCommand:
+        'cp -r starter-kit/skills/file-organizer .claude/skills/file-organizer',
+      rawContent: RAW_SKILL_FILE_ORGANIZER,
+      tier: 'base',
+    },
+    {
+      id: 'skill-markdown-converter',
+      name: 'Markdown Converter',
+      description: 'Content conversion to/from markdown.',
+      longDescription:
+        'Converts content between markdown and other formats. Useful for transforming documents, notes, and structured content.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'low',
+      filePath: 'skills/markdown-converter/SKILL.md',
+      isMultiFile: false,
+      installInstructions: skillInstall('markdown-converter'),
+      installCommand:
+        'cp -r starter-kit/skills/markdown-converter .claude/skills/markdown-converter',
+      rawContent: RAW_SKILL_MARKDOWN_CONVERTER,
+      tier: 'base',
+    },
+    {
+      id: 'skill-mermaid-diagrams',
+      name: 'Mermaid Diagrams',
+      description: 'Mermaid diagram generation.',
+      longDescription:
+        'Generates Mermaid diagrams with six reference files covering flowcharts, sequence diagrams, class diagrams, ERD diagrams, C4 diagrams, and advanced features. Developer-leaning but accessible to anyone familiar with diagrams.',
+      category: 'skill',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'skills/mermaid-diagrams/',
+      isMultiFile: true,
+      installInstructions: skillInstall('mermaid-diagrams'),
+      installCommand:
+        'cp -r starter-kit/skills/mermaid-diagrams .claude/skills/mermaid-diagrams',
+      rawContent: RAW_SKILL_MERMAID_DIAGRAMS,
+      tier: 'custom',
+      customCategory: 'developer-tools',
+    },
+    {
+      id: 'skill-canvas-design',
+      name: 'Canvas Design',
+      description: 'Canvas/image design skill with font files.',
+      longDescription:
+        'A specialist design skill for canvas-based image generation, bundled with a collection of fonts and their OFL licences. Best suited for users working on visual design tasks.',
+      category: 'skill',
+      tracks: ['general', 'developer'],
+      priority: 'low',
+      filePath: 'skills/canvas-design/',
+      isMultiFile: true,
+      installInstructions: skillInstall('canvas-design'),
+      installCommand:
+        'cp -r starter-kit/skills/canvas-design .claude/skills/canvas-design',
+      rawContent: RAW_SKILL_CANVAS_DESIGN,
+      tier: 'custom',
+      customCategory: 'creative-design',
+    },
+    {
+      id: 'skill-agent-browser',
+      name: 'Agent Browser',
+      description: 'Browser automation skill.',
+      longDescription:
+        'Comprehensive browser automation skill with five reference files (authentication, proxy support, session management, snapshot references, video recording) and three shell templates. Designed for advanced use cases requiring automated browser interaction.',
+      category: 'skill',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'skills/agent-browser/',
+      isMultiFile: true,
+      installInstructions: skillInstall('agent-browser'),
+      installCommand:
+        'cp -r starter-kit/skills/agent-browser .claude/skills/agent-browser',
+      rawContent: RAW_SKILL_AGENT_BROWSER,
+      tier: 'custom',
+      customCategory: 'developer-tools',
+    },
 
-  // ── Templates ─────────────────────────────────────────────────────
-  {
-    id: 'template-governance-policy',
-    name: 'Governance Policy',
-    description: 'Customisable AI governance policy for UK SMBs.',
-    longDescription:
-      'A comprehensive governance policy template covering all AI extension types (skills, plugins, MCPs, commands, agents, hooks). Uses fill-in-the-blanks {{PLACEHOLDER}} variables for company name, industry, team size, and more. Includes approval workflows, risk assessment criteria, GDPR considerations, and a review schedule. Designed for UK organisations.',
-    category: 'template',
-    tracks: ['general', 'developer'],
-    priority: 'medium',
-    filePath: 'templates/governance-policy-template.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeCode:
-        "Copy to your project or use as a standalone document:\ncp starter-kit/templates/governance-policy-template.md ./governance-policy.md\n\nReplace all {{PLACEHOLDER}} values with your organisation's details.",
-      claudeDesktop:
-        "Download the file, open it in a text editor, and replace all {{PLACEHOLDER}} values with your organisation's details. Share with your team for review.",
-      claudeAi:
-        "Copy the template content into a new document. Replace all {{PLACEHOLDER}} values with your organisation's details.",
+    // ── Commands ──────────────────────────────────────────────────────
+    {
+      id: 'command-brand-review',
+      name: 'Brand Review (Command)',
+      description: 'Review content against brand guidelines via slash command.',
+      longDescription:
+        'The slash command version of the brand-review skill, for use in Claude Code. Invoke with /brand-review to run a structured review of content against your brand guidelines. Checks voice, terminology, messaging, style, and legal/compliance concerns.',
+      category: 'command',
+      tracks: ['developer'],
+      priority: 'medium',
+      filePath: 'commands/brand-review.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeCode:
+          'Copy the command file to your project:\ncp starter-kit/commands/brand-review.md .claude/commands/brand-review.md\n\nInvoke with: /brand-review',
+      },
+      installCommand:
+        'cp starter-kit/commands/brand-review.md .claude/commands/brand-review.md',
+      tier: 'base',
     },
-    rawContent: RAW_GOVERNANCE_POLICY,
-    tier: 'base',
-  },
-  {
-    id: 'template-claude-md',
-    name: 'CLAUDE.md Template',
-    description: 'Starter CLAUDE.md file for new projects.',
-    longDescription:
-      'A ready-to-use template for creating CLAUDE.md files — the project-level configuration file that gives Claude Code persistent context about your codebase. Covers project description, tech stack, dev commands, architecture, code style, testing, environment setup, key gotchas, and style rules. Pre-populated with a UK English rule.',
-    category: 'template',
-    tracks: ['developer'],
-    priority: 'medium',
-    filePath: 'templates/claude-md-template.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeCode:
-        'Copy to your project root as CLAUDE.md:\ncp starter-kit/templates/claude-md-template.md ./CLAUDE.md\n\nFill in the sections relevant to your project and delete the rest.',
-    },
-    rawContent: RAW_CLAUDE_MD_TEMPLATE,
-    tier: 'base',
-  },
-  {
-    id: 'template-docs-structure',
-    name: 'Docs Structure',
-    description:
-      'Recommended /docs directory layout for AI-readable codebases.',
-    longDescription:
-      'A guide describing the recommended /docs directory structure based on the progressive disclosure principle: CLAUDE.md as the map, /docs as the system of record. Covers five directories (architecture, conventions, integrations, schemas, references) with example files, maintenance guidance, and instructions for populating with the GSD codebase mapper.',
-    category: 'template',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'templates/docs-structure-template.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeCode:
-        'Create the directory structure in your project:\nmkdir -p docs/{architecture,conventions,integrations,schemas,references}\n\nRefer to the template for guidance on what goes in each directory.',
-    },
-    rawContent: RAW_DOCS_STRUCTURE_TEMPLATE,
-    tier: 'base',
-  },
 
-  // ── Prompts ───────────────────────────────────────────────────────
-  {
-    id: 'prompt-handoff-general',
-    name: 'Example Handoff (General)',
-    description: 'Example session handoff for general users.',
-    longDescription: `A completed example showing what a good session handoff looks like for a non-technical user. Demonstrates the simplified single-block format with a realistic scenario: a marketing team member working on blog posts about ${siteConfig.complianceArea} technology.`,
-    category: 'prompt',
-    tracks: ['general'],
-    priority: 'low',
-    filePath: 'prompts/example-handoff-general.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeDesktop:
-        'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
-      claudeAi:
-        'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
+    // ── Templates ─────────────────────────────────────────────────────
+    {
+      id: 'template-governance-policy',
+      name: 'Governance Policy',
+      description: 'Customisable AI governance policy for UK SMBs.',
+      longDescription:
+        'A comprehensive governance policy template covering all AI extension types (skills, plugins, MCPs, commands, agents, hooks). Uses fill-in-the-blanks {{PLACEHOLDER}} variables for company name, industry, team size, and more. Includes approval workflows, risk assessment criteria, GDPR considerations, and a review schedule. Designed for UK organisations.',
+      category: 'template',
+      tracks: ['general', 'developer'],
+      priority: 'medium',
+      filePath: 'templates/governance-policy-template.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeCode:
+          "Copy to your project or use as a standalone document:\ncp starter-kit/templates/governance-policy-template.md ./governance-policy.md\n\nReplace all {{PLACEHOLDER}} values with your organisation's details.",
+        claudeDesktop:
+          "Download the file, open it in a text editor, and replace all {{PLACEHOLDER}} values with your organisation's details. Share with your team for review.",
+        claudeAi:
+          "Copy the template content into a new document. Replace all {{PLACEHOLDER}} values with your organisation's details.",
+      },
+      rawContent: getRawGovernancePolicy(complianceArea),
+      tier: 'base',
     },
-    rawContent: RAW_EXAMPLE_HANDOFF_GENERAL,
-    tier: 'base',
-  },
-  {
-    id: 'prompt-handoff-technical',
-    name: 'Example Handoff (Developer)',
-    description: 'Example session handoff for developers.',
-    longDescription:
-      'A completed example showing what a good session handoff looks like for a Claude Code user. Demonstrates the full structured format with file directives, work tracker, success criteria, and a realistic development scenario.',
-    category: 'prompt',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'prompts/example-handoff-technical.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeCode:
-        'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
+    {
+      id: 'template-claude-md',
+      name: 'CLAUDE.md Template',
+      description: 'Starter CLAUDE.md file for new projects.',
+      longDescription:
+        'A ready-to-use template for creating CLAUDE.md files — the project-level configuration file that gives Claude Code persistent context about your codebase. Covers project description, tech stack, dev commands, architecture, code style, testing, environment setup, key gotchas, and style rules. Pre-populated with a UK English rule.',
+      category: 'template',
+      tracks: ['developer'],
+      priority: 'medium',
+      filePath: 'templates/claude-md-template.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeCode:
+          'Copy to your project root as CLAUDE.md:\ncp starter-kit/templates/claude-md-template.md ./CLAUDE.md\n\nFill in the sections relevant to your project and delete the rest.',
+      },
+      rawContent: RAW_CLAUDE_MD_TEMPLATE,
+      tier: 'base',
     },
-    rawContent: RAW_EXAMPLE_HANDOFF_TECHNICAL,
-    tier: 'base',
-  },
-  {
-    id: 'prompt-brand-voice-setup',
-    name: 'Brand Voice Setup Prompt',
-    description: 'Prompt to kick off brand voice documentation.',
-    longDescription:
-      'A ready-to-use prompt that starts the brand voice documentation process. Copy it into a new Claude conversation, fill in the bracketed sections with your company details and content examples, and Claude will guide you through all seven areas of brand voice definition.',
-    category: 'prompt',
-    tracks: ['general', 'developer'],
-    priority: 'medium',
-    filePath: 'prompts/brand-voice-setup-prompt.md',
-    isMultiFile: false,
-    installInstructions: {
-      claudeDesktop:
-        'Copy the prompt text from below and paste it into a new Claude Desktop conversation. Have your brand materials ready.',
-      claudeAi:
-        'Copy the prompt text from below and paste it into a new claude.ai conversation. Have your brand materials ready.',
-      claudeCode:
-        'Copy the prompt text and use it in a Claude Code session, or paste it into claude.ai for a more conversational experience.',
+    {
+      id: 'template-docs-structure',
+      name: 'Docs Structure',
+      description:
+        'Recommended /docs directory layout for AI-readable codebases.',
+      longDescription:
+        'A guide describing the recommended /docs directory structure based on the progressive disclosure principle: CLAUDE.md as the map, /docs as the system of record. Covers five directories (architecture, conventions, integrations, schemas, references) with example files, maintenance guidance, and instructions for populating with the GSD codebase mapper.',
+      category: 'template',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'templates/docs-structure-template.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeCode:
+          'Create the directory structure in your project:\nmkdir -p docs/{architecture,conventions,integrations,schemas,references}\n\nRefer to the template for guidance on what goes in each directory.',
+      },
+      rawContent: RAW_DOCS_STRUCTURE_TEMPLATE,
+      tier: 'base',
     },
-    rawContent: RAW_BRAND_VOICE_SETUP_PROMPT,
-    tier: 'base',
-  },
 
-  // ── GSD Mapper ────────────────────────────────────────────────────
-  {
-    id: 'gsd-mapper',
-    name: 'GSD Codebase Mapper',
-    description: 'Automated codebase documentation generator.',
-    longDescription:
-      'A comprehensive codebase mapping toolkit that spawns four parallel agents, each analysing a different focus area (technology, architecture, quality, concerns). Generates seven documentation files covering stack, structure, architecture, conventions, integrations, testing, and concerns. Includes an orchestrator command, agent definition, workflow file, and seven document templates.',
-    category: 'gsd-mapper',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'gsd-mapper/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode:
-        'Copy all mapper files to your project:\ncp -r starter-kit/gsd-mapper/agent .claude/agents/\ncp -r starter-kit/gsd-mapper/command .claude/commands/\ncp -r starter-kit/gsd-mapper/workflow .claude/workflows/\ncp -r starter-kit/gsd-mapper/templates .claude/templates/\n\nInvoke with: /map-codebase',
+    // ── Prompts ───────────────────────────────────────────────────────
+    {
+      id: 'prompt-handoff-general',
+      name: 'Example Handoff (General)',
+      description: 'Example session handoff for general users.',
+      longDescription: `A completed example showing what a good session handoff looks like for a non-technical user. Demonstrates the simplified single-block format with a realistic scenario: a marketing team member working on blog posts about ${complianceArea} technology.`,
+      category: 'prompt',
+      tracks: ['general'],
+      priority: 'low',
+      filePath: 'prompts/example-handoff-general.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeDesktop:
+          'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
+        claudeAi:
+          'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
+      },
+      rawContent: getRawExampleHandoffGeneral(complianceArea),
+      tier: 'base',
     },
-    installCommand:
-      'cp -r starter-kit/gsd-mapper/agent .claude/agents/ && cp -r starter-kit/gsd-mapper/command .claude/commands/ && cp -r starter-kit/gsd-mapper/workflow .claude/workflows/ && cp -r starter-kit/gsd-mapper/templates .claude/templates/',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
+    {
+      id: 'prompt-handoff-technical',
+      name: 'Example Handoff (Developer)',
+      description: 'Example session handoff for developers.',
+      longDescription:
+        'A completed example showing what a good session handoff looks like for a Claude Code user. Demonstrates the full structured format with file directives, work tracker, success criteria, and a realistic development scenario.',
+      category: 'prompt',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'prompts/example-handoff-technical.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeCode:
+          'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
+      },
+      rawContent: getRawExampleHandoffTechnical(complianceArea),
+      tier: 'base',
+    },
+    {
+      id: 'prompt-brand-voice-setup',
+      name: 'Brand Voice Setup Prompt',
+      description: 'Prompt to kick off brand voice documentation.',
+      longDescription:
+        'A ready-to-use prompt that starts the brand voice documentation process. Copy it into a new Claude conversation, fill in the bracketed sections with your company details and content examples, and Claude will guide you through all seven areas of brand voice definition.',
+      category: 'prompt',
+      tracks: ['general', 'developer'],
+      priority: 'medium',
+      filePath: 'prompts/brand-voice-setup-prompt.md',
+      isMultiFile: false,
+      installInstructions: {
+        claudeDesktop:
+          'Copy the prompt text from below and paste it into a new Claude Desktop conversation. Have your brand materials ready.',
+        claudeAi:
+          'Copy the prompt text from below and paste it into a new claude.ai conversation. Have your brand materials ready.',
+        claudeCode:
+          'Copy the prompt text and use it in a Claude Code session, or paste it into claude.ai for a more conversational experience.',
+      },
+      rawContent: RAW_BRAND_VOICE_SETUP_PROMPT,
+      tier: 'base',
+    },
 
-  // ── Plugins ───────────────────────────────────────────────────────
-  {
-    id: 'plugin-claude-md-management',
-    name: 'claude-md-management',
-    description: 'CLAUDE.md audit and improvement.',
-    longDescription:
-      'Audits your existing CLAUDE.md file and suggests improvements. Includes a skill for analysis and a command for revising. High value for developers who want to optimise their project context.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'medium',
-    filePath: 'plugins/claude-plugins-official/claude-md-management/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install claude-md-management',
+    // ── GSD Mapper ────────────────────────────────────────────────────
+    {
+      id: 'gsd-mapper',
+      name: 'GSD Codebase Mapper',
+      description: 'Automated codebase documentation generator.',
+      longDescription:
+        'A comprehensive codebase mapping toolkit that spawns four parallel agents, each analysing a different focus area (technology, architecture, quality, concerns). Generates seven documentation files covering stack, structure, architecture, conventions, integrations, testing, and concerns. Includes an orchestrator command, agent definition, workflow file, and seven document templates.',
+      category: 'gsd-mapper',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'gsd-mapper/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode:
+          'Copy all mapper files to your project:\ncp -r starter-kit/gsd-mapper/agent .claude/agents/\ncp -r starter-kit/gsd-mapper/command .claude/commands/\ncp -r starter-kit/gsd-mapper/workflow .claude/workflows/\ncp -r starter-kit/gsd-mapper/templates .claude/templates/\n\nInvoke with: /map-codebase',
+      },
+      installCommand:
+        'cp -r starter-kit/gsd-mapper/agent .claude/agents/ && cp -r starter-kit/gsd-mapper/command .claude/commands/ && cp -r starter-kit/gsd-mapper/workflow .claude/workflows/ && cp -r starter-kit/gsd-mapper/templates .claude/templates/',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install claude-md-management',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-commit-commands',
-    name: 'commit-commands',
-    description: 'Git workflow commands (commit, push, PR creation).',
-    longDescription:
-      'Provides slash commands for common git workflows: creating commits with conventional messages, pushing and creating pull requests, and cleaning up merged branches. Essential for daily development workflow.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'medium',
-    filePath: 'plugins/claude-plugins-official/commit-commands/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install commit-commands',
+
+    // ── Plugins ───────────────────────────────────────────────────────
+    {
+      id: 'plugin-claude-md-management',
+      name: 'claude-md-management',
+      description: 'CLAUDE.md audit and improvement.',
+      longDescription:
+        'Audits your existing CLAUDE.md file and suggests improvements. Includes a skill for analysis and a command for revising. High value for developers who want to optimise their project context.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'medium',
+      filePath: 'plugins/claude-plugins-official/claude-md-management/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install claude-md-management',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install claude-md-management',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install commit-commands',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-pr-review-toolkit',
-    name: 'pr-review-toolkit',
-    description: 'PR review with specialised agents.',
-    longDescription:
-      'A comprehensive PR review toolkit with six specialised agents: code reviewer, code simplifier, comment analyser, PR test analyser, silent failure hunter, and type design analyser. Provides thorough, multi-perspective code reviews.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'medium',
-    filePath: 'plugins/claude-plugins-official/pr-review-toolkit/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install pr-review-toolkit',
+    {
+      id: 'plugin-commit-commands',
+      name: 'commit-commands',
+      description: 'Git workflow commands (commit, push, PR creation).',
+      longDescription:
+        'Provides slash commands for common git workflows: creating commits with conventional messages, pushing and creating pull requests, and cleaning up merged branches. Essential for daily development workflow.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'medium',
+      filePath: 'plugins/claude-plugins-official/commit-commands/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install commit-commands',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install commit-commands',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install pr-review-toolkit',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-coderabbit',
-    name: 'coderabbit',
-    description: 'Code review integration.',
-    longDescription:
-      'Code review integration that provides structured code review capabilities with a dedicated agent, command, and skill.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/coderabbit/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install coderabbit',
+    {
+      id: 'plugin-pr-review-toolkit',
+      name: 'pr-review-toolkit',
+      description: 'PR review with specialised agents.',
+      longDescription:
+        'A comprehensive PR review toolkit with six specialised agents: code reviewer, code simplifier, comment analyser, PR test analyser, silent failure hunter, and type design analyser. Provides thorough, multi-perspective code reviews.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'medium',
+      filePath: 'plugins/claude-plugins-official/pr-review-toolkit/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install pr-review-toolkit',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install pr-review-toolkit',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install coderabbit',
-    tier: 'custom',
-    customCategory: 'integration-specific',
-  },
-  {
-    id: 'plugin-security-guidance',
-    name: 'security-guidance',
-    description: 'Security reminder hook.',
-    longDescription:
-      'A security-focused plugin that includes a hook running a Python script to provide security reminders during development. Helps ensure security considerations are not overlooked.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/security-guidance/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install security-guidance',
+    {
+      id: 'plugin-coderabbit',
+      name: 'coderabbit',
+      description: 'Code review integration.',
+      longDescription:
+        'Code review integration that provides structured code review capabilities with a dedicated agent, command, and skill.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/coderabbit/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install coderabbit',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install coderabbit',
+      tier: 'custom',
+      customCategory: 'integration-specific',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install security-guidance',
-    tier: 'custom',
-    customCategory: 'compliance-security',
-  },
-  {
-    id: 'plugin-code-simplifier',
-    name: 'code-simplifier',
-    description: 'Code simplification agent.',
-    longDescription:
-      'Provides a specialised agent focused on simplifying and refactoring code. Useful for reducing complexity and improving readability.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/code-simplifier/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install code-simplifier',
+    {
+      id: 'plugin-security-guidance',
+      name: 'security-guidance',
+      description: 'Security reminder hook.',
+      longDescription:
+        'A security-focused plugin that includes a hook running a Python script to provide security reminders during development. Helps ensure security considerations are not overlooked.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/security-guidance/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install security-guidance',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install security-guidance',
+      tier: 'custom',
+      customCategory: 'compliance-security',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install code-simplifier',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-context7',
-    name: 'context7',
-    description: 'Library documentation lookup (MCP).',
-    longDescription:
-      'An MCP connector that provides access to library and framework documentation. Useful for looking up API references and usage patterns without leaving Claude.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/context7/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install context7',
+    {
+      id: 'plugin-code-simplifier',
+      name: 'code-simplifier',
+      description: 'Code simplification agent.',
+      longDescription:
+        'Provides a specialised agent focused on simplifying and refactoring code. Useful for reducing complexity and improving readability.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/code-simplifier/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install code-simplifier',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install code-simplifier',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install context7',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-github',
-    name: 'github',
-    description: 'GitHub integration (MCP).',
-    longDescription:
-      'An MCP connector for GitHub that provides access to repositories, issues, pull requests, and other GitHub resources directly within Claude.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/github/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install github',
+    {
+      id: 'plugin-context7',
+      name: 'context7',
+      description: 'Library documentation lookup (MCP).',
+      longDescription:
+        'An MCP connector that provides access to library and framework documentation. Useful for looking up API references and usage patterns without leaving Claude.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/context7/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install context7',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install context7',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install github',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-playwright',
-    name: 'playwright',
-    description: 'Browser automation (MCP).',
-    longDescription:
-      'An MCP connector for Playwright browser automation. Enables automated browser testing and interaction within Claude sessions.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/playwright/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install playwright',
+    {
+      id: 'plugin-github',
+      name: 'github',
+      description: 'GitHub integration (MCP).',
+      longDescription:
+        'An MCP connector for GitHub that provides access to repositories, issues, pull requests, and other GitHub resources directly within Claude.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/github/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install github',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install github',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-marketplace',
-    installCommand: 'claude plugin install playwright',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-sentry',
-    name: 'sentry',
-    description: 'Error tracking integration (MCP).',
-    longDescription:
-      'Sentry error tracking integration with an MCP connector, commands, skills, and agent definitions. Install if your team uses Sentry for error monitoring.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/sentry/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install sentry',
+    {
+      id: 'plugin-playwright',
+      name: 'playwright',
+      description: 'Browser automation (MCP).',
+      longDescription:
+        'An MCP connector for Playwright browser automation. Enables automated browser testing and interaction within Claude sessions.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/playwright/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install playwright',
+      },
+      pluginRecommendation: 'install-marketplace',
+      installCommand: 'claude plugin install playwright',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-if-needed',
-    installCommand: 'claude plugin install sentry',
-    tier: 'custom',
-    customCategory: 'integration-specific',
-  },
-  {
-    id: 'plugin-plugin-dev',
-    name: 'plugin-dev',
-    description: 'Plugin development toolkit.',
-    longDescription:
-      'A comprehensive toolkit for building Claude plugins. Includes three agents, one command, and seven skills covering plugin structure, command development, skill development, and plugin settings. Install only if you plan to build your own plugins.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/plugin-dev/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install plugin-dev',
+    {
+      id: 'plugin-sentry',
+      name: 'sentry',
+      description: 'Error tracking integration (MCP).',
+      longDescription:
+        'Sentry error tracking integration with an MCP connector, commands, skills, and agent definitions. Install if your team uses Sentry for error monitoring.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/sentry/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install sentry',
+      },
+      pluginRecommendation: 'install-if-needed',
+      installCommand: 'claude plugin install sentry',
+      tier: 'custom',
+      customCategory: 'integration-specific',
     },
-    pluginRecommendation: 'install-if-needed',
-    installCommand: 'claude plugin install plugin-dev',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-example-plugin',
-    name: 'example-plugin',
-    description: 'Reference plugin structure.',
-    longDescription:
-      'A reference example showing the structure of a Claude plugin. Includes a plugin manifest, MCP configuration, command, and skill. Do not install — this is for reference only.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/example-plugin/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'This is a reference example. Do not install.',
+    {
+      id: 'plugin-plugin-dev',
+      name: 'plugin-dev',
+      description: 'Plugin development toolkit.',
+      longDescription:
+        'A comprehensive toolkit for building Claude plugins. Includes three agents, one command, and seven skills covering plugin structure, command development, skill development, and plugin settings. Install only if you plan to build your own plugins.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/plugin-dev/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install plugin-dev',
+      },
+      pluginRecommendation: 'install-if-needed',
+      installCommand: 'claude plugin install plugin-dev',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'reference-only',
-    tier: 'custom',
-    customCategory: 'developer-tools',
-  },
-  {
-    id: 'plugin-php-lsp',
-    name: 'php-lsp',
-    description: 'PHP Language Server Protocol plugin.',
-    longDescription:
-      'PHP Language Server Protocol plugin. Install only if your team works with PHP codebases.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/php-lsp/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install php-lsp',
+    {
+      id: 'plugin-example-plugin',
+      name: 'example-plugin',
+      description: 'Reference plugin structure.',
+      longDescription:
+        'A reference example showing the structure of a Claude plugin. Includes a plugin manifest, MCP configuration, command, and skill. Do not install — this is for reference only.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/example-plugin/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'This is a reference example. Do not install.',
+      },
+      pluginRecommendation: 'reference-only',
+      tier: 'custom',
+      customCategory: 'developer-tools',
     },
-    pluginRecommendation: 'install-if-needed',
-    installCommand: 'claude plugin install php-lsp',
-    tier: 'custom',
-    customCategory: 'integration-specific',
-  },
-  {
-    id: 'plugin-asana',
-    name: 'asana',
-    description: 'Asana integration (MCP).',
-    longDescription:
-      'An MCP connector for Asana project management. Install only if your team uses Asana.',
-    category: 'plugin',
-    tracks: ['developer'],
-    priority: 'low',
-    filePath: 'plugins/claude-plugins-official/asana/',
-    isMultiFile: true,
-    installInstructions: {
-      claudeCode: 'claude plugin install asana',
+    {
+      id: 'plugin-php-lsp',
+      name: 'php-lsp',
+      description: 'PHP Language Server Protocol plugin.',
+      longDescription:
+        'PHP Language Server Protocol plugin. Install only if your team works with PHP codebases.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/php-lsp/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install php-lsp',
+      },
+      pluginRecommendation: 'install-if-needed',
+      installCommand: 'claude plugin install php-lsp',
+      tier: 'custom',
+      customCategory: 'integration-specific',
     },
-    pluginRecommendation: 'install-if-needed',
-    installCommand: 'claude plugin install asana',
-    tier: 'custom',
-    customCategory: 'integration-specific',
-  },
-];
+    {
+      id: 'plugin-asana',
+      name: 'asana',
+      description: 'Asana integration (MCP).',
+      longDescription:
+        'An MCP connector for Asana project management. Install only if your team uses Asana.',
+      category: 'plugin',
+      tracks: ['developer'],
+      priority: 'low',
+      filePath: 'plugins/claude-plugins-official/asana/',
+      isMultiFile: true,
+      installInstructions: {
+        claudeCode: 'claude plugin install asana',
+      },
+      pluginRecommendation: 'install-if-needed',
+      installCommand: 'claude plugin install asana',
+      tier: 'custom',
+      customCategory: 'integration-specific',
+    },
+  ];
+}
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
 export function getFilesForCategory(
+  files: StarterKitFile[],
   category: StarterKitCategory,
 ): StarterKitFile[] {
-  return STARTER_KIT_FILES.filter((f) => f.category === category);
+  return files.filter((f) => f.category === category);
 }
 
-export function getFilesForTrack(track: Track): StarterKitFile[] {
-  return STARTER_KIT_FILES.filter((f) => f.tracks.includes(track));
+export function getFilesForTrack(
+  files: StarterKitFile[],
+  track: Track,
+): StarterKitFile[] {
+  return files.filter((f) => f.tracks.includes(track));
 }
 
 export function getFilesForCategoryAndTrack(
+  files: StarterKitFile[],
   category: StarterKitCategory,
   track: Track,
 ): StarterKitFile[] {
-  return STARTER_KIT_FILES.filter(
+  return files.filter(
     (f) => f.category === category && f.tracks.includes(track),
   );
 }
 
-export function getCategoriesForTrack(track: Track): StarterKitCategory[] {
+export function getCategoriesForTrack(
+  files: StarterKitFile[],
+  track: Track,
+): StarterKitCategory[] {
   const categories = new Set<StarterKitCategory>();
-  for (const file of STARTER_KIT_FILES) {
+  for (const file of files) {
     if (file.tracks.includes(track)) {
       categories.add(file.category);
     }

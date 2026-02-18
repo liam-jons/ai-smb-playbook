@@ -95,9 +95,6 @@
     "disabled": []
   },
   "starterKit": {
-    "enabledCustomCategories": [
-      "developer-tools",
-      "creative-design"
-    ]
+    "enabledCustomCategories": ["developer-tools", "creative-design"]
   }
 }

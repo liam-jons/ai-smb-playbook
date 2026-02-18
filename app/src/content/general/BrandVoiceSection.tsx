@@ -21,13 +21,13 @@ import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { SetupStepCard } from '@/components/content/SetupStepCard';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 import { Clock, ChevronDown } from 'lucide-react';
 import {
   generalSteps,
   devSteps,
-  frameworkSections,
+  getFrameworkSections,
   storageOptions,
   brandVoiceSetupPrompt,
   ukEnglishSkillContent,
@@ -43,10 +43,12 @@ const sectionEntrance = {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function BrandVoiceSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const isGeneral = track === 'general';
   const [ukSkillOpen, setUkSkillOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
+  const frameworkSections = getFrameworkSections(siteConfig);
 
   const brandTocEntries = [
     { id: 'brand-voice-uk-english', label: 'Part 1: UK English Enforcement' },

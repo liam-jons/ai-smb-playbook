@@ -1,13 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import type { A11yModeId, A11yFontId } from '@/themes/index';
 
-const A11Y_MODE_KEY = `${siteConfig.localStoragePrefix}-a11y-mode`;
-const A11Y_FONT_KEY = `${siteConfig.localStoragePrefix}-a11y-font`;
-
-function getStoredA11yMode(): A11yModeId | null {
+function getStoredA11yMode(modeKey: string): A11yModeId | null {
   if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem(A11Y_MODE_KEY);
+  const stored = localStorage.getItem(modeKey);
   if (
     stored === 'dyslexia' ||
     stored === 'high-contrast' ||
@@ -22,8 +19,8 @@ function getStoredA11yMode(): A11yModeId | null {
  * Determine the initial a11y mode, accounting for prefers-contrast auto-detection.
  * Called synchronously in the useState initialiser to avoid flicker.
  */
-function getInitialA11yMode(): A11yModeId | null {
-  const stored = getStoredA11yMode();
+function getInitialA11yMode(modeKey: string): A11yModeId | null {
+  const stored = getStoredA11yMode(modeKey);
   if (stored) return stored;
 
   // Auto-detect high contrast preference if no stored override
@@ -37,9 +34,9 @@ function getInitialA11yMode(): A11yModeId | null {
   return null;
 }
 
-function getStoredA11yFont(): A11yFontId | null {
+function getStoredA11yFont(fontKey: string): A11yFontId | null {
   if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem(A11Y_FONT_KEY);
+  const stored = localStorage.getItem(fontKey);
   if (stored === 'atkinson' || stored === 'opendyslexic') {
     return stored;
   }
@@ -108,11 +105,15 @@ export async function loadThemeFonts(themeId: string) {
 }
 
 export function useAccessibility() {
-  const [a11yMode, setA11yModeState] = useState<A11yModeId | null>(
-    getInitialA11yMode,
+  const { localStoragePrefix } = useSiteConfig();
+  const A11Y_MODE_KEY = `${localStoragePrefix}-a11y-mode`;
+  const A11Y_FONT_KEY = `${localStoragePrefix}-a11y-font`;
+
+  const [a11yMode, setA11yModeState] = useState<A11yModeId | null>(() =>
+    getInitialA11yMode(A11Y_MODE_KEY),
   );
-  const [a11yFont, setA11yFontState] = useState<A11yFontId | null>(
-    getStoredA11yFont,
+  const [a11yFont, setA11yFontState] = useState<A11yFontId | null>(() =>
+    getStoredA11yFont(A11Y_FONT_KEY),
   );
 
   const setA11yMode = useCallback(
@@ -141,30 +142,33 @@ export function useAccessibility() {
         setA11yModeState(mode);
       });
     },
-    [a11yFont],
+    [a11yFont, A11Y_MODE_KEY, A11Y_FONT_KEY],
   );
 
-  const setA11yFont = useCallback((font: A11yFontId | null) => {
-    applyWithTransition(() => {
-      applyA11yFontAttribute(font);
+  const setA11yFont = useCallback(
+    (font: A11yFontId | null) => {
+      applyWithTransition(() => {
+        applyA11yFontAttribute(font);
 
-      if (font) {
-        localStorage.setItem(A11Y_FONT_KEY, font);
-      } else {
-        localStorage.removeItem(A11Y_FONT_KEY);
-      }
+        if (font) {
+          localStorage.setItem(A11Y_FONT_KEY, font);
+        } else {
+          localStorage.removeItem(A11Y_FONT_KEY);
+        }
 
-      // Load the selected font
-      loadA11yFonts(font);
+        // Load the selected font
+        loadA11yFonts(font);
 
-      setA11yFontState(font);
-    });
-  }, []);
+        setA11yFontState(font);
+      });
+    },
+    [A11Y_FONT_KEY],
+  );
 
   // Apply persisted/initial values on mount (attributes + font loading)
   useEffect(() => {
-    const initialMode = getInitialA11yMode();
-    const initialFont = getStoredA11yFont();
+    const initialMode = getInitialA11yMode(A11Y_MODE_KEY);
+    const initialFont = getStoredA11yFont(A11Y_FONT_KEY);
 
     applyA11yModeAttribute(initialMode);
     applyA11yFontAttribute(initialFont);
@@ -173,7 +177,7 @@ export function useAccessibility() {
     if (initialMode === 'dyslexia') {
       loadA11yFonts(initialFont);
     }
-  }, []);
+  }, [A11Y_MODE_KEY, A11Y_FONT_KEY]);
 
   // prefers-contrast: listen for dynamic changes after mount
   useEffect(() => {
@@ -189,7 +193,7 @@ export function useAccessibility() {
 
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+  }, [A11Y_MODE_KEY]);
 
   return {
     a11yMode,

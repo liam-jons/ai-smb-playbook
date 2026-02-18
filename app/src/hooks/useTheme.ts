@@ -1,13 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { type CreativeThemeId, isDarkOnlyTheme } from '@/themes/index';
 import { loadThemeFonts } from '@/hooks/useAccessibility';
 
 export type Theme = 'light' | 'dark' | 'system';
-
-const THEME_KEY = `${siteConfig.localStoragePrefix}-theme`;
-const CREATIVE_THEME_KEY = `${siteConfig.localStoragePrefix}-creative-theme`;
-const THEME_BEFORE_LOCK_KEY = `${siteConfig.localStoragePrefix}-theme-before-lock`;
 
 function getSystemTheme(): 'light' | 'dark' {
   if (typeof window === 'undefined') return 'light';
@@ -16,18 +12,18 @@ function getSystemTheme(): 'light' | 'dark' {
     : 'light';
 }
 
-function getStoredTheme(): Theme {
+function getStoredTheme(themeKey: string): Theme {
   if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(THEME_KEY);
+  const stored = localStorage.getItem(themeKey);
   if (stored === 'light' || stored === 'dark' || stored === 'system') {
     return stored;
   }
   return 'system';
 }
 
-function getStoredCreativeTheme(): CreativeThemeId | null {
+function getStoredCreativeTheme(creativeKey: string): CreativeThemeId | null {
   if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem(CREATIVE_THEME_KEY);
+  const stored = localStorage.getItem(creativeKey);
   if (
     stored === 'retro-terminal' ||
     stored === 'synthwave' ||
@@ -73,11 +69,20 @@ function applyWithTransition(callback: () => void) {
 }
 
 export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>(getStoredTheme);
+  const { localStoragePrefix } = useSiteConfig();
+  const THEME_KEY = `${localStoragePrefix}-theme`;
+  const CREATIVE_THEME_KEY = `${localStoragePrefix}-creative-theme`;
+  const THEME_BEFORE_LOCK_KEY = `${localStoragePrefix}-theme-before-lock`;
+
+  const [theme, setThemeState] = useState<Theme>(() =>
+    getStoredTheme(THEME_KEY),
+  );
   const [creativeTheme, setCreativeThemeState] =
-    useState<CreativeThemeId | null>(getStoredCreativeTheme);
+    useState<CreativeThemeId | null>(() =>
+      getStoredCreativeTheme(CREATIVE_THEME_KEY),
+    );
   const [isDarkLocked, setIsDarkLocked] = useState<boolean>(() =>
-    isDarkOnlyTheme(getStoredCreativeTheme()),
+    isDarkOnlyTheme(getStoredCreativeTheme(CREATIVE_THEME_KEY)),
   );
 
   const setTheme = useCallback(
@@ -91,20 +96,21 @@ export function useTheme() {
         applyThemeClass(newTheme);
       });
     },
-    [isDarkLocked],
+    [isDarkLocked, THEME_KEY],
   );
 
   const setCreativeTheme = useCallback(
     (newCreativeTheme: CreativeThemeId | null) => {
       applyWithTransition(() => {
-        const previousCreativeTheme = getStoredCreativeTheme();
+        const previousCreativeTheme =
+          getStoredCreativeTheme(CREATIVE_THEME_KEY);
         const wasDarkLocked = isDarkOnlyTheme(previousCreativeTheme);
         const willBeDarkLocked = isDarkOnlyTheme(newCreativeTheme);
 
         // Handle dark-only lock transitions
         if (!wasDarkLocked && willBeDarkLocked) {
           // Entering dark-only: save current preference and force dark
-          const currentTheme = getStoredTheme();
+          const currentTheme = getStoredTheme(THEME_KEY);
           localStorage.setItem(THEME_BEFORE_LOCK_KEY, currentTheme);
           localStorage.setItem(THEME_KEY, 'dark');
           setThemeState('dark');
@@ -141,7 +147,7 @@ export function useTheme() {
         setCreativeThemeState(newCreativeTheme);
       });
     },
-    [],
+    [THEME_KEY, CREATIVE_THEME_KEY, THEME_BEFORE_LOCK_KEY],
   );
 
   // Apply theme on mount (synchronous class application to avoid flicker)

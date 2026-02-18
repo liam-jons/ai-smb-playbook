@@ -1,7 +1,7 @@
 // Session Management data — typed TypeScript objects
 // All content uses UK English.
 
-import { siteConfig } from '@/config/site';
+import type { SiteConfigData } from '@/config/client-config-schema';
 
 export interface RuleOfThumb {
   id: string;
@@ -378,64 +378,70 @@ export const infoArchElements: InfoArchElement[] = [
 // Part 3: Worked Examples
 // ─────────────────────────────────────────────
 
-export const workedExamples: WorkedExample[] = [
-  {
-    id: 'compliance-review',
-    title: `Writing a ${siteConfig.complianceArea} policy review`,
-    context: `Instead of one session: "Review our ${siteConfig.complianceArea} policy, identify gaps, draft updates, and create a summary for the board."`,
-    steps: [
-      {
-        session: 1,
-        description: `Review our ${siteConfig.complianceArea} policy against current guidance. List all gaps and areas needing updates.`,
-        outcome: 'Create handoff with the gap analysis.',
-      },
-      {
-        session: 2,
-        description:
-          'For each gap identified, draft the specific policy update needed.',
-        outcome: 'Create handoff with drafted updates.',
-      },
-      {
-        session: 3,
-        description:
-          'Review all drafted updates for consistency and create a board summary of changes made.',
-        outcome: 'Final deliverable ready.',
-      },
-    ],
-    tracks: ['general', 'developer'],
-  },
-  {
-    id: 'api-endpoint',
-    title: 'Adding a new API endpoint',
-    context:
-      'Instead of one session: "Add a new API endpoint for user preferences, including database migration, validation, tests, and documentation."',
-    steps: [
-      {
-        session: 1,
-        description:
-          'Review the existing API patterns in this codebase and propose the schema and endpoint design for user preferences.',
-        outcome: 'Handoff captures the design decisions.',
-      },
-      {
-        session: 2,
-        description:
-          'Implement the database migration and model based on the agreed design.',
-        outcome: 'Handoff captures file changes and any deviations from plan.',
-      },
-      {
-        session: 3,
-        description: 'Implement the endpoint and input validation.',
-        outcome: 'Handoff captures implementation state.',
-      },
-      {
-        session: 4,
-        description: 'Write tests and update API documentation.',
-        outcome: 'All deliverables complete.',
-      },
-    ],
-    tracks: ['developer'],
-  },
-];
+/** Build worked examples with client-specific context from config. */
+export function getWorkedExamples(config: SiteConfigData): WorkedExample[] {
+  const complianceArea = config.complianceArea ?? 'compliance';
+
+  return [
+    {
+      id: 'compliance-review',
+      title: `Writing a ${complianceArea} policy review`,
+      context: `Instead of one session: "Review our ${complianceArea} policy, identify gaps, draft updates, and create a summary for the board."`,
+      steps: [
+        {
+          session: 1,
+          description: `Review our ${complianceArea} policy against current guidance. List all gaps and areas needing updates.`,
+          outcome: 'Create handoff with the gap analysis.',
+        },
+        {
+          session: 2,
+          description:
+            'For each gap identified, draft the specific policy update needed.',
+          outcome: 'Create handoff with drafted updates.',
+        },
+        {
+          session: 3,
+          description:
+            'Review all drafted updates for consistency and create a board summary of changes made.',
+          outcome: 'Final deliverable ready.',
+        },
+      ],
+      tracks: ['general', 'developer'],
+    },
+    {
+      id: 'api-endpoint',
+      title: 'Adding a new API endpoint',
+      context:
+        'Instead of one session: "Add a new API endpoint for user preferences, including database migration, validation, tests, and documentation."',
+      steps: [
+        {
+          session: 1,
+          description:
+            'Review the existing API patterns in this codebase and propose the schema and endpoint design for user preferences.',
+          outcome: 'Handoff captures the design decisions.',
+        },
+        {
+          session: 2,
+          description:
+            'Implement the database migration and model based on the agreed design.',
+          outcome:
+            'Handoff captures file changes and any deviations from plan.',
+        },
+        {
+          session: 3,
+          description: 'Implement the endpoint and input validation.',
+          outcome: 'Handoff captures implementation state.',
+        },
+        {
+          session: 4,
+          description: 'Write tests and update API documentation.',
+          outcome: 'All deliverables complete.',
+        },
+      ],
+      tracks: ['developer'],
+    },
+  ];
+}
 
 // ─────────────────────────────────────────────
 // Part 4: Platform Comparison

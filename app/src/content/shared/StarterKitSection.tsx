@@ -36,9 +36,10 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CopyButton } from '@/components/content/CopyButton';
 import { cn } from '@/lib/utils';
 import { useTrack } from '@/hooks/useTrack';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 import {
-  STARTER_KIT_FILES,
+  getStarterKitFiles,
   CATEGORY_LABELS,
   QUICK_START_STEPS,
   getCategoriesForTrack,
@@ -455,10 +456,15 @@ function FileCard({ file }: { file: StarterKitFile }) {
 
 function QuickStartSection() {
   const { track } = useTrack();
+  const siteConfig = useSiteConfig();
+  const starterKitFiles = useMemo(
+    () => getStarterKitFiles(siteConfig),
+    [siteConfig],
+  );
 
   // Filter steps based on track
   const steps = QUICK_START_STEPS.filter((step) => {
-    const file = STARTER_KIT_FILES.find((f) => f.id === step.fileId);
+    const file = starterKitFiles.find((f) => f.id === step.fileId);
     return file && file.tracks.includes(track);
   });
 
@@ -944,7 +950,12 @@ const INITIAL_CARD_COUNT = 5;
 
 function FileBrowser() {
   const { track } = useTrack();
-  const categories = getCategoriesForTrack(track);
+  const siteConfig = useSiteConfig();
+  const starterKitFiles = useMemo(
+    () => getStarterKitFiles(siteConfig),
+    [siteConfig],
+  );
+  const categories = getCategoriesForTrack(starterKitFiles, track);
   const defaultTab = categories[0] || 'skill';
   const [showAll, setShowAll] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<string>(defaultTab);
@@ -996,7 +1007,11 @@ function FileBrowser() {
         <TabsList className="w-full flex-wrap justify-start bg-muted/40">
           {categories.map((category) => {
             const Icon = CATEGORY_ICONS[category];
-            const files = getFilesForCategoryAndTrack(category, track);
+            const files = getFilesForCategoryAndTrack(
+              starterKitFiles,
+              category,
+              track,
+            );
             return (
               <TabsTrigger key={category} value={category} className="gap-1.5">
                 <Icon className="h-3.5 w-3.5" />
@@ -1015,7 +1030,11 @@ function FileBrowser() {
         </TabsList>
 
         {categories.map((category) => {
-          const files = getFilesForCategoryAndTrack(category, track);
+          const files = getFilesForCategoryAndTrack(
+            starterKitFiles,
+            category,
+            track,
+          );
           const isShowingAll = showAll[category] ?? false;
           const visibleFiles =
             files.length > INITIAL_CARD_COUNT && !isShowingAll

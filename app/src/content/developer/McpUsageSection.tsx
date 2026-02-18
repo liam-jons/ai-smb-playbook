@@ -11,7 +11,7 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 
 /* -------------------------------------------------------------------------- */
 /*  Data                                                                       */
@@ -27,14 +27,18 @@ interface McpRecommendation {
   extraNote?: string;
 }
 
-const recommendedMcps: McpRecommendation[] = [
-  {
-    name: 'deepwiki',
-    whatItDoes:
-      'Provides access to documentation for open-source projects directly within Claude Code. Instead of Claude relying on its training data (which may be outdated), deepwiki fetches current documentation from the project\u2019s actual source.',
-    whyItMatters:
-      'When working with WordPress plugins, ASP.NET libraries, or any third-party dependency, Claude can look up the current documentation rather than guessing from potentially outdated training data. This reduces hallucination risk significantly.',
-    configJson: `{
+function getRecommendedMcps(config: {
+  webApplications?: string;
+  testingTool?: string;
+}): McpRecommendation[] {
+  return [
+    {
+      name: 'deepwiki',
+      whatItDoes:
+        'Provides access to documentation for open-source projects directly within Claude Code. Instead of Claude relying on its training data (which may be outdated), deepwiki fetches current documentation from the project\u2019s actual source.',
+      whyItMatters:
+        'When working with WordPress plugins, ASP.NET libraries, or any third-party dependency, Claude can look up the current documentation rather than guessing from potentially outdated training data. This reduces hallucination risk significantly.',
+      configJson: `{
   "mcpServers": {
     "deepwiki": {
       "command": "npx",
@@ -42,17 +46,17 @@ const recommendedMcps: McpRecommendation[] = [
     }
   }
 }`,
-    examplePrompt:
-      'Look up the current documentation for [library name] using deepwiki before implementing this feature. Check for any breaking changes since the version we are currently using.',
-    extraNote:
-      'Context7 provides similar documentation lookup functionality. deepwiki is a standalone MCP server; Context7 is available as both an MCP server and an official plugin. Choose one \u2014 running both is redundant and doubles the context cost.',
-  },
-  {
-    name: 'Playwright (chrome-devtools)',
-    whatItDoes:
-      'Gives Claude Code the ability to control a web browser \u2014 navigate to pages, click elements, fill forms, take screenshots, and run end-to-end tests. The Playwright MCP server from Microsoft is the standard browser automation tool for Claude Code.',
-    whyItMatters: `Your team builds web applications (${siteConfig.webApplications}). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${siteConfig.testingTool} workflows.`,
-    configJson: `{
+      examplePrompt:
+        'Look up the current documentation for [library name] using deepwiki before implementing this feature. Check for any breaking changes since the version we are currently using.',
+      extraNote:
+        'Context7 provides similar documentation lookup functionality. deepwiki is a standalone MCP server; Context7 is available as both an MCP server and an official plugin. Choose one \u2014 running both is redundant and doubles the context cost.',
+    },
+    {
+      name: 'Playwright (chrome-devtools)',
+      whatItDoes:
+        'Gives Claude Code the ability to control a web browser \u2014 navigate to pages, click elements, fill forms, take screenshots, and run end-to-end tests. The Playwright MCP server from Microsoft is the standard browser automation tool for Claude Code.',
+      whyItMatters: `Your team builds web applications (${config.webApplications ?? 'web applications'}). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${config.testingTool ?? 'existing testing tool'} workflows.`,
+      configJson: `{
   "mcpServers": {
     "playwright": {
       "command": "npx",
@@ -60,12 +64,13 @@ const recommendedMcps: McpRecommendation[] = [
     }
   }
 }`,
-    examplePrompt:
-      'Open the staging site at [URL], navigate to the login page, and take a screenshot. Compare the layout against the design spec.',
-    securityNote:
-      'The Playwright MCP gives Claude full browser control. It can navigate to any URL, submit forms, and interact with authenticated sessions. Use it only on staging/development environments, never on production with real user data.',
-  },
-];
+      examplePrompt:
+        'Open the staging site at [URL], navigate to the login page, and take a screenshot. Compare the layout against the design spec.',
+      securityNote:
+        'The Playwright MCP gives Claude full browser control. It can navigate to any URL, submit forms, and interact with authenticated sessions. Use it only on staging/development environments, never on production with real user data.',
+    },
+  ];
+}
 
 interface ContextCostRow {
   feature: string;
@@ -210,7 +215,9 @@ After use:
 /* -------------------------------------------------------------------------- */
 
 export function McpUsageSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
+  const recommendedMcps = getRecommendedMcps(siteConfig);
   return (
     <div className="flex flex-col gap-12">
       {/* 1. What Are MCP Servers */}

@@ -6,7 +6,8 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
+import type { SiteConfigData } from '@/config/client-config-schema';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -163,51 +164,56 @@ const comparisonRows: ComparisonRow[] = [
   },
 ];
 
-const gettingStartedSteps = [
-  {
-    step: 1,
-    title: 'Install the Playwright MCP',
-    description:
-      'Add the Playwright MCP server to your Claude Code configuration.',
-  },
-  {
-    step: 2,
-    title: 'Write your first AI-generated test',
-    description:
-      'Pick a simple, stable user flow (e.g., "log into the admin panel and verify the dashboard loads"). Ask Claude to generate a Playwright test. Review the output and run it.',
-  },
-  {
-    step: 3,
-    title: 'Build a natural-language test catalogue',
-    description:
-      'Write plain-English descriptions of your 10 most important user journeys. Store them in your repo (e.g., /docs/test-scenarios/). These become the source of truth for test regeneration.',
-  },
-  {
-    step: 4,
-    title: 'Experiment with CoWork for exploratory testing',
-    description:
-      'On your next feature release, use CoWork to walk through the new functionality instead of (or in addition to) manual testing.',
-  },
-  {
-    step: 5,
-    title: 'Evaluate after 4\u20136 weeks',
-    description: `After running AI-generated Playwright tests alongside ${siteConfig.testingTool}, assess: which caught more bugs? Which required less maintenance?`,
-  },
-  {
-    step: 6,
-    title: `Do not cancel ${siteConfig.testingTool} yet`,
-    description: `Keep it running for your critical paths until you have confidence in the replacement. The goal is not to save the subscription cost \u2014 it is to have better tests.`,
-  },
-];
+function getGettingStartedSteps(config: SiteConfigData) {
+  return [
+    {
+      step: 1,
+      title: 'Install the Playwright MCP',
+      description:
+        'Add the Playwright MCP server to your Claude Code configuration.',
+    },
+    {
+      step: 2,
+      title: 'Write your first AI-generated test',
+      description:
+        'Pick a simple, stable user flow (e.g., "log into the admin panel and verify the dashboard loads"). Ask Claude to generate a Playwright test. Review the output and run it.',
+    },
+    {
+      step: 3,
+      title: 'Build a natural-language test catalogue',
+      description:
+        'Write plain-English descriptions of your 10 most important user journeys. Store them in your repo (e.g., /docs/test-scenarios/). These become the source of truth for test regeneration.',
+    },
+    {
+      step: 4,
+      title: 'Experiment with CoWork for exploratory testing',
+      description:
+        'On your next feature release, use CoWork to walk through the new functionality instead of (or in addition to) manual testing.',
+    },
+    {
+      step: 5,
+      title: 'Evaluate after 4\u20136 weeks',
+      description: `After running AI-generated Playwright tests alongside ${config.testingTool ?? 'your existing tool'}, assess: which caught more bugs? Which required less maintenance?`,
+    },
+    {
+      step: 6,
+      title: `Do not cancel ${config.testingTool ?? 'your existing tool'} yet`,
+      description: `Keep it running for your critical paths until you have confidence in the replacement. The goal is not to save the subscription cost \u2014 it is to have better tests.`,
+    },
+  ];
+}
 
-const limitations = [
-  'AI testing is not deterministic. The same prompt can generate slightly different test scripts on different runs.',
-  'Hallucinated selectors are a real risk. Claude may generate selectors that look correct but do not match your actual DOM. Always review generated tests manually.',
-  `Scheduling is not solved. ${siteConfig.testingTool} can run tests on a schedule. AI-driven testing currently requires manual initiation or custom orchestration.`,
-  `Reporting is DIY. ${siteConfig.testingTool} provides dashboards and history. AI-generated Playwright tests require you to build or adopt a reporting layer.`,
-  `Cost can be unpredictable. ${siteConfig.testingTool} has predictable subscription costs. AI token costs depend on test complexity and regeneration frequency.`,
-  'This landscape is changing fast. Specific tool capabilities described here may change within months. The principles (AI-assisted generation, self-healing tests) are more durable than the specific tooling.',
-];
+function getLimitations(config: SiteConfigData) {
+  const tool = config.testingTool ?? 'your existing tool';
+  return [
+    'AI testing is not deterministic. The same prompt can generate slightly different test scripts on different runs.',
+    'Hallucinated selectors are a real risk. Claude may generate selectors that look correct but do not match your actual DOM. Always review generated tests manually.',
+    `Scheduling is not solved. ${tool} can run tests on a schedule. AI-driven testing currently requires manual initiation or custom orchestration.`,
+    `Reporting is DIY. ${tool} provides dashboards and history. AI-generated Playwright tests require you to build or adopt a reporting layer.`,
+    `Cost can be unpredictable. ${tool} has predictable subscription costs. AI token costs depend on test complexity and regeneration frequency.`,
+    'This landscape is changing fast. Specific tool capabilities described here may change within months. The principles (AI-assisted generation, self-healing tests) are more durable than the specific tooling.',
+  ];
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Component                                                                  */
@@ -215,6 +221,9 @@ const limitations = [
 
 export function RegressionTestingSection() {
   const { track } = useTrack();
+  const siteConfig = useSiteConfig();
+  const gettingStartedSteps = getGettingStartedSteps(siteConfig);
+  const limitations = getLimitations(siteConfig);
   return (
     <div className="flex flex-col gap-12">
       {/* Opening */}

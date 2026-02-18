@@ -31,12 +31,7 @@
     "complianceStakeholders": "[stakeholder group for compliance reports]",
     "sensitiveDataDescription": "[description of sensitive data types handled]",
     "sensitiveDataLabel": "[short label for sensitive data]",
-    "exampleRecurringTasks": [
-      "[recurring task 1]",
-      "[recurring task 2]",
-      "[recurring task 3]",
-      "[recurring task 4]"
-    ],
+    "exampleRecurringTasks": ["[recurring task 1]", "[recurring task 2]", "[recurring task 3]", "[recurring task 4]"],
     "reportDataSource": "[data export source for recurring reports]",
     "clientOnboardingType": "[client or user type for onboarding]"
   },

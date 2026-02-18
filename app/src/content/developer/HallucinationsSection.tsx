@@ -9,7 +9,8 @@ import {
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
+import type { SiteConfigData } from '@/config/client-config-schema';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
@@ -31,16 +32,26 @@ interface AntiHallucinationPattern {
   followUpPrompt?: string;
 }
 
-const patterns: AntiHallucinationPattern[] = [
-  {
-    number: 1,
-    title: 'Break Tasks into Atomic Components',
-    whenToUse:
-      'Any task that involves more than one file, more than one logical concern, or more than roughly 100 lines of change.',
-    explanation:
-      'Claude performs best when given focused, well-scoped tasks. Large, ambiguous requests invite hallucinated approaches because Claude tries to handle too many decisions at once. Breaking work into atomic subtasks means each task gets Claude\u2019s full 200k token context window, and each output is small enough to review meaningfully.',
-    crossTrack: false,
-    prompt: `I need to migrate the ${siteConfig.domainSpecificForm} from the legacy ASP.NET Web Forms page to a Razor Pages implementation.
+function getPatterns(config: SiteConfigData): AntiHallucinationPattern[] {
+  const testingTool = config.testingTool ?? 'testing tool';
+  const testingToolDocs = config.testingToolDocs ?? 'the official docs';
+  const primaryProduct = config.primaryProduct ?? 'application';
+  const complianceArea = config.complianceArea ?? 'compliance';
+  const sensitiveDataLabel = config.sensitiveDataLabel ?? 'sensitive data';
+  const techStack = config.techStack ?? 'your stack';
+  const database = config.database ?? 'your database';
+  const domainSpecificForm = config.domainSpecificForm ?? 'the form';
+
+  return [
+    {
+      number: 1,
+      title: 'Break Tasks into Atomic Components',
+      whenToUse:
+        'Any task that involves more than one file, more than one logical concern, or more than roughly 100 lines of change.',
+      explanation:
+        'Claude performs best when given focused, well-scoped tasks. Large, ambiguous requests invite hallucinated approaches because Claude tries to handle too many decisions at once. Breaking work into atomic subtasks means each task gets Claude\u2019s full 200k token context window, and each output is small enough to review meaningfully.',
+      crossTrack: false,
+      prompt: `I need to migrate the ${domainSpecificForm} from the legacy ASP.NET Web Forms page to a Razor Pages implementation.
 
 Before writing any code, break this into a numbered list of atomic subtasks. Each subtask should:
 - Change no more than 2-3 files
@@ -48,18 +59,18 @@ Before writing any code, break this into a numbered list of atomic subtasks. Eac
 - Be independently testable
 
 List the subtasks in dependency order. Do not implement anything yet.`,
-    promptTitle: 'Atomic Task Breakdown',
-    promptDescription:
-      'Break a complex task into focused, independently testable subtasks.',
-  },
-  {
-    number: 2,
-    title: 'Plan Before Implementing',
-    whenToUse: 'Every non-trivial development task. Make it a habit.',
-    explanation:
-      'Asking Claude to plan before coding forces it to reason about the approach, surface assumptions, and reveal potential issues before any code is written. This is the single most effective pattern for avoiding quick-fix behaviour \u2014 Claude cannot take shortcuts if it has to articulate its strategy first.\n\nFor larger tasks, write the plan as a specification document saved to a dedicated planning directory (e.g., `.planning/`). This gives Claude a concrete reference to work from, and gives you an artefact to review before implementation begins.',
-    crossTrack: false,
-    prompt: `I want to add role-based access control to the ${siteConfig.primaryProduct} admin dashboard. Before writing any code, create a plan that covers:
+      promptTitle: 'Atomic Task Breakdown',
+      promptDescription:
+        'Break a complex task into focused, independently testable subtasks.',
+    },
+    {
+      number: 2,
+      title: 'Plan Before Implementing',
+      whenToUse: 'Every non-trivial development task. Make it a habit.',
+      explanation:
+        'Asking Claude to plan before coding forces it to reason about the approach, surface assumptions, and reveal potential issues before any code is written. This is the single most effective pattern for avoiding quick-fix behaviour \u2014 Claude cannot take shortcuts if it has to articulate its strategy first.\n\nFor larger tasks, write the plan as a specification document saved to a dedicated planning directory (e.g., `.planning/`). This gives Claude a concrete reference to work from, and gives you an artefact to review before implementation begins.',
+      crossTrack: false,
+      prompt: `I want to add role-based access control to the ${primaryProduct} admin dashboard. Before writing any code, create a plan that covers:
 
 1. What changes are needed and where (list specific files)
 2. Your recommended approach and why
@@ -68,19 +79,19 @@ List the subtasks in dependency order. Do not implement anything yet.`,
 5. What you would need to verify before implementing
 
 Do not write any code yet. Present the plan and wait for my feedback.`,
-    promptTitle: 'Plan Before Implementing',
-    promptDescription:
-      'Force Claude to reason about the approach before writing any code.',
-  },
-  {
-    number: 3,
-    title: 'Ask for Recommendations and Options',
-    whenToUse:
-      'Architecture decisions, library choices, refactoring approaches, database schema changes, or any decision with multiple valid paths.',
-    explanation:
-      'Instead of asking Claude to implement a solution directly, ask it to present 2\u20133 options with trade-offs. This forces Claude to consider alternatives rather than jumping to the first approach it generates \u2014 which is often a hallucinated \u201cobvious\u201d solution that does not account for the specific codebase.',
-    crossTrack: false,
-    prompt: `We need to implement automated email notifications for overdue ${siteConfig.complianceArea} training in the ${siteConfig.primaryProduct}. Our stack is ${siteConfig.techStack} with ${siteConfig.database}.
+      promptTitle: 'Plan Before Implementing',
+      promptDescription:
+        'Force Claude to reason about the approach before writing any code.',
+    },
+    {
+      number: 3,
+      title: 'Ask for Recommendations and Options',
+      whenToUse:
+        'Architecture decisions, library choices, refactoring approaches, database schema changes, or any decision with multiple valid paths.',
+      explanation:
+        'Instead of asking Claude to implement a solution directly, ask it to present 2\u20133 options with trade-offs. This forces Claude to consider alternatives rather than jumping to the first approach it generates \u2014 which is often a hallucinated \u201cobvious\u201d solution that does not account for the specific codebase.',
+      crossTrack: false,
+      prompt: `We need to implement automated email notifications for overdue ${complianceArea} training in the ${primaryProduct}. Our stack is ${techStack} with ${database}.
 
 Present 2-3 different approaches for the notification system. For each option, include:
 - How it works (brief technical description)
@@ -89,18 +100,18 @@ Present 2-3 different approaches for the notification system. For each option, i
 - Any dependencies or infrastructure requirements
 
 Do not recommend one yet \u2014 just present the options so I can evaluate them.`,
-    promptTitle: 'Options and Trade-offs',
-    promptDescription:
-      'Get Claude to present multiple approaches instead of jumping to one solution.',
-  },
-  {
-    number: 4,
-    title: 'Prioritise Best Practice',
-    whenToUse: `Whenever you are working on production code, especially in areas with compliance implications (${siteConfig.sensitiveDataLabel}, authentication, data protection).`,
-    explanation:
-      'Claude will match the quality bar you set. If you accept quick fixes, you get quick fixes. Explicitly stating that you want best-practice solutions \u2014 and naming the specific standards that matter \u2014 steers Claude away from hacky workarounds and towards maintainable code.',
-    crossTrack: false,
-    prompt: `I need to update the user authentication flow in our ASP.NET application. Requirements:
+      promptTitle: 'Options and Trade-offs',
+      promptDescription:
+        'Get Claude to present multiple approaches instead of jumping to one solution.',
+    },
+    {
+      number: 4,
+      title: 'Prioritise Best Practice',
+      whenToUse: `Whenever you are working on production code, especially in areas with compliance implications (${sensitiveDataLabel}, authentication, data protection).`,
+      explanation:
+        'Claude will match the quality bar you set. If you accept quick fixes, you get quick fixes. Explicitly stating that you want best-practice solutions \u2014 and naming the specific standards that matter \u2014 steers Claude away from hacky workarounds and towards maintainable code.',
+      crossTrack: false,
+      prompt: `I need to update the user authentication flow in our ASP.NET application. Requirements:
 
 - Follow current ASP.NET Core Identity best practices
 - Must comply with OWASP authentication guidelines
@@ -108,58 +119,58 @@ Do not recommend one yet \u2014 just present the options so I can evaluate them.
 - Prioritise maintainability over cleverness
 
 If the best-practice approach differs significantly from our current implementation, explain what we currently have wrong and why the change matters. Do not apply quick patches to the existing code \u2014 propose the correct approach even if it requires more work.`,
-    promptTitle: 'Best Practice Enforcement',
-    promptDescription:
-      'Set a high quality bar and name specific standards Claude should follow.',
-  },
-  {
-    number: 5,
-    title: 'Give Claude an "Out" (Permit "I Don\u2019t Know")',
-    whenToUse:
-      'Any question about specific API versions, library compatibility, platform-specific behaviour, or configuration details that Claude might not have reliable training data for.',
-    explanation:
-      'Claude will attempt to answer every question, even when it should not. If you do not explicitly give it permission to say "I don\u2019t know", it will hallucinate an answer rather than admit uncertainty. This is particularly dangerous for version-specific API details, library configurations, and platform-specific behaviour.',
-    crossTrack: false,
-    prompt: `I need to configure ${siteConfig.testingTool} to run against our staging environment with SSO authentication enabled.
+      promptTitle: 'Best Practice Enforcement',
+      promptDescription:
+        'Set a high quality bar and name specific standards Claude should follow.',
+    },
+    {
+      number: 5,
+      title: 'Give Claude an "Out" (Permit "I Don\u2019t Know")',
+      whenToUse:
+        'Any question about specific API versions, library compatibility, platform-specific behaviour, or configuration details that Claude might not have reliable training data for.',
+      explanation:
+        'Claude will attempt to answer every question, even when it should not. If you do not explicitly give it permission to say "I don\u2019t know", it will hallucinate an answer rather than admit uncertainty. This is particularly dangerous for version-specific API details, library configurations, and platform-specific behaviour.',
+      crossTrack: false,
+      prompt: `I need to configure ${testingTool} to run against our staging environment with SSO authentication enabled.
 
-Important: if you are not confident about specific ${siteConfig.testingTool} configuration options or API details, say so explicitly rather than guessing. It is better to tell me "I'm not sure about this specific setting \u2014 check ${siteConfig.testingToolDocs}" than to give me a configuration that might not work.
+Important: if you are not confident about specific ${testingTool} configuration options or API details, say so explicitly rather than guessing. It is better to tell me "I'm not sure about this specific setting \u2014 check ${testingToolDocs}" than to give me a configuration that might not work.
 
 With that caveat, how would you approach this?`,
-    promptTitle: 'Explicit "I Don\u2019t Know" Permission',
-    promptDescription:
-      'Give Claude permission to admit uncertainty instead of hallucinating.',
-  },
-  {
-    number: 6,
-    title: 'Outline Open Questions Before Implementing',
-    whenToUse:
-      'Any task that spans multiple systems, involves unfamiliar APIs, requires integration work, or has ambiguous requirements.',
-    explanation:
-      'For larger tasks, ask Claude to identify all the open questions and unknowns first, then answer each one, and only then move to implementation. This three-step process prevents Claude from making silent assumptions that lead to hallucinated code paths.',
-    crossTrack: false,
-    prompt: `I need to build an integration between our WordPress site's contact form and the existing .NET CRM system via a REST API.
+      promptTitle: 'Explicit "I Don\u2019t Know" Permission',
+      promptDescription:
+        'Give Claude permission to admit uncertainty instead of hallucinating.',
+    },
+    {
+      number: 6,
+      title: 'Outline Open Questions Before Implementing',
+      whenToUse:
+        'Any task that spans multiple systems, involves unfamiliar APIs, requires integration work, or has ambiguous requirements.',
+      explanation:
+        'For larger tasks, ask Claude to identify all the open questions and unknowns first, then answer each one, and only then move to implementation. This three-step process prevents Claude from making silent assumptions that lead to hallucinated code paths.',
+      crossTrack: false,
+      prompt: `I need to build an integration between our WordPress site's contact form and the existing .NET CRM system via a REST API.
 
 Step 1 \u2014 Before suggesting any implementation:
 List every open question or assumption you would need to resolve before building this. Consider: authentication, data mapping, error handling, rate limiting, existing API endpoints, WordPress hooks, and anything else relevant.
 
 Do not answer the questions yet. Just list them so I can provide the answers or confirm your assumptions.`,
-    promptTitle: 'Open Questions First',
-    promptDescription: 'Surface all unknowns before implementation begins.',
-    followUpPrompt: `Here are the answers to your open questions:
+      promptTitle: 'Open Questions First',
+      promptDescription: 'Surface all unknowns before implementation begins.',
+      followUpPrompt: `Here are the answers to your open questions:
 
 [paste answers]
 
 Now, based on these confirmed details, outline the implementation approach. If any of my answers have created new questions, raise those before proceeding to code.`,
-  },
-  {
-    number: 7,
-    title: 'Validate Against Existing Code First',
-    whenToUse:
-      'Any time you are modifying existing code, especially with custom frameworks, internal libraries, or non-standard project structures.',
-    explanation:
-      'Claude frequently hallucinates function signatures, import paths, and API patterns that look correct but do not match your actual codebase. Asking it to read and reference the existing code before making changes grounds its output in reality rather than its training data.',
-    crossTrack: false,
-    prompt: `I need to add a new endpoint to our API for exporting ${siteConfig.complianceArea} audit reports as PDFs.
+    },
+    {
+      number: 7,
+      title: 'Validate Against Existing Code First',
+      whenToUse:
+        'Any time you are modifying existing code, especially with custom frameworks, internal libraries, or non-standard project structures.',
+      explanation:
+        'Claude frequently hallucinates function signatures, import paths, and API patterns that look correct but do not match your actual codebase. Asking it to read and reference the existing code before making changes grounds its output in reality rather than its training data.',
+      crossTrack: false,
+      prompt: `I need to add a new endpoint to our API for exporting ${complianceArea} audit reports as PDFs.
 
 Before writing any new code:
 1. Read the existing controller files in /Controllers/ to understand our current patterns for API endpoints
@@ -167,11 +178,12 @@ Before writing any new code:
 3. Check the existing PDF generation code (if any) in the codebase
 
 Then propose the new endpoint following the exact same patterns, naming conventions, and project structure as the existing code. Cite the specific files and patterns you are following.`,
-    promptTitle: 'Validate Against Existing Code',
-    promptDescription:
-      'Ground Claude in your actual codebase before it writes new code.',
-  },
-];
+      promptTitle: 'Validate Against Existing Code',
+      promptDescription:
+        'Ground Claude in your actual codebase before it writes new code.',
+    },
+  ];
+}
 
 const HARNESS_PROMPT = `I am going to use a structured workflow for this task. We will go through these steps in order \u2014 do not skip ahead:
 
@@ -244,6 +256,8 @@ const keyTakeaways = [
 
 export function HallucinationsSection() {
   const { track } = useTrack();
+  const siteConfig = useSiteConfig();
+  const patterns = getPatterns(siteConfig);
   return (
     <div className="flex flex-col gap-12">
       {/* Introduction */}

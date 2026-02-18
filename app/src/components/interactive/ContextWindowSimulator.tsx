@@ -1,9 +1,9 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   type PresetData,
   segments as segmentDefinitions,
-  presets,
+  getPresets,
   calculateTokens,
   getDegradationStage,
   randomTurnTokens,
@@ -12,6 +12,7 @@ import {
   TOTAL_CONTEXT,
   RESPONSE_BUFFER_TOKENS,
 } from '@/content/shared/context-simulator-data';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { ContextWindowBar } from '@/components/interactive/ContextWindowBar';
 import { SimulatorControls } from '@/components/interactive/SimulatorControls';
 import { SimulatorStatus } from '@/components/interactive/SimulatorStatus';
@@ -49,6 +50,8 @@ interface ContextWindowSimulatorProps {
 }
 
 export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
+  const siteConfig = useSiteConfig();
+  const presets = useMemo(() => getPresets(siteConfig), [siteConfig]);
   const [state, setState] = useState<SimulatorState>(DEFAULT_STATE);
   const [isCompacting, setIsCompacting] = useState(false);
   const shouldReduceMotion = useReducedMotion();
@@ -134,18 +137,21 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
     }));
   }, []);
 
-  const handlePresetSelect = useCallback((presetId: PresetData['id']) => {
-    const preset = presets.find((p) => p.id === presetId);
-    if (!preset) return;
-    setState((prev) => ({
-      ...prev,
-      mcpServers: preset.mcpServers,
-      claudeMdLines: preset.claudeMdLines,
-      skillCount: preset.skillCount,
-      toolSearchEnabled: preset.toolSearchEnabled,
-      activePreset: presetId,
-    }));
-  }, []);
+  const handlePresetSelect = useCallback(
+    (presetId: PresetData['id']) => {
+      const preset = presets.find((p) => p.id === presetId);
+      if (!preset) return;
+      setState((prev) => ({
+        ...prev,
+        mcpServers: preset.mcpServers,
+        claudeMdLines: preset.claudeMdLines,
+        skillCount: preset.skillCount,
+        toolSearchEnabled: preset.toolSearchEnabled,
+        activePreset: presetId,
+      }));
+    },
+    [presets],
+  );
 
   const handleAddTurn = useCallback(
     (typeId?: string) => {
@@ -310,6 +316,7 @@ export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
         skillCount={state.skillCount}
         toolSearchEnabled={isDev ? state.toolSearchEnabled : true}
         activePreset={state.activePreset}
+        presets={presets}
         isDev={isDev}
         usagePercentage={usagePercentage}
         onMcpServersChange={(v) => handleSliderChange('mcpServers', v)}

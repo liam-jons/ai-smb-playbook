@@ -4,9 +4,10 @@ import { Menu, X, MessageSquareHeart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeSettings } from './ThemeSettings';
 import { cn } from '@/lib/utils';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 
 export function Header() {
+  const siteConfig = useSiteConfig();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 

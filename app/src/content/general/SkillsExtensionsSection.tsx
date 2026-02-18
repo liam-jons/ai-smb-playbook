@@ -22,13 +22,13 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { ScrollHint } from '@/components/content/ScrollHint';
 import { useTrack } from '@/hooks/useTrack';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 import { Check, Minus, ArrowDown, ChevronDown, Compass } from 'lucide-react';
 import {
   decisionTreeEntries,
   availabilityMatrix,
-  referenceCards,
+  getReferenceCards,
   contextCostTable,
   combinationPatterns,
   naturalLanguageTriggerGuide,
@@ -256,10 +256,15 @@ function CombinationCard({ pattern }: { pattern: CombinationPattern }) {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function SkillsExtensionsSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const isGeneral = track === 'general';
   const refCardsRef = useRef<HTMLDivElement>(null);
   const [openRefCard, setOpenRefCard] = useState<string>('');
+  const referenceCards = useMemo(
+    () => getReferenceCards(siteConfig),
+    [siteConfig],
+  );
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
   // N5: Memoised filtered arrays
@@ -274,7 +279,7 @@ export function SkillsExtensionsSection() {
         if (isGeneral) return !c.devOnly;
         return !c.generalOnly;
       }),
-    [isGeneral],
+    [referenceCards, isGeneral],
   );
 
   const filteredAvailability = useMemo(

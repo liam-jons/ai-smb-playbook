@@ -1,4 +1,4 @@
-import { siteConfig } from '@/config/site';
+import type { SiteConfigData } from '@/config/client-config-schema';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -106,322 +106,331 @@ export const calculatorDefaults: CalculatorDefaults = {
   teamSizeMax: 50,
 };
 
-export const taskTemplates: TaskTemplate[] = [
-  {
-    id: 'email-drafting',
-    title: 'Email Drafting & Replies',
-    category: 'time-savings',
-    beforeScenario: {
-      time: '10–20 min per substantive email',
-      cost: '£6–12 per email at £35/hr',
-      process:
-        'Manually compose client responses, proposal queries, and detailed replies \u2014 often rewriting similar responses from scratch.',
+/** Build task templates with client-specific examples from config. */
+export function getTaskTemplates(config: SiteConfigData): TaskTemplate[] {
+  return _buildTaskTemplates(config);
+}
+
+function _buildTaskTemplates(config: SiteConfigData): TaskTemplate[] {
+  return [
+    {
+      id: 'email-drafting',
+      title: 'Email Drafting & Replies',
+      category: 'time-savings',
+      beforeScenario: {
+        time: '10–20 min per substantive email',
+        cost: '£6–12 per email at £35/hr',
+        process:
+          'Manually compose client responses, proposal queries, and detailed replies \u2014 often rewriting similar responses from scratch.',
+      },
+      afterScenario: {
+        time: '3–5 min per email',
+        cost: '£2–3 per email',
+        process:
+          'AI drafts reply from context; human reviews, adjusts tone, and sends.',
+      },
+      roiHighlight: '75% time reduction on routine correspondence.',
+      relatedSection: 'sessions',
+      track: 'both',
     },
-    afterScenario: {
-      time: '3–5 min per email',
-      cost: '£2–3 per email',
-      process:
-        'AI drafts reply from context; human reviews, adjusts tone, and sends.',
+    {
+      id: 'meeting-summaries',
+      title: 'Meeting Notes & Action Items',
+      category: 'time-savings',
+      beforeScenario: {
+        time: '20–45 min per meeting',
+        cost: '£12–26 per meeting',
+        process:
+          'Manually review recording or notes, extract actions, distribute summary.',
+      },
+      afterScenario: {
+        time: '5–10 min per meeting',
+        cost: '£3–6 per meeting',
+        process:
+          'Paste transcript into Claude; get structured summary with owners and deadlines.',
+      },
+      roiHighlight: '70% faster turnaround on meeting follow-ups.',
+      relatedSection: 'sessions',
+      track: 'both',
     },
-    roiHighlight: '75% time reduction on routine correspondence.',
-    relatedSection: 'sessions',
-    track: 'both',
-  },
-  {
-    id: 'meeting-summaries',
-    title: 'Meeting Notes & Action Items',
-    category: 'time-savings',
-    beforeScenario: {
-      time: '20–45 min per meeting',
-      cost: '£12–26 per meeting',
-      process:
-        'Manually review recording or notes, extract actions, distribute summary.',
+    {
+      id: 'proposal-writing',
+      title: 'Proposal & Bid Writing',
+      category: 'throughput',
+      beforeScenario: {
+        time: '2–5 days per bid',
+        cost: '£560–1,400 per bid',
+        process:
+          'Research requirements, draft from scratch, review, revise, format.',
+      },
+      afterScenario: {
+        time: '0.5–1.5 days per bid',
+        cost: '£140–420 per bid',
+        process:
+          'AI drafts from knowledge base and requirements; human refines and personalises.',
+      },
+      roiHighlight: '60–70% reduction in bid preparation time.',
+      relatedSection: 'skills-extensions',
+      track: 'both',
+      clientExample: {
+        title: `${config.companyShortName} bid writing`,
+        description: `${config.companyShortName} regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.`,
+      },
     },
-    afterScenario: {
-      time: '5–10 min per meeting',
-      cost: '£3–6 per meeting',
-      process:
-        'Paste transcript into Claude; get structured summary with owners and deadlines.',
+    {
+      id: 'report-generation',
+      title: 'Report Generation',
+      category: 'throughput',
+      beforeScenario: {
+        time: '3–8 hours per report',
+        cost: '£105–280 per report',
+        process:
+          'Gather data from multiple sources, analyse trends, write narrative, format.',
+      },
+      afterScenario: {
+        time: '30–90 min per report',
+        cost: '£18–53 per report',
+        process:
+          'Feed data to AI; get structured report with analysis, charts descriptions, and recommendations.',
+      },
+      roiHighlight: '80% faster first-draft production.',
+      relatedSection: 'recurring-tasks',
+      track: 'both',
     },
-    roiHighlight: '70% faster turnaround on meeting follow-ups.',
-    relatedSection: 'sessions',
-    track: 'both',
-  },
-  {
-    id: 'proposal-writing',
-    title: 'Proposal & Bid Writing',
-    category: 'throughput',
-    beforeScenario: {
-      time: '2–5 days per bid',
-      cost: '£560–1,400 per bid',
-      process:
-        'Research requirements, draft from scratch, review, revise, format.',
+    {
+      id: 'data-entry',
+      title: 'Data Entry & Extraction',
+      category: 'error-reduction',
+      beforeScenario: {
+        time: '1–3 hours per batch',
+        cost: '£35–105 per batch',
+        process:
+          'Manual copy-paste from documents into spreadsheets or systems. Error rate: 2–5%.',
+      },
+      afterScenario: {
+        time: '10–20 min per batch',
+        cost: '£6–12 per batch',
+        process:
+          'AI extracts structured data from documents; human verifies outliers. Error rate: <1%.',
+      },
+      roiHighlight: 'Error rate drops by 80% whilst processing 5x faster.',
+      relatedSection: 'recurring-tasks',
+      track: 'both',
     },
-    afterScenario: {
-      time: '0.5–1.5 days per bid',
-      cost: '£140–420 per bid',
-      process:
-        'AI drafts from knowledge base and requirements; human refines and personalises.',
+    {
+      id: 'compliance-docs',
+      title: 'Compliance Documentation',
+      category: 'error-reduction',
+      beforeScenario: {
+        time: '1–2 days per document',
+        cost: '£280–560 per document',
+        process:
+          'Draft from previous versions, cross-reference standards, track changes manually.',
+      },
+      afterScenario: {
+        time: '2–4 hours per document',
+        cost: '£70–140 per document',
+        process:
+          'AI generates first draft from existing policies and standard requirements; human reviews for accuracy.',
+      },
+      roiHighlight:
+        '75% reduction in documentation time with improved consistency.',
+      relatedSection: 'governance',
+      track: 'both',
+      clientExample: {
+        title: `${config.companyShortName} ISO documentation`,
+        description: `With ISO 9001, 27001, 14001 and Cyber Essentials Plus, ${config.companyShortName} maintains extensive documentation. AI can generate first drafts from existing policies.`,
+      },
     },
-    roiHighlight: '60–70% reduction in bid preparation time.',
-    relatedSection: 'skills-extensions',
-    track: 'both',
-    clientExample: {
-      title: `${siteConfig.companyShortName} bid writing`,
-      description: `${siteConfig.companyShortName} regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.`,
+    {
+      id: 'content-creation',
+      title: 'Blog & Marketing Content',
+      category: 'throughput',
+      beforeScenario: {
+        time: '3–6 hours per piece',
+        cost: '£105–210 per piece',
+        process:
+          'Research topic, outline, draft, edit, optimise for SEO, format for publication.',
+      },
+      afterScenario: {
+        time: '1–2 hours per piece',
+        cost: '£35–70 per piece',
+        process:
+          'AI drafts from brief and brand voice guidelines; human adds expertise, edits, and publishes.',
+      },
+      roiHighlight: '65% faster content production, 2–3x more output per week.',
+      relatedSection: 'brand-voice',
+      track: 'both',
     },
-  },
-  {
-    id: 'report-generation',
-    title: 'Report Generation',
-    category: 'throughput',
-    beforeScenario: {
-      time: '3–8 hours per report',
-      cost: '£105–280 per report',
-      process:
-        'Gather data from multiple sources, analyse trends, write narrative, format.',
+    {
+      id: 'customer-responses',
+      title: 'Customer Support Responses',
+      category: 'capacity',
+      beforeScenario: {
+        time: '10–20 min per ticket',
+        cost: '£6–12 per ticket',
+        process:
+          'Read ticket, research answer, draft response, check tone, send.',
+      },
+      afterScenario: {
+        time: '3–5 min per ticket',
+        cost: '£2–3 per ticket',
+        process:
+          'AI drafts response from knowledge base; human reviews and personalises before sending.',
+      },
+      roiHighlight: 'Handle 3x more support volume with the same team.',
+      relatedSection: 'sessions',
+      track: 'both',
     },
-    afterScenario: {
-      time: '30–90 min per report',
-      cost: '£18–53 per report',
-      process:
-        'Feed data to AI; get structured report with analysis, charts descriptions, and recommendations.',
+    {
+      id: 'onboarding-docs',
+      title: 'Employee & Client Onboarding',
+      category: 'capacity',
+      beforeScenario: {
+        time: '4–8 hours per new starter',
+        cost: '£140–280 per onboarding',
+        process:
+          'Manually prepare welcome packs, checklists, access requests, and training schedules.',
+      },
+      afterScenario: {
+        time: '1–2 hours per new starter',
+        cost: '£35–70 per onboarding',
+        process:
+          'AI generates personalised onboarding materials from templates; human reviews and adds personal touches.',
+      },
+      roiHighlight:
+        '75% time saving per onboarding, more consistent experience.',
+      relatedSection: 'skills-extensions',
+      track: 'both',
     },
-    roiHighlight: '80% faster first-draft production.',
-    relatedSection: 'recurring-tasks',
-    track: 'both',
-  },
-  {
-    id: 'data-entry',
-    title: 'Data Entry & Extraction',
-    category: 'error-reduction',
-    beforeScenario: {
-      time: '1–3 hours per batch',
-      cost: '£35–105 per batch',
-      process:
-        'Manual copy-paste from documents into spreadsheets or systems. Error rate: 2–5%.',
+    {
+      id: 'code-review',
+      title: 'Code Review & Documentation',
+      category: 'time-savings',
+      beforeScenario: {
+        time: '30–60 min per PR',
+        cost: '£18–35 per review',
+        process:
+          'Developer reads diff, checks logic, verifies edge cases, writes comments.',
+      },
+      afterScenario: {
+        time: '10–20 min per PR',
+        cost: '£6–12 per review',
+        process:
+          'AI performs initial review, flags issues, suggests improvements; developer validates and merges.',
+      },
+      roiHighlight: '60% faster reviews, more consistent code quality.',
+      relatedSection: 'claude-md',
+      track: 'developer',
     },
-    afterScenario: {
-      time: '10–20 min per batch',
-      cost: '£6–12 per batch',
-      process:
-        'AI extracts structured data from documents; human verifies outliers. Error rate: <1%.',
+    {
+      id: 'regression-testing',
+      title: 'Regression Testing',
+      category: 'error-reduction',
+      beforeScenario: {
+        time: '2–4 hours per test suite run',
+        cost: '£70–140 + tool subscription',
+        process:
+          'Maintain test scripts in external tool, run manually or on schedule, debug failures.',
+      },
+      afterScenario: {
+        time: '30–60 min per suite',
+        cost: '£18–35 (no extra tool cost)',
+        process:
+          'AI generates and runs tests via browser automation; reports failures with context.',
+      },
+      roiHighlight:
+        'Replace dedicated testing tool subscription; faster test authoring.',
+      relatedSection: 'regression-testing',
+      track: 'developer',
+      clientExample: {
+        title: `${config.companyShortName} ${config.testingTool ?? 'testing tool'} replacement`,
+        description: `${config.companyShortName} currently uses ${config.testingTool ?? 'their testing tool'} for regression testing. Claude Code's browser automation can replicate test suites at lower cost.`,
+      },
     },
-    roiHighlight: 'Error rate drops by 80% whilst processing 5x faster.',
-    relatedSection: 'recurring-tasks',
-    track: 'both',
-  },
-  {
-    id: 'compliance-docs',
-    title: 'Compliance Documentation',
-    category: 'error-reduction',
-    beforeScenario: {
-      time: '1–2 days per document',
-      cost: '£280–560 per document',
-      process:
-        'Draft from previous versions, cross-reference standards, track changes manually.',
+    {
+      id: 'research-synthesis',
+      title: 'Research & Competitive Analysis',
+      category: 'insight',
+      beforeScenario: {
+        time: '4–8 hours per report',
+        cost: '£140–280 per analysis',
+        process:
+          'Manual web research, reading multiple sources, synthesising findings, formatting report.',
+      },
+      afterScenario: {
+        time: '1–2 hours per report',
+        cost: '£35–70 per analysis',
+        process:
+          'AI cross-references and synthesises the sources you provide; human validates and adds strategic context.',
+      },
+      roiHighlight: '75% faster synthesis of information you provide.',
+      relatedSection: 'sessions',
+      track: 'both',
     },
-    afterScenario: {
-      time: '2–4 hours per document',
-      cost: '£70–140 per document',
-      process:
-        'AI generates first draft from existing policies and standard requirements; human reviews for accuracy.',
+    {
+      id: 'process-documentation',
+      title: 'Internal Process Documentation',
+      category: 'capacity',
+      beforeScenario: {
+        time: '2–4 hours per process',
+        cost: '£70–140 per document',
+        process:
+          'Interview stakeholders, write step-by-step instructions, add screenshots, review.',
+      },
+      afterScenario: {
+        time: '30–60 min per process',
+        cost: '£18–35 per document',
+        process:
+          'AI generates documentation from conversation transcripts and existing materials; human verifies accuracy.',
+      },
+      roiHighlight: '75% faster documentation, easier to keep up to date.',
+      relatedSection: 'recurring-tasks',
+      track: 'both',
     },
-    roiHighlight:
-      '75% reduction in documentation time with improved consistency.',
-    relatedSection: 'governance',
-    track: 'both',
-    clientExample: {
-      title: `${siteConfig.companyShortName} ISO documentation`,
-      description: `With ISO 9001, 27001, 14001 and Cyber Essentials Plus, ${siteConfig.companyShortName} maintains extensive documentation. AI can generate first drafts from existing policies.`,
+    {
+      id: 'social-media',
+      title: 'Social Media Management',
+      category: 'throughput',
+      beforeScenario: {
+        time: '1–2 hours per day',
+        cost: '£35–70 per day',
+        process:
+          'Plan posts, write copy for each platform, find/create images, schedule.',
+      },
+      afterScenario: {
+        time: '20–30 min per day',
+        cost: '£12–18 per day',
+        process:
+          'AI generates platform-specific variants from one brief; human reviews and schedules.',
+      },
+      roiHighlight: '70% time saving, consistent multi-platform presence.',
+      relatedSection: 'brand-voice',
+      track: 'both',
     },
-  },
-  {
-    id: 'content-creation',
-    title: 'Blog & Marketing Content',
-    category: 'throughput',
-    beforeScenario: {
-      time: '3–6 hours per piece',
-      cost: '£105–210 per piece',
-      process:
-        'Research topic, outline, draft, edit, optimise for SEO, format for publication.',
+    {
+      id: 'technical-debt',
+      title: 'Technical Debt Assessment',
+      category: 'insight',
+      beforeScenario: {
+        time: '2–5 days for full audit',
+        cost: '£560–1,400 per audit',
+        process:
+          'Manual codebase review, catalogue issues, prioritise, create remediation plan.',
+      },
+      afterScenario: {
+        time: '2–4 hours for initial assessment',
+        cost: '£70–140 per assessment',
+        process:
+          'AI scans codebase, categorises debt, suggests priorities; developer validates and plans sprints.',
+      },
+      roiHighlight:
+        '85% faster initial assessment, more comprehensive coverage.',
+      relatedSection: 'technical-debt',
+      track: 'developer',
     },
-    afterScenario: {
-      time: '1–2 hours per piece',
-      cost: '£35–70 per piece',
-      process:
-        'AI drafts from brief and brand voice guidelines; human adds expertise, edits, and publishes.',
-    },
-    roiHighlight: '65% faster content production, 2–3x more output per week.',
-    relatedSection: 'brand-voice',
-    track: 'both',
-  },
-  {
-    id: 'customer-responses',
-    title: 'Customer Support Responses',
-    category: 'capacity',
-    beforeScenario: {
-      time: '10–20 min per ticket',
-      cost: '£6–12 per ticket',
-      process:
-        'Read ticket, research answer, draft response, check tone, send.',
-    },
-    afterScenario: {
-      time: '3–5 min per ticket',
-      cost: '£2–3 per ticket',
-      process:
-        'AI drafts response from knowledge base; human reviews and personalises before sending.',
-    },
-    roiHighlight: 'Handle 3x more support volume with the same team.',
-    relatedSection: 'sessions',
-    track: 'both',
-  },
-  {
-    id: 'onboarding-docs',
-    title: 'Employee & Client Onboarding',
-    category: 'capacity',
-    beforeScenario: {
-      time: '4–8 hours per new starter',
-      cost: '£140–280 per onboarding',
-      process:
-        'Manually prepare welcome packs, checklists, access requests, and training schedules.',
-    },
-    afterScenario: {
-      time: '1–2 hours per new starter',
-      cost: '£35–70 per onboarding',
-      process:
-        'AI generates personalised onboarding materials from templates; human reviews and adds personal touches.',
-    },
-    roiHighlight: '75% time saving per onboarding, more consistent experience.',
-    relatedSection: 'skills-extensions',
-    track: 'both',
-  },
-  {
-    id: 'code-review',
-    title: 'Code Review & Documentation',
-    category: 'time-savings',
-    beforeScenario: {
-      time: '30–60 min per PR',
-      cost: '£18–35 per review',
-      process:
-        'Developer reads diff, checks logic, verifies edge cases, writes comments.',
-    },
-    afterScenario: {
-      time: '10–20 min per PR',
-      cost: '£6–12 per review',
-      process:
-        'AI performs initial review, flags issues, suggests improvements; developer validates and merges.',
-    },
-    roiHighlight: '60% faster reviews, more consistent code quality.',
-    relatedSection: 'claude-md',
-    track: 'developer',
-  },
-  {
-    id: 'regression-testing',
-    title: 'Regression Testing',
-    category: 'error-reduction',
-    beforeScenario: {
-      time: '2–4 hours per test suite run',
-      cost: '£70–140 + tool subscription',
-      process:
-        'Maintain test scripts in external tool, run manually or on schedule, debug failures.',
-    },
-    afterScenario: {
-      time: '30–60 min per suite',
-      cost: '£18–35 (no extra tool cost)',
-      process:
-        'AI generates and runs tests via browser automation; reports failures with context.',
-    },
-    roiHighlight:
-      'Replace dedicated testing tool subscription; faster test authoring.',
-    relatedSection: 'regression-testing',
-    track: 'developer',
-    clientExample: {
-      title: `${siteConfig.companyShortName} ${siteConfig.testingTool} replacement`,
-      description: `${siteConfig.companyShortName} currently uses ${siteConfig.testingTool} for regression testing. Claude Code's browser automation can replicate test suites at lower cost.`,
-    },
-  },
-  {
-    id: 'research-synthesis',
-    title: 'Research & Competitive Analysis',
-    category: 'insight',
-    beforeScenario: {
-      time: '4–8 hours per report',
-      cost: '£140–280 per analysis',
-      process:
-        'Manual web research, reading multiple sources, synthesising findings, formatting report.',
-    },
-    afterScenario: {
-      time: '1–2 hours per report',
-      cost: '£35–70 per analysis',
-      process:
-        'AI cross-references and synthesises the sources you provide; human validates and adds strategic context.',
-    },
-    roiHighlight: '75% faster synthesis of information you provide.',
-    relatedSection: 'sessions',
-    track: 'both',
-  },
-  {
-    id: 'process-documentation',
-    title: 'Internal Process Documentation',
-    category: 'capacity',
-    beforeScenario: {
-      time: '2–4 hours per process',
-      cost: '£70–140 per document',
-      process:
-        'Interview stakeholders, write step-by-step instructions, add screenshots, review.',
-    },
-    afterScenario: {
-      time: '30–60 min per process',
-      cost: '£18–35 per document',
-      process:
-        'AI generates documentation from conversation transcripts and existing materials; human verifies accuracy.',
-    },
-    roiHighlight: '75% faster documentation, easier to keep up to date.',
-    relatedSection: 'recurring-tasks',
-    track: 'both',
-  },
-  {
-    id: 'social-media',
-    title: 'Social Media Management',
-    category: 'throughput',
-    beforeScenario: {
-      time: '1–2 hours per day',
-      cost: '£35–70 per day',
-      process:
-        'Plan posts, write copy for each platform, find/create images, schedule.',
-    },
-    afterScenario: {
-      time: '20–30 min per day',
-      cost: '£12–18 per day',
-      process:
-        'AI generates platform-specific variants from one brief; human reviews and schedules.',
-    },
-    roiHighlight: '70% time saving, consistent multi-platform presence.',
-    relatedSection: 'brand-voice',
-    track: 'both',
-  },
-  {
-    id: 'technical-debt',
-    title: 'Technical Debt Assessment',
-    category: 'insight',
-    beforeScenario: {
-      time: '2–5 days for full audit',
-      cost: '£560–1,400 per audit',
-      process:
-        'Manual codebase review, catalogue issues, prioritise, create remediation plan.',
-    },
-    afterScenario: {
-      time: '2–4 hours for initial assessment',
-      cost: '£70–140 per assessment',
-      process:
-        'AI scans codebase, categorises debt, suggests priorities; developer validates and plans sprints.',
-    },
-    roiHighlight: '85% faster initial assessment, more comprehensive coverage.',
-    relatedSection: 'technical-debt',
-    track: 'developer',
-  },
-];
+  ];
+}
 
 export const valueFrameworks: ValueFramework[] = [
   {

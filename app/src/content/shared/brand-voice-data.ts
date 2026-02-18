@@ -8,7 +8,7 @@ import {
   Users,
   type LucideIcon,
 } from 'lucide-react';
-import { siteConfig } from '@/config/site';
+import type { SiteConfigData } from '@/config/client-config-schema';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -230,66 +230,75 @@ export const devSteps: SetupStep[] = [
   },
 ];
 
-export const frameworkSections: FrameworkSection[] = [
-  {
-    number: 1,
-    title: 'Brand Personality',
-    description:
-      'Define the brand as if it were a person. What are its defining traits? This creates the foundation everything else builds on.',
-    clientExample: `If ${siteConfig.companyName} were a person, they would be the knowledgeable colleague who explains ${siteConfig.complianceArea} technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
-    icon: Palette,
-  },
-  {
-    number: 2,
-    title: 'Voice Attributes',
-    description:
-      'Select 3\u20135 attributes that define how the brand communicates. Each should have a "we are / we are not / sounds like" definition to prevent misinterpretation.',
-    clientExample:
-      'Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: "Here\'s how to get started \u2014 it takes about five minutes."',
-    icon: MessageCircle,
-  },
-  {
-    number: 3,
-    title: 'Audience Awareness',
-    description:
-      'Who the brand speaks to, what they care about, what level of expertise they have, and how they expect to be addressed.',
-    clientExample: `Primary: ${siteConfig.complianceArea} leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in ${siteConfig.complianceArea} but not necessarily in software.`,
-    icon: Users,
-  },
-  {
-    number: 4,
-    title: 'Core Messaging Pillars',
-    description:
-      '3\u20135 key themes the brand consistently communicates. The hierarchy of these messages and how each connects to audience needs.',
-    clientExample: `Pillar 1: ${siteConfig.complianceArea.charAt(0).toUpperCase() + siteConfig.complianceArea.slice(1)} made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).`,
-    icon: Megaphone,
-  },
-  {
-    number: 5,
-    title: 'Tone Spectrum',
-    description:
-      'How the voice adapts across channels and situations whilst remaining recognisably the same brand. The voice stays constant; the tone dials attributes up or down.',
-    clientExample: `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${siteConfig.companyName} voice is always present, but the emphasis shifts.`,
-    icon: Globe2,
-  },
-  {
-    number: 6,
-    title: 'Style Rules',
-    description:
-      'Specific grammar, formatting, and language decisions: Oxford comma, sentence case vs title case, contractions, date formats. This is where UK English enforcement lives within the broader brand framework.',
-    clientExample:
-      'UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.',
-    icon: Type,
-  },
-  {
-    number: 7,
-    title: 'Terminology',
-    description:
-      'Preferred and avoided terms, product names, inclusive language guidelines. Maintaining consistency across all communications.',
-    clientExample: `Use "${siteConfig.complianceArea} partnership" (not "LSCP"). Use "${siteConfig.primaryProductDescription}" on first mention, then "${siteConfig.primaryProduct}". Never use "users" when you mean "${siteConfig.complianceArea} professionals" or "partners".`,
-    icon: ListChecks,
-  },
-];
+/** Build framework sections with client-specific examples from config. */
+export function getFrameworkSections(
+  config: SiteConfigData,
+): FrameworkSection[] {
+  const complianceArea = config.complianceArea ?? 'compliance';
+  const complianceAreaCapitalised =
+    complianceArea.charAt(0).toUpperCase() + complianceArea.slice(1);
+
+  return [
+    {
+      number: 1,
+      title: 'Brand Personality',
+      description:
+        'Define the brand as if it were a person. What are its defining traits? This creates the foundation everything else builds on.',
+      clientExample: `If ${config.companyName} were a person, they would be the knowledgeable colleague who explains ${complianceArea} technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
+      icon: Palette,
+    },
+    {
+      number: 2,
+      title: 'Voice Attributes',
+      description:
+        'Select 3\u20135 attributes that define how the brand communicates. Each should have a "we are / we are not / sounds like" definition to prevent misinterpretation.',
+      clientExample:
+        'Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: "Here\'s how to get started \u2014 it takes about five minutes."',
+      icon: MessageCircle,
+    },
+    {
+      number: 3,
+      title: 'Audience Awareness',
+      description:
+        'Who the brand speaks to, what they care about, what level of expertise they have, and how they expect to be addressed.',
+      clientExample: `Primary: ${complianceArea} leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in ${complianceArea} but not necessarily in software.`,
+      icon: Users,
+    },
+    {
+      number: 4,
+      title: 'Core Messaging Pillars',
+      description:
+        '3\u20135 key themes the brand consistently communicates. The hierarchy of these messages and how each connects to audience needs.',
+      clientExample: `Pillar 1: ${complianceAreaCapitalised} made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).`,
+      icon: Megaphone,
+    },
+    {
+      number: 5,
+      title: 'Tone Spectrum',
+      description:
+        'How the voice adapts across channels and situations whilst remaining recognisably the same brand. The voice stays constant; the tone dials attributes up or down.',
+      clientExample: `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${config.companyName} voice is always present, but the emphasis shifts.`,
+      icon: Globe2,
+    },
+    {
+      number: 6,
+      title: 'Style Rules',
+      description:
+        'Specific grammar, formatting, and language decisions: Oxford comma, sentence case vs title case, contractions, date formats. This is where UK English enforcement lives within the broader brand framework.',
+      clientExample:
+        'UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.',
+      icon: Type,
+    },
+    {
+      number: 7,
+      title: 'Terminology',
+      description:
+        'Preferred and avoided terms, product names, inclusive language guidelines. Maintaining consistency across all communications.',
+      clientExample: `Use "${complianceArea} partnership" (not "LSCP"). Use "${config.primaryProductDescription ?? 'the product'}" on first mention, then "${config.primaryProduct ?? 'the product'}". Never use "users" when you mean "${complianceArea} professionals" or "partners".`,
+      icon: ListChecks,
+    },
+  ];
+}
 
 export const storageOptions: StorageOption[] = [
   {

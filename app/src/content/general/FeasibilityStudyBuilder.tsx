@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dialog';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import {
@@ -43,7 +43,7 @@ import {
   Check,
   type LucideIcon,
 } from 'lucide-react';
-import { taskTemplates } from '@/content/shared/roi-data';
+import { getTaskTemplates, type TaskTemplate } from '@/content/shared/roi-data';
 import {
   feasibilityDefaults,
   feasibilitySteps,
@@ -80,7 +80,10 @@ const stepIcons: LucideIcon[] = [
 
 // ─── Markdown Export ─────────────────────────────────────────────────────────
 
-function generateFeasibilityMarkdown(data: FeasibilityFormData): string {
+function generateFeasibilityMarkdown(
+  data: FeasibilityFormData,
+  appTitle: string,
+): string {
   const or = (v: string) => v.trim() || '[Not provided]';
   const toolList = data.requiredTools.length
     ? data.requiredTools.map((t) => `- ${t}`).join('\n')
@@ -204,13 +207,15 @@ ${or(data.reviewDate)}
 
 ---
 
-*Generated with the ${siteConfig.appTitle} Feasibility Study Tool*
+*Generated with the ${appTitle} Feasibility Study Tool*
 `;
 }
 
 // ─── localStorage Persistence ────────────────────────────────────────────────
 
-const STORAGE_KEY = `${siteConfig.localStoragePrefix}-feasibility-draft`;
+function getStorageKey(prefix: string) {
+  return `${prefix}-feasibility-draft`;
+}
 
 interface FeasibilityDraft {
   formData: FeasibilityFormData;
@@ -218,17 +223,17 @@ interface FeasibilityDraft {
   lastSaved: string;
 }
 
-function saveDraft(draft: FeasibilityDraft): void {
+function saveDraft(draft: FeasibilityDraft, storageKey: string): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+    localStorage.setItem(storageKey, JSON.stringify(draft));
   } catch {
     // localStorage may be full or unavailable
   }
 }
 
-function loadDraft(): FeasibilityDraft | null {
+function loadDraft(storageKey: string): FeasibilityDraft | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(storageKey);
     if (!raw) return null;
     return JSON.parse(raw) as FeasibilityDraft;
   } catch {
@@ -236,9 +241,9 @@ function loadDraft(): FeasibilityDraft | null {
   }
 }
 
-function clearDraft(): void {
+function clearDraft(storageKey: string): void {
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(storageKey);
   } catch {
     // ignore
   }
@@ -398,7 +403,7 @@ function Step1UseCaseForm({
     value: FeasibilityFormData[K],
   ) => void;
   onTemplateSelect: (templateId: string | null) => void;
-  trackFilteredTemplates: (typeof taskTemplates)[number][];
+  trackFilteredTemplates: TaskTemplate[];
 }) {
   return (
     <div className="space-y-6">
@@ -1182,8 +1187,10 @@ function Step7RecommendationForm({
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function FeasibilityStudyBuilder() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
-  const [savedDraft] = useState(loadDraft);
+  const STORAGE_KEY = getStorageKey(siteConfig.localStoragePrefix);
+  const [savedDraft] = useState(() => loadDraft(STORAGE_KEY));
   const [step, setStep] = useState(savedDraft?.currentStep ?? 0);
   const [highestStep, setHighestStep] = useState(savedDraft?.currentStep ?? 0);
   const [formData, setFormData] = useState<FeasibilityFormData>(
@@ -1202,9 +1209,16 @@ export function FeasibilityStudyBuilder() {
   const stepHeadingRef = useRef<HTMLHeadingElement>(null);
   const isInitialRender = useRef(true);
 
+  const taskTemplates = useMemo(
+    () => getTaskTemplates(siteConfig),
+    [siteConfig],
+  );
   const trackFilteredTemplates = useMemo(
-    () => taskTemplates.filter((t) => t.track === 'both' || t.track === track),
-    [track],
+    () =>
+      taskTemplates.filter(
+        (t: TaskTemplate) => t.track === 'both' || t.track === track,
+      ),
+    [taskTemplates, track],
   );
 
   // Debounced save to localStorage (500ms)
@@ -1214,14 +1228,17 @@ export function FeasibilityStudyBuilder() {
       return;
     }
     const timer = setTimeout(() => {
-      saveDraft({
-        formData,
-        currentStep: step,
-        lastSaved: new Date().toISOString(),
-      });
+      saveDraft(
+        {
+          formData,
+          currentStep: step,
+          lastSaved: new Date().toISOString(),
+        },
+        STORAGE_KEY,
+      );
     }, 500);
     return () => clearTimeout(timer);
-  }, [formData, step]);
+  }, [formData, step, STORAGE_KEY]);
 
   // Focus step heading on step transitions (skip initial mount)
   useEffect(() => {
@@ -1253,7 +1270,10 @@ export function FeasibilityStudyBuilder() {
         preparedDate: formatDateUK(new Date()),
       });
     } else {
-      const prePopulated = getPrePopulationForTemplate(templateId);
+      const prePopulated = getPrePopulationForTemplate(
+        templateId,
+        taskTemplates,
+      );
       setFormData((prev) => ({
         ...prev,
         ...prePopulated,
@@ -1263,7 +1283,7 @@ export function FeasibilityStudyBuilder() {
   };
 
   const handleDiscard = () => {
-    clearDraft();
+    clearDraft(STORAGE_KEY);
     skipSaveRef.current = true;
     setFormData({
       ...feasibilityDefaults,
@@ -1277,7 +1297,7 @@ export function FeasibilityStudyBuilder() {
   };
 
   const handleReset = () => {
-    clearDraft();
+    clearDraft(STORAGE_KEY);
     skipSaveRef.current = true;
     setFormData({
       ...feasibilityDefaults,
@@ -1289,8 +1309,8 @@ export function FeasibilityStudyBuilder() {
   };
 
   const generatedMarkdown = useMemo(
-    () => generateFeasibilityMarkdown(formData),
-    [formData],
+    () => generateFeasibilityMarkdown(formData, siteConfig.appTitle),
+    [formData, siteConfig.appTitle],
   );
 
   const goNext = () => {

@@ -16,7 +16,6 @@ import { ChevronDown, Plus, RotateCcw, Shrink, Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   type PresetData,
-  presets,
   conversationTurnTypes,
   formatTokens,
   TOKENS_PER_CLAUDE_MD_LINE,
@@ -31,6 +30,7 @@ interface SimulatorControlsProps {
   skillCount: number;
   toolSearchEnabled: boolean;
   activePreset: PresetData['id'] | null;
+  presets: PresetData[];
   isDev: boolean;
   usagePercentage: number;
   onMcpServersChange: (value: number) => void;
@@ -49,6 +49,7 @@ export function SimulatorControls({
   skillCount,
   toolSearchEnabled,
   activePreset,
+  presets,
   isDev,
   usagePercentage,
   onMcpServersChange,

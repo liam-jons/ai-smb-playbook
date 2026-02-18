@@ -1,5 +1,4 @@
-import { taskTemplates } from '@/content/shared/roi-data';
-import type { TaskCategory } from '@/content/shared/roi-data';
+import type { TaskCategory, TaskTemplate } from '@/content/shared/roi-data';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -280,8 +279,9 @@ export function getDefaultKpisForCategory(category: TaskCategory): string[] {
 
 export function getPrePopulationForTemplate(
   templateId: string,
+  taskTemplates: TaskTemplate[],
 ): Partial<FeasibilityFormData> {
-  const template = taskTemplates.find((t) => t.id === templateId);
+  const template = taskTemplates.find((t: TaskTemplate) => t.id === templateId);
   if (!template) return {};
 
   return {

@@ -2,7 +2,7 @@
 // All figures are ballpark estimates. Exact token counts vary by Claude version,
 // model, configuration, and content.
 
-import { siteConfig } from '@/config/site';
+import type { SiteConfigData } from '@/config/client-config-schema';
 
 export interface ContextSegmentData {
   id: string;
@@ -175,35 +175,38 @@ export const segments: ContextSegmentData[] = [
   },
 ];
 
-export const presets: PresetData[] = [
-  {
-    id: 'minimal',
-    label: 'Minimal',
-    description: 'New project, no extras',
-    mcpServers: 0,
-    claudeMdLines: 50,
-    skillCount: 0,
-    toolSearchEnabled: true,
-  },
-  {
-    id: 'moderate',
-    label: 'Moderate',
-    description: `Typical ${siteConfig.companyShortName} setup`,
-    mcpServers: 2,
-    claudeMdLines: 200,
-    skillCount: 3,
-    toolSearchEnabled: true,
-  },
-  {
-    id: 'heavy',
-    label: 'Heavy',
-    description: 'Many integrations',
-    mcpServers: 5,
-    claudeMdLines: 500,
-    skillCount: 10,
-    toolSearchEnabled: false,
-  },
-];
+/** Build presets with client-specific labels from config. */
+export function getPresets(config: SiteConfigData): PresetData[] {
+  return [
+    {
+      id: 'minimal',
+      label: 'Minimal',
+      description: 'New project, no extras',
+      mcpServers: 0,
+      claudeMdLines: 50,
+      skillCount: 0,
+      toolSearchEnabled: true,
+    },
+    {
+      id: 'moderate',
+      label: 'Moderate',
+      description: `Typical ${config.companyShortName} setup`,
+      mcpServers: 2,
+      claudeMdLines: 200,
+      skillCount: 3,
+      toolSearchEnabled: true,
+    },
+    {
+      id: 'heavy',
+      label: 'Heavy',
+      description: 'Many integrations',
+      mcpServers: 5,
+      claudeMdLines: 500,
+      skillCount: 10,
+      toolSearchEnabled: false,
+    },
+  ];
+}
 
 export const degradationStages: DegradationStage[] = [
   {

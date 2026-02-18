@@ -17,7 +17,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { CopyButton } from '@/components/content/CopyButton';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
 import { cn } from '@/lib/utils';
 import {
@@ -35,7 +35,7 @@ import {
 import { FeasibilityStudyBuilder } from '@/content/general/FeasibilityStudyBuilder';
 import {
   calculatorDefaults,
-  taskTemplates,
+  getTaskTemplates,
   valueFrameworks,
   measurementMistakes,
   gettingStartedSteps,
@@ -43,7 +43,7 @@ import {
   categoryFilters,
   getCategoryColour,
 } from '@/content/shared/roi-data';
-import type { TaskCategory } from '@/content/shared/roi-data';
+import type { TaskCategory, TaskTemplate } from '@/content/shared/roi-data';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -67,6 +67,7 @@ function generateExportText(
   annualNet: number,
   roiPercent: number,
   paybackDays: number,
+  appTitle: string,
 ): string {
   const days = Math.round(paybackDays);
   return [
@@ -87,13 +88,14 @@ function generateExportText(
     `  ROI:                      ${formatPercent(roiPercent)}`,
     `  Payback period:           ${days} ${days === 1 ? 'day' : 'days'}`,
     '',
-    `Generated with the ${siteConfig.appTitle} ROI Calculator`,
+    `Generated with the ${appTitle} ROI Calculator`,
   ].join('\n');
 }
 
 // ─── ROI Calculator ──────────────────────────────────────────────────────────
 
 function RoiCalculator() {
+  const siteConfig = useSiteConfig();
   const [hoursSaved, setHoursSaved] = useState(
     calculatorDefaults.defaultHoursSavedPerWeek,
   );
@@ -127,6 +129,7 @@ function RoiCalculator() {
     annualNet,
     roiPercent,
     paybackDays,
+    siteConfig.appTitle,
   );
 
   return (
@@ -316,9 +319,10 @@ function TaskTemplateCard({
   template,
   track,
 }: {
-  template: (typeof taskTemplates)[number];
+  template: TaskTemplate;
   track: string;
 }) {
+  const siteConfig = useSiteConfig();
   const [open, setOpen] = useState(false);
   const badgeColour = getCategoryColour(template.category);
   const categoryLabel =
@@ -455,8 +459,13 @@ const sectionEntrance = {
 };
 
 export function RoiMeasurementSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const isDev = track === 'developer';
+  const taskTemplates = useMemo(
+    () => getTaskTemplates(siteConfig),
+    [siteConfig],
+  );
   // N9: default to first category ('time-savings') instead of 'all' to avoid overwhelming the user
   const [activeCategory, setActiveCategory] = useState<TaskCategory | 'all'>(
     'time-savings',
@@ -471,11 +480,11 @@ export function RoiMeasurementSection() {
     } catch {
       return false;
     }
-  }, []);
+  }, [siteConfig.localStoragePrefix]);
 
   const trackFilteredTemplates = useMemo(
     () => taskTemplates.filter((t) => t.track === 'both' || t.track === track),
-    [track],
+    [taskTemplates, track],
   );
 
   const filteredTemplates = useMemo(

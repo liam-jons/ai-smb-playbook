@@ -131,8 +131,8 @@ export function ReliableOutputSection() {
             when using AI for business tasks.
           </p>
           <p>
-            The tricky part is that hallucinations are not obvious nonsense. They
-            are confident, well-written, and formatted exactly like real
+            The tricky part is that hallucinations are not obvious nonsense.
+            They are confident, well-written, and formatted exactly like real
             information. A made-up statistic in a client proposal, an incorrect
             regulatory requirement in a compliance document, or a fabricated
             contact detail in a briefing &mdash; these can pass a quick read and
@@ -207,8 +207,8 @@ export function ReliableOutputSection() {
         <div className="max-w-prose space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
             For important tasks, combine multiple patterns into a single prompt.
-            Here is an example that uses all four patterns for a
-            high-stakes document:
+            Here is an example that uses all four patterns for a high-stakes
+            document:
           </p>
         </div>
 

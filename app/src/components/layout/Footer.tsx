@@ -1,7 +1,9 @@
 import { ExternalLink } from 'lucide-react';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 
 export function Footer() {
+  const siteConfig = useSiteConfig();
+
   return (
     <footer className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { siteConfig } from '@/config/site';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import {
   X,
   Check,
@@ -79,78 +79,85 @@ interface ClaudeMdSectionEntry {
   example: string;
 }
 
-const claudeMdSections: ClaudeMdSectionEntry[] = [
-  {
-    title: 'Project Description',
-    subtitle: 'Give Claude the big picture in 1\u20133 lines',
-    description:
-      '1\u20133 lines explaining what this project is, in plain language.',
-    example: `# My ${siteConfig.primaryProduct} Platform\n\nA ${siteConfig.primaryProductDescription} built with ${siteConfig.techStack} and React, serving ${siteConfig.complianceArea} training for UK organisations.`,
-  },
-  {
-    title: 'Commands',
-    subtitle: 'Copy-paste ready build, test, and deploy commands',
-    description:
-      'The essential build/test/dev/lint/deploy commands. Present as a table for scannability. Every command must be copy-paste ready.',
-    example: `## Commands\n\n| Command | Description |\n|---------|-------------|\n| \`dotnet run\` | Start development server |\n| \`dotnet test\` | Run test suite |\n| \`npm run build:css\` | Rebuild Tailwind CSS |`,
-  },
-  {
-    title: 'Architecture',
-    subtitle: 'A tree-style map of key directories',
-    description:
-      'A tree-style overview of the project structure with one-line descriptions of each directory. Not exhaustive \u2014 just the key directories. Point to /docs/architecture/ for deeper detail.',
-    example: `## Architecture\n\n\`\`\`\nsrc/\n  Controllers/   # API endpoints\n  Services/      # Business logic\n  Models/        # Data models and DTOs\n  Views/         # Razor pages\nwwwroot/         # Static assets\ntests/           # Unit and integration tests\n\`\`\``,
-  },
-  {
-    title: 'Key Files',
-    subtitle: 'Entry points and important configuration files',
-    description:
-      'Entry points, configuration files, and any files a developer needs to know about that are not obvious from the directory structure.',
-    example: `## Key Files\n\n- \`src/Program.cs\` \u2014 Application entry point\n- \`src/appsettings.json\` \u2014 Base configuration\n- \`.env.local\` \u2014 Local environment variables (not committed)`,
-  },
-  {
-    title: 'Code Style',
-    subtitle: 'Project-specific conventions only',
-    description:
-      'Project-specific conventions only. Not "use meaningful variable names" \u2014 things like: "we use camelCase for functions", "all API routes return typed responses".',
-    example: `## Code Style\n\n- PascalCase for public members, camelCase for private\n- API responses typed with record classes\n- Error handling uses Result pattern in services\n- Prefer named exports over default exports`,
-  },
-  {
-    title: 'Environment',
-    subtitle: 'Variables, prerequisites, and setup steps',
-    description:
-      'Required environment variables, setup steps, any prerequisites. Include the "no real users" note for development environments.',
-    example: `## Environment\n\nRequired variables (see .env.example):\n\n| Variable | Purpose |\n|----------|--------|\n| \`CONNECTION_STRING\` | SQL Server connection |\n| \`SMTP_HOST\` | Email server |\n\n**Note:** This is a development environment. There are no real users. Test data can be created and deleted freely.`,
-  },
-  {
-    title: 'Testing',
-    subtitle: 'How to run tests and testing conventions',
-    description:
-      'Test runner, how to run tests, testing conventions, any non-obvious testing patterns.',
-    example: `## Testing\n\n- \`dotnet test\` \u2014 Run all tests (xUnit)\n- Tests live in \`tests/\` alongside the source structure\n- Use \`IClassFixture<T>\` for shared test context\n- Integration tests use a test database (see TestDbFixture)`,
-  },
-  {
-    title: 'Gotchas',
-    subtitle: 'Non-obvious traps that save debugging time',
-    description:
-      'Non-obvious things that cause issues. This is often the most valuable section \u2014 it captures knowledge that is not obvious from reading the code.',
-    example: `## Gotchas\n\n- The auth module must be initialised before any API calls \u2014 see src/Services/AuthService.cs\n- Database migrations require manual approval in production\n- Hot reload does not pick up changes to appsettings.local.json \u2014 restart the dev server`,
-  },
-  {
-    title: 'Workflow',
-    subtitle: 'Branching, deployment, and PR conventions',
-    description:
-      'Development workflow patterns. When to use which branch, how deployments work, PR conventions.',
-    example: `## Workflow\n\n- Feature branches from \`develop\`, PRs reviewed before merge\n- Staging deploys automatically on merge to \`develop\`\n- Production deploys require manual approval via Azure DevOps`,
-  },
-  {
-    title: 'Documentation Pointers',
-    subtitle: 'Links to /docs/ for deeper reference',
-    description:
-      'Links to /docs/ subdirectories for deeper reference. This is the "map" part.',
-    example: `## Documentation Pointers\n\nFor deeper reference, see the /docs directory:\n\n- \`docs/architecture/\` \u2014 System architecture, domain model, data flow\n- \`docs/conventions/\` \u2014 Coding standards, naming patterns\n- \`docs/integrations/\` \u2014 Third-party service documentation\n- \`docs/schemas/\` \u2014 Database schemas, API schemas`,
-  },
-];
+function getClaudeMdSections(config: {
+  primaryProduct?: string;
+  primaryProductDescription?: string;
+  techStack?: string;
+  complianceArea?: string;
+}): ClaudeMdSectionEntry[] {
+  return [
+    {
+      title: 'Project Description',
+      subtitle: 'Give Claude the big picture in 1\u20133 lines',
+      description:
+        '1\u20133 lines explaining what this project is, in plain language.',
+      example: `# My ${config.primaryProduct ?? 'Product'} Platform\n\nA ${config.primaryProductDescription ?? 'product'} built with ${config.techStack ?? 'the tech stack'} and React, serving ${config.complianceArea ?? 'compliance'} training for UK organisations.`,
+    },
+    {
+      title: 'Commands',
+      subtitle: 'Copy-paste ready build, test, and deploy commands',
+      description:
+        'The essential build/test/dev/lint/deploy commands. Present as a table for scannability. Every command must be copy-paste ready.',
+      example: `## Commands\n\n| Command | Description |\n|---------|-------------|\n| \`dotnet run\` | Start development server |\n| \`dotnet test\` | Run test suite |\n| \`npm run build:css\` | Rebuild Tailwind CSS |`,
+    },
+    {
+      title: 'Architecture',
+      subtitle: 'A tree-style map of key directories',
+      description:
+        'A tree-style overview of the project structure with one-line descriptions of each directory. Not exhaustive \u2014 just the key directories. Point to /docs/architecture/ for deeper detail.',
+      example: `## Architecture\n\n\`\`\`\nsrc/\n  Controllers/   # API endpoints\n  Services/      # Business logic\n  Models/        # Data models and DTOs\n  Views/         # Razor pages\nwwwroot/         # Static assets\ntests/           # Unit and integration tests\n\`\`\``,
+    },
+    {
+      title: 'Key Files',
+      subtitle: 'Entry points and important configuration files',
+      description:
+        'Entry points, configuration files, and any files a developer needs to know about that are not obvious from the directory structure.',
+      example: `## Key Files\n\n- \`src/Program.cs\` \u2014 Application entry point\n- \`src/appsettings.json\` \u2014 Base configuration\n- \`.env.local\` \u2014 Local environment variables (not committed)`,
+    },
+    {
+      title: 'Code Style',
+      subtitle: 'Project-specific conventions only',
+      description:
+        'Project-specific conventions only. Not "use meaningful variable names" \u2014 things like: "we use camelCase for functions", "all API routes return typed responses".',
+      example: `## Code Style\n\n- PascalCase for public members, camelCase for private\n- API responses typed with record classes\n- Error handling uses Result pattern in services\n- Prefer named exports over default exports`,
+    },
+    {
+      title: 'Environment',
+      subtitle: 'Variables, prerequisites, and setup steps',
+      description:
+        'Required environment variables, setup steps, any prerequisites. Include the "no real users" note for development environments.',
+      example: `## Environment\n\nRequired variables (see .env.example):\n\n| Variable | Purpose |\n|----------|--------|\n| \`CONNECTION_STRING\` | SQL Server connection |\n| \`SMTP_HOST\` | Email server |\n\n**Note:** This is a development environment. There are no real users. Test data can be created and deleted freely.`,
+    },
+    {
+      title: 'Testing',
+      subtitle: 'How to run tests and testing conventions',
+      description:
+        'Test runner, how to run tests, testing conventions, any non-obvious testing patterns.',
+      example: `## Testing\n\n- \`dotnet test\` \u2014 Run all tests (xUnit)\n- Tests live in \`tests/\` alongside the source structure\n- Use \`IClassFixture<T>\` for shared test context\n- Integration tests use a test database (see TestDbFixture)`,
+    },
+    {
+      title: 'Gotchas',
+      subtitle: 'Non-obvious traps that save debugging time',
+      description:
+        'Non-obvious things that cause issues. This is often the most valuable section \u2014 it captures knowledge that is not obvious from reading the code.',
+      example: `## Gotchas\n\n- The auth module must be initialised before any API calls \u2014 see src/Services/AuthService.cs\n- Database migrations require manual approval in production\n- Hot reload does not pick up changes to appsettings.local.json \u2014 restart the dev server`,
+    },
+    {
+      title: 'Workflow',
+      subtitle: 'Branching, deployment, and PR conventions',
+      description:
+        'Development workflow patterns. When to use which branch, how deployments work, PR conventions.',
+      example: `## Workflow\n\n- Feature branches from \`develop\`, PRs reviewed before merge\n- Staging deploys automatically on merge to \`develop\`\n- Production deploys require manual approval via Azure DevOps`,
+    },
+    {
+      title: 'Documentation Pointers',
+      subtitle: 'Links to /docs/ for deeper reference',
+      description:
+        'Links to /docs/ subdirectories for deeper reference. This is the "map" part.',
+      example: `## Documentation Pointers\n\nFor deeper reference, see the /docs directory:\n\n- \`docs/architecture/\` \u2014 System architecture, domain model, data flow\n- \`docs/conventions/\` \u2014 Coding standards, naming patterns\n- \`docs/integrations/\` \u2014 Third-party service documentation\n- \`docs/schemas/\` \u2014 Database schemas, API schemas`,
+    },
+  ];
+}
 
 interface QualityCriterion {
   name: string;
@@ -481,7 +488,9 @@ const gettingStartedSteps = [
 /* -------------------------------------------------------------------------- */
 
 export function ClaudeMdSection() {
+  const siteConfig = useSiteConfig();
   const { track } = useTrack();
+  const claudeMdSections = getClaudeMdSections(siteConfig);
   return (
     <div className="flex flex-col gap-16">
       {/* ------------------------------------------------------------------ */}

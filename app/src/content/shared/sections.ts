@@ -1,5 +1,4 @@
 import type { Section } from './types';
-import { siteConfig } from '@/config/site';
 
 export const sections: Section[] = [
   // General Track (also visible to developers where track is 'both')
@@ -7,7 +6,7 @@ export const sections: Section[] = [
     id: '1.1',
     slug: 'welcome',
     title: 'Welcome & Orientation',
-    subtitle: siteConfig.welcomeSubtitle,
+    subtitle: 'Getting started with AI',
     track: 'both',
     description:
       'An introduction to the playbook, what you will learn, and how to navigate the two tracks.',
