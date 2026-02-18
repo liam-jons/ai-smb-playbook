@@ -684,7 +684,6 @@ export function RecurringTasksSection() {
 // ─── Pattern sub-components ──────────────────────────────────────────────────
 
 function PatternContent({ pattern }: { pattern: AutomationPattern }) {
-  const siteConfig = useSiteConfig();
   return (
     <>
       <div className="flex items-center gap-2">
@@ -723,7 +722,7 @@ function PatternContent({ pattern }: { pattern: AutomationPattern }) {
 
       <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
         <span className="text-xs font-medium text-muted-foreground">
-          {siteConfig.companyShortName} example: {pattern.clientExample.title}
+          Example: {pattern.clientExample.title}
         </span>
         <p className="mt-1 text-sm text-foreground">
           {pattern.clientExample.description}
@@ -736,7 +735,7 @@ function PatternContent({ pattern }: { pattern: AutomationPattern }) {
           className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3"
         >
           <span className="text-xs font-medium text-muted-foreground">
-            {siteConfig.companyShortName} example: {example.title}
+            Example: {example.title}
           </span>
           <p className="mt-1 text-sm text-foreground">{example.description}</p>
         </div>
@@ -769,7 +768,6 @@ function PatternContent({ pattern }: { pattern: AutomationPattern }) {
 }
 
 function PatternCard({ pattern }: { pattern: AutomationPattern }) {
-  const siteConfig = useSiteConfig();
   const Icon = pattern.icon;
 
   return (
@@ -819,7 +817,7 @@ function PatternCard({ pattern }: { pattern: AutomationPattern }) {
 
         <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
           <span className="text-xs font-medium text-muted-foreground">
-            {siteConfig.companyShortName} example: {pattern.clientExample.title}
+            Example: {pattern.clientExample.title}
           </span>
           <p className="mt-1 text-sm text-foreground">
             {pattern.clientExample.description}
@@ -832,7 +830,7 @@ function PatternCard({ pattern }: { pattern: AutomationPattern }) {
             className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3"
           >
             <span className="text-xs font-medium text-muted-foreground">
-              {siteConfig.companyShortName} example: {example.title}
+              Example: {example.title}
             </span>
             <p className="mt-1 text-sm text-foreground">
               {example.description}

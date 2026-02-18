@@ -322,7 +322,6 @@ function TaskTemplateCard({
   template: TaskTemplate;
   track: string;
 }) {
-  const siteConfig = useSiteConfig();
   const [open, setOpen] = useState(false);
   const badgeColour = getCategoryColour(template.category);
   const categoryLabel =
@@ -417,7 +416,7 @@ function TaskTemplateCard({
               aria-hidden="true"
             />
             {template.clientExample
-              ? `${siteConfig.companyName} example & related section`
+              ? 'Example & related section'
               : 'Related section'}
           </CollapsibleTrigger>
           <CollapsibleContent>

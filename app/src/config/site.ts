@@ -1,25 +1,29 @@
 /**
- * Centralised client-specific configuration.
+ * Centralised default configuration values.
  *
- * To rebrand this app for a different client, edit only this file.
- * See .planning/research/reusability-audit.md for the full reusability roadmap.
+ * These provide generic, neutral defaults for the multi-tenant application.
+ * Client-specific values are loaded from JSON config files at runtime and
+ * merged on top of these defaults via config-loader.ts.
+ *
+ * To add a new client, create a JSON file in app/public/clients/{slug}.json
+ * rather than editing this file. See CUSTOMISATION.md for the full guide.
  */
 
 export const siteConfig = {
   /** Displayed in the header, browser tab, hero, and print documents */
-  appTitle: 'Phew! AI Playbook',
+  appTitle: 'AI Playbook',
 
   /** Full legal company name */
-  companyName: 'Phew Design Limited',
+  companyName: 'Your Organisation',
 
   /** Informal / short brand name (used in prose, callout titles) */
-  companyShortName: 'Phew!',
+  companyShortName: 'your organisation',
 
   /** Company website URL */
-  companyUrl: 'https://www.phew.org.uk/',
+  companyUrl: 'https://www.example.com/',
 
   /** Short display URL (no protocol) */
-  companyUrlDisplay: 'phew.org.uk',
+  companyUrlDisplay: 'example.com',
 
   /** Feedback recipient email address */
   feedbackEmail: 'liam@aisolutionhub.co.uk',
@@ -31,27 +35,27 @@ export const siteConfig = {
   consultantName: 'Liam',
 
   /** Date of the training session(s) */
-  trainingDate: '11 February 2026',
+  trainingDate: 'your training date',
 
   /** Prefix for localStorage keys */
-  localStoragePrefix: 'phew-playbook',
+  localStoragePrefix: 'ai-playbook',
 
   /** Prefix used in feedback email subject lines */
-  emailSubjectPrefix: 'Phew AI Playbook',
+  emailSubjectPrefix: 'AI Playbook',
 
   /** HTML meta description */
   metaDescription: 'Practical guidance for getting the most from Claude AI',
 
   /** Section 1.1 subtitle */
-  welcomeSubtitle: 'Getting started with AI at Phew',
+  welcomeSubtitle: 'Getting started with AI',
 
   // ─── Client industry & context ──────────────────────────────────────────────
 
   /** Client's primary industry (e.g., 'design', 'healthcare', 'finance') */
-  industry: 'Safeguarding and public sector software',
+  industry: 'your industry',
 
   /** Short industry descriptor used in prose (e.g., 'design agency', 'law firm') */
-  industryContext: 'design agency',
+  industryContext: 'your organisation',
 
   /** General team size descriptor (e.g., 'small', 'medium') */
   teamSize: 'small',
@@ -59,64 +63,64 @@ export const siteConfig = {
   // ─── Regression testing tool ────────────────────────────────────────────────
 
   /** Primary regression testing tool name (e.g., 'Ghost Inspector', 'Cypress') */
-  testingTool: 'Ghost Inspector',
+  testingTool: 'your testing tool',
 
   /** Regression testing tool documentation URL */
-  testingToolDocs: 'the Ghost Inspector docs',
+  testingToolDocs: 'the testing tool docs',
 
   // ─── Industry-specific terms ────────────────────────────────────────────────
 
   /** Industry-specific compliance or regulatory area (e.g., 'safeguarding', 'HIPAA') */
-  complianceArea: 'safeguarding',
+  complianceArea: 'your compliance area',
 
   /** Primary software product or management system (e.g., 'LMS', 'CRM', 'ERP') */
-  primaryProduct: 'LMS',
+  primaryProduct: 'your primary system',
 
   /** Description of what the primary product does */
-  primaryProductDescription: 'learning management system',
+  primaryProductDescription: 'primary management system',
 
   /** Certification or check type relevant to the industry (e.g., 'DBS checks', 'SOC 2 audit') */
-  certificationName: 'DBS checks',
+  certificationName: 'your certification requirements',
 
   /** Stakeholder group for compliance reports (e.g., 'safeguarding partnership team', 'board') */
-  complianceStakeholders: 'safeguarding partnership team',
+  complianceStakeholders: 'your compliance stakeholders',
 
   /** Key web applications the client builds/maintains */
-  webApplications: 'LMS, Audit System, PDMS',
+  webApplications: 'your web applications',
 
   // ─── Recurring task examples ────────────────────────────────────────────────
 
   /** Example recurring tasks relevant to the client's industry */
   exampleRecurringTasks: [
-    'training completion reports',
-    'client site accessibility checks',
-    'proposal formatting',
-    'audit report generation',
+    'monthly reports',
+    'client communications',
+    'compliance documentation',
+    'data analysis',
   ] as readonly string[],
 
   /** Example data export for a recurring report (e.g., 'LMS data export', 'CRM export') */
-  reportDataSource: 'LMS data export',
+  reportDataSource: 'your data export',
 
   /** Example client onboarding context (e.g., 'LMS client', 'new account') */
-  clientOnboardingType: 'LMS client',
+  clientOnboardingType: 'new client',
 
   // ─── Technical context (for developer track examples) ───────────────────────
 
   /** Primary tech stack description for developer examples */
-  techStack: 'ASP.NET/C#',
+  techStack: 'your tech stack',
 
   /** Database technology used in developer examples */
-  database: 'SQL Server',
+  database: 'your database',
 
   /** Example domain-specific audit or form (e.g., 'safeguarding audit form') */
-  domainSpecificForm: 'safeguarding audit form',
+  domainSpecificForm: 'your domain-specific form',
 
   /** Example sensitive data description for governance (e.g., 'safeguarding case data, child protection information, or vulnerable person records') */
   sensitiveDataDescription:
-    'safeguarding case data, child protection information, or vulnerable person records',
+    'sensitive client data, personal information, or confidential records',
 
   /** Short sensitive data label for risk tier examples (e.g., 'safeguarding data', 'patient records') */
-  sensitiveDataLabel: 'safeguarding data',
+  sensitiveDataLabel: 'sensitive data',
 } as const;
 
 export type SiteConfig = typeof siteConfig;

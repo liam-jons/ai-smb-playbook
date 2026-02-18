@@ -2,8 +2,6 @@
 // All figures are ballpark estimates. Exact token counts vary by Claude version,
 // model, configuration, and content.
 
-import type { SiteConfigData } from '@/config/client-config-schema';
-
 export interface ContextSegmentData {
   id: string;
   label: string;
@@ -176,7 +174,7 @@ export const segments: ContextSegmentData[] = [
 ];
 
 /** Build presets with client-specific labels from config. */
-export function getPresets(config: SiteConfigData): PresetData[] {
+export function getPresets(): PresetData[] {
   return [
     {
       id: 'minimal',
@@ -190,7 +188,7 @@ export function getPresets(config: SiteConfigData): PresetData[] {
     {
       id: 'moderate',
       label: 'Moderate',
-      description: `Typical ${config.companyShortName} setup`,
+      description: 'Typical setup',
       mcpServers: 2,
       claudeMdLines: 200,
       skillCount: 3,

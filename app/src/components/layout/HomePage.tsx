@@ -69,8 +69,10 @@ export function HomePage() {
             Your practical guide to working with Claude AI
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">
-            {siteConfig.metaDescription} at{' '}
-            {siteConfig.companyName.replace(' Limited', '')}.{' '}
+            {siteConfig.metaDescription}
+            {siteConfig.companyName !== 'Your Organisation' &&
+              ` at ${siteConfig.companyName.replace(' Limited', '')}`}
+            .{' '}
             {siteConfig.hasDeveloperTrack
               ? 'Choose your track below.'
               : 'Get started below.'}

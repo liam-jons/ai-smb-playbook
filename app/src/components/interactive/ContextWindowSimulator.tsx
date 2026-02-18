@@ -12,7 +12,6 @@ import {
   TOTAL_CONTEXT,
   RESPONSE_BUFFER_TOKENS,
 } from '@/content/shared/context-simulator-data';
-import { useSiteConfig } from '@/hooks/useClientConfig';
 import { ContextWindowBar } from '@/components/interactive/ContextWindowBar';
 import { SimulatorControls } from '@/components/interactive/SimulatorControls';
 import { SimulatorStatus } from '@/components/interactive/SimulatorStatus';
@@ -50,8 +49,7 @@ interface ContextWindowSimulatorProps {
 }
 
 export function ContextWindowSimulator({ isDev }: ContextWindowSimulatorProps) {
-  const siteConfig = useSiteConfig();
-  const presets = useMemo(() => getPresets(siteConfig), [siteConfig]);
+  const presets = useMemo(() => getPresets(), []);
   const [state, setState] = useState<SimulatorState>(DEFAULT_STATE);
   const [isCompacting, setIsCompacting] = useState(false);
   const shouldReduceMotion = useReducedMotion();

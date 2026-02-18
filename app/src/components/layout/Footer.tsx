@@ -3,26 +3,29 @@ import { useSiteConfig } from '@/hooks/useClientConfig';
 
 export function Footer() {
   const siteConfig = useSiteConfig();
+  const isGeneric = siteConfig.companyName === 'Your Organisation';
 
   return (
     <footer className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
         <div className="flex flex-col items-center gap-3 text-center text-sm text-muted-foreground sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-1">
-            <p>
-              Built for{' '}
-              <a
-                href={siteConfig.companyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-medium text-foreground hover:text-primary transition-colors"
-              >
-                {siteConfig.companyName}
-                <ExternalLink className="h-3 w-3" />
-              </a>
-            </p>
+            {!isGeneric && (
+              <p>
+                Built for{' '}
+                <a
+                  href={siteConfig.companyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  {siteConfig.companyName}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </p>
+            )}
             <p className="text-xs text-muted-foreground/80">
-              Built using the tools and workflows covered in this guide.
+              Delivered by AI Solution Hub
             </p>
           </div>
           <div className="flex gap-4 text-xs">
@@ -37,12 +40,16 @@ export function Footer() {
               Send Feedback
             </button>
             <a
-              href={siteConfig.companyUrl}
+              href={
+                isGeneric
+                  ? 'https://aisolutionhub.co.uk'
+                  : siteConfig.companyUrl
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
             >
-              {siteConfig.companyUrlDisplay}
+              {isGeneric ? 'aisolutionhub.co.uk' : siteConfig.companyUrlDisplay}
             </a>
           </div>
         </div>

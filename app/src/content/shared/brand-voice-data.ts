@@ -247,7 +247,7 @@ export function getFrameworkSections(
         'Define the brand as if it were a person. What are its defining traits? This creates the foundation everything else builds on.',
       clientExample:
         overlayExamples?.['1'] ??
-        `If ${config.companyName} were a person, they would be the knowledgeable colleague who explains ${complianceArea} technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
+        `If your brand were a person, it would be the knowledgeable colleague who explains ${complianceArea} technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.`,
       icon: Palette,
     },
     {
@@ -287,7 +287,7 @@ export function getFrameworkSections(
         'How the voice adapts across channels and situations whilst remaining recognisably the same brand. The voice stays constant; the tone dials attributes up or down.',
       clientExample:
         overlayExamples?.['5'] ??
-        `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The ${config.companyName} voice is always present, but the emphasis shifts.`,
+        `Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. Your brand voice is always present, but the emphasis shifts.`,
       icon: Globe2,
     },
     {
@@ -307,7 +307,7 @@ export function getFrameworkSections(
         'Preferred and avoided terms, product names, inclusive language guidelines. Maintaining consistency across all communications.',
       clientExample:
         overlayExamples?.['7'] ??
-        `Use "${complianceArea} partnership" (not "LSCP"). Use "${config.primaryProductDescription ?? 'the product'}" on first mention, then "${config.primaryProduct ?? 'the product'}". Never use "users" when you mean "${complianceArea} professionals" or "partners".`,
+        `Use the full product name ("${config.primaryProductDescription ?? 'the product'}") on first mention, then the abbreviation ("${config.primaryProduct ?? 'the product'}"). Never use "users" when you mean "${complianceArea} professionals" or "partners".`,
       icon: ListChecks,
     },
   ];

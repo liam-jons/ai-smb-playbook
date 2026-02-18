@@ -55,7 +55,7 @@ function getRecommendedMcps(config: {
       name: 'Playwright (chrome-devtools)',
       whatItDoes:
         'Gives Claude Code the ability to control a web browser \u2014 navigate to pages, click elements, fill forms, take screenshots, and run end-to-end tests. The Playwright MCP server from Microsoft is the standard browser automation tool for Claude Code.',
-      whyItMatters: `Your team builds web applications (${config.webApplications ?? 'web applications'}). Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${config.testingTool ?? 'existing testing tool'} workflows.`,
+      whyItMatters: `Your team builds ${config.webApplications ?? 'web applications'}. Browser automation enables Claude to test pages visually, verify CSS changes, and run regression checks against live or staging environments \u2014 complementing or replacing ${config.testingTool ?? 'existing testing tool'} workflows.`,
       configJson: `{
   "mcpServers": {
     "playwright": {

@@ -265,7 +265,7 @@ export function BrandVoiceSection() {
 
           <CalloutCard
             variant="tip"
-            title={`Head start for ${siteConfig.companyName}`}
+            title="Brand voice head start"
             className="mt-4"
           >
             {overlays.brandVoice?.headStartContent ??
@@ -312,7 +312,7 @@ export function BrandVoiceSection() {
                     </p>
                     <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
                       <span className="text-xs font-medium text-muted-foreground">
-                        {siteConfig.companyName} example
+                        Example
                       </span>
                       <p className="mt-1 text-sm text-foreground">
                         {section.clientExample}

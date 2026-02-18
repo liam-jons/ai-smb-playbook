@@ -1182,9 +1182,8 @@ export function GovernancePolicySection() {
           Extension Register Template
         </h2>
         <p className="mb-4 max-w-prose text-sm text-muted-foreground">
-          A starting register pre-populated with the extensions from the{' '}
-          {siteConfig.companyShortName} starter kit. Copy this into a shared
-          spreadsheet or markdown file.
+          A starting register pre-populated with the extensions from your
+          starter kit. Copy this into a shared spreadsheet or markdown file.
         </p>
         <CodeBlock
           code={registerTemplate}

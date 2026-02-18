@@ -385,12 +385,12 @@ export function getWorkedExamples(config: SiteConfigData): WorkedExample[] {
   return [
     {
       id: 'compliance-review',
-      title: `Writing a ${complianceArea} policy review`,
-      context: `Instead of one session: "Review our ${complianceArea} policy, identify gaps, draft updates, and create a summary for the board."`,
+      title: `Writing a policy review (${complianceArea})`,
+      context: `Instead of one session: "Review the ${complianceArea} policy, identify gaps, draft updates, and create a summary for the board."`,
       steps: [
         {
           session: 1,
-          description: `Review our ${complianceArea} policy against current guidance. List all gaps and areas needing updates.`,
+          description: `Review the ${complianceArea} policy against current guidance. List all gaps and areas needing updates.`,
           outcome: 'Create handoff with the gap analysis.',
         },
         {

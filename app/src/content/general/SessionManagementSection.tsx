@@ -761,9 +761,8 @@ export function SessionManagementSection() {
         <CalloutCard variant="tip" className="mt-4">
           <p className="text-xs">
             <strong>A good starting point:</strong> Tell Claude your name, your
-            role at {siteConfig.companyShortName}, and that all content should
-            use UK English. These three memories immediately improve every
-            future conversation.
+            role, and that all content should use UK English. These three
+            memories immediately improve every future conversation.
           </p>
         </CalloutCard>
       </section>

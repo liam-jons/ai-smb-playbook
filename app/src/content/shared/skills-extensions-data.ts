@@ -10,8 +10,6 @@ import {
   Zap,
   type LucideIcon,
 } from 'lucide-react';
-import type { SiteConfigData } from '@/config/client-config-schema';
-
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type Platform = 'claude.ai' | 'Desktop' | 'Code' | 'CoWork';
@@ -326,7 +324,7 @@ export const availabilityMatrix: AvailabilityRow[] = [
 ];
 
 /** Build reference cards with client-specific content from config. */
-export function getReferenceCards(config: SiteConfigData): ReferenceCard[] {
+export function getReferenceCards(): ReferenceCard[] {
   return [
     {
       id: 'claudemd',
@@ -414,7 +412,7 @@ export function getReferenceCards(config: SiteConfigData): ReferenceCard[] {
       setupSteps: [
         'Open claude.ai and create or open a Project',
         'Go to Project Settings > Custom Instructions',
-        `Add your rules and context (e.g., "Always use UK English. Our company is ${config.companyName}.")`,
+        'Add your rules and context (e.g., "Always use UK English. We are a [industry] company.")',
         'Every conversation in this project now inherits those instructions',
       ],
     },

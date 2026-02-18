@@ -26,7 +26,6 @@
 This is a {project description} for {client/company name} ({brief client descriptor}). {Number} outputs:
 1. **{Output 1}** -- {one-line description}
 2. **{Output 2}** -- {one-line description}
-3. **{Output 3}** -- {one-line description}
 
 <!-- Point the new session to the most important reference documents.
      Order by importance. Annotate the critical one(s). -->

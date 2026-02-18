@@ -22,7 +22,6 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { ScrollHint } from '@/components/content/ScrollHint';
 import { useTrack } from '@/hooks/useTrack';
-import { useSiteConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 import { Check, Minus, ArrowDown, ChevronDown, Compass } from 'lucide-react';
 import {
@@ -256,15 +255,11 @@ function CombinationCard({ pattern }: { pattern: CombinationPattern }) {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function SkillsExtensionsSection() {
-  const siteConfig = useSiteConfig();
   const { track } = useTrack();
   const isGeneral = track === 'general';
   const refCardsRef = useRef<HTMLDivElement>(null);
   const [openRefCard, setOpenRefCard] = useState<string>('');
-  const referenceCards = useMemo(
-    () => getReferenceCards(siteConfig),
-    [siteConfig],
-  );
+  const referenceCards = useMemo(() => getReferenceCards(), []);
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
   // N5: Memoised filtered arrays
@@ -418,9 +413,9 @@ export function SkillsExtensionsSection() {
           </p>
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
             Not every mechanism is available on every platform — the decision
-            tree and availability matrix below show what works where.{' '}
-            {siteConfig.companyName} has Claude Teams licences for all staff and
-            Claude Code access for developers.
+            tree and availability matrix below show what works where. Your team
+            has Claude Teams licences for all staff and Claude Code access for
+            developers.
           </p>
           {isGeneral && (
             <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
@@ -509,7 +504,7 @@ export function SkillsExtensionsSection() {
                       {/* Example */}
                       <div className="rounded-md border-l-2 border-accent-foreground/20 bg-muted/30 px-4 py-3">
                         <span className="text-xs font-medium text-muted-foreground">
-                          Example for {siteConfig.companyName}
+                          Example
                         </span>
                         <p className="mt-1 text-sm text-foreground">
                           {entry.example}

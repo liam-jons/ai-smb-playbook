@@ -340,7 +340,7 @@ export function RegressionTestingSection() {
           id="comparison"
           className="mb-4 text-xl font-semibold tracking-tight sm:text-2xl"
         >
-          {siteConfig.testingTool} Comparison
+          Comparison with {siteConfig.testingTool}
         </h2>
 
         <div className="overflow-x-auto">
@@ -621,7 +621,7 @@ Do not fix anything. Just observe and report.`}
           />
 
           <PromptExample
-            title={`Migrate a ${siteConfig.testingTool} Test`}
+            title={`Migrate from ${siteConfig.testingTool} to Playwright`}
             description={`Convert an existing ${siteConfig.testingTool} test into a Playwright test.`}
             prompt={`I have an existing ${siteConfig.testingTool} test that performs the following steps. I want to recreate this as a Playwright test.
 

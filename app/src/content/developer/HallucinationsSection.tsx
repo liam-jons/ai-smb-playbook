@@ -91,7 +91,7 @@ Do not write any code yet. Present the plan and wait for my feedback.`,
       explanation:
         'Instead of asking Claude to implement a solution directly, ask it to present 2\u20133 options with trade-offs. This forces Claude to consider alternatives rather than jumping to the first approach it generates \u2014 which is often a hallucinated \u201cobvious\u201d solution that does not account for the specific codebase.',
       crossTrack: false,
-      prompt: `We need to implement automated email notifications for overdue ${complianceArea} training in the ${primaryProduct}. Our stack is ${techStack} with ${database}.
+      prompt: `We need to implement automated email notifications for overdue training in ${primaryProduct} (${complianceArea}). Our stack is ${techStack} with ${database}.
 
 Present 2-3 different approaches for the notification system. For each option, include:
 - How it works (brief technical description)

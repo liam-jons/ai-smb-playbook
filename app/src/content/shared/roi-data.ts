@@ -185,8 +185,9 @@ function _buildTaskTemplates(
       relatedSection: 'skills-extensions',
       track: 'both',
       clientExample: overlayClientExamples?.['proposal-writing'] ?? {
-        title: `${config.companyShortName} bid writing`,
-        description: `${config.companyShortName} regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.`,
+        title: 'Bid writing',
+        description:
+          'Your team regularly responds to tenders or proposals. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours.',
       },
     },
     {
@@ -250,8 +251,9 @@ function _buildTaskTemplates(
       relatedSection: 'governance',
       track: 'both',
       clientExample: overlayClientExamples?.['compliance-docs'] ?? {
-        title: `${config.companyShortName} ISO documentation`,
-        description: `With ISO 9001, 27001, 14001 and Cyber Essentials Plus, ${config.companyShortName} maintains extensive documentation. AI can generate first drafts from existing policies.`,
+        title: 'ISO / compliance documentation',
+        description:
+          'Your team maintains extensive compliance documentation. AI can generate first drafts from existing policies, saving significant preparation time.',
       },
     },
     {
@@ -356,8 +358,8 @@ function _buildTaskTemplates(
       relatedSection: 'regression-testing',
       track: 'developer',
       clientExample: overlayClientExamples?.['regression-testing'] ?? {
-        title: `${config.companyShortName} ${config.testingTool ?? 'testing tool'} replacement`,
-        description: `${config.companyShortName} currently uses ${config.testingTool ?? 'their testing tool'} for regression testing. Claude Code's browser automation can replicate test suites at lower cost.`,
+        title: `${config.testingTool ?? 'Testing tool'} replacement`,
+        description: `Your team currently uses ${config.testingTool ?? 'a dedicated testing tool'} for regression testing. Claude Code's browser automation can replicate test suites at lower cost.`,
       },
     },
     {

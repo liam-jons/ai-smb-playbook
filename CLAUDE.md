@@ -4,10 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-AI SMB Playbook — a reusable React application that provides interactive guidance for small/medium businesses adopting Claude AI. Three outputs per client deployment:
+AI SMB Playbook — a reusable React application that provides interactive guidance for small/medium businesses adopting Claude AI. The app is deployed as a multi-tenant SPA — each client gets a subdomain and a JSON config file. A single build serves all clients. Two outputs per client deployment:
 1. **Interactive Playbook** — React app with two audience tracks (General Users / Developers)
 2. **Starter Kit** — Drop-in skill files, commands, templates, governance policy
-3. **Repeatable Workflow Process Doc** — Internal process documentation
 
 The application overview is at `docs/reference/application-overview.md` — read it for architecture, content model, parameterisation, and client onboarding steps. The current deployment is for Phew Design Limited (UK-based SMB); client-specific artefacts are in `.planning/client-specific/00-phew/`.
 
