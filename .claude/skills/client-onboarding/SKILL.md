@@ -1,0 +1,181 @@
+---
+name: client-onboarding
+description: This skill should be used when the user asks to "onboard a new client", "create a client config", "set up a new playbook deployment", "generate a client JSON", or "add a new client to the playbook". Guides the consultant through extracting client details from training transcripts, generating overlay content, and producing a validated JSON config file ready for deployment.
+---
+
+# Client Onboarding Skill
+
+Automate creation of new client deployments for the AI SMB Playbook. Transform a training transcript and website URL into a validated, commit-ready `ClientConfig` JSON file through a two-phase guided conversation.
+
+## Required Inputs
+
+Gather these three inputs before starting extraction:
+
+1. **Training transcript or summary** — pasted inline or as a file path (`.planning/client-specific/{id}-{name}/`)
+2. **Client website URL** — for brand voice analysis via WebFetch
+3. **Client slug** — lowercase, hyphens only (e.g. `acme-industries`). Confirm with the consultant.
+
+Optional: explicit overrides for any field, "no developer track" directive, additional context documents.
+
+## Phase 1: Extraction and Draft Generation
+
+### Step 1 — Read the template
+
+Read the template at `app/public/clients/_template.json` and the schema at `app/src/config/client-config-schema.ts` to confirm the current field structure.
+
+### Step 2 — Analyse the transcript
+
+Read the training transcript/summary. Extract in a single pass:
+
+| Category | Fields to extract |
+|----------|-------------------|
+| Company identity | `companyName`, `companyShortName`, training date, attendees |
+| Industry & domain | `industry`, `industryContext`, `complianceArea`, `certificationName` |
+| Team context | `teamSize` (small/medium/large), `sensitiveDataDescription` |
+| Developer signals | Whether a dev-focused session exists (`hasDeveloperTrack`), `techStack`, `testingTool`, `database`, `webApplications` |
+| Recurring tasks | Concrete tasks mentioned → `exampleRecurringTasks` array (aim for 4) |
+| Domain specifics | `primaryProduct`, `reportDataSource`, `clientOnboardingType`, `complianceStakeholders` |
+
+Flag low-confidence extractions explicitly: "I found a mention of 'Cypress' as a testing tool — is that correct?"
+
+For the full field-by-field mapping with derivation rules and defaults, consult **`references/field-mapping.md`**.
+
+### Step 3 — Scrape the client website
+
+Use WebFetch (or Firecrawl MCP if available) to fetch the client's homepage and key pages (about, services, contact). Extract:
+
+- Brand personality and tone
+- Values and mission statements
+- Audience description
+- Preferred terminology
+- Service/product descriptions
+
+If web fetching is unavailable, note this limitation and request the consultant provide brand context manually.
+
+### Step 4 — Derive automatic fields
+
+Apply derivation rules to populate fields that do not require explicit input:
+
+- `appTitle` → `"{companyShortName} AI Playbook"`
+- `companyUrlDisplay` → strip protocol and trailing slash from `companyUrl`
+- `localStoragePrefix` → `"{slug}-playbook"`
+- `emailSubjectPrefix` → `"{companyShortName} AI Playbook"`
+- `welcomeSubtitle` → `"Getting started with AI at {companyShortName}"`
+- `testingToolDocs` → `"the {testingTool} docs"` (if dev track enabled)
+- `feedbackEmail` → `"liam@aisolutionhub.co.uk"` (consultant default)
+- `feedbackSenderEmail` → `"playbook@feedback.aisolutionhub.co.uk"` (fixed)
+- `primaryAiTool` → `"Claude"` (always)
+- `metaDescription` → `"Practical guidance for getting the most from Claude AI"` (generic)
+
+### Step 5 — Generate overlay content
+
+Generate all overlay content using transcript + website analysis. For detailed guidance on each overlay type, consult **`references/overlay-generation.md`**.
+
+**Brand voice** (`overlays.brandVoice.frameworkExamples`): Generate all seven framework steps (keys `"1"` through `"7"`) plus `headStartContent`. Each step should be a substantive paragraph, not a placeholder.
+
+**Recurring tasks** (`overlays.recurringTasks.examples`): Generate 3-4 examples as `{ title, description }` objects. Each description should explain what the task does, what data it uses, and how Claude helps.
+
+**ROI examples** (`overlays.roi.clientExamples`): Generate 2-3 examples keyed by descriptive task IDs. Each has `{ title, description }`. Flag that quantitative estimates are illustrative.
+
+### Step 6 — Determine section and starter kit configuration
+
+**Sections:** Default to `{ enabled: null, disabled: [] }` (all sections visible). Only recommend disabling sections if the training content clearly indicates they are not relevant.
+
+**Starter kit categories:** Recommend categories based on the client profile. Available custom categories:
+- `developer-tools` — if `hasDeveloperTrack: true`
+- `creative-design` — if the client does design/creative work
+- `business-development` — if sales/proposals/tenders discussed
+- `integration-specific` — if API/webhook work discussed
+- `compliance-security` — if compliance was a significant topic
+
+### Step 7 — Assemble the draft
+
+Assemble the complete `ClientConfig` JSON. Do not write to disk yet — hold in memory for Phase 2 review.
+
+## Phase 2: Grouped Review
+
+Present the draft in logical groups. After each group, accept corrections before proceeding.
+
+### Group 1 — Company details
+Present: `companyName`, `companyShortName`, `companyUrl`, `companyUrlDisplay`, `appTitle`, slug, `localStoragePrefix`, `emailSubjectPrefix`, `consultantName`, `trainingDate`, `welcomeSubtitle`. Quick confirmation pass.
+
+### Group 2 — Industry and domain
+Present: `industry`, `industryContext`, `teamSize`, `complianceArea`, `certificationName`, `sensitiveDataDescription`, `sensitiveDataLabel`, `complianceStakeholders`, `primaryProduct`, `primaryProductDescription`, `reportDataSource`, `clientOnboardingType`, `exampleRecurringTasks`. Allow corrections and additions.
+
+### Group 3 — Developer track
+If `hasDeveloperTrack: true`, present: `techStack`, `testingTool`, `testingToolDocs`, `database`, `webApplications`, `domainSpecificForm`. Skip entirely if no developer track.
+
+### Group 4 — Brand voice overlays
+Present all seven framework steps. This is the longest review step. Allow editing individual steps, regenerating specific steps, or approving the block. Also present `headStartContent`.
+
+### Group 5 — Recurring tasks and ROI
+Present recurring task examples and ROI examples together. Allow add/remove/edit.
+
+### Group 6 — Sections and starter kit
+Present section configuration and starter kit categories. Confirm or adjust.
+
+## Phase 3: Write, Validate, and Deploy
+
+### Write the file
+
+Write the final JSON to `app/public/clients/{slug}.json`.
+
+### Run validation
+
+Execute the validation pipeline. For the full checklist, consult **`references/validation-checklist.md`**.
+
+**Schema conformance:**
+- All required `siteConfig` fields present and non-empty
+- No `[placeholder]` values remaining (regex: `\[.*?\]`)
+- `hasDeveloperTrack` consistency (if `false`, dev fields absent; if `true`, `techStack` populated)
+- `overlays.brandVoice.frameworkExamples` has keys `"1"` through `"7"`
+- `overlays.recurringTasks.examples` is non-empty with `{ title, description }` entries
+- `exampleRecurringTasks` array has at least 1 entry (ideally 4)
+
+**Build verification:**
+```bash
+cd app && bun run build
+```
+
+Report any build errors and attempt to fix them.
+
+### Output deployment guidance
+
+After validation passes, output:
+
+```
+Next steps:
+1. Review the file: app/public/clients/{slug}.json
+2. Test locally: cd app && bun run dev, then visit http://localhost:4100?client={slug}
+3. When ready, commit and push to deploy
+4. Add subdomain in Vercel: {slug}.playbook.aisolutionhub.co.uk
+5. Verify SSL (automatic with Vercel wildcard)
+6. Test live: company name, developer track, feedback email, starter kit categories
+```
+
+Offer to commit and push (with explicit consultant confirmation before any git operations).
+
+## Valid Section Slugs
+
+Reference for `sections.enabled` / `sections.disabled` values:
+
+| Track | Slugs |
+|-------|-------|
+| Both | `welcome`, `context`, `sessions`, `skills-extensions`, `governance`, `brand-voice`, `recurring-tasks`, `roi-measurement`, `starter-kit` |
+| General only | `reliable-output` |
+| Developer only | `claude-md`, `documentation`, `codebase-mapping`, `hallucinations`, `regression-testing`, `mcp-usage`, `plugins`, `technical-debt` |
+
+## Additional Resources
+
+### Reference Files
+
+For detailed field-by-field guidance:
+- **`references/field-mapping.md`** — Complete field mapping with sources, derivation rules, and defaults for every `ClientConfig` field
+- **`references/overlay-generation.md`** — Detailed generation guidance for brand voice (7 steps), recurring tasks, ROI examples, and `headStartContent`
+- **`references/validation-checklist.md`** — Full schema conformance checks, content quality checks, and starter kit category validation
+
+### Ground Truth
+
+Evaluate output quality by comparing against the existing Phew deployment:
+- **`app/public/clients/phew.json`** — Complete, production-quality client config
+- **`.planning/client-specific/00-phew/`** — Source training data used to create the Phew config
