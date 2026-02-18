@@ -39,7 +39,6 @@ import {
   Check,
   type LucideIcon,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import type { Track } from '@/content/shared/types';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
