@@ -22,6 +22,7 @@
     "@fontsource/vt323": "^5.2.7",
     "@tailwindcss/vite": "^4.1.18",
     "@vercel/analytics": "^1.6.1",
+    "@vercel/edge": "^1.2.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "docx": "^9.5.3",
