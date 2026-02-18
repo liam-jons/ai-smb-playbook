@@ -10,8 +10,9 @@
 
 import type { ClientConfig } from './client-config-schema';
 import { siteConfig } from './site';
+import { extractClientSlugFromHostname, sanitiseSlug } from '../utils/slug';
 
-/** Bundled default config — current Phew values. Used as fallback. */
+/** Bundled default config — generic neutral values. Used as fallback. */
 export const DEFAULT_CONFIG: ClientConfig = {
   siteConfig: {
     ...(siteConfig as unknown as ClientConfig['siteConfig']),
@@ -22,28 +23,31 @@ export const DEFAULT_CONFIG: ClientConfig = {
   overlays: {},
   sections: { enabled: null, disabled: [] },
   starterKit: {
-    enabledCustomCategories: ['developer-tools', 'creative-design'],
+    enabledCustomCategories: [],
   },
 };
 
-/** Extract client slug from hostname. */
+/**
+ * Extract client slug from hostname, with SPA-specific dev overrides.
+ *
+ * Delegates core hostname logic to the shared utility, then applies
+ * dev-only overrides (?client= query param, VITE_DEFAULT_CLIENT env var).
+ */
 export function extractClientSlug(hostname: string): string {
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    // Check for ?client= query param override in dev
+  const baseSlug = extractClientSlugFromHostname(hostname);
+
+  // In local dev, allow overriding the slug via query param or env var
+  if (baseSlug === 'default') {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const clientParam = params.get('client');
-      if (clientParam) return clientParam;
+      if (clientParam) return sanitiseSlug(clientParam);
     }
-    // Check for env var override (useful for local dev with a fixed client)
     const envClient = import.meta.env.VITE_DEFAULT_CLIENT;
-    if (envClient) return envClient;
-    return 'default';
+    if (envClient) return sanitiseSlug(envClient as string);
   }
-  const parts = hostname.split('.');
-  // subdomain.playbook.aisolutionhub.co.uk = 5 parts
-  if (parts.length > 4) return parts[0];
-  return 'default';
+
+  return sanitiseSlug(baseSlug);
 }
 
 // ---------------------------------------------------------------------------
@@ -90,18 +94,20 @@ function writeCachedConfig(slug: string, config: ClientConfig): void {
 
 /** Load client config from JSON. Returns default config if fetch fails. */
 export async function loadClientConfig(slug: string): Promise<ClientConfig> {
-  if (slug === 'default') return DEFAULT_CONFIG;
+  // Sanitise the slug before using it in a fetch URL (path traversal prevention)
+  const safeSlug = sanitiseSlug(slug);
+  if (safeSlug === 'default') return DEFAULT_CONFIG;
 
   // Check localStorage cache first
-  const cached = readCachedConfig(slug);
+  const cached = readCachedConfig(safeSlug);
   if (cached) return cached;
 
   try {
-    const response = await fetch(`/clients/${slug}.json`);
+    const response = await fetch(`/clients/${safeSlug}.json`);
     if (!response.ok) return DEFAULT_CONFIG;
     const partial = (await response.json()) as Partial<ClientConfig>;
     const merged = mergeWithDefaults(partial);
-    writeCachedConfig(slug, merged);
+    writeCachedConfig(safeSlug, merged);
     return merged;
   } catch {
     return DEFAULT_CONFIG;

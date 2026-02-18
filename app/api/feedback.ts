@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { extractClientSlugFromHostname, sanitiseSlug } from '../src/utils/slug';
 
 /**
  * POST /api/feedback
@@ -10,7 +11,7 @@ import { join } from 'path';
  * Multi-tenant: determines the client from the Referer/Origin header and loads
  * the corresponding config from public/clients/{slug}.json.
  *
- * Body: { category: string, message: string }
+ * Body: { category: string, message: string, clientName?: string }
  *
  * Environment variables:
  *   RESEND_API_KEY — Resend API key (set in Vercel dashboard)
@@ -23,27 +24,6 @@ const DEFAULTS = {
   recipientEmail: 'liam@aisolutionhub.co.uk',
   subjectPrefix: 'AI Playbook',
 };
-
-// ── Client slug extraction ───────────────────────────────────────────
-// Mirrors the SPA's hostname-based routing logic:
-//   localhost / 127.0.0.1         → "default"
-//   phew.playbook.aisolutionhub.co.uk → "phew"  (5+ parts)
-//   playbook.aisolutionhub.co.uk      → "default"
-function extractClientSlug(hostname: string): string {
-  if (hostname === 'localhost' || hostname === '127.0.0.1') return 'default';
-  const parts = hostname.split('.');
-  if (parts.length > 4) return parts[0];
-  return 'default';
-}
-
-// ── Slug sanitisation (path traversal prevention) ────────────────────
-const SAFE_SLUG_PATTERN = /^[a-z0-9-]+$/;
-
-function sanitiseSlug(slug: string): string {
-  const lower = slug.toLowerCase();
-  if (SAFE_SLUG_PATTERN.test(lower)) return lower;
-  return 'default';
-}
 
 // ── Client config loading ────────────────────────────────────────────
 interface ClientSiteConfig {
@@ -116,12 +96,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Resolve client-specific email config from the request origin
   const hostname = getHostnameFromRequest(req);
-  const rawSlug = extractClientSlug(hostname);
+  const rawSlug = extractClientSlugFromHostname(hostname);
   const slug = sanitiseSlug(rawSlug);
   const emailConfig = loadClientEmailConfig(slug);
 
   // Parse and validate body
-  const { category, message } = req.body ?? {};
+  const { category, message, clientName } = req.body ?? {};
 
   if (!category || typeof category !== 'string') {
     return res.status(400).json({ error: 'Category is required' });
@@ -152,6 +132,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       subject,
       text: [
         `Category: ${categoryLabel}`,
+        `Client: ${clientName || 'Unknown'}`,
         '',
         'Message:',
         message.trim(),

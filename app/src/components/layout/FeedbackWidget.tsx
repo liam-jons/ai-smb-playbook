@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from 'lucide-react';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -31,6 +32,7 @@ const CATEGORIES = [
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';
 
 export function FeedbackWidget() {
+  const siteConfig = useSiteConfig();
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState('');
   const [message, setMessage] = useState('');
@@ -96,7 +98,11 @@ export function FeedbackWidget() {
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category, message: message.trim() }),
+        body: JSON.stringify({
+          category,
+          message: message.trim(),
+          clientName: siteConfig.companyShortName,
+        }),
       });
 
       if (!res.ok) {

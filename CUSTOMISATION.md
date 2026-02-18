@@ -14,8 +14,13 @@ This guide walks you through creating a new client deployment of the AI SMB Play
 3. **Add overlay content** — brand voice, recurring tasks, ROI examples.
 4. **Configure sections** — enable/disable individual sections, set `hasDeveloperTrack`.
 5. **Configure starter kit categories** — choose which custom categories to include.
-6. **Add subdomain in Vercel dashboard** — point `{slug}.playbook.aisolutionhub.co.uk` at the deployment.
-7. **Test:** visit `{slug}.playbook.aisolutionhub.co.uk`.
+6. **Validate the config:**
+   ```bash
+   cd app && bun run build
+   ```
+   This runs the TypeScript compiler and Vite build. If the build fails, check for missing required fields or type mismatches against the schema in `app/src/config/client-config-schema.ts`.
+7. **Add subdomain in Vercel dashboard** — point `{slug}.playbook.aisolutionhub.co.uk` at the deployment.
+8. **Test:** visit `{slug}.playbook.aisolutionhub.co.uk`.
 
 ---
 
