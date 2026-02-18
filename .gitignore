@@ -17,6 +17,8 @@ package-lock.json
 app/public/starter-kit/zips/
 
 # Development artifacts (not part of deliverable)
+.agent-outputs/
+.playwright-mcp/
 delivery-email.md
 dark-mode-governance.png
 feedback-dialog.png
