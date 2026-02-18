@@ -126,7 +126,7 @@ Also documented in the full audit. These are cleanup items, not blockers:
 | `app/public/clients/_template.json` | Template for new clients |
 | `CUSTOMISATION.md` | Client deployment guide |
 | `docs/repeatable-workflow.md` | Internal process doc with deployment section |
-| `docs/reference/client-customisation-guide.md` | Per-section developer track customisation guide |
+| `CUSTOMISATION.md` (appendix) | Per-section developer track customisation effort (merged from former `docs/reference/client-customisation-guide.md`) |
 
 ---
 

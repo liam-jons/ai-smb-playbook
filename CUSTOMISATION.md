@@ -46,6 +46,23 @@ All fields live under the `siteConfig` key in the client JSON file. They are gro
 | `metaDescription` | `string` | HTML meta description | `"Practical guidance for getting the most from Claude AI"` |
 | `welcomeSubtitle` | `string` | Subtitle on the welcome page | `"Getting started with AI at Acme"` |
 
+### Client branding (optional)
+
+Logo fields are optional. When omitted, the home page renders text-only branding (no empty space or layout shift).
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `clientLogoUrl` | `string?` | Path to logo for light mode | `"/clients/logos/acme.webp"` |
+| `clientLogoDarkUrl` | `string?` | Path to logo for dark mode (falls back to `clientLogoUrl`) | `"/clients/logos/acme-dark.webp"` |
+| `clientLogoAlt` | `string?` | Alt text for accessibility (default: `"{companyName} logo"`) | `"Acme Industries logo"` |
+| `clientLogoMaxWidth` | `number?` | Max width in pixels (default: `200`, capped at `280`) | `160` |
+
+**Asset storage:** Place logo files in `app/public/clients/logos/{slug}.{ext}`. Supported formats: PNG, WebP, SVG. WebP or SVG are recommended for quality and file size.
+
+**Dark mode:** Provide `clientLogoDarkUrl` for logos that need a different treatment on dark backgrounds. When omitted, the light-mode logo is used in both modes — ensure it has sufficient contrast.
+
+**Sizing guidance:** 140–220px works well for most horizontal wordmarks. The component caps `clientLogoMaxWidth` at 280px.
+
 ### Recommended (most clients)
 
 | Field | Type | Description | Example |
@@ -244,3 +261,57 @@ Edit `/etc/hosts` to point the subdomain at localhost:
 ```
 
 Then visit `http://phew.localhost:4100`. This tests the full subdomain resolution path.
+
+---
+
+## Developer Track — Per-Section Customisation Effort
+
+When onboarding a client with a different tech stack, some developer track sections contain hardcoded technology references in prompt templates. This section documents the customisation effort per section so consultants can estimate the work.
+
+Developer track sections fall into three categories:
+
+1. **Fully parameterised** — content adapts automatically via `useSiteConfig()`. No manual changes needed.
+2. **Mostly parameterised** — main content adapts via config fields, but some examples or prompts reference specific technologies. Review and optionally adjust.
+3. **Universally applicable** — content is framework-agnostic. No changes needed regardless of client.
+
+### Summary Table
+
+| Section | Slug | Category | Auto-Parameterised Fields | Manual Review Needed | Effort |
+|---------|------|----------|--------------------------|---------------------|--------|
+| CLAUDE.md Files | `claude-md` | Fully parameterised | `primaryProduct`, `primaryProductDescription`, `techStack`, `complianceArea` | Template tabs (optional) | None |
+| Documentation Structure | `documentation` | Universal | — | None | None |
+| Codebase Mapping | `codebase-mapping` | Universal | — | GSD Mapper availability | None |
+| Avoiding Hallucinations | `hallucinations` | Fully parameterised | `testingTool`, `testingToolDocs`, `primaryProduct`, `complianceArea`, `sensitiveDataLabel`, `techStack`, `database`, `domainSpecificForm` | Hardcoded ASP.NET/WordPress refs in patterns 1, 4, 6 | Low |
+| Regression Testing | `regression-testing` | Mostly parameterised | `testingTool`, `testingToolDocs`, `primaryProduct`, `techStack` | Comparison table row content, prompt domain examples | Low |
+| Safe MCP Usage | `mcp-usage` | Mostly parameterised | `webApplications`, `testingTool` | Recommended MCP server list | Low |
+| Plugin Recommendations | `plugins` | Universal | — | php-lsp inclusion, starter set list | Minimal |
+| Code Auditing & Debt | `technical-debt` | Universal | — | None | None |
+
+### Section Details
+
+**CLAUDE.md Files (`claude-md`)** — Fully parameterised. Fields: `primaryProduct`, `primaryProductDescription`, `techStack`, `complianceArea`. The copyable templates use generic project examples (Node.js/React, ASP.NET). If a client's stack is notably different, you may wish to add or swap template tabs. Effort: none for most clients; 15 minutes to add a stack-specific template tab.
+
+**Documentation Structure (`documentation`)** — Universally applicable. Does not call `useSiteConfig()`. Content is entirely framework-agnostic. Effort: none.
+
+**Codebase Mapping (`codebase-mapping`)** — Universally applicable. Describes the GSD Codebase Mapper tool. If the client will not receive the GSD Mapper in their starter kit, consider disabling this section via `sections.disabled` rather than rewriting it. Effort: none.
+
+**Avoiding Hallucinations (`hallucinations`)** — Fully parameterised. Fields: `testingTool`, `testingToolDocs`, `primaryProduct`, `complianceArea`, `sensitiveDataLabel`, `techStack`, `database`, `domainSpecificForm`. These fields are heavily interpolated across 7 prompt templates. However, pattern 1 references "legacy ASP.NET Web Forms" migration, pattern 4 references "ASP.NET Core Identity" and "OWASP authentication guidelines", and pattern 6 references "WordPress site" and ".NET CRM system" — all hardcoded. For clients with no .NET or WordPress exposure, review patterns 1, 4, and 6. Effort: 20–30 minutes if stack differs significantly.
+
+**Regression Testing (`regression-testing`)** — Mostly parameterised. Fields: `testingTool`, `testingToolDocs`, `primaryProduct`, `techStack`. The comparison table row content describes a tool like Ghost Inspector (browser extension recorder, subscription-based per test run). If the client uses a different testing paradigm or has no testing tool, these rows need updating. If the client has no existing regression testing tool, consider disabling the section entirely. Effort: low if the client uses a similar browser-based testing tool; 30–45 minutes if fundamentally different.
+
+**Safe MCP Usage (`mcp-usage`)** — Mostly parameterised. Fields: `webApplications`, `testingTool`. The recommended MCPs list currently includes deepwiki and Playwright (chrome-devtools). For clients that do not build web applications, Playwright may be less relevant. For clients using specific services (CRM, ERP), additional MCP recommendations may be warranted. Effort: 5–10 minutes to review; 15–20 minutes per additional MCP recommendation.
+
+**Plugin Recommendations (`plugins`)** — Universally applicable. The plugin catalogue includes php-lsp because the original client works with WordPress/PHP. For clients with no PHP exposure, swap this for a language-specific LSP plugin. The recommended starter set (`BATCH_INSTALL`) includes `php-lsp` and `github` — adjust to match the client's toolchain. One description mentions "Particularly relevant for your WordPress work" which is hardcoded. Effort: 10–15 minutes.
+
+**Code Auditing & Technical Debt (`technical-debt`)** — Universally applicable. All audit prompts are framework-agnostic. The quick health check mentions "NuGet packages (ASP.NET/C#) or Composer/npm packages (WordPress)" which covers a broad range. Effort: none.
+
+### Effort Estimates
+
+For a client with a **similar tech stack** (web development agency, mixed .NET/WordPress/JS): zero manual work needed. The `siteConfig` fields handle all personalisation.
+
+For a client with a **different tech stack** (e.g. Python shop, mobile development, data engineering):
+- 30–60 minutes reviewing the "mostly parameterised" sections (regression testing, MCP usage, hallucinations prompt examples).
+- 10–15 minutes adjusting the plugin recommendations (swap php-lsp, update the starter set).
+- The remaining 4 sections (documentation, codebase mapping, CLAUDE.md, technical debt) require no manual effort.
+
+The highest-effort item is **regression testing** if the client has no existing browser-based testing tool, as the comparison framing assumes one exists. In that case, disable the section via `sections.disabled` rather than rewriting it.

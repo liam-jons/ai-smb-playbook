@@ -2,6 +2,8 @@
 
 > A practical process guide for producing structured follow-up materials after AI training sessions. Written for consultants delivering AI upskilling to UK SMBs. The Phew Design Limited engagement (February 2026) serves as the worked example throughout — and this document was itself produced by the process it describes.
 
+> **Internal reference only.** This document is not a client-facing deliverable. The `/process` route that previously served it within the app has been removed. It lives at `docs/repeatable-workflow.md` as an internal process reference for consultants.
+
 ## Overview
 
 This workflow turns a training session into a polished, interactive deliverable in seven steps: record, summarise, plan, spec, build, deploy, deliver. Each step uses AI tooling (primarily Claude and Claude Code) to reduce manual effort without sacrificing quality. The Phew! project — two training sessions delivered on 11 February 2026, resulting in an interactive playbook, starter kit, and this process document — demonstrates the full pipeline. A single consultant completed the end-to-end process in approximately five working days.
@@ -89,7 +91,7 @@ Break the plan into section-level specifications. Each spec must be self-contain
 > - Group specs by the agent that will build them. Ensure no spec depends on another agent's incomplete output.
 > - Run research tasks first if any specs need technical findings.
 
-> **Phew! example:** Phase 0 ran seven research tasks in parallel (website scrape, UK English enforcement, command availability, brand voice workflow, context window mechanics, capabilities audit, app tech stack). Phase 1 then wrote 17 specs — one per playbook section, plus the starter kit and this process document.
+> **Phew! example:** Phase 0 ran seven research tasks in parallel (website scrape, UK English enforcement, command availability, brand voice workflow, context window mechanics, capabilities audit, app tech stack). Phase 1 then wrote 18 specs — one per playbook section (including the later addition of section 1.3b, "Getting Reliable Output"), plus the starter kit.
 
 **Template prompt — Spec writing:**
 ```
@@ -153,7 +155,7 @@ Integrate all agent outputs, run checks, and deploy.
 > - Verify tone consistency across sections built by different agents.
 > - Deploy to a preview URL first.
 
-> **Phew! example:** The React app deployed to Vercel. The GitHub repo contained the app source, starter kit files, and this document. A preview URL was shared before the final deployment.
+> **Phew! example:** The React app deployed to Vercel. The GitHub repo contained the app source and starter kit files. This workflow document remained an internal reference in the repository (`docs/repeatable-workflow.md`) — it is not served within the client-facing app. A preview URL was shared before the final deployment.
 
 ---
 
@@ -245,9 +247,62 @@ The playbook is now a multi-tenant application — one deployed SPA serves all c
    - Feedback emails route to the correct recipient
    - Starter kit shows the correct categories
 
+### Local Testing
+
+Before pushing to production, verify the client config locally using one of three methods (see also `CUSTOMISATION.md` for full details):
+
+1. **Query parameter** (quickest for development):
+   ```
+   http://localhost:4100?client={slug}
+   ```
+   The `config-loader.ts` checks for a `?client=` parameter and uses it to override the default slug. No file changes needed — just append the parameter to the URL.
+
+2. **Environment variable** (persists across page reloads):
+   Create or edit `app/.env.local`:
+   ```
+   VITE_DEFAULT_CLIENT={slug}
+   ```
+   The dev server reads `VITE_DEFAULT_CLIENT` on startup. Restart the dev server after changing this value.
+
+3. **`/etc/hosts` subdomain mapping** (closest to production):
+   Add an entry to `/etc/hosts`:
+   ```
+   127.0.0.1  {slug}.localhost
+   ```
+   Then visit `http://{slug}.localhost:4100`. This exercises the full subdomain-based slug extraction path, matching how production routing works.
+
 ### Timing
 
 For a standard client (general track only, no developer content), this process adds approximately 30–45 minutes to the delivery workflow. Clients with developer tracks and extensive overlay content may take 60–90 minutes.
+
+### Generating Overlay Content
+
+Step 4 of the new-client process above mentions overlay content (brand voice, recurring tasks, ROI examples) as optional. In practice, overlays significantly improve the playbook's relevance for the client. The following prompt can generate overlay content from a website scrape and training transcript. See `CUSTOMISATION.md` for the full overlay schema and field reference.
+
+**Template prompt — Overlay content generation:**
+```
+I need to generate client-specific overlay content for the AI SMB Playbook.
+The client is [CLIENT NAME], a [INDUSTRY] business based in the UK with [TEAM SIZE] staff.
+
+Attached are:
+1. Training session transcript/summary
+2. Client website scrape (home page, about page, services page)
+
+Please produce the following in JSON format matching the overlay schema in CUSTOMISATION.md:
+
+**Brand voice framework** (overlays.brandVoice.frameworkExamples, keys "1"–"7"):
+- Derive the brand personality, voice attributes, audience, messaging pillars, tone spectrum, style rules, and terminology from the website content and how the client described themselves during training.
+
+**Recurring task examples** (overlays.recurringTasks.examples):
+- Identify 3–4 tasks the client mentioned doing regularly during training, or that are clearly implied by their business type. Each should have a title and a one- to two-sentence description of how Claude could help.
+
+**ROI examples** (overlays.roi.clientExamples):
+- For each recurring task above, estimate a realistic before/after time comparison. Use conservative figures — credibility matters more than impressive numbers.
+
+Output the complete overlays JSON block ready to merge into the client config file.
+```
+
+> **Tip:** If the training transcript is unavailable, the website scrape alone is usually sufficient for brand voice and recurring tasks. ROI examples benefit from the transcript, as the client often mentions specific time-consuming workflows.
 
 ---
 

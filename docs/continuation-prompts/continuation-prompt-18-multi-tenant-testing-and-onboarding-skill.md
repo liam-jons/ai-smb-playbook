@@ -48,7 +48,6 @@ fca8d95 feat: Phase 3 — extract developer content to general track
 | `app/middleware.ts` | Vercel Edge Middleware |
 | `app/api/feedback.ts` | Multi-tenant feedback API |
 | `CUSTOMISATION.md` | Step-by-step client deployment guide |
-| `docs/reference/client-customisation-guide.md` | Developer track per-client customisation guide |
 | `docs/repeatable-workflow.md` | Updated with "Setting up a new client deployment" section |
 | `app/src/content/general/ReliableOutputSection.tsx` | New general track section (extracted from dev) |
 
@@ -144,7 +143,7 @@ Create a Claude Code skill that automates the repeatable client onboarding workf
 4. Guide the consultant through reviewing and refining the config
 5. Produce the overlay content (brand voice framework, recurring task examples, ROI examples) based on the training context
 6. Create the client JSON file in `app/public/clients/`
-7. Optionally identify which developer track sections need review per `docs/reference/client-customisation-guide.md`
+7. Optionally identify which developer track sections need review per the "Developer Track — Per-Section Customisation Effort" appendix in `CUSTOMISATION.md`
 
 **Testing approach:**
 - Use the separate client transcript to test the skill end-to-end
@@ -163,7 +162,6 @@ Create a Claude Code skill that automates the repeatable client onboarding workf
 | `CLAUDE.md` | Project conventions, tech stack, critical rules |
 | `CUSTOMISATION.md` | Step-by-step client deployment guide with field reference |
 | `docs/repeatable-workflow.md` | 7-step process from training to delivery |
-| `docs/reference/client-customisation-guide.md` | Developer track per-client customisation guide |
 | `app/src/config/client-config-schema.ts` | `ClientConfig` TypeScript interface (the schema) |
 | `app/public/clients/phew.json` | Reference: complete client config example |
 | `app/public/clients/_template.json` | Template with placeholder values |
