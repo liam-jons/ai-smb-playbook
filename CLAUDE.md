@@ -16,21 +16,24 @@ The application overview is at `docs/reference/application-overview.md` — read
 app/                          # React playbook app (Vite + React + Tailwind v4 + TypeScript)
   ├── api/
   │   └── feedback.ts         # Vercel serverless function (Resend email)
+  ├── public/
+  │   └── clients/            # Per-client JSON configs, logos, and _template.json
   ├── src/
   │   ├── components/
-  │   │   ├── content/        # Content display (CodeBlock, CalloutCard, CopyButton, PromptExample, SectionPage, ShikiHighlighter)
+  │   │   ├── content/        # Content display (CodeBlock, CalloutCard, ClientLogo, CopyButton, PromptExample, ScrollHint, SectionPage, SetupStepCard, ShikiHighlighter)
   │   │   ├── interactive/    # Context window simulator (ContextWindowSimulator + sub-components)
-  │   │   ├── layout/         # App shell (AppLayout, Header, Sidebar, Footer, HomePage, TrackLayout, FeedbackWidget, ThemeSettings, NotFoundPage)
+  │   │   ├── layout/         # App shell (AppLayout, Header, Sidebar, Footer, HomePage, TrackLayout, FeedbackWidget, ThemePreview, ThemeSettings, NotFoundPage)
   │   │   └── ui/             # shadcn/ui primitives (18 components — added via `bunx shadcn add`)
   │   ├── content/
-  │   │   ├── general/        # General track sections (7 section components)
+  │   │   ├── general/        # General track sections (9 section components)
   │   │   ├── developer/      # Developer track sections (8 section components)
-  │   │   └── shared/         # Section registry, types, data files, StarterKit, Welcome & ProcessDoc pages
+  │   │   └── shared/         # Section registry, types, data files, StarterKit, Welcome pages
   │   ├── routes/             # React Router config (router.tsx)
-  │   ├── hooks/              # Custom hooks (useAccessibility, useCopyToClipboard, useTheme, useTrack)
+  │   ├── hooks/              # Custom hooks (useAccessibility, useClientConfig, useCopyToClipboard, useTheme, useTrack)
   │   ├── themes/             # Accessibility modes & font definitions (index.ts)
-  │   ├── config/             # Site config (site.ts)
-  │   ├── lib/                # Utilities (utils.ts — cn() helper)
+  │   ├── config/             # Client config system (schema, context provider, loader, site defaults)
+  │   ├── utils/              # Shared utilities (slug extraction)
+  │   ├── lib/                # Utilities (cn() helper, DOCX export)
   │   └── assets/
   └── dist/                   # Production build output (gitignored)
 .planning/                    # Planning artefacts
@@ -109,7 +112,10 @@ Set in the Vercel dashboard (not committed to the repo):
 - **Content architecture:** Section content lives in `content/{general,developer}/` as standalone React components, registered in `content/shared/registry.ts`. To add a new section, create the component and add it to the registry.
 - **Styling:** Tailwind utility classes via `cn()` helper from `lib/utils.ts`. Dark mode supported via `useTheme` hook.
 - **Track detection:** `useTrack()` hook returns `{ track, isDev, isGeneral }` for track-conditional rendering.
-- **Site config:** All client-specific values (company name, URLs, email addresses) are centralised in `config/site.ts`. Edit only this file to rebrand for a different client.
+- **Multi-tenant config:** Runtime client configuration is loaded from `app/public/clients/<slug>.json`. The slug is extracted from the hostname (e.g. `phew.domain.com` → `phew`). Components access config via React context hooks: `useSiteConfig()`, `useOverlays()`, `useSectionsConfig()`, `useClientConfig()` (from `hooks/useClientConfig.ts`). The bundled default in `config/site.ts` is the fallback — do not import `site.ts` directly in components; always use context hooks.
+- **Overlay system:** Per-client content customisation (brand voice examples, recurring tasks, ROI examples) is defined in the client JSON under `overlays`. Components read overlays via `useOverlays()` and merge with base content at render time.
+- **Section visibility:** Clients can enable/disable sections and the developer track via `hasDeveloperTrack` and `sections.enabled/disabled` in their config JSON.
+- **Starter kit tiers:** Base kit is available to all clients. Custom categories (skills, commands) are gated per-client via `starterKit.enabledCustomCategories` in the config JSON.
 - **Accessibility:** `useAccessibility` hook + `themes/index.ts` provide dyslexia, high-contrast, and large-text modes with multiple font options. Modes are persisted to localStorage.
 - **Analytics:** Vercel Web Analytics (`@vercel/analytics`) is integrated — do not add duplicate tracking scripts.
 - **Frontend guidelines:** Comprehensive design and engineering guidelines are in `docs/reference/frontend-skills-review.md`. Consult this when doing any frontend work — it covers typography, colour, layout, motion, interaction design, performance, accessibility, and visual quality standards with a build checklist.
@@ -119,6 +125,8 @@ Set in the Vercel dashboard (not committed to the repo):
 - **Tailwind v4 — no config file.** This project uses Tailwind v4, which is CSS-based. There is no `tailwind.config.js`. Theme customisation is in `app/src/index.css` via `@theme inline {}`. Don't create a JS config file.
 - **shadcn/ui components are generated.** Files in `components/ui/` are added via `bunx shadcn add <component>`, not hand-written. Don't manually create UI primitives.
 - **Vercel root directory.** `vercel.json` is at the repo root but Vercel's root directory is set to `app` in the dashboard. This is intentional — the serverless `api/` directory and `package.json` (with dependencies like `resend`) live under `app/`, so Vercel must install and build from there. Do not change the root directory to repo root without also moving the API function and its dependencies.
+- **Never import `site.ts` directly in components.** `config/config-loader.ts` is the ONLY file that imports from `site.ts`. All components and hooks must use the React context hooks (`useSiteConfig()`, `useOverlays()`, etc.) from `hooks/useClientConfig.ts`. Direct imports break multi-tenant config.
+- **Client JSON files are the source of truth.** To configure a new client, create `app/public/clients/<slug>.json` using `_template.json` as a base. Do not edit `site.ts` for client-specific values — it only provides bundled defaults.
 
 ## Critical Rules
 
@@ -131,9 +139,9 @@ Set in the Vercel dashboard (not committed to the repo):
 
 ## Client Context
 
-The application is parameterised for per-client deployment. All client-specific values live in `config/site.ts` (see `docs/reference/application-overview.md` for the full onboarding checklist).
+The application is parameterised for per-client deployment. Each client gets a JSON config file at `app/public/clients/<slug>.json` that defines branding, content overlays, section visibility, and starter kit tiers. A `_template.json` provides the base schema. The bundled default config in `config/site.ts` serves as fallback for unknown slugs. See `docs/reference/application-overview.md` for the full onboarding checklist and `client-config-schema.ts` for the config interface.
 
-**Current deployment:** Phew Design Limited (https://www.phew.org.uk/) — UK design agency, Claude Teams for all staff, developers have Claude Code access.
+**Current deployment:** Phew Design Limited (https://www.phew.org.uk/) — UK design agency, Claude Teams for all staff, developers have Claude Code access. Client config: `app/public/clients/phew.json`.
 
 **Target audience profile:** UK-based SMBs familiar with Claude for general tasks but not yet experienced with sessions, context windows, skills, or structured AI workflows.
 

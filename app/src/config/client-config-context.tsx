@@ -66,6 +66,19 @@ export function ClientConfigProvider({ children }: { children: ReactNode }) {
     };
   }, [clientSlug]);
 
+  // Update document title and meta description when config changes
+  useEffect(() => {
+    if (config.siteConfig.appTitle) {
+      document.title = config.siteConfig.appTitle;
+    }
+    if (config.siteConfig.metaDescription) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) {
+        meta.setAttribute('content', config.siteConfig.metaDescription);
+      }
+    }
+  }, [config.siteConfig.appTitle, config.siteConfig.metaDescription]);
+
   return (
     <ClientConfigContext.Provider
       value={{ config, isLoading, clientSlug, error }}
