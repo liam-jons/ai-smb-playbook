@@ -66,25 +66,36 @@ Test the `/client-research` command against a real client website. This validate
 
 **Recommended test client:** AMD Engineering or Borough Engineering Services (both have training summaries available).
 
-**AMD context:**
+**AMD context (website available — standard test):**
+- Website: `https://amd-group.co.uk/`
 - Training summary at `.planning/client-specific/01-amd/amd-training-summary.md` (14 Oct 2025)
 - Full transcript at `.planning/client-specific/01-amd/amd-training-transcript.md`
-- Company appears to be an engineering/construction firm (PQQs, O&M manuals, compliance tracking, contract review)
-- Website URL needs confirming — try `https://www.amdgroup.com/` or search for the correct URL
+- Engineering/construction firm (PQQs, O&M manuals, compliance tracking, contract review, Power BI)
 - Attendees included: Alex Wilmot, Brian McFarlane, Cameron Turk, Claire Forrest, Daniel Pearce, George Craig, James Perry, James Tranham, Jana Christofi, Jon King, Marcus Sullivan, Murray Halliday, Raj Gill, Richard Sharpe, Sonia Bateman
 
-**Borough context:**
+**Borough context (website DOWN — degraded/fallback test):**
+- Website `https://www.borough-es.co.uk/` is currently out of service
+- LinkedIn page available as fallback: `https://www.linkedin.com/company/borough-engineering-services-ltd/about/`
 - Training summary at `.planning/client-specific/02-borough/borough-training-summary.md` (30 Sept 2025)
 - Second session at `.planning/client-specific/02-borough/borough-training-session-02-summary.md`
 - Engineering services company (PQQs, financial reporting, asset registers, meeting transcription)
-- Website URL needs confirming — try `https://www.borough-es.co.uk/` (email domain in summary is `@borough-es.co.uk`)
+- Email domain in training summary: `@borough-es.co.uk`
+
+**Borough is an important edge case.** The research command and onboarding skill must handle the scenario where a client's website is unavailable. Expected behaviour:
+1. The research command should detect the website is down, note this clearly in the output, and fall back to alternative sources (LinkedIn, Companies House, web search)
+2. Every piece of information sourced from a fallback must be clearly attributed — e.g. "Source: LinkedIn company page" or "Source: Companies House" — so the consultant can assess reliability
+3. The research document should explicitly list what could NOT be researched due to the website being unavailable
+4. The onboarding skill should prompt the consultant for any fields that would normally come from the website (brand voice, services, products, team details) rather than guessing from limited sources
+
+**Recommended approach:** Run AMD first (standard case), then Borough (degraded case). This tests both the happy path and the fallback path.
 
 **Steps:**
 
-1. Confirm the client website URL (use web search if needed)
-2. Run `/client-research {url} "{company name}" {slug}` — e.g. `/client-research https://www.amdgroup.com/ "AMD Group" 01-amd`
-3. Compare output quality against the Phew ground truth at `.planning/client-specific/00-phew/phew-site-content.md`
-4. Document any command issues or improvements needed
+1. Run `/client-research https://amd-group.co.uk/ "AMD Group" 01-amd`
+2. Compare output quality against the Phew ground truth at `.planning/client-specific/00-phew/phew-site-content.md`
+3. Run `/client-research https://www.borough-es.co.uk/ "Borough Engineering Services" 02-borough` — expect the website to be unreachable; verify fallback behaviour
+4. For Borough, verify that LinkedIn data is used but clearly attributed as a fallback source
+5. Document any command issues, fallback handling gaps, or improvements needed
 
 ### Workstream C (Must): Run Onboarding Skill End-to-End
 
@@ -233,8 +244,8 @@ cd app && bun run format:check # Prettier check
 
 ## Open Items
 
-1. **AMD website URL** — needs confirming before running `/client-research`
-2. **Borough website URL** — likely `borough-es.co.uk` based on email domain in training summary
+1. **Borough website down** — `https://www.borough-es.co.uk/` is currently out of service. LinkedIn fallback available at `https://www.linkedin.com/company/borough-engineering-services-ltd/about/`. This is a deliberate test of degraded-source handling.
+2. **Source attribution for fallback data** — When LinkedIn, Companies House, or web search are used instead of the primary website, every extracted fact must note its source. The consultant needs to know what's verified vs. inferred.
 3. **Feedback widget testing** — still not covered. Manual or automated verification needed.
 4. **Section visibility gating** — untested. If a client config disables sections, verify they're removed from sidebar.
-5. **Full pipeline test** — research → onboard → deploy → browser verify. This session should complete the first three steps.
+5. **Full pipeline test** — research → onboard → deploy → browser verify. This session should complete the first three steps for AMD (full pipeline) and Borough (degraded pipeline).
