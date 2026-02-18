@@ -199,6 +199,58 @@ The email should:
 
 ---
 
+## Setting Up a New Client Deployment
+
+The playbook is now a multi-tenant application — one deployed SPA serves all clients. Adding a new client requires no code changes; you create a JSON config file, commit it, and add a subdomain.
+
+### End-to-End Process
+
+1. **Complete training delivery** (Steps 1–2 above) and identify the client's needs, audience, and whether they need a developer track.
+
+2. **Create the client config file:**
+   ```bash
+   cp app/public/clients/_template.json app/public/clients/{slug}.json
+   ```
+   The slug becomes the subdomain (e.g., `acme` → `acme.playbook.aisolutionhub.co.uk`). Use lowercase, alphanumeric characters and hyphens only.
+
+3. **Fill in the config.** Open the JSON file and replace all `[placeholder]` values. Fields are grouped into four tiers:
+   - **Required** — company name, URLs, feedback email, training date, localStorage prefix
+   - **Recommended** — industry, team size, primary AI tool
+   - **Developer track** — tech stack, testing tool, database (set `hasDeveloperTrack: false` to hide)
+   - **Domain-specific** — compliance area, sensitive data types, recurring tasks (omit if not relevant)
+
+   See `CUSTOMISATION.md` at the repo root for the full field reference.
+
+4. **Add overlay content** (optional but recommended):
+   - Brand voice framework examples (7 steps)
+   - Recurring task examples (3–4 client-specific examples)
+   - ROI examples (client-specific task descriptions)
+
+5. **Configure sections.** By default all sections are shown. To hide specific sections, add their slugs to `sections.disabled`. To show only specific sections, set `sections.enabled` to an array of slugs.
+
+6. **Configure the starter kit.** Set `starterKit.enabledCustomCategories` to the relevant categories: `developer-tools`, `business-development`, `creative-design`, `integration-specific`, `compliance-security`.
+
+7. **Commit, push, and deploy:**
+   ```bash
+   git add app/public/clients/{slug}.json
+   git commit -m "feat: add {client-name} client config"
+   git push
+   ```
+
+8. **Add the subdomain** in the Vercel dashboard: `{slug}.playbook.aisolutionhub.co.uk`. Vercel's wildcard SSL covers new subdomains automatically.
+
+9. **Test the deployment** by visiting `{slug}.playbook.aisolutionhub.co.uk` and verifying:
+   - Company name and branding appear correctly
+   - Developer track visibility matches `hasDeveloperTrack`
+   - Feedback emails route to the correct recipient
+   - Starter kit shows the correct categories
+
+### Timing
+
+For a standard client (general track only, no developer content), this process adds approximately 30–45 minutes to the delivery workflow. Clients with developer tracks and extensive overlay content may take 60–90 minutes.
+
+---
+
 ## Template Prompts
 
 All four template prompts from the process steps above, collected for quick reference:
