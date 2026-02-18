@@ -783,69 +783,86 @@ function PolicyExportButtons({
 
   return (
     <div className="mt-6 space-y-4">
-      {/* Copy buttons */}
+      {/* Copy buttons — dual-line with icon, label, and subtitle */}
       <div className="flex flex-wrap gap-3">
-        <div className="space-y-1">
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={copyForClaude}
-          >
+        <button
+          type="button"
+          onClick={copyForClaude}
+          className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-left motion-safe:transition-colors hover:bg-accent"
+        >
+          <div className="shrink-0 text-muted-foreground">
             {copiedClaude ? (
-              <Check className="h-4 w-4 text-success-muted-foreground" />
+              <Check className="h-5 w-5 text-success-muted-foreground" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className="h-5 w-5" />
             )}
-            {copiedClaude ? 'Copied' : 'Copy for Claude'}
-          </Button>
-          <p className="text-xs text-muted-foreground">
-            Markdown format — paste into claude.ai and ask Claude to help fill
-            in the placeholders
-          </p>
-        </div>
+          </div>
+          <div>
+            <span className="text-sm font-medium text-foreground">
+              {copiedClaude ? 'Copied' : 'Copy for Claude'}
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              Edit further with Claude
+            </span>
+          </div>
+        </button>
 
-        <div className="space-y-1">
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={copyForWord}
-          >
+        <button
+          type="button"
+          onClick={copyForWord}
+          className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-left motion-safe:transition-colors hover:bg-accent"
+        >
+          <div className="shrink-0 text-muted-foreground">
             {copiedWord ? (
-              <Check className="h-4 w-4 text-success-muted-foreground" />
+              <Check className="h-5 w-5 text-success-muted-foreground" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy className="h-5 w-5" />
             )}
-            {copiedWord ? 'Copied' : 'Copy for Word'}
-          </Button>
-          <p className="text-xs text-muted-foreground">
-            Plain text — ready to paste into Word or Google Docs
-          </p>
-        </div>
+          </div>
+          <div>
+            <span className="text-sm font-medium text-foreground">
+              {copiedWord ? 'Copied' : 'Copy for Word'}
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              Paste into Word or Google Docs
+            </span>
+          </div>
+        </button>
       </div>
 
-      {/* Download buttons */}
+      {/* Download buttons — dual-line with icon, label, and subtitle */}
       <div className="flex flex-wrap gap-3">
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
+        <button
+          type="button"
           onClick={downloadMarkdown}
+          className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-left motion-safe:transition-colors hover:bg-accent"
         >
-          <Download className="h-4 w-4" />
-          Download as Markdown (.md)
-        </Button>
+          <Download className="h-5 w-5 shrink-0 text-muted-foreground" />
+          <div>
+            <span className="text-sm font-medium text-foreground">
+              Download as Markdown
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              .md file — ideal for editing with Claude
+            </span>
+          </div>
+        </button>
 
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
+        <button
+          type="button"
           onClick={downloadDocx}
+          className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-left motion-safe:transition-colors hover:bg-accent"
         >
-          <Download className="h-4 w-4" />
-          Download as Word (.docx)
-        </Button>
+          <Download className="h-5 w-5 shrink-0 text-muted-foreground" />
+          <div>
+            <span className="text-sm font-medium text-foreground">
+              Download as Word
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              .docx file — opens directly in Microsoft Word
+            </span>
+          </div>
+        </button>
       </div>
 
       <p className="text-xs text-muted-foreground">

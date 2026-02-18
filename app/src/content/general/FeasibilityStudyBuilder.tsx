@@ -268,11 +268,11 @@ function StepIndicator({
 }) {
   return (
     <>
-      {/* Desktop indicator — I13: allow text wrap instead of truncating */}
+      {/* Desktop indicator — vertical layout: number on top, label below */}
       <ol
         role="list"
         aria-label="Feasibility study steps"
-        className="hidden sm:flex items-center gap-1"
+        className="hidden sm:flex items-start gap-1"
       >
         {feasibilitySteps.map((step, i) => {
           const Icon = stepIcons[i];
@@ -285,9 +285,7 @@ function StepIndicator({
               key={step.id}
               role="listitem"
               aria-current={isCurrent ? 'step' : undefined}
-              className={cn(
-                'flex min-w-0 flex-1 items-center',
-              )}
+              className="flex min-w-0 flex-1 items-center"
             >
               <button
                 type="button"
@@ -295,7 +293,7 @@ function StepIndicator({
                 disabled={!isClickable}
                 aria-label={`Step ${i + 1}: ${step.title}${isCompleted ? ' (completed)' : isCurrent ? ' (current)' : ''}`}
                 className={cn(
-                  'flex min-w-0 items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium leading-tight motion-safe:transition-colors',
+                  'flex w-full flex-col items-center gap-0.5 rounded-md px-1.5 py-1.5 text-center font-medium motion-safe:transition-colors',
                   isCompleted &&
                     'bg-success-muted text-success-muted-foreground',
                   isCurrent && 'ring-2 ring-primary bg-primary/10 text-primary',
@@ -303,21 +301,22 @@ function StepIndicator({
                   !isClickable && 'opacity-50 cursor-not-allowed',
                 )}
               >
-                {isCompleted ? (
-                  <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                ) : (
-                  <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                )}
-                <span className="shrink-0">{i + 1}</span>
-                {/* I13: text wraps naturally instead of truncating */}
-                <span className="hidden lg:inline text-[0.65rem] xl:text-xs leading-tight">
+                <div className="flex items-center gap-1">
+                  {isCompleted ? (
+                    <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  ) : (
+                    <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  )}
+                  <span className="text-xs">{i + 1}</span>
+                </div>
+                <span className="hidden lg:block text-[0.6rem] xl:text-[0.65rem] leading-tight">
                   {step.title}
                 </span>
               </button>
               {i < feasibilitySteps.length - 1 && (
                 <div
                   className={cn(
-                    'mx-1 h-px flex-1 min-w-2',
+                    'mx-0.5 mt-3 h-px flex-1 min-w-1',
                     i < highestStep ? 'bg-success' : 'bg-border',
                   )}
                   aria-hidden="true"
