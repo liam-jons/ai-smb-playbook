@@ -1,0 +1,70 @@
+{
+  "siteConfig": {
+    "appTitle": "[Your Company] AI Playbook",
+    "companyName": "[Your Company Full Name]",
+    "companyShortName": "[Your Company]",
+    "companyUrl": "https://www.example.com/",
+    "companyUrlDisplay": "example.com",
+    "feedbackEmail": "[feedback-recipient@example.com]",
+    "feedbackSenderEmail": "playbook@feedback.aisolutionhub.co.uk",
+    "consultantName": "[Consultant Name]",
+    "trainingDate": "[DD Month YYYY]",
+    "localStoragePrefix": "[your-company-playbook]",
+    "emailSubjectPrefix": "[Your Company] AI Playbook",
+    "metaDescription": "Practical guidance for getting the most from Claude AI",
+    "welcomeSubtitle": "Getting started with AI at [Your Company]",
+    "industry": "[Your industry description]",
+    "industryContext": "[industry descriptor, e.g. design agency, law firm]",
+    "teamSize": "[small, medium, or large]",
+    "primaryAiTool": "Claude",
+    "hasDeveloperTrack": true,
+    "testingTool": "[Your testing tool, e.g. Cypress, Playwright]",
+    "testingToolDocs": "[the testing tool docs reference]",
+    "techStack": "[Your tech stack, e.g. React/TypeScript, Python/Django]",
+    "database": "[Your database, e.g. PostgreSQL, MySQL]",
+    "webApplications": "[Your key web applications]",
+    "domainSpecificForm": "[domain-specific form or document type]",
+    "complianceArea": "[your compliance area, e.g. GDPR, healthcare, financial]",
+    "primaryProduct": "[Your primary product acronym]",
+    "primaryProductDescription": "[full product description]",
+    "certificationName": "[relevant certification or check type]",
+    "complianceStakeholders": "[stakeholder group for compliance reports]",
+    "sensitiveDataDescription": "[description of sensitive data types handled]",
+    "sensitiveDataLabel": "[short label for sensitive data]",
+    "exampleRecurringTasks": [
+      "[recurring task 1]",
+      "[recurring task 2]",
+      "[recurring task 3]",
+      "[recurring task 4]"
+    ],
+    "reportDataSource": "[data export source for recurring reports]",
+    "clientOnboardingType": "[client or user type for onboarding]"
+  },
+  "overlays": {
+    "brandVoice": {
+      "frameworkExamples": {
+        "1": "[Brand personality description \u2014 describe the brand as if it were a person]",
+        "2": "[Voice attribute example with 'we are / we are not / sounds like' format]",
+        "3": "[Audience awareness \u2014 who the brand speaks to, what they care about]",
+        "4": "[Core messaging pillars \u2014 3\u20135 key themes the brand communicates]",
+        "5": "[Tone spectrum \u2014 how the voice adapts across channels and situations]",
+        "6": "[Style rules \u2014 grammar, formatting, and language decisions]",
+        "7": "[Terminology \u2014 preferred and avoided terms, product names]"
+      },
+      "headStartContent": ""
+    },
+    "recurringTasks": {
+      "examples": []
+    },
+    "roi": {
+      "clientExamples": {}
+    }
+  },
+  "sections": {
+    "enabled": null,
+    "disabled": []
+  },
+  "starterKit": {
+    "enabledCustomCategories": []
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "siteConfig": {
+    "appTitle": "Phew! AI Playbook",
+    "companyName": "Phew Design Limited",
+    "companyShortName": "Phew!",
+    "companyUrl": "https://www.phew.org.uk/",
+    "companyUrlDisplay": "phew.org.uk",
+    "feedbackEmail": "liam@aisolutionhub.co.uk",
+    "feedbackSenderEmail": "playbook@feedback.aisolutionhub.co.uk",
+    "consultantName": "Liam",
+    "trainingDate": "11 February 2026",
+    "localStoragePrefix": "phew-playbook",
+    "emailSubjectPrefix": "Phew AI Playbook",
+    "metaDescription": "Practical guidance for getting the most from Claude AI",
+    "welcomeSubtitle": "Getting started with AI at Phew",
+    "industry": "Safeguarding and public sector software",
+    "industryContext": "design agency",
+    "teamSize": "small",
+    "primaryAiTool": "Claude",
+    "hasDeveloperTrack": true,
+    "testingTool": "Ghost Inspector",
+    "testingToolDocs": "the Ghost Inspector docs",
+    "techStack": "ASP.NET/C#",
+    "database": "SQL Server",
+    "webApplications": "LMS, Audit System, PDMS",
+    "domainSpecificForm": "safeguarding audit form",
+    "complianceArea": "safeguarding",
+    "primaryProduct": "LMS",
+    "primaryProductDescription": "learning management system",
+    "certificationName": "DBS checks",
+    "complianceStakeholders": "safeguarding partnership team",
+    "sensitiveDataDescription": "safeguarding case data, child protection information, or vulnerable person records",
+    "sensitiveDataLabel": "safeguarding data",
+    "exampleRecurringTasks": [
+      "training completion reports",
+      "client site accessibility checks",
+      "proposal formatting",
+      "audit report generation"
+    ],
+    "reportDataSource": "LMS data export",
+    "clientOnboardingType": "LMS client"
+  },
+  "overlays": {
+    "brandVoice": {
+      "frameworkExamples": {
+        "1": "If Phew Design Limited were a person, they would be the knowledgeable colleague who explains safeguarding technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.",
+        "2": "Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: \"Here's how to get started \u2014 it takes about five minutes.\"",
+        "3": "Primary: safeguarding leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in safeguarding but not necessarily in software.",
+        "4": "Pillar 1: Safeguarding made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).",
+        "5": "Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The Phew Design Limited voice is always present, but the emphasis shifts.",
+        "6": "UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.",
+        "7": "Use \"safeguarding partnership\" (not \"LSCP\"). Use \"learning management system\" on first mention, then \"LMS\". Never use \"users\" when you mean \"safeguarding professionals\" or \"partners\"."
+      },
+      "headStartContent": "Based on a review of the Phew! website, here are the IMPACT values and sector-specific terminology identified..."
+    },
+    "recurringTasks": {
+      "examples": [
+        {
+          "title": "Weekly training report",
+          "description": "A skill that reviews the LMS data export, summarises completion rates, flags any overdue training, and formats a report for the safeguarding partnership team. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data."
+        },
+        {
+          "title": "Website accessibility monitoring",
+          "description": "A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the \"Accessibility as a Service\" offering \u2014 regular checks on client sites."
+        },
+        {
+          "title": "Client onboarding checklist",
+          "description": "A skill that walks through the steps for setting up a new LMS client. Each time it is used, the person running it can note any steps that were missing or wrong. The skill's final action is to update the checklist template based on that feedback. Over time, the onboarding process becomes more complete and accurate without anyone maintaining a separate document."
+        },
+        {
+          "title": "Automated code quality check",
+          "description": "A GitHub Actions workflow that runs nightly, invoking Claude Code to review recent commits against coding standards and generate a summary. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude."
+        }
+      ]
+    },
+    "roi": {
+      "clientExamples": {
+        "proposal-writing": {
+          "title": "Phew! bid writing",
+          "description": "Phew! regularly responds to public sector tenders. AI can draft initial responses from knowledge base content, cutting preparation time from days to hours."
+        },
+        "compliance-docs": {
+          "title": "Phew! ISO documentation",
+          "description": "With ISO 9001, 27001, 14001 and Cyber Essentials Plus, Phew! maintains extensive documentation. AI can generate first drafts from existing policies."
+        },
+        "regression-testing": {
+          "title": "Phew! Ghost Inspector replacement",
+          "description": "Phew! currently uses Ghost Inspector for regression testing. Claude Code's browser automation can replicate test suites at lower cost."
+        }
+      }
+    }
+  },
+  "sections": {
+    "enabled": null,
+    "disabled": []
+  },
+  "starterKit": {
+    "enabledCustomCategories": [
+      "developer-tools",
+      "creative-design"
+    ]
+  }
+}

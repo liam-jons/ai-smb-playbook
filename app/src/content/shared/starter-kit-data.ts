@@ -27,6 +27,15 @@ export interface InstallInstructions {
   teamsAdmin?: string;
 }
 
+export type StarterKitTier = 'base' | 'custom';
+
+export type StarterKitCustomCategory =
+  | 'developer-tools'
+  | 'business-development'
+  | 'creative-design'
+  | 'integration-specific'
+  | 'compliance-security';
+
 export interface StarterKitFile {
   id: string;
   name: string;
@@ -42,6 +51,10 @@ export interface StarterKitFile {
   installCommand?: string;
   /** Raw file content for inline display with copy button. */
   rawContent?: string;
+  /** Whether this item is included in every client deployment (base) or selectable per client (custom). */
+  tier: StarterKitTier;
+  /** Category for custom-tier items. Only present when tier is 'custom'. */
+  customCategory?: StarterKitCustomCategory;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1420,6 +1433,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/uk-english .claude/skills/uk-english',
     rawContent: RAW_SKILL_UK_ENGLISH,
+    tier: 'base',
   },
   {
     id: 'skill-session-handoff',
@@ -1436,6 +1450,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/session-handoff .claude/skills/session-handoff',
     rawContent: RAW_SESSION_HANDOFF_SKILL,
+    tier: 'base',
   },
   {
     id: 'skill-brand-voice',
@@ -1452,6 +1467,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/brand-voice .claude/skills/brand-voice',
     rawContent: RAW_SKILL_BRAND_VOICE,
+    tier: 'base',
   },
   {
     id: 'skill-brand-review',
@@ -1468,6 +1484,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/brand-review .claude/skills/brand-review',
     rawContent: RAW_SKILL_BRAND_REVIEW,
+    tier: 'base',
   },
   {
     id: 'skill-brainstorming',
@@ -1484,6 +1501,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/brainstorming .claude/skills/brainstorming',
     rawContent: RAW_SKILL_BRAINSTORMING,
+    tier: 'base',
   },
   {
     id: 'skill-writing-plans',
@@ -1500,6 +1518,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/writing-plans .claude/skills/writing-plans',
     rawContent: RAW_SKILL_WRITING_PLANS,
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'skill-writing-skills',
@@ -1516,6 +1536,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/writing-skills .claude/skills/writing-skills',
     rawContent: RAW_SKILL_WRITING_SKILLS,
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'skill-proposal-writer',
@@ -1532,6 +1554,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/proposal-writer .claude/skills/proposal-writer',
     rawContent: RAW_SKILL_PROPOSAL_WRITER,
+    tier: 'custom',
+    customCategory: 'business-development',
   },
   {
     id: 'skill-file-organizer',
@@ -1548,6 +1572,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/file-organizer .claude/skills/file-organizer',
     rawContent: RAW_SKILL_FILE_ORGANIZER,
+    tier: 'base',
   },
   {
     id: 'skill-markdown-converter',
@@ -1564,6 +1589,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/markdown-converter .claude/skills/markdown-converter',
     rawContent: RAW_SKILL_MARKDOWN_CONVERTER,
+    tier: 'base',
   },
   {
     id: 'skill-mermaid-diagrams',
@@ -1580,6 +1606,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/mermaid-diagrams .claude/skills/mermaid-diagrams',
     rawContent: RAW_SKILL_MERMAID_DIAGRAMS,
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'skill-canvas-design',
@@ -1596,6 +1624,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/canvas-design .claude/skills/canvas-design',
     rawContent: RAW_SKILL_CANVAS_DESIGN,
+    tier: 'custom',
+    customCategory: 'creative-design',
   },
   {
     id: 'skill-agent-browser',
@@ -1612,6 +1642,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     installCommand:
       'cp -r starter-kit/skills/agent-browser .claude/skills/agent-browser',
     rawContent: RAW_SKILL_AGENT_BROWSER,
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
 
   // ── Commands ──────────────────────────────────────────────────────
@@ -1632,6 +1664,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     installCommand:
       'cp starter-kit/commands/brand-review.md .claude/commands/brand-review.md',
+    tier: 'base',
   },
 
   // ── Templates ─────────────────────────────────────────────────────
@@ -1655,6 +1688,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
         "Copy the template content into a new document. Replace all {{PLACEHOLDER}} values with your organisation's details.",
     },
     rawContent: RAW_GOVERNANCE_POLICY,
+    tier: 'base',
   },
   {
     id: 'template-claude-md',
@@ -1672,6 +1706,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
         'Copy to your project root as CLAUDE.md:\ncp starter-kit/templates/claude-md-template.md ./CLAUDE.md\n\nFill in the sections relevant to your project and delete the rest.',
     },
     rawContent: RAW_CLAUDE_MD_TEMPLATE,
+    tier: 'base',
   },
   {
     id: 'template-docs-structure',
@@ -1690,6 +1725,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
         'Create the directory structure in your project:\nmkdir -p docs/{architecture,conventions,integrations,schemas,references}\n\nRefer to the template for guidance on what goes in each directory.',
     },
     rawContent: RAW_DOCS_STRUCTURE_TEMPLATE,
+    tier: 'base',
   },
 
   // ── Prompts ───────────────────────────────────────────────────────
@@ -1710,6 +1746,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
         'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
     },
     rawContent: RAW_EXAMPLE_HANDOFF_GENERAL,
+    tier: 'base',
   },
   {
     id: 'prompt-handoff-technical',
@@ -1727,6 +1764,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
         'This is a reference example. Use it as a guide when creating your own session handoffs, or let the session-handoff skill generate them automatically.',
     },
     rawContent: RAW_EXAMPLE_HANDOFF_TECHNICAL,
+    tier: 'base',
   },
   {
     id: 'prompt-brand-voice-setup',
@@ -1748,6 +1786,7 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
         'Copy the prompt text and use it in a Claude Code session, or paste it into claude.ai for a more conversational experience.',
     },
     rawContent: RAW_BRAND_VOICE_SETUP_PROMPT,
+    tier: 'base',
   },
 
   // ── GSD Mapper ────────────────────────────────────────────────────
@@ -1768,6 +1807,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     installCommand:
       'cp -r starter-kit/gsd-mapper/agent .claude/agents/ && cp -r starter-kit/gsd-mapper/command .claude/commands/ && cp -r starter-kit/gsd-mapper/workflow .claude/workflows/ && cp -r starter-kit/gsd-mapper/templates .claude/templates/',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
 
   // ── Plugins ───────────────────────────────────────────────────────
@@ -1787,6 +1828,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install claude-md-management',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-commit-commands',
@@ -1804,6 +1847,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install commit-commands',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-pr-review-toolkit',
@@ -1821,6 +1866,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install pr-review-toolkit',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-coderabbit',
@@ -1838,6 +1885,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install coderabbit',
+    tier: 'custom',
+    customCategory: 'integration-specific',
   },
   {
     id: 'plugin-security-guidance',
@@ -1855,6 +1904,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install security-guidance',
+    tier: 'custom',
+    customCategory: 'compliance-security',
   },
   {
     id: 'plugin-code-simplifier',
@@ -1872,6 +1923,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install code-simplifier',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-context7',
@@ -1889,6 +1942,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install context7',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-github',
@@ -1906,6 +1961,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install github',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-playwright',
@@ -1923,6 +1980,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-marketplace',
     installCommand: 'claude plugin install playwright',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-sentry',
@@ -1940,6 +1999,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-if-needed',
     installCommand: 'claude plugin install sentry',
+    tier: 'custom',
+    customCategory: 'integration-specific',
   },
   {
     id: 'plugin-plugin-dev',
@@ -1957,6 +2018,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-if-needed',
     installCommand: 'claude plugin install plugin-dev',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-example-plugin',
@@ -1973,6 +2036,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
       claudeCode: 'This is a reference example. Do not install.',
     },
     pluginRecommendation: 'reference-only',
+    tier: 'custom',
+    customCategory: 'developer-tools',
   },
   {
     id: 'plugin-php-lsp',
@@ -1990,6 +2055,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-if-needed',
     installCommand: 'claude plugin install php-lsp',
+    tier: 'custom',
+    customCategory: 'integration-specific',
   },
   {
     id: 'plugin-asana',
@@ -2007,6 +2074,8 @@ export const STARTER_KIT_FILES: StarterKitFile[] = [
     },
     pluginRecommendation: 'install-if-needed',
     installCommand: 'claude plugin install asana',
+    tier: 'custom',
+    customCategory: 'integration-specific',
   },
 ];
 
