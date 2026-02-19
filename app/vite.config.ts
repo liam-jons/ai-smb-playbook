@@ -14,4 +14,16 @@ export default defineConfig({
     },
     dedupe: ['react', 'react-dom'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router'],
+          'vendor-ui': ['lucide-react', 'radix-ui', 'motion'],
+          'vendor-shiki': ['shiki'],
+          'vendor-docx': ['docx'],
+        },
+      },
+    },
+  },
 });

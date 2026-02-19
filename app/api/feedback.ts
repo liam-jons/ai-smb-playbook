@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { extractClientSlugFromHostname, sanitiseSlug } from '../src/utils/slug';
+import { extractClientSlugFromHostname, sanitiseSlug } from '../src/utils/slug.js';
 
 /**
  * POST /api/feedback
