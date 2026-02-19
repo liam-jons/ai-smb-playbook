@@ -1,9 +1,11 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import { Separator } from '@/components/ui/separator';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { useTrack } from '@/hooks/useTrack';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 
 /* -------------------------------------------------------------------------- */
@@ -20,15 +22,16 @@ interface ReliableOutputPattern {
   promptDescription: string;
 }
 
-const patterns: ReliableOutputPattern[] = [
-  {
-    number: 1,
-    title: 'Break Tasks into Smaller Pieces',
-    whenToUse:
-      'Any task that involves multiple parts, multiple topics, or more than a page of output.',
-    explanation:
-      'Claude performs best when given focused, well-scoped tasks. Large, vague requests invite mistakes because Claude tries to handle too many things at once. Breaking work into smaller pieces means each piece gets Claude\u2019s full attention, and each output is short enough to check properly.',
-    prompt: `I need to write a client proposal for a new website redesign project.
+function getPatterns(projectDescription: string): ReliableOutputPattern[] {
+  return [
+    {
+      number: 1,
+      title: 'Break Tasks into Smaller Pieces',
+      whenToUse:
+        'Any task that involves multiple parts, multiple topics, or more than a page of output.',
+      explanation:
+        'Claude performs best when given focused, well-scoped tasks. Large, vague requests invite mistakes because Claude tries to handle too many things at once. Breaking work into smaller pieces means each piece gets Claude\u2019s full attention, and each output is short enough to check properly.',
+      prompt: `I need to write a client proposal for ${projectDescription}.
 
 Before writing anything, break this into a numbered list of smaller tasks. Each task should:
 - Cover one specific section of the proposal (e.g. executive summary, scope, timeline, pricing)
@@ -36,18 +39,18 @@ Before writing anything, break this into a numbered list of smaller tasks. Each 
 - Build on the previous section
 
 List the tasks in order. Do not write the proposal yet.`,
-    promptTitle: 'Task Breakdown for a Proposal',
-    promptDescription:
-      'Break a large document into focused, reviewable sections.',
-  },
-  {
-    number: 2,
-    title: 'Plan Before Writing',
-    whenToUse:
-      'Any non-trivial task. Reports, proposals, research summaries, project plans \u2014 anything longer than a quick email.',
-    explanation:
-      'Asking Claude to plan before writing forces it to think about the approach, surface assumptions, and reveal potential issues before any content is produced. This is the single most effective pattern for avoiding shallow or incorrect output \u2014 Claude cannot take shortcuts if it has to explain its thinking first.',
-    prompt: `I need to create a quarterly progress report for our board of directors. Before writing anything, create a plan that covers:
+      promptTitle: 'Task Breakdown for a Proposal',
+      promptDescription:
+        'Break a large document into focused, reviewable sections.',
+    },
+    {
+      number: 2,
+      title: 'Plan Before Writing',
+      whenToUse:
+        'Any non-trivial task. Reports, proposals, research summaries, project plans \u2014 anything longer than a quick email.',
+      explanation:
+        'Asking Claude to plan before writing forces it to think about the approach, surface assumptions, and reveal potential issues before any content is produced. This is the single most effective pattern for avoiding shallow or incorrect output \u2014 Claude cannot take shortcuts if it has to explain its thinking first.',
+      prompt: `I need to create a quarterly progress report for our board of directors. Before writing anything, create a plan that covers:
 
 1. What sections the report should include and why
 2. What data or information you would need from me
@@ -55,18 +58,18 @@ List the tasks in order. Do not write the proposal yet.`,
 4. What could be missing or misleading if we are not careful
 
 Do not write the report yet. Present the plan and wait for my feedback.`,
-    promptTitle: 'Plan Before Writing',
-    promptDescription:
-      'Force Claude to think about the approach before producing content.',
-  },
-  {
-    number: 3,
-    title: 'Ask for Options, Not Answers',
-    whenToUse:
-      'Decisions with multiple valid approaches, strategy questions, or any task where you want to consider alternatives before committing.',
-    explanation:
-      'Instead of asking Claude to produce a single answer, ask it to present 2\u20133 options with trade-offs. This forces Claude to consider alternatives rather than jumping to the first approach it generates \u2014 which may not be the best fit for your situation.',
-    prompt: `We need to restructure our client onboarding process. It currently takes 3 weeks and involves too much manual back-and-forth.
+      promptTitle: 'Plan Before Writing',
+      promptDescription:
+        'Force Claude to think about the approach before producing content.',
+    },
+    {
+      number: 3,
+      title: 'Ask for Options, Not Answers',
+      whenToUse:
+        'Decisions with multiple valid approaches, strategy questions, or any task where you want to consider alternatives before committing.',
+      explanation:
+        'Instead of asking Claude to produce a single answer, ask it to present 2\u20133 options with trade-offs. This forces Claude to consider alternatives rather than jumping to the first approach it generates \u2014 which may not be the best fit for your situation.',
+      prompt: `We need to restructure our client onboarding process. It currently takes 3 weeks and involves too much manual back-and-forth.
 
 Present 2-3 different approaches for improving this. For each option, include:
 - How it works (brief description)
@@ -75,27 +78,28 @@ Present 2-3 different approaches for improving this. For each option, include:
 - What would need to change in our current process
 
 Do not recommend one yet \u2014 just present the options so I can evaluate them.`,
-    promptTitle: 'Options and Trade-offs',
-    promptDescription:
-      'Get Claude to present multiple approaches instead of jumping to one answer.',
-  },
-  {
-    number: 4,
-    title: 'Give Claude Permission to Say "I Don\u2019t Know"',
-    whenToUse:
-      'Any question about specific facts, statistics, regulations, company policies, or anything where accuracy matters more than speed.',
-    explanation:
-      'Claude will attempt to answer every question, even when it should not. If you do not explicitly give it permission to say "I don\u2019t know", it will generate plausible-sounding information rather than admit uncertainty. This is especially risky when asking about specific statistics, legal requirements, or industry regulations.',
-    prompt: `I need to summarise the key changes in the UK Online Safety Act that affect our business.
+      promptTitle: 'Options and Trade-offs',
+      promptDescription:
+        'Get Claude to present multiple approaches instead of jumping to one answer.',
+    },
+    {
+      number: 4,
+      title: 'Give Claude Permission to Say "I Don\u2019t Know"',
+      whenToUse:
+        'Any question about specific facts, statistics, regulations, company policies, or anything where accuracy matters more than speed.',
+      explanation:
+        'Claude will attempt to answer every question, even when it should not. If you do not explicitly give it permission to say "I don\u2019t know", it will generate plausible-sounding information rather than admit uncertainty. This is especially risky when asking about specific statistics, legal requirements, or industry regulations.',
+      prompt: `I need to summarise the key changes in the UK Online Safety Act that affect our business.
 
 Important: if you are not confident about specific details, dates, or provisions, say so explicitly rather than guessing. It is better to tell me "I'm not sure about this specific detail \u2014 you should check the legislation directly" than to give me information that might be wrong.
 
 With that caveat, what are the main points I should cover?`,
-    promptTitle: 'Permission to Say "I Don\u2019t Know"',
-    promptDescription:
-      'Give Claude explicit permission to flag uncertainty instead of making things up.',
-  },
-];
+      promptTitle: 'Permission to Say "I Don\u2019t Know"',
+      promptDescription:
+        'Give Claude explicit permission to flag uncertainty instead of making things up.',
+    },
+  ];
+}
 
 const keyTakeaways = [
   'Claude performs best with focused, well-scoped tasks. Break big work into small pieces.',
@@ -111,6 +115,14 @@ const keyTakeaways = [
 
 export function ReliableOutputSection() {
   const { track } = useTrack();
+  const { primaryProduct } = useSiteConfig();
+  const projectDescription = primaryProduct
+    ? `a new ${primaryProduct} project`
+    : 'a new client project';
+  const patterns = useMemo(
+    () => getPatterns(projectDescription),
+    [projectDescription],
+  );
 
   return (
     <div className="flex flex-col gap-12">

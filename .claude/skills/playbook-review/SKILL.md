@@ -1,11 +1,17 @@
 ---
 name: playbook-review
-description: This skill should be used when the user asks to "review the playbook", "check the playbook for [client]", "pre-send review", "is the playbook ready for [client]", "QA the playbook", "audit the AMD/Phew playbook", "go/no-go review", "playbook readiness check", or wants to validate that a client-specific deployment is correct before sending to the client. Spawns parallel browser-based and code-based review agents to check every page, then produces a GO/NO-GO report.
+version: 1.1.0
+description: This skill should be used when the user asks to "review the playbook", "check the playbook for [client]", "pre-send review", "is the playbook ready for [client]", "QA the playbook", "audit the playbook", "go/no-go review", "playbook readiness check", or wants to validate that a client-specific deployment is correct before sending to the client. Spawns parallel code-based review agents to audit config completeness, parameterisation, and starter kit integrity, then produces a GO/NO-GO report.
 ---
 
 # Playbook Review Skill
 
-Comprehensive pre-send review of a client-specific AI SMB Playbook deployment. Spawns parallel subagents to review every page of the playbook from both a browser (visual/functional) and code (config/parameterisation) perspective. Produces a GO/NO-GO report with blocking and advisory issues.
+Comprehensive pre-send review of a client-specific AI SMB Playbook deployment. Spawns parallel code-based subagents to audit config completeness, section parameterisation, and starter kit integrity. Produces a GO/NO-GO report with blocking and advisory issues.
+
+## Known Limitations
+
+- **Browser agents are not functional.** MCP tool output (e.g. Playwright browser interactions) is not returned to subagents spawned via the Task tool when invoked through `mcp-cli call` Bash wrapper. All review is performed via code-level analysis. Browser-based visual verification is planned for v2 when subagent MCP access is resolved.
+- **Visual/functional checks are not automated.** Copy button functionality, layout rendering, responsive design, and console error checks require manual verification or a future browser automation approach where the orchestrator performs checks directly (not via subagents).
 
 ## Required Input
 
@@ -34,30 +40,9 @@ Ask for this if not provided. Confirm the config file exists before proceeding.
 
 Group sections into batches of 3-4 and spawn agents. For a typical general-track client with ~10 sections, this means 6-8 agents total:
 
-#### Browser Review Agents (use the agent-browser skill)
+#### Browser Review Agents (v2 — not yet functional)
 
-Each browser agent navigates to actual pages and checks what the user would see. Use the `agent-browser` subagent type for these agents. Every browser agent prompt MUST include the instruction to use the agent-browser skill for all browser interactions.
-
-**Browser Agent: Navigation & Chrome**
-- URL: `http://localhost:4100/?client={slug}`
-- Review: homepage renders correctly, client logo visible, company name in header, sidebar shows only enabled sections, developer track link hidden if disabled, mobile menu works, 404 page shows correct buttons
-- Check: no console errors, no flash of default config (FOUC), page loads within 3 seconds
-
-**Browser Agent: Section Batch 1** (first 3-4 sections)
-- Navigate to each section page: `http://localhost:4100/general/{section-slug}?client={slug}`
-- For each section: page loads, heading renders, content is visible, no layout breaks, copy buttons work on code blocks/prompts, client name appears where expected
-- Check: company name `{companyShortName}` appears in personalised sections, no "Your Organisation" or "Acme" defaults visible
-
-**Browser Agent: Section Batch 2** (next 3-4 sections)
-- Same checks as Batch 1
-
-**Browser Agent: Section Batch 3** (remaining sections, if any)
-- Same checks as Batch 1
-- Additionally for Starter Kit section: correct number of items visible, download buttons work
-
-**Browser Agent: Developer Track** (only if `hasDeveloperTrack: true`)
-- Navigate to `http://localhost:4100/developer?client={slug}`
-- Check each developer section renders, developer-specific config values appear (testingTool, techStack, etc.)
+Browser-based visual verification is planned but not currently automated. See Known Limitations above. The checklist at `references/review-checklist.md` sections 3-4 describes the intended browser checks for future implementation. For now, the orchestrator should note "Browser: N/A" in the section-by-section results table.
 
 #### Code Review Agents
 
@@ -113,52 +98,7 @@ Collect results from all agents. Categorise findings:
 
 Write the report to `.planning/client-specific/{client-dir}/review-report-{date}.md` where `{client-dir}` is found by globbing `.planning/client-specific/*-{slug}/` (e.g. `01-amd`). If no matching directory exists, create one using the next available numeric prefix.
 
-```markdown
-# Playbook Review Report: {companyName}
-
-**Date:** {YYYY-MM-DD}
-**Client slug:** {slug}
-**Reviewer:** Automated (playbook-review skill v1)
-**Sections reviewed:** {count} of {total}
-**Developer track:** {enabled/disabled}
-
-## Verdict: {GO / NO-GO}
-
-{One-paragraph summary}
-
-## Blocking Issues ({count})
-
-### Issue 1: {title}
-- **Page:** {URL or file path}
-- **Expected:** {what should happen}
-- **Actual:** {what happens}
-- **Fix:** {recommended fix}
-
-## Advisory Issues ({count})
-
-### Issue 1: {title}
-...
-
-## Informational Notes ({count})
-
-### Note 1: {title}
-...
-
-## Section-by-Section Results
-
-| Section | Browser | Code | Status | Notes |
-|---------|---------|------|--------|-------|
-| Welcome & Orientation | PASS | PASS | GO | Client name renders correctly |
-| How Context Works | PASS | N/A | GO | Generic section — no parameterisation expected |
-...
-
-## Review Metadata
-
-- Total agents spawned: {N}
-- Browser agents: {N}
-- Code agents: {N}
-- Known issues skipped: {N} (from known-issues.md)
-```
+Use the template at `references/report-template.md` for the report structure.
 
 ### Phase 4: Feedback Loop
 
@@ -174,7 +114,13 @@ After presenting the report:
 - **Dev server URL format:** `http://localhost:4100/{track}/{section-slug}?client={slug}`
 - **Homepage URL:** `http://localhost:4100/?client={slug}`
 - **404 test URL:** `http://localhost:4100/nonexistent-page?client={slug}`
-- **Agent-browser skill:** All browser agents MUST use the `agent-browser` skill for interactions. Specify this explicitly in each browser agent's prompt: "Use the agent-browser skill for all browser interactions."
-- **Parallel execution:** All agents in Phase 2 should be spawned simultaneously using the Task tool with multiple parallel calls
+- **Parallel execution:** All code agents in Phase 2 should be spawned simultaneously using the Task tool with multiple parallel calls
 - **Client config path:** `app/public/clients/{slug}.json`
 - **Section registry:** `app/src/content/shared/sections.ts` — use `getFilteredSectionsForTrack()` logic to determine visible sections
+- **Known issues awareness:** Include `references/known-issues.md` context in agent prompts so they do not re-report known issues as new findings
+
+## Reference Files
+
+- **`references/review-checklist.md`** — Detailed scoring rubric for each review category (config, overlays, browser, sections, starter kit, developer track)
+- **`references/known-issues.md`** — Living document of known issues updated after each review session. Agents consult this to avoid false positives.
+- **`references/report-template.md`** — GO/NO-GO report format template

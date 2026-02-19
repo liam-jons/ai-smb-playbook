@@ -22,6 +22,7 @@ import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { ScrollHint } from '@/components/content/ScrollHint';
 import { useTrack } from '@/hooks/useTrack';
+import { useSiteConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
 import { Check, Minus, ArrowDown, ChevronDown, Compass } from 'lucide-react';
 import {
@@ -256,6 +257,7 @@ function CombinationCard({ pattern }: { pattern: CombinationPattern }) {
 
 export function SkillsExtensionsSection() {
   const { track } = useTrack();
+  const { hasDeveloperTrack } = useSiteConfig();
   const isGeneral = track === 'general';
   const refCardsRef = useRef<HTMLDivElement>(null);
   const [openRefCard, setOpenRefCard] = useState<string>('');
@@ -414,8 +416,8 @@ export function SkillsExtensionsSection() {
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
             Not every mechanism is available on every platform — the decision
             tree and availability matrix below show what works where. Your team
-            has Claude Teams licences for all staff and Claude Code access for
-            developers.
+            has Claude Teams licences for all staff
+            {hasDeveloperTrack && ' and Claude Code access for developers'}.
           </p>
           {isGeneral && (
             <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">

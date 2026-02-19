@@ -53,7 +53,7 @@
       "examples": [
         {
           "title": "PQQ and tender response preparation",
-          "description": "A skill that searches your library of previous PQQ submissions, finds the closest matching answers for each new question, and drafts a response adapted to the specific tender requirements. Sonia's team currently estimates 70% of PQQ content is reusable across applications — this skill automates the retrieval and adaptation, leaving the team to verify accuracy and add project-specific detail."
+          "description": "A skill that searches your library of previous PQQ submissions, finds the closest matching answers for each new question, and drafts a response adapted to the specific tender requirements. The bid team currently estimates 70% of PQQ content is reusable across applications — this skill automates the retrieval and adaptation, leaving the team to verify accuracy and add project-specific detail."
         },
         {
           "title": "Weekly client progress report",
