@@ -209,6 +209,7 @@ function _buildTaskTemplates(
       roiHighlight: '80% faster first-draft production.',
       relatedSection: 'recurring-tasks',
       track: 'both',
+      clientExample: overlayClientExamples?.['client-reporting'] ?? undefined,
     },
     {
       id: 'data-entry',
@@ -275,6 +276,7 @@ function _buildTaskTemplates(
       roiHighlight: '65% faster content production, 2–3x more output per week.',
       relatedSection: 'brand-voice',
       track: 'both',
+      clientExample: overlayClientExamples?.['content-creation'] ?? undefined,
     },
     {
       id: 'customer-responses',

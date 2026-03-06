@@ -91,8 +91,8 @@ function getAutomationPatterns(
         'Claude executes the multi-step task: gathering data, analysing, formatting output, and presenting results',
       ],
       clientExample: overlayExamples?.[0] ?? {
-        title: 'Weekly training report',
-        description: `A skill that reviews the ${reportDataSource}, summarises completion rates, flags any overdue training, and formats a report for the ${complianceStakeholders}. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.`,
+        title: 'Weekly report',
+        description: `A skill that reviews the ${reportDataSource}, summarises key metrics, flags anything requiring attention, and formats a report for the ${complianceStakeholders}. You run this weekly by opening Claude, pointing it at the latest export, and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data.`,
       },
       whenToUse:
         'Any recurring task where the execution is complex but the trigger can be manual. This covers the majority of current use cases.',
@@ -114,13 +114,13 @@ function getAutomationPatterns(
       clientExample: overlayExamples?.[1] ?? {
         title: 'Website accessibility monitoring',
         description:
-          'A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the "Accessibility as a Service" offering \u2014 regular checks on client sites.',
+          'A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for regular checks on client sites where you need consistent monitoring without manual effort.',
       },
       additionalExamples: [
         {
           title: 'Deal / opportunity monitoring',
           description:
-            'As discussed during the training: a CoWork workflow that checks a pipeline tool or inbox for new opportunities, and flags anything requiring attention. The same pattern applies to any web-based dashboard or inbox where you need regular visibility without logging in manually.',
+            'A CoWork workflow that checks a pipeline tool or inbox for new opportunities, and flags anything requiring attention. The same pattern applies to any web-based dashboard or inbox where you need regular visibility without logging in manually.',
         },
       ],
       whenToUse:
@@ -167,12 +167,13 @@ function getAutomationPatterns(
         'Results can be written to files, sent via email, or posted to a channel',
       ],
       clientExample: overlayExamples?.[3] ?? {
-        title: 'Automated code quality check',
+        title: 'Scheduled report generation',
         description:
-          'A GitHub Actions workflow that runs nightly, invoking Claude Code to review recent commits against coding standards and generate a summary. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude.',
+          'An automated workflow that runs on a schedule (daily, weekly, or monthly), triggering Claude to compile data from a defined source and generate a formatted report. The concept applies broadly: the schedule lives outside Claude, the intelligence lives inside Claude.',
       },
-      whenToUse:
-        'When you need genuine scheduled execution (not just manual triggering). Requires some developer involvement to set up the external trigger. For implementation details, see the Developer track.',
+      whenToUse: config.hasDeveloperTrack
+        ? 'When you need genuine scheduled execution (not just manual triggering). Requires some developer involvement to set up the external trigger. For implementation details, see the Developer track.'
+        : 'When you need genuine scheduled execution (not just manual triggering). Requires some technical involvement to set up the external trigger.',
       icon: Zap,
     },
   ];
@@ -238,18 +239,19 @@ function getGettingStartedStepsGeneral(
 function getWeeklyReportPrompt(config: SiteConfigData): string {
   const complianceStakeholders =
     config.complianceStakeholders ?? 'stakeholders';
-  return `I'd like you to generate a weekly training report. Please:
+  const reportDataSource = config.reportDataSource ?? 'data export';
+  return `I'd like you to generate a weekly report from our ${reportDataSource}. Please:
 
-1. Review the training data I'm about to provide
-2. Summarise completion rates by team/department
-3. Flag any overdue or incomplete mandatory training
+1. Review the data I'm about to provide
+2. Summarise key metrics by team/department
+3. Flag any items that are overdue or need attention
 4. Highlight trends compared to the previous period (if I provide it)
 5. Format the output as a brief report suitable for sharing with the ${complianceStakeholders}
 
 Use UK English throughout. Keep the tone professional but accessible.
 
 Here's the data:
-[paste your training data export here]`;
+[paste your ${reportDataSource} here]`;
 }
 
 const websiteChangePrompt = `I need you to check a website for changes. Please:
@@ -561,10 +563,10 @@ export function RecurringTasksSection() {
 
         <div className="space-y-6">
           <PromptExample
-            title="Weekly Training Report"
-            description="Generate a structured training completion report from exported data"
+            title="Weekly Report"
+            description={`Generate a structured report from your ${siteConfig.reportDataSource ?? 'data export'}`}
             prompt={weeklyReportPrompt}
-            whenToUse={`Weekly, when you have new training data to summarise for the ${siteConfig.complianceStakeholders}`}
+            whenToUse={`Weekly, when you have new data from your ${siteConfig.reportDataSource ?? 'data export'} to summarise for the ${siteConfig.complianceStakeholders ?? 'stakeholders'}`}
           />
 
           <PromptExample
@@ -685,10 +687,12 @@ export function RecurringTasksSection() {
             </Link>
             .
           </p>
-          <p>
-            For implementation details on Pattern 4 (external triggers), explore
-            the Developer track sections for implementation details.
-          </p>
+          {siteConfig.hasDeveloperTrack && (
+            <p>
+              For implementation details on Pattern 4 (external triggers),
+              explore the Developer track sections.
+            </p>
+          )}
         </div>
       </section>
     </div>

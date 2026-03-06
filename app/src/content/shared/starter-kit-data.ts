@@ -1529,7 +1529,7 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
       longDescription:
         'Helps create structured writing plans for long-form content. Guides you through outlining, structuring arguments, and planning content flow before you start writing.',
       category: 'skill',
-      tracks: ['general'],
+      tracks: ['developer'],
       priority: 'low',
       filePath: 'skills/writing-plans/SKILL.md',
       isMultiFile: false,
@@ -1548,7 +1548,7 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
       longDescription:
         'Enhances writing quality with techniques drawn from Anthropic best practices and persuasion principles. Includes supporting reference files for advanced writing techniques.',
       category: 'skill',
-      tracks: ['general'],
+      tracks: ['developer'],
       priority: 'low',
       filePath: 'skills/writing-skills/',
       isMultiFile: true,

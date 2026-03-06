@@ -1,0 +1,96 @@
+{
+  "siteConfig": {
+    "appTitle": "Wellbeing People AI Playbook",
+    "companyName": "Wellbeing People Ltd",
+    "companyShortName": "Wellbeing People",
+    "companyUrl": "https://wellbeingpeople.com/",
+    "companyUrlDisplay": "wellbeingpeople.com",
+    "feedbackEmail": "liam@aisolutionhub.co.uk",
+    "feedbackSenderEmail": "playbook@feedback.aisolutionhub.co.uk",
+    "consultantName": "Liam",
+    "trainingDate": "6 March 2026",
+    "localStoragePrefix": "wellbeing-people-playbook",
+    "emailSubjectPrefix": "Wellbeing People AI Playbook",
+    "metaDescription": "Practical guidance for getting the most from Claude AI",
+    "welcomeSubtitle": "Getting started with AI at Wellbeing People",
+    "clientLogoUrl": "/clients/logos/wellbeing-people-light.webp",
+    "clientLogoDarkUrl": "/clients/logos/wellbeing-people.webp",
+    "clientLogoAlt": "Wellbeing People logo",
+    "clientLogoMaxWidth": 220,
+    "industry": "Workplace wellbeing services",
+    "industryContext": "wellbeing services provider",
+    "teamSize": "small",
+    "hasDeveloperTrack": false,
+    "complianceArea": "workplace health and safety",
+    "primaryProduct": "Interactive Health Kiosk",
+    "primaryProductDescription": "interactive health kiosk for workplace wellbeing engagement",
+    "complianceStakeholders": "managing director and company directors",
+    "sensitiveDataDescription": "employee health data, wellbeing assessment results, or personal health metrics",
+    "sensitiveDataLabel": "employee health data",
+    "exampleRecurringTasks": [
+      "post-event engagement reports",
+      "workshop content adaptation",
+      "proposal and tender responses",
+      "monthly client newsletters"
+    ],
+    "reportDataSource": "health kiosk data export",
+    "clientOnboardingType": "corporate client"
+  },
+  "overlays": {
+    "brandVoice": {
+      "frameworkExamples": {
+        "1": "If Wellbeing People were a person, they would be the supportive wellbeing coach who genuinely cares about helping people take control of their health. Warm and encouraging but always evidence-based — they back up every recommendation with nearly twenty years of practical experience. Never preachy, never clinical, never using health scare tactics. The kind of colleague who makes wellbeing feel achievable rather than overwhelming.",
+        "2": "Empowering and warm — We are encouraging, optimistic, and focused on positive behaviour change. We are not preachy, condescending, or fear-based. Sounds like: 'Small, consistent steps make the biggest difference — and we will be with you every step of the way.'\n\nEvidence-based and practical — We are grounded in nearly twenty years of real-world experience. We are not making vague wellness claims or following fads. Sounds like: 'Our Interactive Health Kiosk data shows that employees who engage with regular health checks are significantly more likely to make lasting lifestyle changes.'\n\nCollaborative and partnership-driven — We are invested in long-term relationships, not one-off events. We are not transactional or pushy. Sounds like: 'We work alongside your HR team to build a wellbeing programme that fits your culture and your people.'\n\nAccessible and inclusive — We are welcoming, jargon-free, and designed for everyone regardless of their starting point. We are not exclusive, intimidating, or making assumptions about fitness levels. Sounds like: 'Whether you are already active or just starting to think about your health, our programmes meet you where you are.'",
+        "3": "Primary: HR directors, wellbeing leads, and office managers at medium-to-large organisations who want to demonstrate measurable impact from their employee wellbeing investment. They need to justify budget, show engagement metrics, and prove ROI to senior leadership. Secondary: employees interacting with wellbeing services — they need to feel welcomed, not judged, and empowered to take ownership of their health.",
+        "4": "Pillar 1: Nearly twenty years of proven workplace wellbeing experience, from a specialist team that lives and breathes employee health. Pillar 2: The Interactive Health Kiosk as a uniquely engaging entry point — making health checks accessible, immediate, and data-driven. Pillar 3: Measurable results and real impact — engagement statistics, behaviour change data, and ROI evidence that HR teams can present to leadership. Pillar 4: End-to-end wellbeing services from workshops and coaching to health screening and mental health training.",
+        "5": "Proposals and tenders: dial up credibility, evidence, and measurable outcomes — cite client testimonials (Royal Albert Hall, KP Snacks), engagement statistics, and programme results. Workshop delivery: dial up warmth, encouragement, and practical advice — make participants feel safe and motivated. Health reports: dial up clarity and reassurance — present data simply, avoid alarming language, focus on positive actions. Social media and newsletters: dial up energy and inspiration — seasonal wellbeing tips, success stories, motivational content.",
+        "6": "UK English throughout. Sentence case for headings. DD/MM/YYYY for dates. GBP for currency. Contractions in informal content (newsletters, social media), avoid in formal proposals and reports. Use 'wellbeing' consistently — never 'wellness' (which reads as American). Use active, encouraging language rather than passive or clinical phrasing.",
+        "7": "Use 'wellbeing' (not 'wellness'). Use 'Interactive Health Kiosk' (capitalised, as a product name). Use 'Habits for Health' (the programme name, not 'Recalibrate Wellbeing' which was the former name). Use 'wellbeing coach' (not 'health advisor' or 'health consultant'). Use 'health MOT' informally when describing the kiosk experience to employees. Use 'participants' or 'employees' (not 'users' or 'patients'). Use 'wellbeing programme' (not 'wellness programme' or 'health plan')."
+      },
+      "headStartContent": "Based on a review of the Wellbeing People website, here are the core brand characteristics identified: a passionate, evidence-based workplace wellbeing provider with nearly twenty years of experience. The tone is warm, empowering, and practical — focused on helping individuals take ownership of their health through accessible, engaging services. Key products include the Interactive Health Kiosk (flagship engagement tool), Habits for Health programme, and a full range of workshops, coaching, and health screening services. Core values are Passion, Integrity, Collaboration, and Accountability. Notable clients include the Royal Albert Hall and KP Snacks."
+    },
+    "recurringTasks": {
+      "examples": [
+        {
+          "title": "Post-event engagement report",
+          "description": "A skill that takes your health kiosk deployment data — participation numbers, key health metrics flagged, and follow-up actions recommended — and compiles it into a structured engagement report for the client. You run this after each kiosk event by pointing Claude at the data export and asking it to generate the report. The intelligence is in the skill; your effort is limited to triggering it and providing the data."
+        },
+        {
+          "title": "Workshop content adaptation",
+          "description": "A skill that takes a wellbeing workshop brief (topic, audience size, duration, industry context) and adapts existing workshop content to fit. It pulls from Wellbeing People's library of topics and exercises, restructures the session plan, and tailors examples to the client's sector. The facilitator reviews and adjusts, but the drafting is handled by the skill."
+        },
+        {
+          "title": "Proposal and tender response",
+          "description": "A skill that searches your library of previous successful proposals, finds the closest matching content for each section of a new RFP, and drafts a response adapted to the prospective client's industry, size, and requirements. Wellbeing People's nearly twenty years of experience means a large body of reusable content — this skill automates retrieval and adaptation."
+        },
+        {
+          "title": "Monthly client newsletter",
+          "description": "A skill that compiles seasonal wellbeing tips, company news, upcoming events, and health advice into a newsletter draft following Wellbeing People's brand voice. It pulls from a content calendar and adapts the tone for the time of year — winter resilience, summer hydration, new year motivation. The marketing team reviews and polishes before sending."
+        }
+      ]
+    },
+    "roi": {
+      "clientExamples": {
+        "proposal-writing": {
+          "title": "Wellbeing People proposal writing",
+          "description": "Wellbeing People regularly responds to corporate RFPs for wellbeing services. With nearly twenty years of proposals to draw from, AI can draft initial responses by retrieving and adapting previous winning content — cutting preparation time from days to hours per submission."
+        },
+        "client-reporting": {
+          "title": "Wellbeing People engagement reporting",
+          "description": "After every Interactive Health Kiosk deployment, engagement reports must be compiled from data exports — participation rates, health metrics flagged, follow-up recommendations. AI can automate the analysis and formatting of these reports, freeing up the team to focus on client relationships."
+        },
+        "content-creation": {
+          "title": "Wellbeing People workshop content",
+          "description": "Developing new workshop content and adapting existing materials for different client industries and audiences is a regular task. AI can draft content frameworks, adapt session plans, and generate supporting materials significantly faster than starting from scratch each time."
+        }
+      }
+    }
+  },
+  "sections": {
+    "enabled": null,
+    "disabled": []
+  },
+  "starterKit": {
+    "enabledCustomCategories": ["business-development"]
+  }
+}
