@@ -403,11 +403,11 @@ export function WelcomeSection() {
           </div>
           <div className="space-y-1">
             <h3 className="text-base font-semibold text-foreground">
-              Starter Kit \u2014 Ready-to-Use Files
+              Starter Kit — Ready-to-Use Files
             </h3>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Drop-in skill files, commands, templates, and governance policy
-              \u2014 everything you need to configure Claude for your team.
+              Drop-in skill files, commands, templates, and governance policy —
+              everything you need to configure Claude for your team.
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
               Go to Starter Kit
@@ -532,8 +532,8 @@ export function WelcomeSection() {
           describes. Content was planned with structured prompts and session
           handoffs; the application was built by Claude Code agents working from
           detailed specs. The skills, governance principles, and CLAUDE.md
-          patterns covered in the training were used throughout \u2014 from
-          initial planning through to deployment.
+          patterns covered in the training were used throughout — from initial
+          planning through to deployment.
         </p>
       </section>
 
@@ -552,9 +552,9 @@ export function WelcomeSection() {
           style={{ maxWidth: '65ch' }}
         >
           Spotted something that could be clearer? Want more detail on a
-          specific topic? Use the feedback button \u2014 it is available on
-          every page. Your feedback goes directly to {siteConfig.consultantName}{' '}
-          and will be used to improve the playbook.
+          specific topic? Use the feedback button — it is available on every
+          page. Your feedback goes directly to {siteConfig.consultantName} and
+          will be used to improve the playbook.
         </p>
         <Button
           variant="outline"
