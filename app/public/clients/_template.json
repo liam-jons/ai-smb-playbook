@@ -9,6 +9,7 @@
     "feedbackSenderEmail": "playbook@feedback.aisolutionhub.co.uk",
     "consultantName": "[Consultant Name]",
     "trainingDate": "[DD Month YYYY]",
+    "engagementType": "training",
     "localStoragePrefix": "[your-company-playbook]",
     "emailSubjectPrefix": "[Your Company] AI Playbook",
     "metaDescription": "Practical guidance for getting the most from Claude AI",

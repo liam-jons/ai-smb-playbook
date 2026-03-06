@@ -20,6 +20,8 @@ export interface ClientConfig {
     feedbackSenderEmail: string;
     consultantName: string;
     trainingDate: string;
+    /** Type of engagement — affects welcome page wording. Defaults to 'training'. */
+    engagementType?: 'training' | 'advisory';
     localStoragePrefix: string;
     emailSubjectPrefix: string;
     metaDescription: string;

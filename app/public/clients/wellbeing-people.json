@@ -9,6 +9,7 @@
     "feedbackSenderEmail": "playbook@feedback.aisolutionhub.co.uk",
     "consultantName": "Liam",
     "trainingDate": "6 March 2026",
+    "engagementType": "advisory",
     "localStoragePrefix": "wellbeing-people-playbook",
     "emailSubjectPrefix": "Wellbeing People AI Playbook",
     "metaDescription": "Practical guidance for getting the most from Claude AI",

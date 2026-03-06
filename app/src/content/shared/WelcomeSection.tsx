@@ -178,20 +178,25 @@ const TRACK_LABELS: Record<string, string> = {
   developer: 'Developer Guide',
 };
 
-const TRACK_DESCRIPTIONS: Record<string, { intro: string; scope: string }> = {
-  general: {
-    intro:
-      'This guide covers the core topics from the training \u2014 context management, skills, session handling, brand voice, and governance.',
-    scope:
-      'Everything here is designed for everyday use with Claude via claude.ai or Claude Desktop. Prompts, templates, and examples all have a copy button \u2014 take what you need and use it straight away.',
-  },
-  developer: {
-    intro:
-      'This guide covers developer-specific workflows \u2014 CLAUDE.md files, codebase mapping, testing, MCP usage, and plugins \u2014 alongside the core topics from the training.',
-    scope:
-      'Everything here is designed for use with Claude Code and the developer toolchain. Prompts, templates, and code examples all have a copy button \u2014 take what you need and use it straight away.',
-  },
-};
+function getTrackDescriptions(engagementType: string): Record<string, { intro: string; scope: string }> {
+  const isAdvisory = engagementType === 'advisory';
+  return {
+    general: {
+      intro: isAdvisory
+        ? 'This guide covers the core topics for getting started with Claude \u2014 context management, skills, session handling, brand voice, and governance.'
+        : 'This guide covers the core topics from the training \u2014 context management, skills, session handling, brand voice, and governance.',
+      scope:
+        'Everything here is designed for everyday use with Claude via claude.ai or Claude Desktop. Prompts, templates, and examples all have a copy button \u2014 take what you need and use it straight away.',
+    },
+    developer: {
+      intro: isAdvisory
+        ? 'This guide covers developer-specific workflows \u2014 CLAUDE.md files, codebase mapping, testing, MCP usage, and plugins \u2014 alongside the core topics for getting started with Claude.'
+        : 'This guide covers developer-specific workflows \u2014 CLAUDE.md files, codebase mapping, testing, MCP usage, and plugins \u2014 alongside the core topics from the training.',
+      scope:
+        'Everything here is designed for use with Claude Code and the developer toolchain. Prompts, templates, and code examples all have a copy button \u2014 take what you need and use it straight away.',
+    },
+  };
+}
 
 function getOtherTrack(track: string): {
   slug: string;
@@ -208,7 +213,7 @@ function getOtherTrack(track: string): {
 
 function buildPrintDocument(
   track: string,
-  siteConfig: { appTitle: string; trainingDate: string },
+  siteConfig: { appTitle: string; trainingDate: string; engagementType?: string },
 ): string {
   const referenceItems = getQuickReferenceItems(track);
   const sections = referenceItems
@@ -239,7 +244,7 @@ function buildPrintDocument(
     '</head>',
     '<body>',
     `<h1>${siteConfig.appTitle} \u2014 Quick Reference</h1>`,
-    `<p class="subtitle">Key takeaways from the AI training sessions (${siteConfig.trainingDate})</p>`,
+    `<p class="subtitle">${siteConfig.engagementType === 'advisory' ? 'Key takeaways for working with Claude AI' : `Key takeaways from the AI training sessions (${siteConfig.trainingDate})`}</p>`,
     sections,
     '</body>',
     '</html>',
@@ -304,7 +309,8 @@ export function WelcomeSection() {
   }, [track, siteConfig]);
 
   const trackLabel = TRACK_LABELS[track] ?? TRACK_LABELS.general;
-  const trackDesc = TRACK_DESCRIPTIONS[track] ?? TRACK_DESCRIPTIONS.general;
+  const trackDescriptions = getTrackDescriptions(siteConfig.engagementType ?? 'training');
+  const trackDesc = trackDescriptions[track] ?? trackDescriptions.general;
   const otherTrack = getOtherTrack(track);
 
   return (
@@ -325,7 +331,9 @@ export function WelcomeSection() {
           <p>
             {siteConfig.trainingDate &&
             siteConfig.trainingDate !== 'your training date'
-              ? `Following the AI training sessions with your team on ${siteConfig.trainingDate}, we put together this interactive playbook as a practical reference.`
+              ? siteConfig.engagementType === 'advisory'
+                ? `As part of our ongoing AI advisory engagement, we put together this interactive playbook as a practical reference for your team.`
+                : `Following the AI training sessions with your team on ${siteConfig.trainingDate}, we put together this interactive playbook as a practical reference.`
               : 'This interactive playbook is your practical reference for working with Claude AI effectively across your team.'}
           </p>
           <p>{trackDesc.intro}</p>
@@ -592,7 +600,7 @@ export function WelcomeSection() {
           describes. Content was planned with structured prompts and session
           handoffs; the application was built by Claude Code agents working from
           detailed specs. The skills, governance principles, and CLAUDE.md
-          patterns covered in the training were used throughout — from initial
+          patterns covered in this playbook were used throughout — from initial
           planning through to deployment.
         </p>
       </section>
