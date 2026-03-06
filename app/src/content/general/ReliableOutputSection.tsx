@@ -115,7 +115,7 @@ const keyTakeaways = [
 
 export function ReliableOutputSection() {
   const { track } = useTrack();
-  const { primaryProduct } = useSiteConfig();
+  const { primaryProduct, hasDeveloperTrack } = useSiteConfig();
   const projectDescription = primaryProduct
     ? `a new ${primaryProduct} project`
     : 'a new client project';
@@ -227,7 +227,7 @@ export function ReliableOutputSection() {
         <PromptExample
           title="Combined Approach: Client Proposal"
           description="A single prompt that applies all four reliability patterns."
-          prompt={`I need to write a proposal for a new client project. Before we start:
+          prompt={`I need to write a proposal for ${projectDescription}. Before we start:
 
 1. Break this into sections — list the sections you would include and what each covers. Do not write any content yet.
 
@@ -244,19 +244,21 @@ Let me review your plan before you write anything.`}
       </section>
 
       {/* Tip: Developer track has more */}
-      <CalloutCard variant="info" title="For developers">
-        <p>
-          The developer track includes a more detailed section on{' '}
-          <Link
-            to={`/${track === 'general' ? 'developer' : track}/hallucinations`}
-            className="text-primary hover:underline"
-          >
-            Avoiding Hallucinations
-          </Link>{' '}
-          with code-specific patterns, verification commands, and a structured
-          agent harness for complex development work.
-        </p>
-      </CalloutCard>
+      {hasDeveloperTrack && (
+        <CalloutCard variant="info" title="For developers">
+          <p>
+            The developer track includes a more detailed section on{' '}
+            <Link
+              to={`/${track === 'general' ? 'developer' : track}/hallucinations`}
+              className="text-primary hover:underline"
+            >
+              Avoiding Hallucinations
+            </Link>{' '}
+            with code-specific patterns, verification commands, and a structured
+            agent harness for complex development work.
+          </p>
+        </CalloutCard>
+      )}
 
       <Separator />
 

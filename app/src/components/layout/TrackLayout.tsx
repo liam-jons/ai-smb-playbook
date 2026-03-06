@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sidebar } from './Sidebar';
+import { NotFoundPage } from './NotFoundPage';
 import { useTrack } from '@/hooks/useTrack';
 import {
   getFilteredSectionsForTrack,
@@ -75,7 +76,7 @@ export function TrackLayout() {
   const sectionsConfig = useSectionsConfig();
 
   if (!isValidTrack) {
-    return <Navigate to="/" replace />;
+    return <NotFoundPage />;
   }
 
   // Redirect developer track to general when developer track is disabled

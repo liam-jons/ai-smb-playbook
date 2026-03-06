@@ -33,7 +33,7 @@ export function ClientLogo() {
       alt={alt}
       loading="eager"
       decoding="async"
-      className="h-auto"
+      className="h-auto rounded-lg"
       style={{ maxWidth }}
     />
   );

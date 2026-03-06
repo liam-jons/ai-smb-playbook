@@ -45,11 +45,11 @@
     "brandVoice": {
       "frameworkExamples": {
         "1": "If Phew Design Limited were a person, they would be the knowledgeable colleague who explains safeguarding technology simply, celebrates your wins genuinely, and never talks down to you. Friendly but never flippant when the subject matter is serious.",
-        "2": "Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: \"Here's how to get started \u2014 it takes about five minutes.\"",
+        "2": "Approachable: We are friendly, clear, and jargon-free. We are not dumbed-down or lacking substance. Sounds like: \"Here's how to get started — it takes about five minutes.\"",
         "3": "Primary: safeguarding leads and public sector decision-makers. They need confidence that the technology works and meets compliance requirements. They are experts in safeguarding but not necessarily in software.",
         "4": "Pillar 1: Safeguarding made simpler. Pillar 2: Built for the people who do the work. Pillar 3: Trusted, certified, accountable (ISO 9001/27001, Cyber Essentials Plus).",
         "5": "Product launch: dial up confidence. Incident response: dial up empathy and transparency. Training materials: dial up patience and clarity. The Phew Design Limited voice is always present, but the emphasis shifts.",
-        "6": "UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. \u00a3 for currency.",
+        "6": "UK English throughout (see Part 1 of this section). Sentence case for headings. Contractions in informal content, avoid in formal documents. DD/MM/YYYY dates. £ for currency.",
         "7": "Use \"safeguarding partnership\" (not \"LSCP\"). Use \"learning management system\" on first mention, then \"LMS\". Never use \"users\" when you mean \"safeguarding professionals\" or \"partners\"."
       },
       "headStartContent": "Based on a review of the Phew! website, here are the IMPACT values and sector-specific terminology identified..."
@@ -62,7 +62,7 @@
         },
         {
           "title": "Website accessibility monitoring",
-          "description": "A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the \"Accessibility as a Service\" offering \u2014 regular checks on client sites."
+          "description": "A CoWork session that visits a set of client websites, runs a quick accessibility check, and compiles the results into a summary. Useful for the \"Accessibility as a Service\" offering — regular checks on client sites."
         },
         {
           "title": "Client onboarding checklist",

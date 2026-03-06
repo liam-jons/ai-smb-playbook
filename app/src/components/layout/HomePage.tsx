@@ -76,16 +76,20 @@ export function HomePage() {
             )}
           </div>
 
-          {/* Description text — below hero zones */}
-          <p className="mx-auto mt-8 max-w-xl text-center text-base text-muted-foreground sm:mt-10 sm:text-lg">
-            {siteConfig.metaDescription}
-            {siteConfig.companyName !== 'Your Organisation' &&
-              ` at ${siteConfig.companyName.replace(' Limited', '')}`}
-            .{' '}
-            {siteConfig.hasDeveloperTrack
-              ? 'Choose your track below.'
-              : 'Get started below.'}
-          </p>
+          {/* Description + CTA — below hero zones */}
+          <div className="mx-auto mt-8 max-w-xl text-center sm:mt-10">
+            <p className="text-base text-muted-foreground sm:text-lg">
+              {siteConfig.metaDescription}
+              {siteConfig.companyName !== 'Your Organisation' &&
+                ` at ${siteConfig.companyName.replace(' Limited', '')}`}
+              .
+            </p>
+            <p className="mt-2 text-base font-medium text-foreground/70 sm:text-lg">
+              {siteConfig.hasDeveloperTrack
+                ? 'Choose your track below.'
+                : 'Get started below.'}
+            </p>
+          </div>
         </motion.div>
 
         {/* Track cards — General Users visually dominant, Developer secondary */}

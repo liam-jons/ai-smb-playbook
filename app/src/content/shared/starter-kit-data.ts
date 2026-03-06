@@ -1525,7 +1525,7 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
       id: 'skill-writing-plans',
       name: 'Writing Plans',
       description:
-        'Creates step-by-step implementation plans with TDD — Use before starting a multi-step feature to avoid rework.',
+        'Creates structured plans for complex writing projects — Use before starting any multi-part document to stay organised and avoid rework.',
       longDescription:
         'Helps create structured writing plans for long-form content. Guides you through outlining, structuring arguments, and planning content flow before you start writing.',
       category: 'skill',
@@ -1544,7 +1544,7 @@ export function getStarterKitFiles(config: SiteConfigData): StarterKitFile[] {
       id: 'skill-writing-skills',
       name: 'Writing Skills',
       description:
-        'Creates and tests skill files using TDD — Use when building new skills or verifying existing ones work correctly.',
+        'Enhances writing quality with proven techniques — Use to improve the clarity, persuasion, and structure of any content.',
       longDescription:
         'Enhances writing quality with techniques drawn from Anthropic best practices and persuasion principles. Includes supporting reference files for advanced writing techniques.',
       category: 'skill',
