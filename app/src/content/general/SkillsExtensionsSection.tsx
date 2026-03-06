@@ -397,13 +397,19 @@ export function SkillsExtensionsSection() {
       </nav>
 
       {/* A. Introduction */}
-      <section>
+      <section aria-labelledby="intro-heading">
+        <h2
+          id="intro-heading"
+          className="mb-2 text-xl font-semibold tracking-tight sm:text-2xl"
+        >
+          Extending Claude Beyond the Basics
+        </h2>
         <p className="max-w-prose text-base leading-relaxed text-foreground">
           Claude comes with powerful built-in tools for conversation, writing,
           analysis, and code. But its real power emerges when you extend it —
-          teaching it your company's conventions, connecting it to your tools,
-          or giving it specialised knowledge. This section helps you find the
-          right extension mechanism for what you want to achieve.
+          teaching it your company&apos;s conventions, connecting it to your
+          tools, or giving it specialised knowledge. This section helps you find
+          the right extension mechanism for what you want to achieve.
         </p>
         <div className="mt-6 space-y-3">
           <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">

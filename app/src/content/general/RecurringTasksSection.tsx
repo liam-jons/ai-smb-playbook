@@ -335,6 +335,16 @@ After we've identified the tasks, help me prioritise them by:
 
 Let's start with the first question \u2014 what recurring tasks does your team handle?`;
 
+// ─── TOC ──────────────────────────────────────────────────────────────────────
+
+const recurringTocEntries = [
+  { id: 'current-state-heading', label: 'Current State' },
+  { id: 'patterns-heading', label: 'Patterns That Work Today' },
+  { id: 'limitations-heading', label: 'What Is Not Yet Possible' },
+  { id: 'prompts-heading', label: 'Ready-to-Use Prompts' },
+  { id: 'getting-started-heading', label: 'Getting Started' },
+];
+
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function RecurringTasksSection() {
@@ -351,6 +361,28 @@ export function RecurringTasksSection() {
 
   return (
     <div className="space-y-12">
+      {/* Table of Contents */}
+      <nav
+        aria-label="Page contents"
+        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
+      >
+        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          On this page
+        </h2>
+        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
+          {recurringTocEntries.map((entry) => (
+            <li key={entry.id}>
+              <a
+                href={`#${entry.id}`}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {/* Current State */}
       <section aria-labelledby="current-state-heading">
         <h2

@@ -193,12 +193,11 @@ export function Sidebar({
                   <Link
                     to={`/${track}/${section.slug}`}
                     onClick={onNavClick}
-                    title={section.sidebarTitle ?? section.title}
                     className={cn(
                       'flex rounded-md py-2 text-sm transition-colors',
                       collapsed
                         ? 'justify-center px-0'
-                        : 'items-start gap-2.5 px-3',
+                        : 'min-w-0 items-start gap-2.5 px-3',
                       isStarterKit
                         ? isActive
                           ? 'bg-primary/10 font-medium text-primary'
@@ -219,7 +218,7 @@ export function Sidebar({
                       />
                     )}
                     {!collapsed && (
-                      <span>
+                      <span className="min-w-0 truncate">
                         <span className="mr-1.5 text-xs text-muted-foreground/70">
                           {section.id}
                         </span>{' '}
@@ -228,13 +227,11 @@ export function Sidebar({
                     )}
                   </Link>
                 </TooltipTrigger>
-                {collapsed && (
-                  <TooltipContent side="right" sideOffset={8}>
-                    <span>
-                      {section.id} {section.sidebarTitle ?? section.title}
-                    </span>
-                  </TooltipContent>
-                )}
+                <TooltipContent side="right" sideOffset={8}>
+                  <span>
+                    {section.id} {section.sidebarTitle ?? section.title}
+                  </span>
+                </TooltipContent>
               </Tooltip>
             </div>
           );

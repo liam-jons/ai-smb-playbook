@@ -495,12 +495,45 @@ export function RoiMeasurementSection() {
     [activeCategory, trackFilteredTemplates],
   );
 
+  const roiTocEntries = [
+    { id: 'why-measure-heading', label: 'Why Measure?' },
+    { id: 'calculator-heading', label: 'ROI Calculator' },
+    { id: 'templates-heading', label: 'Task Templates' },
+    { id: 'feasibility-heading', label: 'Feasibility Study' },
+    { id: 'frameworks-heading', label: 'Measurement Frameworks' },
+    { id: 'mistakes-heading', label: 'Common Mistakes' },
+    ...(isDev ? [{ id: 'kpi-heading', label: 'KPI Framework' }] : []),
+    { id: 'getting-started-heading', label: 'Getting Started' },
+  ];
+
   const checklistText = gettingStartedSteps
     .map((s) => `${s.number}. ${s.title}\n   ${s.description}`)
     .join('\n\n');
 
   return (
     <div className="space-y-12">
+      {/* Table of Contents */}
+      <nav
+        aria-label="Page contents"
+        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
+      >
+        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          On this page
+        </h2>
+        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
+          {roiTocEntries.map((entry) => (
+            <li key={entry.id}>
+              <a
+                href={`#${entry.id}`}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       {/* 1. Why Measure? */}
       <motion.section
         aria-labelledby="why-measure-heading"
