@@ -17,6 +17,7 @@ Complete mapping of every `ClientConfig` field to its source, derivation rule, a
 | `feedbackSenderEmail` | Yes | No | `"playbook@feedback.aisolutionhub.co.uk"` | Fixed — tied to Resend verified domain. Never changes. |
 | `consultantName` | Yes | Yes — trainer intro | `"Liam"` | Default to known consultant. |
 | `trainingDate` | Yes | Yes — timestamp | None | Extract from transcript metadata. Format: `"DD Month YYYY"`. |
+| `engagementType` | Optional | No | `"training"` | Set to `"advisory"` for retainer/advisory clients with no formal training session. Affects Welcome page wording. |
 | `localStoragePrefix` | Yes | No | `"{slug}-playbook"` | Derive from the client slug. Lowercase with hyphens only. |
 | `emailSubjectPrefix` | Yes | No | `"{companyShortName} AI Playbook"` | Derive automatically. Strip trailing punctuation (!, .) from `companyShortName` before inserting. |
 | `metaDescription` | Yes | No | `"Practical guidance for getting the most from Claude AI"` | Generic default works for all clients. |
@@ -83,7 +84,7 @@ At minimum, the consultant needs to provide or confirm:
 
 1. **Company name** (full and short form)
 2. **Company URL**
-3. **Training date** (if not in transcript metadata)
+3. **Training date** (if not in transcript metadata) and **engagement type** (`"training"` or `"advisory"`)
 4. **Industry / industry context**
 5. **Whether the developer track is needed**
 6. **Tech stack details** (if developer track enabled)

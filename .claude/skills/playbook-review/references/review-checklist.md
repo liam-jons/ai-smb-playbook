@@ -14,6 +14,7 @@ Detailed checklist for each review category. Agents should use this as their sco
 - [ ] `feedbackSenderEmail` — valid email with sender domain
 - [ ] `consultantName` — first name of the consultant
 - [ ] `trainingDate` — DD Month YYYY format (UK date)
+- [ ] `engagementType` — if present, must be `"training"` or `"advisory"`. Check Welcome page wording matches.
 - [ ] `localStoragePrefix` — unique per client, no spaces
 - [ ] `emailSubjectPrefix` — includes company name
 - [ ] `metaDescription` — non-empty, no placeholder text

@@ -43,7 +43,7 @@ Read the training transcript/summary. Extract in a single pass:
 
 | Category | Fields to extract |
 |----------|-------------------|
-| Company identity | `companyName`, `companyShortName`, training date, attendees |
+| Company identity | `companyName`, `companyShortName`, training date, attendees, `engagementType` (`"training"` or `"advisory"`) |
 | Industry & domain | `industry`, `industryContext`, `complianceArea`, `certificationName` |
 | Team context | `teamSize` (small/medium/large), `sensitiveDataDescription` |
 | Developer signals | Whether a dev-focused session exists (`hasDeveloperTrack`), `techStack`, `testingTool`, `database`, `webApplications` |
@@ -115,7 +115,7 @@ Present the draft in logical groups. After each group, ask: "Are these correct, 
 Present company details and derived fields as a key-value list. Present brand voice steps as readable prose (not raw JSON).
 
 ### Group 1 — Company details
-Present: `companyName`, `companyShortName`, `companyUrl`, `companyUrlDisplay`, `appTitle`, slug, `localStoragePrefix`, `emailSubjectPrefix`, `consultantName`, `trainingDate`, `welcomeSubtitle`. Ask: "Are these correct?"
+Present: `companyName`, `companyShortName`, `companyUrl`, `companyUrlDisplay`, `appTitle`, slug, `localStoragePrefix`, `emailSubjectPrefix`, `consultantName`, `trainingDate`, `engagementType`, `welcomeSubtitle`. Ask: "Are these correct?" Note: `engagementType` defaults to `"training"`. Set to `"advisory"` for retainer/advisory clients with no formal training session — this changes Welcome page wording.
 
 ### Group 2 — Industry and domain
 Present: `industry`, `industryContext`, `teamSize`, `complianceArea`, `certificationName`, `sensitiveDataDescription`, `sensitiveDataLabel`, `complianceStakeholders`, `primaryProduct`, `primaryProductDescription`, `reportDataSource`, `clientOnboardingType`, `exampleRecurringTasks`. Ask: "Are these correct, or should I change anything?"
