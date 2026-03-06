@@ -504,7 +504,7 @@ function QuickStartSection() {
                     {step.effort}
                   </Badge>
                 </div>
-                <p className="mt-0.5 text-base text-muted-foreground">
+                <p className="mt-1 text-base text-muted-foreground">
                   {step.description}
                 </p>
               </div>

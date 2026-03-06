@@ -474,7 +474,7 @@ export function BrandVoiceSection() {
           </p>
 
           {!isGeneral && (
-            <div className="mt-3 space-y-2 text-sm text-muted-foreground">
+            <div className="mt-4 space-y-2 text-sm text-muted-foreground">
               <p>
                 <strong>In Claude Code:</strong> Invoke with{' '}
                 <code className="rounded bg-muted px-1 text-xs">
@@ -535,7 +535,7 @@ export function BrandVoiceSection() {
 
         {/* Developer-specific extras */}
         {!isGeneral && (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <CalloutCard variant="tip" title="Governance note">
               Both the brand-voice and brand-review skills are Tier 1 extensions
               (internal, read-only, no external data access). Log them in the AI
