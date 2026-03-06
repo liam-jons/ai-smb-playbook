@@ -114,6 +114,7 @@ Do not automatically start the dev server — output the command and URL for the
 
 Key items to verify in the browser:
 - Company name appears correctly in header and throughout
+- Client logo visible in both light and dark mode (see logo preparation below)
 - Developer track visible/hidden based on `hasDeveloperTrack`
 - Brand voice section shows overlay content (not generic defaults)
 - Recurring tasks section shows overlay examples
@@ -123,7 +124,40 @@ Key items to verify in the browser:
 
 ---
 
-## 5. Deployment Checklist
+## 5. Logo Preparation
+
+Client logos need to work in both light and dark mode. Follow this decision matrix:
+
+| Logo type | How to identify | Action |
+|-----------|----------------|--------|
+| **Dark text on transparent bg** | Text is dark/black, background is transparent | Set as `clientLogoUrl`. No dark variant needed — the component auto-wraps in a white container for dark mode. |
+| **White/light text on transparent bg** | Text is white/light, invisible on white background | Create a `*-light.webp` variant with dark background + padding baked in (see script below). Set `clientLogoUrl` to the light variant, `clientLogoDarkUrl` to the original. |
+| **Opaque background** | Logo has a solid background colour | Set as `clientLogoUrl`. Works in both modes without modification. |
+| **Official light + dark variants** | Client provides both | Set `clientLogoUrl` to the light variant, `clientLogoDarkUrl` to the dark variant. |
+
+### Creating a light-mode variant for white-text logos
+
+```python
+from PIL import Image
+
+img = Image.open("original-logo.webp").convert("RGBA")
+pad_x, pad_y = 36, 24  # generous padding
+bg = Image.new("RGBA", (img.width + pad_x*2, img.height + pad_y*2), (26, 29, 35, 255))
+bg.paste(img, (pad_x, pad_y), img)
+bg.save("logo-light.webp", "WEBP", quality=90)
+```
+
+### Validation checks
+- [ ] Logo file exists at the path specified in `clientLogoUrl`
+- [ ] Logo visible in light mode (open browser, verify text and graphics are readable)
+- [ ] Logo visible in dark mode (toggle theme, verify text and graphics are readable)
+- [ ] Logo has adequate padding (no text clinging to edges of dark/light container)
+- [ ] `clientLogoMaxWidth` is set large enough to display padding (typically image width or slightly less)
+- [ ] `clientLogoAlt` is set to descriptive alt text
+
+---
+
+## 6. Deployment Checklist
 
 After all validation passes, output:
 

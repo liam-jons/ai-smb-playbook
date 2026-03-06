@@ -91,7 +91,7 @@ export function ContextSimulatorSection() {
         </CalloutCard>
 
         {/* N60: Callout near top mentioning handoff prompt */}
-        <CalloutCard variant="tip" className="mt-4">
+        <CalloutCard variant="tip" className="mt-6">
           <p>
             When your session starts to feel sluggish, you will need a handoff
             prompt to carry context into a fresh session.{' '}
@@ -109,7 +109,7 @@ export function ContextSimulatorSection() {
           <CalloutCard
             variant="important"
             title="Technical note"
-            className="mt-4"
+            className="mt-6"
           >
             <p>
               Claude's standard context window is 200,000 tokens. An extended
@@ -128,7 +128,7 @@ export function ContextSimulatorSection() {
           <CalloutCard
             variant="info"
             title="Thinking tokens (extended & adaptive)"
-            className="mt-4"
+            className="mt-6"
           >
             <p>
               Claude&apos;s extended thinking feature lets the model reason
@@ -568,7 +568,11 @@ export function ContextSimulatorSection() {
           </div>
         </CalloutCard>
 
-        <CalloutCard variant="tip" title="Keep your starting footprint small">
+        <CalloutCard
+          variant="tip"
+          title="Keep your starting footprint small"
+          className="mt-6"
+        >
           <p>
             Every MCP server and extension loaded at session start consumes
             tokens before you type anything. Starting with fewer extensions

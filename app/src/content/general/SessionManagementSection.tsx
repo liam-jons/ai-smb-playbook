@@ -295,7 +295,7 @@ export function SessionManagementSection() {
         </div>
       </motion.section>
 
-      <Separator className="my-2" />
+      <Separator />
 
       {/* ─────────────────────────────────────────────
           Part 2: The Handoff Workflow
@@ -467,7 +467,7 @@ export function SessionManagementSection() {
         )}
       </section>
 
-      <Separator className="my-2" />
+      <Separator />
 
       {/* ─────────────────────────────────────────────
           Part 3: Breaking Tasks into Subtasks
@@ -570,7 +570,7 @@ export function SessionManagementSection() {
         )}
       </section>
 
-      <Separator className="my-2" />
+      <Separator />
 
       {/* ─────────────────────────────────────────────
           Part 4: Platform-Specific Guidance
@@ -654,7 +654,7 @@ export function SessionManagementSection() {
         </div>
       </section>
 
-      <Separator className="my-2" />
+      <Separator />
 
       {/* ─────────────────────────────────────────────
           Part 5: Claude's Memory Feature
@@ -812,7 +812,7 @@ export function SessionManagementSection() {
         </CalloutCard>
       </section>
 
-      <Separator className="my-2" />
+      <Separator />
 
       {/* ─────────────────────────────────────────────
           Part 6: Persistent Context
@@ -989,7 +989,7 @@ When I ask you to write content for this project, follow these guidelines unless
       {/* ─────────────────────────────────────────────
           Developer-only extras
           ───────────────────────────────────────────── */}
-      {isDev && <Separator className="my-2" />}
+      {isDev && <Separator />}
       {isDev && (
         <section
           aria-labelledby="dev-extras-heading"
@@ -1122,7 +1122,7 @@ Session 06: Brainstorming — SME routing + auth decision
         </section>
       )}
 
-      <Separator className="my-2" />
+      <Separator />
 
       {/* ─────────────────────────────────────────────
           Copyable Templates Section — N10/N25: tabs instead of vertical scroll

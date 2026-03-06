@@ -26,6 +26,7 @@ Detailed checklist for each review category. Agents should use this as their sco
 
 ### Optional Fields (ADVISORY if missing)
 - [ ] `clientLogoUrl` — path to logo file, file exists on disk
+- [ ] `clientLogoDarkUrl` — dark-mode logo variant (if light-mode logo has dark text)
 - [ ] `clientLogoAlt` — descriptive alt text
 - [ ] `complianceArea` — relevant to client's industry
 - [ ] `primaryProduct` — client's main offering
@@ -68,6 +69,9 @@ Check all string values for:
 
 ### Homepage
 - [ ] Client logo renders (if `clientLogoUrl` is set)
+- [ ] Logo visible in light mode — if logo has white/light text on transparent background, a `*-light.webp` variant with dark background baked in must exist and be set as `clientLogoUrl`, with the original set as `clientLogoDarkUrl`
+- [ ] Logo visible in dark mode — if no `clientLogoDarkUrl` is set, confirm the existing container logic (white bg) keeps the logo readable
+- [ ] Logo has adequate padding and rounded corners (no text clinging to edges)
 - [ ] Company name appears in the page
 - [ ] Welcome subtitle renders correctly
 - [ ] Track cards show only enabled tracks

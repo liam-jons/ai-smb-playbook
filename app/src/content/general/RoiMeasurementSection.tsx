@@ -500,7 +500,7 @@ export function RoiMeasurementSection() {
     .join('\n\n');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-12">
       {/* 1. Why Measure? */}
       <motion.section
         aria-labelledby="why-measure-heading"
@@ -573,7 +573,7 @@ export function RoiMeasurementSection() {
 
       {/* 2. ROI Calculator */}
       <motion.section aria-labelledby="calculator-heading" {...sectionEntrance}>
-        <div className="mb-1 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <Calculator className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
             id="calculator-heading"
@@ -593,7 +593,7 @@ export function RoiMeasurementSection() {
 
       {/* 3. Task Templates */}
       <motion.section aria-labelledby="templates-heading" {...sectionEntrance}>
-        <div className="mb-1 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <Target className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
             id="templates-heading"
@@ -687,7 +687,7 @@ export function RoiMeasurementSection() {
 
       {/* 4. Measurement Frameworks */}
       <motion.section aria-labelledby="frameworks-heading" {...sectionEntrance}>
-        <div className="mb-1 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
             id="frameworks-heading"
@@ -736,7 +736,7 @@ export function RoiMeasurementSection() {
 
       {/* 5. Common Mistakes */}
       <motion.section aria-labelledby="mistakes-heading" {...sectionEntrance}>
-        <div className="mb-1 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <AlertCircle className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
             id="mistakes-heading"
@@ -786,7 +786,7 @@ export function RoiMeasurementSection() {
         <>
           <Separator />
           <motion.section aria-labelledby="kpi-heading" {...sectionEntrance}>
-            <div className="mb-1 flex items-center gap-2">
+            <div className="mb-2 flex items-center gap-2">
               <Layers className="h-5 w-5 text-primary" aria-hidden="true" />
               <h2
                 id="kpi-heading"
@@ -842,7 +842,7 @@ export function RoiMeasurementSection() {
         aria-labelledby="getting-started-heading"
         {...sectionEntrance}
       >
-        <div className="mb-1 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <ListChecks className="h-5 w-5 text-primary" aria-hidden="true" />
           <h2
             id="getting-started-heading"
