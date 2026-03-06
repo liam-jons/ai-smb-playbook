@@ -18,6 +18,7 @@ import { Separator } from '@/components/ui/separator';
 import { CalloutCard } from '@/components/content/CalloutCard';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CodeBlock } from '@/components/content/CodeBlock';
+import { TableOfContents } from '@/components/content/TableOfContents';
 import { useTrack } from '@/hooks/useTrack';
 import { useSiteConfig } from '@/hooks/useClientConfig';
 import { getAtomicTaskTitle } from '@/content/shared/session-management-data';
@@ -72,26 +73,7 @@ export function SessionManagementSection() {
   return (
     <div className="space-y-12">
       {/* S5: Table of Contents */}
-      <nav
-        aria-label="Page contents"
-        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
-      >
-        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          On this page
-        </h2>
-        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
-          {sessionTocEntries.map((entry) => (
-            <li key={entry.id}>
-              <a
-                href={`#${entry.id}`}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {entry.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <TableOfContents entries={sessionTocEntries} />
 
       {/* Key takeaway */}
       <motion.div

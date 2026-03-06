@@ -32,10 +32,10 @@ export function HomePage() {
 
   return (
     <main id="main-content" className="flex flex-1 items-center">
-      <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-12 sm:px-6 sm:pt-8 sm:pb-16">
+      <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-8 sm:px-6 sm:pt-5 sm:pb-10">
         {/* Cover page hero — centre-aligned, three-zone layout */}
         <motion.div
-          className={cn('mb-10 sm:mb-12', hasClientLogo && 'mb-6 sm:mb-8')}
+          className={cn('mb-8 sm:mb-10', hasClientLogo && 'mb-5 sm:mb-6')}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -66,7 +66,7 @@ export function HomePage() {
 
             {/* Zone 3 — Client branding (conditional) */}
             {hasClientLogo && (
-              <div className="mt-6 flex w-full flex-col items-center sm:mt-8">
+              <div className="mt-5 flex w-full flex-col items-center sm:mt-6">
                 <div className="w-24 border-t border-border" />
                 <p className="mb-3 pt-4 text-sm font-medium tracking-wide uppercase text-muted-foreground">
                   Prepared for
@@ -77,7 +77,7 @@ export function HomePage() {
           </div>
 
           {/* Description + CTA — below hero zones */}
-          <div className="mx-auto mt-8 max-w-xl text-center sm:mt-10">
+          <div className="mx-auto mt-6 max-w-xl text-center sm:mt-7">
             <p className="text-base text-muted-foreground sm:text-lg">
               {siteConfig.metaDescription}
               {siteConfig.companyName !== 'Your Organisation' &&
@@ -89,6 +89,15 @@ export function HomePage() {
                 ? 'Choose your track below.'
                 : 'Get started below.'}
             </p>
+            {siteConfig.hasDeveloperTrack && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                <strong className="text-foreground/70">General Users</strong>{' '}
+                covers everyday workflows, prompts, and governance.{' '}
+                <strong className="text-foreground/70">Developers</strong> adds
+                Claude Code, codebase mapping, and technical patterns. Not sure?
+                Start with General Users.
+              </p>
+            )}
           </div>
         </motion.div>
 

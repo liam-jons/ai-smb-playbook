@@ -102,7 +102,18 @@ export async function loadClientConfig(slug: string): Promise<ClientConfig> {
   if (cached) return cached;
 
   try {
-    const response = await fetch(`/clients/${safeSlug}.json`);
+    const fetchUrl = new URL(
+      `/clients/${safeSlug}.json`,
+      window.location.origin,
+    );
+    if (typeof window !== 'undefined') {
+      const pageParams = new URLSearchParams(window.location.search);
+      const clientParam = pageParams.get('client');
+      if (clientParam) {
+        fetchUrl.searchParams.set('client', clientParam);
+      }
+    }
+    const response = await fetch(fetchUrl.toString());
     if (!response.ok) return DEFAULT_CONFIG;
     const partial = (await response.json()) as Partial<ClientConfig>;
     const merged = mergeWithDefaults(partial);

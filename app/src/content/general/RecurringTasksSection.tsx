@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { TableOfContents } from '@/components/content/TableOfContents';
 import { useTrack } from '@/hooks/useTrack';
 import { useOverlays, useSiteConfig } from '@/hooks/useClientConfig';
 import type { SiteConfigData } from '@/config/client-config-schema';
@@ -362,26 +363,7 @@ export function RecurringTasksSection() {
   return (
     <div className="space-y-12">
       {/* Table of Contents */}
-      <nav
-        aria-label="Page contents"
-        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
-      >
-        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          On this page
-        </h2>
-        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
-          {recurringTocEntries.map((entry) => (
-            <li key={entry.id}>
-              <a
-                href={`#${entry.id}`}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {entry.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <TableOfContents entries={recurringTocEntries} />
 
       {/* Current State */}
       <section aria-labelledby="current-state-heading">

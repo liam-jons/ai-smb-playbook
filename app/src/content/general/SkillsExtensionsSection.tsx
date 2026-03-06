@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/tooltip';
 import { CodeBlock } from '@/components/content/CodeBlock';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { TableOfContents } from '@/components/content/TableOfContents';
 import { ScrollHint } from '@/components/content/ScrollHint';
 import { useTrack } from '@/hooks/useTrack';
 import { useSiteConfig } from '@/hooks/useClientConfig';
@@ -375,26 +376,7 @@ export function SkillsExtensionsSection() {
   return (
     <div className="space-y-12">
       {/* I5: Table of Contents */}
-      <nav
-        aria-label="Page contents"
-        className="rounded-lg border border-border bg-muted/20 dark:bg-muted/40 px-4 py-4 sm:px-6"
-      >
-        <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          On this page
-        </h2>
-        <ul className="columns-1 gap-x-8 space-y-1.5 sm:columns-2">
-          {filteredTocEntries.map((entry) => (
-            <li key={entry.id}>
-              <a
-                href={`#${entry.id}`}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {entry.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <TableOfContents entries={filteredTocEntries} />
 
       {/* A. Introduction */}
       <section aria-labelledby="intro-heading">

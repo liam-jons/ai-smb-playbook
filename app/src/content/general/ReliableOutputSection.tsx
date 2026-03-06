@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Separator } from '@/components/ui/separator';
 import { PromptExample } from '@/components/content/PromptExample';
 import { CalloutCard } from '@/components/content/CalloutCard';
+import { TableOfContents } from '@/components/content/TableOfContents';
 import { useTrack } from '@/hooks/useTrack';
 import { useSiteConfig } from '@/hooks/useClientConfig';
 import { cn } from '@/lib/utils';
@@ -167,34 +168,15 @@ export function ReliableOutputSection() {
       </motion.section>
 
       {/* Mini-nav */}
-      <nav
-        aria-label="Section navigation"
-        className="rounded-lg border border-border bg-muted/30 p-4"
-      >
-        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          On this page
-        </p>
-        <ol className="columns-1 gap-x-6 space-y-1 text-sm sm:columns-2">
-          {patterns.map((p) => (
-            <li key={p.number}>
-              <a
-                href={`#pattern-${p.number}`}
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {p.number}. {p.title}
-              </a>
-            </li>
-          ))}
-          <li>
-            <a
-              href="#takeaways"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Key Takeaways
-            </a>
-          </li>
-        </ol>
-      </nav>
+      <TableOfContents
+        entries={[
+          ...patterns.map((p) => ({
+            id: `pattern-${p.number}`,
+            label: `${p.number}. ${p.title}`,
+          })),
+          { id: 'takeaways', label: 'Key Takeaways' },
+        ]}
+      />
 
       {/* Patterns */}
       {patterns.map((pattern, index) => (

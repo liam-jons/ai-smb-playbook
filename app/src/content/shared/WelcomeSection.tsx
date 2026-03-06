@@ -323,9 +323,10 @@ export function WelcomeSection() {
           style={{ maxWidth: '65ch' }}
         >
           <p>
-            Following the AI training sessions with your team on{' '}
-            {siteConfig.trainingDate}, we put together this interactive playbook
-            as a practical reference.
+            {siteConfig.trainingDate &&
+            siteConfig.trainingDate !== 'your training date'
+              ? `Following the AI training sessions with your team on ${siteConfig.trainingDate}, we put together this interactive playbook as a practical reference.`
+              : 'This interactive playbook is your practical reference for working with Claude AI effectively across your team.'}
           </p>
           <p>{trackDesc.intro}</p>
           <p>{trackDesc.scope}</p>
@@ -346,6 +347,102 @@ export function WelcomeSection() {
           </p>
         )}
       </motion.section>
+
+      <Separator />
+
+      {/* -- Recommended Starting Path -- */}
+      <div className="rounded-lg border border-border bg-muted/20 px-5 py-4 dark:bg-muted/40">
+        <p className="text-sm font-medium text-foreground">
+          New to Claude? We recommend starting with these three sections:
+        </p>
+        <ol className="mt-2 space-y-1.5">
+          {(track === 'developer'
+            ? [
+                {
+                  slug: 'claude-md',
+                  label: 'CLAUDE.md Files',
+                  why: 'set up project context',
+                },
+                {
+                  slug: 'hallucinations',
+                  label: 'Anti-Hallucination Patterns',
+                  why: 'write reliable code',
+                },
+                {
+                  slug: 'sessions',
+                  label: 'Session Management',
+                  why: 'maintain continuity across tasks',
+                },
+              ]
+            : [
+                {
+                  slug: 'brand-voice',
+                  label: 'Brand Voice',
+                  why: 'enforce UK English and your tone',
+                },
+                {
+                  slug: 'reliable-output',
+                  label: 'Getting Reliable Output',
+                  why: "improve Claude's accuracy",
+                },
+                {
+                  slug: 'sessions',
+                  label: 'Session Management',
+                  why: 'maintain continuity across tasks',
+                },
+              ]
+          ).map((item, i) => (
+            <li
+              key={item.slug}
+              className="flex items-baseline gap-2 text-sm text-muted-foreground"
+            >
+              <span className="font-medium text-foreground">{i + 1}.</span>
+              <Link
+                to={`/${track}/${item.slug}`}
+                className="font-medium text-primary hover:underline"
+              >
+                {item.label}
+              </Link>
+              <span>&mdash; {item.why}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* -- Quick Wins (elevated for faster time-to-value) -- */}
+      <section aria-labelledby="quick-wins-heading">
+        <h2
+          id="quick-wins-heading"
+          className="mb-2 text-xl font-semibold tracking-tight"
+        >
+          Quick Wins
+        </h2>
+        <p className="mb-6 text-sm text-muted-foreground">
+          Things you can do right now, in under five minutes.
+        </p>
+        <div className="space-y-4">
+          {quickWins.map((win) => (
+            <div
+              key={win.title}
+              className="flex flex-col gap-2 rounded-lg border border-border bg-card px-5 py-4 transition-all hover:border-primary/30 hover:shadow-sm"
+            >
+              <h3 className="text-sm font-semibold text-foreground">
+                {win.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {win.description}
+              </p>
+              <Link
+                to={win.link.to}
+                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
+              >
+                {win.link.label}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <Separator />
 
@@ -416,43 +513,6 @@ export function WelcomeSection() {
           </div>
         </div>
       </Link>
-
-      <Separator />
-
-      {/* -- Quick Wins -- */}
-      <section aria-labelledby="quick-wins-heading">
-        <h2
-          id="quick-wins-heading"
-          className="mb-2 text-xl font-semibold tracking-tight"
-        >
-          Quick Wins
-        </h2>
-        <p className="mb-6 text-sm text-muted-foreground">
-          Things you can do right now, in under five minutes.
-        </p>
-        <div className="space-y-4">
-          {quickWins.map((win) => (
-            <div
-              key={win.title}
-              className="flex flex-col gap-2 rounded-lg border border-border bg-card px-5 py-4 transition-all hover:border-primary/30 hover:shadow-sm"
-            >
-              <h3 className="text-sm font-semibold text-foreground">
-                {win.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {win.description}
-              </p>
-              <Link
-                to={win.link.to}
-                className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus-visible:underline"
-              >
-                {win.link.label}
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <Separator />
 
