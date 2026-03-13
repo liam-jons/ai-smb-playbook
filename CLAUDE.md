@@ -94,6 +94,22 @@ No test suite is configured. Current quality checks are `build` (TypeScript), `l
 - Auto-deploys on push to `main` via Vercel
 - Vercel root directory is set to `app` (configured in Vercel dashboard, not `vercel.json`)
 - `vercel.json` lives at the repo root with SPA rewrites, security headers, and asset caching
+- **Client subdomains:** `{slug}.playbook.aisolutionhub.co.uk` — wildcard DNS is configured; each subdomain is added in the Vercel dashboard under Settings > Domains
+
+## Access Control
+
+Client playbooks are protected by token-based access via **Vercel Edge Config** (`app/middleware.ts`):
+
+- Each client has a unique access token stored in the Edge Config store under the `access-tokens` key
+- Clients receive a one-time URL: `https://{slug}.playbook.aisolutionhub.co.uk/?t={token}`
+- The middleware validates the token, sets a secure HttpOnly cookie (30-day expiry), and redirects to the clean URL
+- Subsequent visits use the cookie — no token needed
+- Localhost bypasses all checks (development)
+- Fails open if Edge Config is unavailable (resilience)
+- **To rotate a token:** Update the value in the Vercel dashboard (Storage > Edge Config > Items). Propagates in 300ms, no redeploy needed.
+- **To add a new client token:** Add a new entry to the `access-tokens` map in Edge Config
+
+The middleware also enforces **cross-client config isolation**: a user on `phew.playbook...` cannot fetch `wellbeing-people.json` (returns 404).
 
 ## Environment Variables
 
@@ -102,6 +118,7 @@ Set in the Vercel dashboard (not committed to the repo):
 | Variable | Purpose | Notes |
 |----------|---------|-------|
 | `RESEND_API_KEY` | Resend email API key for the feedback widget | Separate staging/production keys configured |
+| `EDGE_CONFIG` | Vercel Edge Config connection string | Auto-set when Edge Config store is connected to the project |
 
 - Feedback widget submits via Vercel serverless function at `/api/feedback` (Resend SDK, sender domain `feedback.aisolutionhub.co.uk`)
 
@@ -112,7 +129,8 @@ Set in the Vercel dashboard (not committed to the repo):
 - **Content architecture:** Section content lives in `content/{general,developer}/` as standalone React components, registered in `content/shared/registry.ts`. To add a new section, create the component and add it to the registry.
 - **Styling:** Tailwind utility classes via `cn()` helper from `lib/utils.ts`. Dark mode supported via `useTheme` hook.
 - **Track detection:** `useTrack()` hook returns `{ track, isDev, isGeneral }` for track-conditional rendering.
-- **Multi-tenant config:** Runtime client configuration is loaded from `app/public/clients/<slug>.json`. The slug is extracted from the hostname (e.g. `phew.domain.com` → `phew`). Components access config via React context hooks: `useSiteConfig()`, `useOverlays()`, `useSectionsConfig()`, `useClientConfig()` (from `hooks/useClientConfig.ts`). The bundled default in `config/site.ts` is the fallback — do not import `site.ts` directly in components; always use context hooks.
+- **Multi-tenant config:** Runtime client configuration is loaded from `app/public/clients/<slug>.json`. The slug is extracted from the hostname (e.g. `phew.playbook.aisolutionhub.co.uk` → `phew`). Components access config via React context hooks: `useSiteConfig()`, `useOverlays()`, `useSectionsConfig()`, `useClientConfig()` (from `hooks/useClientConfig.ts`). The bundled default in `config/site.ts` is the fallback — do not import `site.ts` directly in components; always use context hooks.
+- **Engagement type:** The `engagementType` field (`"training"` | `"advisory"`) controls Welcome page wording. Defaults to `"training"` if omitted. Set to `"advisory"` for retainer/advisory clients who didn't have a formal training session.
 - **Overlay system:** Per-client content customisation (brand voice examples, recurring tasks, ROI examples) is defined in the client JSON under `overlays`. Components read overlays via `useOverlays()` and merge with base content at render time.
 - **Section visibility:** Clients can enable/disable sections and the developer track via `hasDeveloperTrack` and `sections.enabled/disabled` in their config JSON.
 - **Starter kit tiers:** Base kit is available to all clients. Custom categories (skills, commands) are gated per-client via `starterKit.enabledCustomCategories` in the config JSON.
@@ -141,7 +159,15 @@ Set in the Vercel dashboard (not committed to the repo):
 
 The application is parameterised for per-client deployment. Each client gets a JSON config file at `app/public/clients/<slug>.json` that defines branding, content overlays, section visibility, and starter kit tiers. A `_template.json` provides the base schema. The bundled default config in `config/site.ts` serves as fallback for unknown slugs. See `docs/reference/application-overview.md` for the full onboarding checklist and `client-config-schema.ts` for the config interface.
 
-**Current deployment:** Phew Design Limited (https://www.phew.org.uk/) — UK design agency, Claude Teams for all staff, developers have Claude Code access. Client config: `app/public/clients/phew.json`.
+**Active clients:**
+
+| Client | Slug | Type | Developer Track | Config |
+|--------|------|------|-----------------|--------|
+| Phew Design Limited | `phew` | Training | Yes | `app/public/clients/phew.json` |
+| AMD Group | `amd` | Training | No | `app/public/clients/amd.json` |
+| Wellbeing People Ltd | `wellbeing-people` | Advisory | No | `app/public/clients/wellbeing-people.json` |
+
+Client-specific planning artefacts are in `.planning/client-specific/{nn}-{slug}/`. Delivery email templates are in `docs/reference/delivery-assets/`.
 
 **Target audience profile:** UK-based SMBs familiar with Claude for general tasks but not yet experienced with sessions, context windows, skills, or structured AI workflows.
 
