@@ -332,7 +332,7 @@ export function WelcomeSection() {
             {siteConfig.trainingDate &&
             siteConfig.trainingDate !== 'your training date'
               ? siteConfig.engagementType === 'advisory'
-                ? `As part of our ongoing AI advisory engagement, we put together this interactive playbook as a practical reference for your team.`
+                ? `As a companion to our AI advisory engagement, we put together this interactive playbook as a practical reference for your team.`
                 : `Following the AI training sessions with your team on ${siteConfig.trainingDate}, we put together this interactive playbook as a practical reference.`
               : 'This interactive playbook is your practical reference for working with Claude AI effectively across your team.'}
           </p>
