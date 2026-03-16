@@ -2,22 +2,24 @@ import { Suspense } from 'react';
 import { useParams, Navigate } from 'react-router';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import {
   getSectionBySlug,
-  getSectionsForTrack,
+  getFilteredSectionsForTrack,
 } from '@/content/shared/sections';
 import { useTrack } from '@/hooks/useTrack';
-import { useSiteConfig } from '@/hooks/useClientConfig';
+import { useSiteConfig, useSectionsConfig } from '@/hooks/useClientConfig';
 import { sectionComponents } from '@/content/shared/registry';
 
 export function SectionPage() {
   const { track } = useTrack();
   const siteConfig = useSiteConfig();
+  const sectionsConfig = useSectionsConfig();
   const { section: sectionSlug } = useParams<{ section: string }>();
 
   // If no section slug, redirect to first section
   if (!sectionSlug) {
-    const firstSection = getSectionsForTrack(track)[0];
+    const firstSection = getFilteredSectionsForTrack(track, sectionsConfig, siteConfig.hasDeveloperTrack)[0];
     if (firstSection) {
       return <Navigate to={`/${track}/${firstSection.slug}`} replace />;
     }
@@ -72,25 +74,27 @@ export function SectionPage() {
 
       {/* Section content */}
       {CustomComponent ? (
-        <Suspense
-          fallback={
-            <div className="animate-pulse space-y-6 py-8">
-              <div className="h-8 w-3/4 rounded bg-muted" />
-              <div className="h-4 w-1/2 rounded bg-muted" />
-              <div className="space-y-3 pt-4">
-                <div className="h-4 w-full rounded bg-muted" />
-                <div className="h-4 w-5/6 rounded bg-muted" />
-                <div className="h-4 w-4/5 rounded bg-muted" />
+        <ErrorBoundary>
+          <Suspense
+            fallback={
+              <div className="animate-pulse space-y-6 py-8">
+                <div className="h-8 w-3/4 rounded bg-muted" />
+                <div className="h-4 w-1/2 rounded bg-muted" />
+                <div className="space-y-3 pt-4">
+                  <div className="h-4 w-full rounded bg-muted" />
+                  <div className="h-4 w-5/6 rounded bg-muted" />
+                  <div className="h-4 w-4/5 rounded bg-muted" />
+                </div>
+                <div className="space-y-3 pt-4">
+                  <div className="h-4 w-full rounded bg-muted" />
+                  <div className="h-4 w-3/4 rounded bg-muted" />
+                </div>
               </div>
-              <div className="space-y-3 pt-4">
-                <div className="h-4 w-full rounded bg-muted" />
-                <div className="h-4 w-3/4 rounded bg-muted" />
-              </div>
-            </div>
-          }
-        >
-          <CustomComponent />
-        </Suspense>
+            }
+          >
+            <CustomComponent />
+          </Suspense>
+        </ErrorBoundary>
       ) : (
         <SectionPlaceholder description={section.description} />
       )}

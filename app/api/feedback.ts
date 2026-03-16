@@ -76,6 +76,35 @@ function getHostnameFromRequest(req: VercelRequest): string {
   }
 }
 
+// ── In-memory rate limiter ───────────────────────────────────────────
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const RATE_LIMIT_MAX = 5; // max submissions per window
+
+/** Map of IP address → array of request timestamps within the window */
+const requestLog = new Map<string, number[]>();
+
+function isRateLimited(ip: string): { limited: boolean; retryAfterSecs: number } {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW_MS;
+
+  // Clean up expired entries for this IP
+  const timestamps = (requestLog.get(ip) ?? []).filter((t) => t > windowStart);
+
+  if (timestamps.length >= RATE_LIMIT_MAX) {
+    // Earliest entry determines when the window reopens
+    const oldestInWindow = timestamps[0];
+    const retryAfterSecs = Math.ceil(
+      (oldestInWindow + RATE_LIMIT_WINDOW_MS - now) / 1000,
+    );
+    requestLog.set(ip, timestamps);
+    return { limited: true, retryAfterSecs };
+  }
+
+  timestamps.push(now);
+  requestLog.set(ip, timestamps);
+  return { limited: false, retryAfterSecs: 0 };
+}
+
 const VALID_CATEGORIES = ['more-info', 'issue', 'general'] as const;
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -88,6 +117,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Rate limiting — check before any further processing
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip =
+    (typeof forwarded === 'string'
+      ? forwarded.split(',')[0].trim()
+      : Array.isArray(forwarded)
+        ? forwarded[0]
+        : undefined) ?? 'unknown';
+
+  const { limited, retryAfterSecs } = isRateLimited(ip);
+  if (limited) {
+    res.setHeader('Retry-After', String(retryAfterSecs));
+    return res
+      .status(429)
+      .json({ error: 'Too many requests. Please try again later.' });
   }
 
   // Validate environment

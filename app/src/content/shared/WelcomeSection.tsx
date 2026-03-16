@@ -15,6 +15,7 @@ import { Separator } from '@/components/ui/separator';
 import { CopyButton } from '@/components/content/CopyButton';
 import { useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 /* ------------------------------------------------------------------ */
 /*  Track-specific quick wins                                          */
@@ -282,9 +283,7 @@ export function WelcomeSection() {
     [quickReferenceItems],
   );
 
-  const prefersReducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReducedMotion = useReducedMotion();
 
   const motionProps = prefersReducedMotion ? {} : fadeInUp;
   const motionFadeProps = prefersReducedMotion ? {} : fadeIn;
@@ -296,12 +295,20 @@ export function WelcomeSection() {
     const printWindow = window.open(url, '_blank');
 
     if (printWindow) {
-      printWindow.addEventListener('afterprint', () => {
-        URL.revokeObjectURL(url);
-      });
+      let revoked = false;
+      const cleanup = () => {
+        if (!revoked) {
+          revoked = true;
+          URL.revokeObjectURL(url);
+        }
+      };
+
+      printWindow.addEventListener('afterprint', cleanup);
       // Give the window time to load, then trigger print
       printWindow.addEventListener('load', () => {
         printWindow.print();
+        // Fallback: revoke after 60s in case afterprint never fires
+        setTimeout(cleanup, 60_000);
       });
     } else {
       URL.revokeObjectURL(url);

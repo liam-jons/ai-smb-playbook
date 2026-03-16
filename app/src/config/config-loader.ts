@@ -106,12 +106,10 @@ export async function loadClientConfig(slug: string): Promise<ClientConfig> {
       `/clients/${safeSlug}.json`,
       window.location.origin,
     );
-    if (typeof window !== 'undefined') {
-      const pageParams = new URLSearchParams(window.location.search);
-      const clientParam = pageParams.get('client');
-      if (clientParam) {
-        fetchUrl.searchParams.set('client', clientParam);
-      }
+    const pageParams = new URLSearchParams(window.location.search);
+    const clientParam = pageParams.get('client');
+    if (clientParam) {
+      fetchUrl.searchParams.set('client', clientParam);
     }
     const response = await fetch(fetchUrl.toString());
     if (!response.ok) return DEFAULT_CONFIG;

@@ -235,7 +235,13 @@ function loadDraft(storageKey: string): FeasibilityDraft | null {
   try {
     const raw = localStorage.getItem(storageKey);
     if (!raw) return null;
-    return JSON.parse(raw) as FeasibilityDraft;
+    const parsed = JSON.parse(raw) as FeasibilityDraft;
+    // Defensively merge with defaults so that new fields added after a draft
+    // was saved still receive their default values.
+    return {
+      ...parsed,
+      formData: { ...feasibilityDefaults, ...parsed.formData },
+    };
   } catch {
     return null;
   }

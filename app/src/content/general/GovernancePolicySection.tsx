@@ -772,15 +772,23 @@ function PolicyExportButtons({ fullPolicyText }: { fullPolicyText: string }) {
   const [copiedWord, setCopiedWord] = useState(false);
 
   const copyForClaude = useCallback(async () => {
-    await navigator.clipboard.writeText(fullPolicyText);
-    setCopiedClaude(true);
-    setTimeout(() => setCopiedClaude(false), 2000);
+    try {
+      await navigator.clipboard.writeText(fullPolicyText);
+      setCopiedClaude(true);
+      setTimeout(() => setCopiedClaude(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy policy for Claude:', err);
+    }
   }, [fullPolicyText]);
 
   const copyForWord = useCallback(async () => {
-    await navigator.clipboard.writeText(stripMarkdown(fullPolicyText));
-    setCopiedWord(true);
-    setTimeout(() => setCopiedWord(false), 2000);
+    try {
+      await navigator.clipboard.writeText(stripMarkdown(fullPolicyText));
+      setCopiedWord(true);
+      setTimeout(() => setCopiedWord(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy policy for Word:', err);
+    }
   }, [fullPolicyText]);
 
   const downloadMarkdown = useCallback(() => {
@@ -789,8 +797,12 @@ function PolicyExportButtons({ fullPolicyText }: { fullPolicyText: string }) {
   }, [fullPolicyText]);
 
   const downloadDocx = useCallback(async () => {
-    const blob = await generateDocx(fullPolicyText);
-    downloadBlob(blob, 'ai-governance-policy.docx');
+    try {
+      const blob = await generateDocx(fullPolicyText);
+      downloadBlob(blob, 'ai-governance-policy.docx');
+    } catch (err) {
+      console.error('Failed to generate DOCX:', err);
+    }
   }, [fullPolicyText]);
 
   return (

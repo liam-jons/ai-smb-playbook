@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import {
   ChevronDown,
@@ -38,6 +38,7 @@ import { cn } from '@/lib/utils';
 import { useTrack } from '@/hooks/useTrack';
 import { useSiteConfig, useClientConfig } from '@/hooks/useClientConfig';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import {
   getStarterKitFiles,
   CATEGORY_LABELS,
@@ -47,27 +48,6 @@ import {
   type StarterKitFile,
   type StarterKitCategory,
 } from '@/content/shared/starter-kit-data';
-
-/* ------------------------------------------------------------------ */
-/*  Reduced-motion hook                                                */
-/* ------------------------------------------------------------------ */
-
-function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(() =>
-    typeof window !== 'undefined'
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      : false,
-  );
-
-  useEffect(() => {
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mql.addEventListener('change', handler);
-    return () => mql.removeEventListener('change', handler);
-  }, []);
-
-  return reduced;
-}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 12 },

@@ -20,6 +20,7 @@ import { TableOfContents } from '@/components/content/TableOfContents';
 import { CopyButton } from '@/components/content/CopyButton';
 import { useOverlays, useSiteConfig } from '@/hooks/useClientConfig';
 import { useTrack } from '@/hooks/useTrack';
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 import { cn } from '@/lib/utils';
 import {
   ChevronDown,
@@ -97,6 +98,7 @@ function generateExportText(
 
 function RoiCalculator() {
   const siteConfig = useSiteConfig();
+  const { copied, copy } = useCopyToClipboard();
   const [hoursSaved, setHoursSaved] = useState(
     calculatorDefaults.defaultHoursSavedPerWeek,
   );
@@ -303,11 +305,11 @@ function RoiCalculator() {
           variant="outline"
           size="sm"
           className="gap-2"
-          onClick={() => navigator.clipboard.writeText(exportText)}
+          onClick={() => copy(exportText)}
           aria-label="Copy ROI calculator results to clipboard for your business case"
         >
           <Calculator className="h-4 w-4" aria-hidden="true" />
-          Copy for your business case
+          {copied ? 'Copied' : 'Copy for your business case'}
         </Button>
       </div>
     </div>
@@ -463,9 +465,10 @@ export function RoiMeasurementSection() {
   const overlays = useOverlays();
   const { track } = useTrack();
   const isDev = track === 'developer';
+  const roiClientExamples = overlays?.roi?.clientExamples;
   const taskTemplates = useMemo(
-    () => getTaskTemplates(siteConfig, overlays.roi?.clientExamples),
-    [siteConfig, overlays],
+    () => getTaskTemplates(siteConfig, roiClientExamples),
+    [siteConfig, roiClientExamples],
   );
   // N9: default to first category ('time-savings') instead of 'all' to avoid overwhelming the user
   const [activeCategory, setActiveCategory] = useState<TaskCategory | 'all'>(

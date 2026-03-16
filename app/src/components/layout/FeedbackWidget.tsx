@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   MessageSquareHeart,
   Loader2,
@@ -31,6 +31,9 @@ const CATEGORIES = [
 
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';
 
+const COOLDOWN_MS = 60 * 1000; // 60-second cooldown after successful submission
+const COOLDOWN_STORAGE_KEY = 'feedback-last-sent';
+
 export function FeedbackWidget() {
   const siteConfig = useSiteConfig();
   const [open, setOpen] = useState(false);
@@ -39,6 +42,30 @@ export function FeedbackWidget() {
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [isScrolling, setIsScrolling] = useState(false);
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
+
+  // Calculate remaining cooldown from localStorage
+  const getCooldownRemaining = useCallback(() => {
+    try {
+      const lastSent = localStorage.getItem(COOLDOWN_STORAGE_KEY);
+      if (!lastSent) return 0;
+      const elapsed = Date.now() - Number(lastSent);
+      return elapsed < COOLDOWN_MS ? Math.ceil((COOLDOWN_MS - elapsed) / 1000) : 0;
+    } catch {
+      return 0;
+    }
+  }, []);
+
+  // Tick the cooldown timer
+  useEffect(() => {
+    setCooldownRemaining(getCooldownRemaining());
+    const interval = setInterval(() => {
+      const remaining = getCooldownRemaining();
+      setCooldownRemaining(remaining);
+      if (remaining <= 0) clearInterval(interval);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [getCooldownRemaining, submitState]);
 
   // Hide the mobile FAB while the user is actively scrolling so it does not
   // overlap interactive content, tab labels, or buttons at narrow viewports.
@@ -105,9 +132,22 @@ export function FeedbackWidget() {
         }),
       });
 
+      if (res.status === 429) {
+        throw new Error(
+          'Too many requests. Please wait a moment before trying again.',
+        );
+      }
+
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || 'Something went wrong');
+      }
+
+      // Record submission time for client-side cooldown
+      try {
+        localStorage.setItem(COOLDOWN_STORAGE_KEY, String(Date.now()));
+      } catch {
+        // localStorage unavailable — ignore
       }
 
       setSubmitState('success');
@@ -218,7 +258,10 @@ export function FeedbackWidget() {
                 <Button
                   onClick={handleSubmit}
                   disabled={
-                    !category || !message.trim() || submitState === 'sending'
+                    !category ||
+                    !message.trim() ||
+                    submitState === 'sending' ||
+                    cooldownRemaining > 0
                   }
                 >
                   {submitState === 'sending' ? (
@@ -226,6 +269,8 @@ export function FeedbackWidget() {
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Sending...
                     </>
+                  ) : cooldownRemaining > 0 ? (
+                    `Please wait ${cooldownRemaining}s`
                   ) : (
                     'Send Feedback'
                   )}
